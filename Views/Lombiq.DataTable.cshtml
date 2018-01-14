@@ -1,0 +1,114 @@
+﻿@using Orchard.Projections.Models
+@using Lombiq.DataTables.Constants
+@using Lombiq.DataTables.Models
+
+@{
+    Script.Require(ResourceNames.Lombiq_DataTables);
+
+    Style.Require(Lombiq.DataTables.Constants.ResourceNames.JQuery_DataTables);
+
+    var projectionPart = Model.ContentPart as ProjectionPart;
+    var pageSize = (int?)Model.PageSize;
+    if (!pageSize.HasValue)
+    {
+        // Let's assume that the layout is for a ProjectionPage. If not then get the page size from site settings.
+        pageSize = projectionPart != null ?
+            projectionPart.Record.Items :
+            WorkContext.Resolve<Orchard.Settings.ISiteService>().GetSiteSettings().PageSize;
+    }
+    var skip = (int?)Model.Skip;
+    if (!skip.HasValue)
+    {
+        skip = projectionPart != null ? projectionPart.Record.Skip : 0;
+    }
+    var queryId = (int)Model.QueryId;
+    var columns = Model.Columns as IEnumerable<DataTableColumnDefinition>;
+    var childRowsEnabled = (bool?)Model.ChildRowsEnabled ?? false;
+    var progressiveLoadingEnabled = (bool?)Model.ProgressiveLoadingEnabled ?? false;
+    var dataProvider = (string)Model.DataProvider ?? "";
+
+    var rowApiUrl = "/api" + Url.Action("Get", "DataTablesRow", new { Area = "Lombiq.DataTables" });
+    var childRowApiUrl = "/api" + Url.Action("Get", "DataTablesChildRow", new { Area = "Lombiq.DataTables" });
+
+    const string BlockName = "dataTable";
+    const string TableElementName = BlockName + "__table";
+    const string HeaderRowElementName = BlockName + "__headerRow";
+    const string HeaderCellElementName = BlockName + "__headerCell";
+    const string RowElementName = BlockName + "__row";
+    const string CellElementName = BlockName + "__cell";
+    const string LoadingIndicatorElementName = BlockName + "__loadingIndicator";
+    const string ChildRowElementName = BlockName + "__childRow";
+    const string RowElementWithChildRowVisibleModifier = RowElementName + "_childRowVisible";
+    const string ToggleChildRowCellElementName = BlockName + "__toggleChildRowCell";
+    const string ToggleChildRowButtonElementName = BlockName + "__toggleChildRowButton";
+}
+
+<div class="@BlockName">
+    <div class="@LoadingIndicatorElementName" hidden>@T("Loading...")</div>
+
+    <table id="@TableElementName" class="@TableElementName">
+        <thead>
+            <tr class="@HeaderRowElementName">
+                @if (childRowsEnabled)
+                {
+                    <td class="@HeaderCellElementName" data-class-name="@ToggleChildRowCellElementName"></td>
+                }
+
+                @foreach (var column in columns)
+                {
+                    <th class="@HeaderCellElementName" data-name="@column.Name" data-data="@column.Name" data-class-name="@CellElementName">@column.Text</th>
+                }
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+@using (Script.Foot())
+{
+    <script type="text/javascript">
+        ; (function ($) {
+            $(function () {
+                $("#@TableElementName").lombiq_DataTables({
+                    rowClassName: "@RowElementName",
+                    queryId: @queryId,
+                    dataProvider: "@dataProvider",
+                    rowsApiUrl: "@rowApiUrl",
+                    dataTablesOptions: {
+                        @if (pageSize > 0)
+                        { 
+                            <text>
+                                pageLength: @pageSize,
+                            </text>
+                        }
+                    },
+                    serverSidePagingEnabled: @(progressiveLoadingEnabled ? "false" : "true"),
+                    progressiveLoadingOptions: {
+                        progressiveLoadingEnabled: @(progressiveLoadingEnabled ? "true" : "false"),
+                        @if (progressiveLoadingEnabled)
+                        {
+                            <text>
+                                skip: @skip,
+                                batchSize: @pageSize,
+                                loadingIndicatorClassName: "@LoadingIndicatorElementName"
+                            </text>
+                        }
+                    },
+                    childRowOptions: {
+                        childRowsEnabled: @(childRowsEnabled ? "true" : "false"),
+                        @if (childRowsEnabled)
+                        {
+                            <text>
+                                asyncLoading: true,
+                                apiUrl: "@childRowApiUrl",
+                                childRowClassName: "@ChildRowElementName",
+                                toggleChildRowButtonClassName: "@ToggleChildRowButtonElementName",
+                                childRowVisibleClassName: "@RowElementWithChildRowVisibleModifier",
+                            </text>
+                        }
+                    }
+                });
+            });
+        })(jQuery);
+    </script>
+}

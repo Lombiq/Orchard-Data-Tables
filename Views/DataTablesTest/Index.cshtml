@@ -1,0 +1,147 @@
+﻿@using Lombiq.DataTables.Constants
+
+@{ 
+    var sampleData = new[]
+    {
+        new
+        {
+            Id = 1,
+            FullName = "John Cooper",
+            Position = "Accountant",
+            Office = "Tokyo",
+            Age = 27,
+            StartDate = new DateTime(2016, 2, 6),
+            Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec commodo vehicula dolor vitae dictum."
+        },
+        new
+        {
+            Id = 2,
+            FullName = "Melissa James",
+            Position = "Software Engineer",
+            Office = "London",
+            Age = 25,
+            StartDate = new DateTime(2014, 6, 12),
+            Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec commodo vehicula dolor vitae dictum."
+        },
+        new
+        {
+            Id = 3,
+            FullName = "Howard Parker",
+            Position = "Sales Assistant",
+            Office = "London",
+            Age = 46,
+            StartDate = new DateTime(2015, 5, 18),
+            Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec commodo vehicula dolor vitae dictum."
+        },
+        new
+        {
+            Id = 4,
+            FullName = "John Donald",
+            Position = "Software Engineer",
+            Office = "San Francisco",
+            Age = 28,
+            StartDate = new DateTime(2016, 5, 20),
+            Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec commodo vehicula dolor vitae dictum."
+        },
+        new
+        {
+            Id = 5,
+            FullName = "Sara Stevens",
+            Position = "Sales Assistant",
+            Office = "New York",
+            Age = 32,
+            StartDate = new DateTime(2014, 3, 20),
+            Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec commodo vehicula dolor vitae dictum."
+        },
+        new
+        {
+            Id = 6,
+            FullName = "Cedric Kelly",
+            Position = "Chief Executive Officer (CEO)",
+            Office = "New York",
+            Age = 38,
+            StartDate = new DateTime(2014, 3, 1),
+            Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec commodo vehicula dolor vitae dictum."
+        },
+    };
+
+    Script.Require(ResourceNames.Lombiq_DataTables);
+
+    Style.Require(ResourceNames.JQuery_DataTables);
+
+    const string BlockName = "dataTableSample";
+    const string TableElementName = BlockName + "__table";
+    const string RowElementName = BlockName + "__row";
+    const string ChildRowElementName = BlockName + "__childRow";
+    const string RowElementWithChildRowVisibleModifier = RowElementName + "_childRowVisible";
+    const string ToggleChildRowButtonElementName = BlockName + "__toggleChildRowButton";
+}
+
+<div class="@BlockName">
+    <table id="@TableElementName" class="@TableElementName">
+        <thead>
+            <tr>
+                <th></th>
+                <th>@T("Full Name")</th>
+                <th>@T("Position")</th>
+                <th>@T("Office")</th>
+                <th>@T("Age")</th>
+                <th>@T("Start Date")</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in sampleData)
+        {
+            <tr class="@RowElementName" id="@RowElementName-@item.Id">
+                <td>
+                    <span class="btn button @ToggleChildRowButtonElementName">@T("Show/Hide Details")</span>
+                </td>
+                <td>
+                    @item.FullName
+                </td>
+                <td>
+                    @item.Position
+                </td>
+                <td>
+                    @item.Office
+                </td>
+                <td>
+                    @item.Age
+                </td>
+                <td>
+                    @item.StartDate
+                </td>
+            </tr>
+        }
+
+        </tbody>
+    </table>
+
+    <ul class="@(BlockName)__detailsList" hidden>
+        @foreach (var item in sampleData)
+        {
+            <li class="@(BlockName)__detailsListItem" data-parent="@RowElementName-@item.Id">
+                <div class="@(BlockName)__details">@item.Details</div>
+            </li>
+        }
+    </ul>
+</div>
+
+@using (Script.Foot())
+{
+    <script type="text/javascript">
+        ; (function ($) {
+            $(function () {
+                $("#@TableElementName").lombiq_DataTables({
+                    rowClassName: "@RowElementName",
+                    childRowOptions: {
+                        childRowsEnabled: true,
+                        childRowClassName: "@ChildRowElementName",
+                        childRowVisibleClassName: "@RowElementWithChildRowVisibleModifier",
+                        toggleChildRowButtonClassName: "@ToggleChildRowButtonElementName"
+                    }
+                });
+            });
+        })(jQuery);
+    </script>
+}
