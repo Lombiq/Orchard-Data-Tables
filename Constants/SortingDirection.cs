@@ -1,8 +1,13 @@
-﻿namespace Lombiq.DataTables.Constants
+﻿using System.Runtime.Serialization;
+
+namespace Lombiq.DataTables.Constants
 {
     public enum SortingDirection
     {
-        Ascending = 0,
-        Descending
+        [EnumMember(Value = "asc")]
+        Asc = 0,
+
+        [EnumMember(Value = "desc")]
+        Desc
     }
 }

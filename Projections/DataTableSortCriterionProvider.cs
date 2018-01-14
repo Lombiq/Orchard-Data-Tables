@@ -63,7 +63,7 @@ namespace Lombiq.DataTables.Projections
                         sortingProvider.Sort(new DataTableSortingContext
                         {
                             ColumnDefinition = columnDefinition,
-                            Direction = direction == "asc" ? SortingDirection.Ascending : SortingDirection.Descending,
+                            Direction = direction == "asc" ? SortingDirection.Asc : SortingDirection.Desc,
                             Query = context.Query
                         });
                     },

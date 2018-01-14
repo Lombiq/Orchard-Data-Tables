@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Lombiq.DataTables.Constants;
+using Newtonsoft.Json;
 
 namespace Lombiq.DataTables.Models
 {
@@ -8,6 +9,6 @@ namespace Lombiq.DataTables.Models
         public int Column { get; set; }
 
         [JsonProperty(PropertyName = "dir")]
-        public string Dir { get; set; }
+        public SortingDirection Dir { get; set; }
     }
 }

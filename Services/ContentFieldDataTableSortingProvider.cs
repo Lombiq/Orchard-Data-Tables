@@ -47,7 +47,7 @@ namespace Lombiq.DataTables.Services
                     alias => alias.Named(aliasName),
                     order =>
                     {
-                        if (context.Direction == SortingDirection.Ascending) order.Asc("Value");
+                        if (context.Direction == SortingDirection.Asc) order.Asc("Value");
                         else order.Desc("Value");
                     });
         }
