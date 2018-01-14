@@ -29,6 +29,11 @@ namespace Lombiq.DataTables.Controllers.Api
                 return Content(HttpStatusCode.BadRequest, DataTableDataResponse.ErrorResult(T("The given data provider name is invalid.").Text));
             }
 
+            if (request.Length == 0)
+            {
+                return Content(HttpStatusCode.BadRequest, DataTableDataResponse.ErrorResult(T("Length can't be 0.").Text));
+            }
+
             var response = dataProvider.GetRows(request);
 
             // This property identifies the request for the jQuery.DataTables plugin. This needs to be parsed and

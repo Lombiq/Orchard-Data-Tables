@@ -61,7 +61,7 @@
         dataTableApi: null,
 
         /**
-		 * Initializes the Consultant Link DataTable plugin where the jQuery DataTables plugin will be also initialized.
+		 * Initializes the Lombiq DataTable plugin where the jQuery DataTables plugin will be also initialized.
 		 */
         init: function () {
             var plugin = this;
@@ -196,63 +196,82 @@
         },
 
         /**
+         * Low-level functionality for loading rows from the API. The result is accessible using the callback.
+         * @param {number} skip Number of items to be skipped by the API.
+         * @param {Object} options Options required for the API call (e.g. API URL, data provider).
+         * @param {callback} callback Callback for returning rows.
+         */
+        loadRows: function (skip, options, callback) {
+            $.ajax({
+                type: "POST",
+                url: options.apiUrl,
+                data: {
+                    queryId: options.queryId,
+                    start: skip,
+                    length: options.batchSize,
+                    dataProvider: options.dataProvider
+                },
+                success: function (response) {
+                    if (callback) {
+                        callback(!response.error, response);
+                    }
+                },
+                fail: function () {
+                    if (callback) {
+                        callback(false);
+                    }
+                }
+            });
+        },
+
+        /**
          * Low-level functionality of progressive loading. It will fetch content shapes from the given API.
          * The shapes will be processed using callbacks.
          * @param {Object} options Progressive loading options including API URL and callbacks.
          */
         progressiveLoad: function (options) {
+            var plugin = this;
             var total = 0;
             var skip = options.skip;
 
-            var fetch = function () {
-                $.ajax({
-                    type: "POST",
-                    url: options.apiUrl,
-                    data: {
-                        queryId: options.queryId,
-                        start: skip,
-                        length: options.batchSize,
-                        dataProvider: options.dataProvider
-                    },
-                    success: function (response) {
-                        if (!response.error) {
-                            var count = response.data.length;
-                            total += count;
+            var callback = function (success, response) {
+                if (success && response) {
+                    var count = response.data.length;
+                    total += count;
 
-                            if (options.batchCallback) {
-                                options.batchCallback(response, total);
-                            }
+                    if (options.batchCallback) {
+                        options.batchCallback(response, total);
+                    }
 
-                            if (count > 0 && options.itemCallback) {
-                                $.each(response.data, function (index, value) {
-                                    options.itemCallback(index, value, response);
-                                });
-                            }
+                    if (count > 0 && options.itemCallback) {
+                        $.each(response.data, function (index, value) {
+                            options.itemCallback(index, value, response);
+                        });
+                    }
 
-                            if (count > 0 && count >= options.batchSize) {
-                                skip += count;
+                    if (count > 0 && count >= options.batchSize) {
+                        skip += count;
 
-                                fetch();
-                            }
-                            else {
-                                if (options.finishedCallback) {
-                                    options.finishedCallback(true, total)
-                                }
-                            }
-                        }
-                        else {
-                            alert(response.error);
-                        }
-                    },
-                    fail: function () {
+                        plugin.loadRows(skip, options, callback);
+                    }
+                    else {
                         if (options.finishedCallback) {
-                            options.finishedCallback(false, total)
+                            options.finishedCallback(true, total)
                         }
                     }
-                });
-            }
+                }
+                else {
+                    if (response) {
+                        alert(response.error);
+                    }
 
-            fetch();
+                    if (options.finishedCallback) {
+                        options.finishedCallback(false, total)
+                    }
+                }
+            };
+
+            plugin.loadRows(skip, options, callback);
         }
     });
 
