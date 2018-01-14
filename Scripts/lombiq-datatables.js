@@ -17,7 +17,7 @@
             paging: true,
             processing: true,
             info: false,
-            bLengthChange: false
+            lengthChange: false
         },
         rowClassName: "",
         queryId: "",
@@ -43,8 +43,7 @@
             batchSize: 0,
             finishedCallback: null,
             batchCallback: null,
-            itemCallback: null,
-            loadingIndicatorClassName: ""
+            itemCallback: null
         }
     };
 
@@ -137,7 +136,7 @@
             // Fetch items if progressive loading is enabled.
             if (!plugin.settings.serverSidePagingEnabled &&
                 plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
-                plugin.fetchRows();
+                plugin.fetchRowsProgressively();
             }
         },
 
@@ -166,10 +165,12 @@
         /**
          * Fetches the rows from the API using progressive loading.
          */
-        fetchRows: function () {
+        fetchRowsProgressively: function () {
             var plugin = this;
 
-            plugin.dataTableElement.fadeTo(100, .5);
+            if (!plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) return;
+
+            plugin.dataTableApi.processing(true);
 
             var options = {
                 queryId: plugin.settings.queryId,
@@ -187,7 +188,7 @@
                         plugin.settings.progressiveLoadingOptions.finishedCallback(success, total);
                     }
                     
-                    plugin.dataTableElement.fadeTo(100, 1);
+                    plugin.dataTableApi.processing(false);
                 }
             };
 
@@ -203,26 +204,9 @@
             var total = 0;
             var skip = options.skip;
 
-            if (options.loadingIndicatorClassName) {
-                $("." + options.loadingIndicatorClassName).show();
-            }
-
-            var showIndicator = function (show) {
-                if (options.loadingIndicatorClassName) {
-                    if (show) {
-                        $("." + options.loadingIndicatorClassName).show();
-                    }
-                    else {
-                        $("." + options.loadingIndicatorClassName).hide();
-                    }
-                }
-            }
-
-            showIndicator(true);
-
             var fetch = function () {
                 $.ajax({
-                    type: "GET",
+                    type: "POST",
                     url: options.apiUrl,
                     data: {
                         queryId: options.queryId,
@@ -232,8 +216,6 @@
                     },
                     success: function (response) {
                         if (!response.error) {
-                            console.log(response);
-
                             var count = response.data.length;
                             total += count;
 
@@ -253,8 +235,6 @@
                                 fetch();
                             }
                             else {
-                                showIndicator(false);
-
                                 if (options.finishedCallback) {
                                     options.finishedCallback(true, total)
                                 }
@@ -265,8 +245,6 @@
                         }
                     },
                     fail: function () {
-                        showIndicator(false);
-
                         if (options.finishedCallback) {
                             options.finishedCallback(false, total)
                         }

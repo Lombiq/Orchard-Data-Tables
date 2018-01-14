@@ -10,7 +10,8 @@ namespace Lombiq.DataTables
             var manifest = builder.Add();
 
             manifest.DefineScript(JQuery_DataTables).SetUrl("../Content/DataTables/dataTables.min.js", "../Content/DataTables/dataTables.js").SetDependencies("JQuery");
-            manifest.DefineScript(Lombiq_DataTables).SetUrl("lombiq-datatables.js").SetDependencies(JQuery_DataTables);
+            manifest.DefineScript(JQuery_DataTables_Processing).SetUrl("../Content/DataTables/Plugins/processing().js").SetDependencies(JQuery_DataTables);
+            manifest.DefineScript(Lombiq_DataTables).SetUrl("lombiq-datatables.js").SetDependencies(JQuery_DataTables, JQuery_DataTables_Processing);
 
             manifest.DefineStyle(JQuery_DataTables).SetUrl("../Content/DataTables/dataTables.min.css", "../Content/DataTables/dataTables.css");
         }

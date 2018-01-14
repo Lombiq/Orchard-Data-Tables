@@ -44,8 +44,6 @@
 }
 
 <div class="@BlockName">
-    <div class="@LoadingIndicatorElementName" hidden>@T("Loading...")</div>
-
     <table id="@TableElementName" class="@TableElementName">
         <thead>
             <tr class="@HeaderRowElementName">
@@ -81,6 +79,9 @@
                                 pageLength: @pageSize,
                             </text>
                         }
+                        language: {
+                            processing: "<div class=\"@LoadingIndicatorElementName\">@T("Loading...")</div>"
+                        }
                     },
                     serverSidePagingEnabled: @(progressiveLoadingEnabled ? "false" : "true"),
                     progressiveLoadingOptions: {
@@ -89,8 +90,7 @@
                         {
                             <text>
                                 skip: @skip,
-                                batchSize: @pageSize,
-                                loadingIndicatorClassName: "@LoadingIndicatorElementName"
+                                batchSize: @pageSize
                             </text>
                         }
                     },
