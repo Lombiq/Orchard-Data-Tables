@@ -1,10 +1,13 @@
-﻿Name: Lombiq.DataTables
+﻿Name: Data Tables
 AntiForgery: enabled
 Author: The Orchard Team
 Website: http://orchardproject.net
 Version: 1.0
-OrchardVersion: 1.0
-Description: Description for the module
+OrchardVersion: 1.10.2
+Description: Module for displaying data from Projections using jQuery Data Tables.
 Features:
     Lombiq.DataTables:
-        Description: Description for feature Lombiq.DataTables.
+        Name: Data Tables
+        Description: Module for displaying data from Projections using jQuery Data Tables.
+        Category: Content
+        Dependencies: Orchard.Projections, Orchard.Resources
