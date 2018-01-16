@@ -49,6 +49,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -119,7 +123,9 @@
     <Compile Include="Controllers\Api\DataTablesRowController.cs" />
     <Compile Include="Controllers\DataTablesTestController.cs" />
     <Compile Include="Forms\DataTableLayoutForm.cs" />
+    <Compile Include="Handlers\TitleSortableTermsPartHandler.cs" />
     <Compile Include="Layouts\DataTableLayout.cs" />
+    <Compile Include="Migrations\TitleSortableTermsMigrations.cs" />
     <Compile Include="Models\DataTableChildRowResponse.cs" />
     <Compile Include="Models\DataTableColumn.cs" />
     <Compile Include="Models\DataTableColumnDefinition.cs" />
@@ -129,6 +135,9 @@
     <Compile Include="Models\DataTableRow.cs" />
     <Compile Include="Models\DataTableSearchParameters.cs" />
     <Compile Include="Models\DataTableSortingContext.cs" />
+    <Compile Include="Models\TitleSortableTermContentItem.cs" />
+    <Compile Include="Models\TitleSortableTermsPart.cs" />
+    <Compile Include="Models\TitleSortableTermsPartRecord.cs" />
     <Compile Include="Projections\DataTableSortCriterionProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
@@ -140,6 +149,7 @@
     <Compile Include="Services\IDataTableSortingProvider.cs" />
     <Compile Include="Services\IDataTableSortingProviderAccessor.cs" />
     <Compile Include="Services\TaxonomyTermDataTableSortingProvider.cs" />
+    <Compile Include="Services\TitleSortableTaxonomyTermUpdaterServiceOverride.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.bootstrap.css" />
@@ -207,6 +217,10 @@
     <ProjectReference Include="..\Orchard.Taxonomies\Orchard.Taxonomies.csproj">
       <Project>{e649ea64-d213-461b-87f7-d67035801443}</Project>
       <Name>Orchard.Taxonomies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Piedone.HelpfulLibraries\Piedone.HelpfulLibraries.csproj">
+      <Project>{ea61ad10-39d6-41a9-b12b-227f50c54158}</Project>
+      <Name>Piedone.HelpfulLibraries</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
