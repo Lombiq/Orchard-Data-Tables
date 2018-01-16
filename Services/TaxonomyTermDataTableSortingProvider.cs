@@ -17,7 +17,7 @@ namespace Lombiq.DataTables.Services
 
             if (string.IsNullOrEmpty(fieldName)) return;
 
-            var aliasName = "SortableTerms";
+            var aliasName = "SortableTerm";
 
             context
                 .Query
@@ -26,15 +26,17 @@ namespace Lombiq.DataTables.Services
                         .ContentPartRecord<TitleSortableTermsPartRecord>()
                         .Property(nameof(TitleSortableTermsPartRecord.Terms), aliasName),
                     predicate => predicate
-                        .Eq(nameof(TitleSortableTermContentItem.Field), fieldName))
+                        .And(
+                            left => left.Eq(nameof(TitleSortableTermContentItem.Field), fieldName),
+                            right => right.Eq(nameof(TitleSortableTermContentItem.IsFirstTerm), true)))
                 .OrderBy(
                     alias => alias.Named(aliasName),
                     order =>
                     {
-                        var property = $"{nameof(TitlePartRecord)}.{nameof(TitlePart.Title)}";
+                        var byTitle = $"{nameof(TitleSortableTermContentItem.TitlePartRecord)}.{nameof(TitlePart.Title)}";
 
-                        if (context.Direction == SortingDirection.Asc) order.Asc(property);
-                        else order.Desc(property);
+                        if (context.Direction == SortingDirection.Asc) order.Asc(byTitle);
+                        else order.Desc(byTitle);
                     });
         }
     }

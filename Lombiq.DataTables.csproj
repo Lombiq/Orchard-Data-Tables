@@ -149,7 +149,7 @@
     <Compile Include="Services\IDataTableSortingProvider.cs" />
     <Compile Include="Services\IDataTableSortingProviderAccessor.cs" />
     <Compile Include="Services\TaxonomyTermDataTableSortingProvider.cs" />
-    <Compile Include="Services\TitleSortableTaxonomyTermUpdaterServiceOverride.cs" />
+    <Compile Include="Services\TitleSortableTaxonomyServiceOverride.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.bootstrap.css" />

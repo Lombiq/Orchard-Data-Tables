@@ -11,13 +11,17 @@ namespace Lombiq.DataTables.Migrations
                 .CreateTable(nameof(TitleSortableTermContentItem), table => table
                     .Column<int>(nameof(TitleSortableTermContentItem.Id), column => column.PrimaryKey().Identity())
                     .Column<string>(nameof(TitleSortableTermContentItem.Field), column => column.WithLength(50))
+                    .Column<bool>(nameof(TitleSortableTermContentItem.IsFirstTerm))
                     .Column<int>("TermRecord_id")
                     .Column<int>("TitlePartRecord_id")
                     .Column<int>("TitleSortableTermsPartRecord_id"))
                 .AlterTable(nameof(TitleSortableTermContentItem), table =>
                     {
                         table.CreateIndex("IDX_TitleSortableTermsPartRecord_id", "TitleSortableTermsPartRecord_id");
-                        table.CreateIndex("IDX_TitleSortableTermsPartRecord_id_Field", "TitleSortableTermsPartRecord_id", "Field");
+                        table.CreateIndex("IDX_TitleSortableTermsPartRecord_id_Field_IsFirstTerm",
+                            "TitleSortableTermsPartRecord_id",
+                            nameof(TitleSortableTermContentItem.Field),
+                            nameof(TitleSortableTermContentItem.IsFirstTerm));
                     });
 
             SchemaBuilder.CreateTable(nameof(TitleSortableTermsPartRecord), table => table.ContentPartRecord());

@@ -10,45 +10,81 @@ using System.Linq;
 
 namespace Lombiq.DataTables.Services
 {
-    public class TitleSortableTaxonomyTermUpdaterServiceDecoratorsModule : DecoratorsModuleBase
+    public class TitleSortableTaxonomyServiceDecoratorsModule : DecoratorsModuleBase
     {
         protected override IEnumerable<DecorationConfiguration> DescribeDecorators()
         {
-            yield return DecorationConfiguration.Create<ITaxonomyService, TitleSortableTaxonomyTermUpdaterServiceDecorator>();
+            yield return DecorationConfiguration.Create<ITaxonomyService, TitleSortableTaxonomyServiceDecorator>();
         }
     }
 
 
-    internal class TitleSortableTaxonomyTermUpdaterServiceDecorator : ITaxonomyService
+    /// <summary>
+    /// Stores additional information about Content Item and Term relationships
+    /// to be able to sort content items based on their selected Terms.
+    /// </summary>
+    internal class TitleSortableTaxonomyServiceDecorator : ITaxonomyService
     {
         private readonly ITaxonomyService _decorated;
 
 
-        public TitleSortableTaxonomyTermUpdaterServiceDecorator(ITaxonomyService decorated)
+        public TitleSortableTaxonomyServiceDecorator(ITaxonomyService decorated)
         {
             _decorated = decorated;
         }
 
 
-        public void CreateHierarchy(IEnumerable<TermPart> terms, Action<TermPartNode, TermPartNode> append)
+        public void UpdateTerms(ContentItem contentItem, IEnumerable<TermPart> terms, string field)
         {
+            _decorated.UpdateTerms(contentItem, terms, field);
+
+            if (!contentItem.Has<TitleSortableTermsPart>()) return;
+
+            var titleSortableTermsPart = contentItem.As<TitleSortableTermsPart>();
+
+            var termList = titleSortableTermsPart.TermParts
+                .Select((t, i) => new { Term = t, Index = i })
+                .Where(x => x.Term.Field == field)
+                .Select(x => x)
+                .OrderByDescending(i => i.Index)
+                .ToList();
+
+            foreach (var term in termList) titleSortableTermsPart.TermParts.RemoveAt(term.Index);
+
+            terms = TermPart.Sort(terms);
+            var firstTerm = true;
+
+            foreach (var term in terms)
+            {
+                termList.RemoveAll(t => t.Term.Id == term.Id);
+
+                titleSortableTermsPart.TermParts.Add(
+                    new TitleSortableTermContentItem
+                    {
+                        TitleSortableTermsPartRecord = titleSortableTermsPart.Record,
+                        TermRecord = term.Record,
+                        TitlePartRecord = term.As<TitlePart>().Record,
+                        Field = field,
+                        IsFirstTerm = firstTerm
+                    });
+
+                if (firstTerm) firstTerm = false;
+            }
+        }
+
+        #region ITaxonomyService proxies without change.
+
+        public void CreateHierarchy(IEnumerable<TermPart> terms, Action<TermPartNode, TermPartNode> append) =>
             _decorated.CreateHierarchy(terms, append);
-        }
 
-        public void CreateTermContentType(TaxonomyPart taxonomy)
-        {
+        public void CreateTermContentType(TaxonomyPart taxonomy) =>
             _decorated.CreateTermContentType(taxonomy);
-        }
 
-        public void DeleteTaxonomy(TaxonomyPart taxonomy)
-        {
+        public void DeleteTaxonomy(TaxonomyPart taxonomy) =>
             _decorated.DeleteTaxonomy(taxonomy);
-        }
 
-        public void DeleteTerm(TermPart termPart)
-        {
+        public void DeleteTerm(TermPart termPart) =>
             _decorated.DeleteTerm(termPart);
-        }
 
         public string GenerateTermTypeName(string taxonomyName) =>
             _decorated.GenerateTermTypeName(taxonomyName);
@@ -104,10 +140,8 @@ namespace Lombiq.DataTables.Services
         public IContentQuery<TermPart, TermPartRecord> GetTermsQuery(int taxonomyId) =>
             _decorated.GetTermsQuery(taxonomyId);
 
-        public void MoveTerm(TaxonomyPart taxonomy, TermPart term, TermPart parentTerm)
-        {
+        public void MoveTerm(TaxonomyPart taxonomy, TermPart term, TermPart parentTerm) =>
             _decorated.MoveTerm(taxonomy, term, parentTerm);
-        }
 
         public TermPart NewTerm(TaxonomyPart taxonomy) =>
             _decorated.NewTerm(taxonomy);
@@ -124,36 +158,6 @@ namespace Lombiq.DataTables.Services
         public void ProcessPath(TermPart term) =>
             _decorated.ProcessPath(term);
 
-        public void UpdateTerms(ContentItem contentItem, IEnumerable<TermPart> terms, string field)
-        {
-            _decorated.UpdateTerms(contentItem, terms, field);
-
-            var titleSortableTermsPart = contentItem.As<TitleSortableTermsPart>();
-
-            // Clearing current Terms.
-            var termList = titleSortableTermsPart.TermParts.Select((t, i) => new { Term = t, Index = i })
-                .Where(x => x.Term.Field == field)
-                .Select(x => x)
-                .OrderByDescending(i => i.Index)
-                .ToList();
-
-            foreach (var x in termList) titleSortableTermsPart.TermParts.RemoveAt(x.Index);
-
-            // Re-adding selected Terms.
-            foreach (var term in terms)
-            {
-                // Remove the newly added terms because they will get processed by the Published-Event.
-                termList.RemoveAll(t => t.Term.Id == term.Id);
-
-                titleSortableTermsPart.TermParts.Add(
-                    new TitleSortableTermContentItem
-                    {
-                        TitleSortableTermsPartRecord = titleSortableTermsPart.Record,
-                        TermRecord = term.Record,
-                        TitlePartRecord = term.As<TitlePart>().Record,
-                        Field = field
-                    });
-            }
-        }
+        #endregion
     }
 }
