@@ -10,4 +10,4 @@ Features:
         Name: Data Tables
         Description: Module for displaying data from Projections using jQuery Data Tables.
         Category: Content
-        Dependencies: Orchard.Forms, Orchard.Projections, Orchard.Taxonomies, Orchard.Resources, Piedone.HelpfulLibraries.DependencyInjection
+        Dependencies: Lombiq.Projections.Taxonomies, Orchard.Resources

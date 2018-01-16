@@ -1,5 +1,6 @@
 ﻿using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
+using Lombiq.Projections.Models;
 using Orchard.Core.Title.Models;
 using static Lombiq.DataTables.Constants.DataTableColumnDefinitionSettingsKeys;
 
