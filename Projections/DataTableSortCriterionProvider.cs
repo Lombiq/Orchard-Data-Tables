@@ -42,13 +42,13 @@ namespace Lombiq.DataTables.Projections
                     {
                         var request = _hca.Current().Request;
 
-                        var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.Form["dataProvider"]);
+                        var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.QueryString["dataProvider"]);
 
                         if (dataProvider == null) return;
 
-                        var columnIndexValue = request.Form["order[0][column]"] ?? "";
-                        var columnName = request.Form[$"columns[{columnIndexValue}][name]"];
-                        var direction = request.Form["order[0][dir]"];
+                        var columnIndexValue = request.QueryString["order[0][column]"] ?? "";
+                        var columnName = request.QueryString[$"columns[{columnIndexValue}][name]"];
+                        var direction = request.QueryString["order[0][dir]"];
 
                         if (string.IsNullOrEmpty(columnName) || string.IsNullOrEmpty(direction)) return;
 

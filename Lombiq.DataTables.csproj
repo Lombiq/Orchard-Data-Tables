@@ -176,6 +176,7 @@
     <Content Include="Content\DataTables\datatables.min.css" />
     <Content Include="Content\DataTables\datatables.min.js" />
     <Content Include="Content\DataTables\Plugins\processing%28%29.js" />
+    <Content Include="Content\URI.js\URI.min.js" />
     <Content Include="Scripts\lombiq-datatables.js" />
     <Content Include="Styles\Styles.css" />
     <Content Include="Styles\Styles.min.css" />

@@ -21,7 +21,7 @@ namespace Lombiq.DataTables.Controllers.Api
         }
 
 
-        public IHttpActionResult Post([FromBody]DataTableDataRequest request)
+        public IHttpActionResult Get([FromUri]DataTableDataRequest request)
         {
             var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
             if (dataProvider == null)

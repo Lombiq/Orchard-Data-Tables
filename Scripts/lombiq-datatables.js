@@ -59,12 +59,15 @@
     $.extend(Plugin.prototype, {
         dataTableElement: null,
         dataTableApi: null,
+        currentQueryStringParameters: null,
 
         /**
 		 * Initializes the Lombiq DataTable plugin where the jQuery DataTables plugin will be also initialized.
 		 */
         init: function () {
             var plugin = this;
+            
+            plugin.currentQueryStringParameters = new URI().search(true);
 
             var dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
 
@@ -88,12 +91,12 @@
                 !plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
                 dataTablesOptions.serverSide = true;
                 dataTablesOptions.ajax = {
-                    method: "POST",
+                    method: "GET",
                     url: plugin.settings.rowsApiUrl,
-                    data: {
+                    data: plugin.buildQueryStringParameters({
                         queryId: plugin.settings.queryId,
                         dataProvider: plugin.settings.dataProvider
-                    }
+                    })
                 }
             }
 
@@ -142,8 +145,8 @@
 
         /**
 		 * Shows or hides child row filled with the given content.
-		 *  @param {JQuery} parentRowElement Parent row element where the child row will be displayed.
-		 *  @param {object} childRowContent Content of the child row. A <tr> wrapper will be added automatically.
+		 * @param {JQuery} parentRowElement Parent row element where the child row will be displayed.
+		 * @param {object} childRowContent Content of the child row. A <tr> wrapper will be added automatically.
 		 */
         toggleChildRow: function (parentRowElement, childRowContent) {
             var plugin = this;
@@ -196,21 +199,32 @@
         },
 
         /**
+         * Builds query string parameters that includes the given parameters and the current URL's query string parameters.
+         * @param {object} data Data that needs to be merged with the current URL query string parameters.
+         * @returns Merged query string parameters.
+         */
+        buildQueryStringParameters: function (data) {
+            return $.extend(true, {}, this.currentQueryStringParameters, data);
+        },
+
+        /**
          * Low-level functionality for loading rows from the API. The result is accessible using the callback.
          * @param {number} skip Number of items to be skipped by the API.
          * @param {Object} options Options required for the API call (e.g. API URL, data provider).
          * @param {callback} callback Callback for returning rows.
          */
         loadRows: function (skip, options, callback) {
+            var plugin = this;
+
             $.ajax({
-                type: "POST",
+                type: "GET",
                 url: options.apiUrl,
-                data: {
+                data: plugin.buildQueryStringParameters({
                     queryId: options.queryId,
                     start: skip,
                     length: options.batchSize,
                     dataProvider: options.dataProvider
-                },
+                }),
                 success: function (response) {
                     if (callback) {
                         callback(!response.error, response);
