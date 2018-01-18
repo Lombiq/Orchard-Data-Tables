@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Lombiq.DataTables.Models
 {
@@ -23,5 +24,9 @@ namespace Lombiq.DataTables.Models
         {
             ValuesDictionary = new Dictionary<string, JToken>();
         }
+
+
+        public IEnumerable<string> GetValues() =>
+            ValuesDictionary.Values.Select(value => value.Value<string>());
     }
 }

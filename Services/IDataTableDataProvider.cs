@@ -1,5 +1,6 @@
 ﻿using Lombiq.DataTables.Models;
 using Orchard;
+using Orchard.ContentManagement;
 using Orchard.Localization;
 using System.Collections.Generic;
 
@@ -10,6 +11,8 @@ namespace Lombiq.DataTables.Services
         string Name { get; }
 
         LocalizedString Description { get; }
+
+        DataTableRow GetRow(ContentItem contentItem);
 
         DataTableDataResponse GetRows(DataTableDataRequest request);
 
