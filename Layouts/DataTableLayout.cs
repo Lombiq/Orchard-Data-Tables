@@ -1,4 +1,5 @@
-﻿using Lombiq.DataTables.Services;
+﻿using Lombiq.DataTables.Forms;
+using Lombiq.DataTables.Services;
 using Orchard.DisplayManagement;
 using Orchard.Localization;
 using Orchard.Projections.Descriptors.Layout;
@@ -19,8 +20,8 @@ namespace Lombiq.DataTables.Layouts
 
 
         public DataTableLayout(
-            IShapeFactory shapeFactory, 
-            IDataTableDataProviderAccessor dataTableDataProviderAccessor, 
+            IShapeFactory shapeFactory,
+            IDataTableDataProviderAccessor dataTableDataProviderAccessor,
             Lazy<ISiteService> lazySiteService)
         {
             _shapeFactory = shapeFactory;
@@ -35,8 +36,8 @@ namespace Lombiq.DataTables.Layouts
             describe
                 .For("Html", T("Html"), T("Html Layouts"))
                 .Element(
-                    "DataTable", 
-                    T("Data Table"), 
+                    "DataTable",
+                    T("Data Table"),
                     T("Contents are displayed in a jQuery DataTable component."),
                     DisplayLayout,
                     RenderLayout,
@@ -48,17 +49,17 @@ namespace Lombiq.DataTables.Layouts
 
         public dynamic RenderLayout(LayoutContext context, IEnumerable<LayoutComponentResult> layoutComponentResults)
         {
-            var dataProviderName = (string)context.State.DataProvider ?? "";
+            var values = new DataTableLayoutFormElements(context.State);
 
-            dynamic shape = _shapeFactory.Lombiq_DataTable(
+            var dataProviderName = values.DataProvider;
+
+            return _shapeFactory.Lombiq_DataTable(
                 // The QueryId property in the context.State can be invalid since it is exported instead of the Query's identity.
                 QueryId: context.LayoutRecord.QueryPartRecord.Id,
                 Columns: _dataTableDataProviderAccessor.GetDataProvider(dataProviderName)?.GetColumns(),
-                ChildRowsEnabled: (bool?)context.State.ChildRowsEnabled ?? false,
-                ProgressiveLoadingEnabled: (bool?)context.State.ProgressiveLoadingEnabled ?? false,
+                ChildRowsEnabled: values.ChildRowsEnabled,
+                ProgressiveLoadingEnabled: values.ProgressiveLoadingEnabled,
                 DataProvider: dataProviderName);
-
-            return shape;
         }
     }
 }

@@ -11,9 +11,6 @@ namespace Lombiq.DataTables.Services
 {
     public class ContentFieldDataTableSortingProvider : IDataTableSortingProvider
     {
-        private const string AcceptedDataSource = DataTableDataSources.ContentField;
-
-
         private readonly Lazy<IEnumerable<IFieldTypeEditor>> _lazyFieldTypeEditors;
 
 
@@ -23,7 +20,7 @@ namespace Lombiq.DataTables.Services
         }
         
 
-        public bool CanSort(string dataSource) => dataSource == AcceptedDataSource;
+        public bool CanSort(string dataSource) => dataSource == DataTableDataSources.ContentField;
 
         public void Sort(DataTableSortingContext context)
         {

@@ -4,8 +4,7 @@
 
 @{
     Script.Require(ResourceNames.Lombiq_DataTables);
-
-    Style.Require(Lombiq.DataTables.Constants.ResourceNames.JQuery_DataTables);
+    Style.Require(ResourceNames.Lombiq_DataTables);
 
     var projectionPart = Model.ContentPart as ProjectionPart;
     var pageSize = (int?)Model.PageSize;
@@ -16,19 +15,21 @@
             projectionPart.Record.Items :
             WorkContext.Resolve<Orchard.Settings.ISiteService>().GetSiteSettings().PageSize;
     }
+
     var skip = (int?)Model.Skip;
     if (!skip.HasValue)
     {
         skip = projectionPart != null ? projectionPart.Record.Skip : 0;
     }
+
     var queryId = (int)Model.QueryId;
     var columns = Model.Columns as IEnumerable<DataTableColumnDefinition>;
     var childRowsEnabled = (bool?)Model.ChildRowsEnabled ?? false;
     var progressiveLoadingEnabled = (bool?)Model.ProgressiveLoadingEnabled ?? false;
     var dataProvider = (string)Model.DataProvider ?? "";
 
-    var rowApiUrl = "/api" + Url.Action("Get", "DataTablesRow", new { Area = "Lombiq.DataTables" });
-    var childRowApiUrl = "/api" + Url.Action("Get", "DataTablesChildRow", new { Area = "Lombiq.DataTables" });
+    var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
+    var childRowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesChildRow", Action = "Get" });
 
     const string BlockName = "dataTable";
     const string TableElementName = BlockName + "__table";
@@ -74,7 +75,7 @@
                     rowsApiUrl: "@rowApiUrl",
                     dataTablesOptions: {
                         @if (pageSize > 0)
-                        { 
+                        {
                             <text>
                                 pageLength: @pageSize,
                             </text>

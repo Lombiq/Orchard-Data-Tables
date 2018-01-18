@@ -117,7 +117,6 @@
     <Compile Include="Constants\SortingDirection.cs" />
     <Compile Include="Controllers\Api\DataTablesChildRowController.cs" />
     <Compile Include="Controllers\Api\DataTablesRowController.cs" />
-    <Compile Include="Controllers\DataTablesTestController.cs" />
     <Compile Include="Forms\DataTableLayoutForm.cs" />
     <Compile Include="Layouts\DataTableLayout.cs" />
     <Compile Include="Models\DataTableChildRowResponse.cs" />
@@ -179,12 +178,9 @@
     <Content Include="Content\URI.js\URI.js" />
     <Content Include="Content\URI.js\URI.min.js" />
     <Content Include="Scripts\lombiq-datatables.js" />
-    <Content Include="Styles\Styles.css" />
-    <Content Include="Styles\Styles.min.css" />
     <Content Include="packages.config" />
     <Content Include="Web.config" />
     <Content Include="Scripts\Web.config" />
-    <Content Include="Styles\Web.config" />
     <Content Include="Module.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -222,9 +218,6 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Content\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\DataTablesTest\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Lombiq.DataTable.cshtml" />
