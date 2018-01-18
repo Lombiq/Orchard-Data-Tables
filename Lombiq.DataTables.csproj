@@ -58,11 +58,20 @@
       <HintPath>..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
@@ -71,6 +80,12 @@
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
@@ -96,9 +111,34 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\DataTableColumnDefinitionSettingsKeys.cs" />
+    <Compile Include="Constants\DataTableDataSources.cs" />
     <Compile Include="Constants\ResourceNames.cs" />
+    <Compile Include="Constants\SortingDirection.cs" />
+    <Compile Include="Controllers\Api\DataTablesChildRowController.cs" />
+    <Compile Include="Controllers\Api\DataTablesRowController.cs" />
+    <Compile Include="Forms\DataTableLayoutForm.cs" />
+    <Compile Include="Layouts\DataTableLayout.cs" />
+    <Compile Include="Models\DataTableChildRowResponse.cs" />
+    <Compile Include="Models\DataTableColumn.cs" />
+    <Compile Include="Models\DataTableColumnDefinition.cs" />
+    <Compile Include="Models\DataTableDataRequest.cs" />
+    <Compile Include="Models\DataTableDataResponse.cs" />
+    <Compile Include="Models\DataTableOrder.cs" />
+    <Compile Include="Models\DataTableRow.cs" />
+    <Compile Include="Models\DataTableSearchParameters.cs" />
+    <Compile Include="Models\DataTableSortingContext.cs" />
+    <Compile Include="Projections\DataTableSortCriterionProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
+    <Compile Include="Services\ContentFieldDataTableSortingProvider.cs" />
+    <Compile Include="Services\DataTableDataProviderAccessor.cs" />
+    <Compile Include="Services\DataTableSortingProviderAccessor.cs" />
+    <Compile Include="Services\IDataTableDataProvider.cs" />
+    <Compile Include="Services\IDataTableDataProviderAccessor.cs" />
+    <Compile Include="Services\IDataTableSortingProvider.cs" />
+    <Compile Include="Services\IDataTableSortingProviderAccessor.cs" />
+    <Compile Include="Services\TaxonomyTermDataTableSortingProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.bootstrap.css" />
@@ -134,12 +174,13 @@
     <Content Include="Content\DataTables\datatables.js" />
     <Content Include="Content\DataTables\datatables.min.css" />
     <Content Include="Content\DataTables\datatables.min.js" />
-    <Content Include="Styles\Styles.css" />
-    <Content Include="Styles\Styles.min.css" />
+    <Content Include="Content\DataTables\Plugins\processing%28%29.js" />
+    <Content Include="Content\URI.js\URI.js" />
+    <Content Include="Content\URI.js\URI.min.js" />
+    <Content Include="Scripts\lombiq-datatables.js" />
     <Content Include="packages.config" />
     <Content Include="Web.config" />
     <Content Include="Scripts\Web.config" />
-    <Content Include="Styles\Web.config" />
     <Content Include="Module.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -153,14 +194,33 @@
       <Name>Orchard.Core</Name>
       <Private>$(MvcBuildViews)</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Lombiq.Projections\Lombiq.Projections.csproj">
+      <Project>{179620fc-7773-4de1-a5b8-bc400c1209dc}</Project>
+      <Name>Lombiq.Projections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
+      <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>
+      <Name>Orchard.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Projections\Orchard.Projections.csproj">
+      <Project>{5531E894-D259-45A3-AA61-26DBE720C1CE}</Project>
+      <Name>Orchard.Projections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Taxonomies\Orchard.Taxonomies.csproj">
+      <Project>{e649ea64-d213-461b-87f7-d67035801443}</Project>
+      <Name>Orchard.Taxonomies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Piedone.HelpfulLibraries\Piedone.HelpfulLibraries.csproj">
+      <Project>{ea61ad10-39d6-41a9-b12b-227f50c54158}</Project>
+      <Name>Piedone.HelpfulLibraries</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
-    <Folder Include="Views\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Content\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Lombiq.DataTable.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
