@@ -1,7 +1,6 @@
 ﻿using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Lombiq.Projections.Models;
-using Orchard.Core.Title.Models;
 using static Lombiq.DataTables.Constants.DataTableColumnDefinitionSettingsKeys;
 
 namespace Lombiq.DataTables.Services
@@ -18,7 +17,7 @@ namespace Lombiq.DataTables.Services
 
             if (string.IsNullOrEmpty(fieldName)) return;
 
-            var aliasName = "SortableTerm";
+            var aliasName = "SortableTerms";
 
             context
                 .Query
@@ -29,15 +28,13 @@ namespace Lombiq.DataTables.Services
                     predicate => predicate
                         .And(
                             left => left.Eq(nameof(TitleSortableTermContentItem.Field), fieldName),
-                            right => right.Eq(nameof(TitleSortableTermContentItem.IsFirstTerm), true)))
+                            right => right.Eq(nameof(TitleSortableTermContentItem.IsFirst), true)))
                 .OrderBy(
                     alias => alias.Named(aliasName),
                     order =>
                     {
-                        var byTitle = $"{nameof(TitleSortableTermContentItem.TitlePartRecord)}.{nameof(TitlePart.Title)}";
-
-                        if (context.Direction == SortingDirection.Asc) order.Asc(byTitle);
-                        else order.Desc(byTitle);
+                        if (context.Direction == SortingDirection.Asc) order.Asc(nameof(TitleSortableTermContentItem.Title));
+                        else order.Desc(nameof(TitleSortableTermContentItem.Title));
                     });
         }
     }
