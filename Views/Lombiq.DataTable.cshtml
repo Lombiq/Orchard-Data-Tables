@@ -3,7 +3,7 @@
 @using Lombiq.DataTables.Models
 
 @{
-    Script.Require(ResourceNames.Lombiq_DataTables);
+    Script.Require(ResourceNames.Lombiq_DataTables).AtHead();
     Style.Require(ResourceNames.Lombiq_DataTables);
 
     var projectionPart = Model.ContentPart as ProjectionPart;
