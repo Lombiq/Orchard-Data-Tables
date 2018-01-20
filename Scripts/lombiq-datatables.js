@@ -1,8 +1,8 @@
 ﻿/**
- * @summary     Lombiq - Data Table
- * @description Abstraction over the jQuery.DataTables plugin to display Query results in a data table..
+ * @summary     Lombiq - Data Tables
+ * @description Abstraction over the jQuery.DataTables plugin to display Query results in a data table.
  * @version     1.0
- * @file        lombiq-datatable.js
+ * @file        lombiq-datatables.js
  * @author      Lombiq Technologies Ltd.
  */
 
@@ -62,10 +62,12 @@
         currentQueryStringParameters: null,
 
         /**
-		 * Initializes the Lombiq DataTable plugin where the jQuery DataTables plugin will be also initialized.
-		 */
+         * Initializes the Lombiq DataTable plugin where the jQuery DataTables plugin will be also initialized.
+         */
         init: function () {
             var plugin = this;
+
+            console.log("móni");
             
             plugin.currentQueryStringParameters = new URI().search(true);
 
@@ -144,10 +146,10 @@
         },
 
         /**
-		 * Shows or hides child row filled with the given content.
-		 * @param {JQuery} parentRowElement Parent row element where the child row will be displayed.
-		 * @param {object} childRowContent Content of the child row. A <tr> wrapper will be added automatically.
-		 */
+         * Shows or hides child row filled with the given content.
+         * @param {JQuery} parentRowElement Parent row element where the child row will be displayed.
+         * @param {object} childRowContent Content of the child row. A <tr> wrapper will be added automatically.
+         */
         toggleChildRow: function (parentRowElement, childRowContent) {
             var plugin = this;
 
