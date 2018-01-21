@@ -66,8 +66,6 @@
          */
         init: function () {
             var plugin = this;
-
-            console.log("móni");
             
             plugin.currentQueryStringParameters = new URI().search(true);
 
