@@ -93,10 +93,16 @@
                 dataTablesOptions.ajax = {
                     method: "GET",
                     url: plugin.settings.rowsApiUrl,
-                    data: plugin.buildQueryStringParameters({
-                        queryId: plugin.settings.queryId,
-                        dataProvider: plugin.settings.dataProvider
-                    })
+                    data: function (params) {
+                        var finalParams = $.extend({}, params, plugin.buildQueryStringParameters({
+                            queryId: plugin.settings.queryId,
+                            dataProvider: plugin.settings.dataProvider
+                        }));
+
+                        localStorage.setItem("queryStringParameters", JSON.stringify(finalParams));
+
+                        return finalParams;
+                    }
                 }
             }
 
