@@ -141,16 +141,6 @@
     <Compile Include="Services\TaxonomyTermDataTableSortingProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.bootstrap.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.bootstrap.min.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.bootstrap4.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.bootstrap4.min.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.foundation.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.foundation.min.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.jqueryui.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.jqueryui.min.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.semanticui.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.semanticui.min.css" />
     <Content Include="Content\DataTables\DataTables-1.10.16\css\jquery.dataTables.css" />
     <Content Include="Content\DataTables\DataTables-1.10.16\css\jquery.dataTables.min.css" />
     <Content Include="Content\DataTables\DataTables-1.10.16\images\sort_asc.png" />
@@ -215,7 +205,9 @@
       <Name>Piedone.HelpfulLibraries</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Content\DataTables\DataTables-1.10.16\css\jquery.dataTables.scss" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Web.config" />
   </ItemGroup>
