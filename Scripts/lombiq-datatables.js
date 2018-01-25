@@ -17,7 +17,8 @@
             paging: true,
             processing: true,
             info: false,
-            lengthChange: false
+            lengthChange: false,
+            scrollX: true
         },
         rowClassName: "",
         queryId: "",
