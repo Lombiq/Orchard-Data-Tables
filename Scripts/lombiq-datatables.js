@@ -74,7 +74,9 @@
 
             dataTablesOptions.rowCallback = function (row, data, index) {
                 if (data.id) {
-                    $(row).attr("data-contentitemid", data.id);
+                    $(row)
+                        .addClass(plugin.settings.rowClassName)
+                        .attr("data-contentitemid", data.id);
                 }
             }
 

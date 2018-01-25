@@ -32,9 +32,10 @@
     var childRowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesChildRow", Action = "Get" });
 
     const string BlockName = "dataTable";
-    const string TableElementName = BlockName + "__table";
+    const string HeaderElementName = BlockName + "__header";
     const string HeaderRowElementName = BlockName + "__headerRow";
     const string HeaderCellElementName = BlockName + "__headerCell";
+    const string BodyElementName = BlockName + "__body";
     const string RowElementName = BlockName + "__row";
     const string CellElementName = BlockName + "__cell";
     const string LoadingIndicatorElementName = BlockName + "__loadingIndicator";
@@ -44,31 +45,29 @@
     const string ToggleChildRowButtonElementName = BlockName + "__toggleChildRowButton";
 }
 
-<div class="@BlockName">
-    <table id="@TableElementName" class="@TableElementName row-border stripe">
-        <thead>
-            <tr class="@HeaderRowElementName">
-                @if (childRowsEnabled)
-                {
-                    <td class="@HeaderCellElementName" data-class-name="@ToggleChildRowCellElementName"></td>
-                }
+<table id="@BlockName" class="@BlockName row-border stripe">
+    <thead class="@HeaderElementName">
+        <tr class="@HeaderRowElementName">
+            @if (childRowsEnabled)
+            {
+                <td class="@HeaderCellElementName" data-class-name="@ToggleChildRowCellElementName"></td>
+            }
 
-                @foreach (var column in columns)
-                {
-                    <th class="@HeaderCellElementName" data-name="@column.Name" data-data="@column.Name" data-class-name="@CellElementName">@column.Text</th>
-                }
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-</div>
+            @foreach (var column in columns)
+            {
+                <th class="@HeaderCellElementName" data-name="@column.Name" data-data="@column.Name" data-class-name="@CellElementName">@column.Text</th>
+            }
+        </tr>
+    </thead>
+    <tbody class="@BodyElementName"></tbody>
+</table>
 
 @using (Script.Foot())
 {
     <script type="text/javascript">
         ; (function ($) {
             $(function () {
-                $("#@TableElementName").lombiq_DataTables({
+                $("#@BlockName").lombiq_DataTables({
                     rowClassName: "@RowElementName",
                     queryId: @queryId,
                     dataProvider: "@dataProvider",
