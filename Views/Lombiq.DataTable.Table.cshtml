@@ -1,0 +1,51 @@
+﻿@using Lombiq.DataTables.Models
+
+@{
+    var columns = Model.Columns as IEnumerable<DataTableColumnDefinition>;
+    var childRowsEnabled = (bool?)Model.ChildRowsEnabled ?? false;
+    var rows = Model.Rows as IEnumerable<IEnumerable<string>>;
+    var tableId = Model.TableId as string;
+
+    const string BlockName = "dataTable";
+    const string HeaderElementName = BlockName + "__header";
+    const string HeaderRowElementName = BlockName + "__headerRow";
+    const string HeaderCellElementName = BlockName + "__headerCell";
+    const string BodyElementName = BlockName + "__body";
+    const string RowElementName = BlockName + "__row";
+    const string CellElementName = BlockName + "__cell";
+    const string ToggleChildRowCellElementName = BlockName + "__toggleChildRowCell";
+}
+
+@* "width=100%" is required to force the DataTables plugin to stretch the table.
+    See: https://datatables.net/examples/basic_init/flexible_width.html *@
+<table id="@tableId" class="@BlockName row-border stripe" width="100%">
+    <thead class="@HeaderElementName">
+        <tr class="@HeaderRowElementName">
+            @if (childRowsEnabled)
+            {
+                <td class="@HeaderCellElementName" data-class-name="@ToggleChildRowCellElementName"></td>
+            }
+
+            @foreach (var column in columns)
+            {
+                <th class="@HeaderCellElementName" data-name="@column.Name" data-data="@column.Name" data-class-name="@CellElementName">@column.Text</th>
+            }
+        </tr>
+    </thead>
+    <tbody class="@BodyElementName">
+        @if (rows != null)
+        {
+            foreach (var row in rows)
+            {
+                <tr class="@RowElementName">
+                    @foreach (var cell in row)
+                    {
+                        <td class="@CellElementName">
+                            @cell
+                        </td>
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>

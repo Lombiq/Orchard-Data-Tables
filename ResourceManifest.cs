@@ -9,12 +9,18 @@ namespace Lombiq.DataTables
         {
             var manifest = builder.Add();
 
+            // jQuery.DataTables-related resources.
             manifest.DefineScript(Uri_Js).SetUrl("../Content/URI.js/URI.min.js", "../Content/URI.js/URI.js").SetDependencies("jQuery");
             manifest.DefineScript(JQuery_DataTables).SetUrl("../Content/DataTables/dataTables.min.js", "../Content/DataTables/dataTables.js").SetDependencies("jQuery");
-            manifest.DefineScript(JQuery_DataTables_Processing).SetUrl("../Content/DataTables/Plugins/processing().js").SetDependencies(JQuery_DataTables);
-            manifest.DefineScript(Lombiq_DataTables).SetUrl("lombiq-datatables.js").SetDependencies(Uri_Js, JQuery_DataTables_Processing);
+            manifest.DefineScript(JQuery_DataTables_Plugins_Processing).SetUrl("../Content/DataTables/Plugins/processing().js").SetDependencies(JQuery_DataTables);
+            manifest.DefineScript(JQuery_DataTables_Extensions_Responsive).SetUrl("../Content/DataTables/Extensions/Responsive/js/dataTables.responsive.min.js", "../Content/DataTables/Extensions/Responsive/js/dataTables.responsive.js").SetDependencies(JQuery_DataTables);
 
             manifest.DefineStyle(JQuery_DataTables).SetUrl("../Content/DataTables/dataTables.min.css", "../Content/DataTables/dataTables.css");
+            manifest.DefineStyle(JQuery_DataTables_Extensions_Responsive).SetUrl("../Content/DataTables/Extensions/Responsive/css/dataTables.responsive.min.css").SetDependencies(JQuery_DataTables);
+
+            // Custom resources.
+            manifest.DefineScript(Lombiq_DataTables).SetUrl("lombiq-datatables.js").SetDependencies(Uri_Js, JQuery_DataTables_Plugins_Processing);
+            
             manifest.DefineStyle(Lombiq_DataTables).SetDependencies(JQuery_DataTables);
         }
     }
