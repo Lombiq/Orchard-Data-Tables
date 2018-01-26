@@ -59,7 +59,9 @@ namespace Lombiq.DataTables.Layouts
                 Columns: _dataTableDataProviderAccessor.GetDataProvider(dataProviderName)?.GetColumns(),
                 ChildRowsEnabled: values.ChildRowsEnabled,
                 ProgressiveLoadingEnabled: values.ProgressiveLoadingEnabled,
-                DataProvider: dataProviderName);
+                DataProvider: dataProviderName,
+                DataTableId: values.DataTableId,
+                DataTableCssClasses: values.DataTableCssClasses);
         }
     }
 }

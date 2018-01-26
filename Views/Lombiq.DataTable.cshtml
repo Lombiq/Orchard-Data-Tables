@@ -27,27 +27,32 @@
     var childRowsEnabled = (bool?)Model.ChildRowsEnabled ?? false;
     var progressiveLoadingEnabled = (bool?)Model.ProgressiveLoadingEnabled ?? false;
     var dataProvider = (string)Model.DataProvider ?? "";
+    var dataTableId = (string)Model.DataTableId ?? ElementNames.DataTableElementName;
+    var dataTableCssClasses = (string)Model.DataTableCssClasses ?? ElementNames.DataTableWrapperDefaultElementName;
 
     var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
     var childRowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesChildRow", Action = "Get" });
 
-    const string BlockName = "dataTable";
-    const string RowElementName = BlockName + "__row";
-    const string LoadingIndicatorElementName = BlockName + "__loadingIndicator";
-    const string ChildRowElementName = BlockName + "__childRow";
-    const string RowElementWithChildRowVisibleModifier = RowElementName + "_childRowVisible";
-    const string ToggleChildRowButtonElementName = BlockName + "__toggleChildRowButton";
+    const string LoadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
+    const string RowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
+    const string ChildRowElementName = ElementNames.DataTableElementName + "__childRow";
+    const string ToggleChildRowButtonElementName = ElementNames.DataTableElementName + "__toggleChildRowButton";
 }
 
-@Display.Lombiq_DataTable_Table(TableId: BlockName, Columns: columns, ChildRowsEnabled: childRowsEnabled)
+<div class="@dataTableCssClasses">
+    @Display.Lombiq_DataTable_Table(
+        DataTableId: dataTableId,
+        Columns: columns,
+        ChildRowsEnabled: childRowsEnabled)
+</div>
 
 @using (Script.Foot())
 {
-    <script type="text/javascript">
+<script type="text/javascript">
         ; (function ($) {
             $(function () {
-                $("#@BlockName").lombiq_DataTables({
-                    rowClassName: "@RowElementName",
+                $("#@dataTableId").lombiq_DataTables({
+                    rowClassName: "@ElementNames.DataTableRowElementName",
                     queryId: @queryId,
                     dataProvider: "@dataProvider",
                     rowsApiUrl: "@rowApiUrl",
@@ -89,5 +94,5 @@
                 });
             });
         })(jQuery);
-    </script>
+</script>
 }

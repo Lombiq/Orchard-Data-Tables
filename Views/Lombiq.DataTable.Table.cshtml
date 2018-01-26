@@ -1,24 +1,23 @@
-﻿@using Lombiq.DataTables.Models
+﻿@using Lombiq.DataTables.Constants
+@using Lombiq.DataTables.Models
 
 @{
     var columns = Model.Columns as IEnumerable<DataTableColumnDefinition>;
     var childRowsEnabled = (bool?)Model.ChildRowsEnabled ?? false;
     var rows = Model.Rows as IEnumerable<IEnumerable<string>>;
-    var tableId = Model.TableId as string;
+    var dataTableId = Model.DataTableId as string;
 
-    const string BlockName = "dataTable";
-    const string HeaderElementName = BlockName + "__header";
-    const string HeaderRowElementName = BlockName + "__headerRow";
-    const string HeaderCellElementName = BlockName + "__headerCell";
-    const string BodyElementName = BlockName + "__body";
-    const string RowElementName = BlockName + "__row";
-    const string CellElementName = BlockName + "__cell";
-    const string ToggleChildRowCellElementName = BlockName + "__toggleChildRowCell";
+    const string HeaderElementName = ElementNames.DataTableElementName + "__header";
+    const string HeaderRowElementName = ElementNames.DataTableElementName + "__headerRow";
+    const string HeaderCellElementName = ElementNames.DataTableElementName + "__headerCell";
+    const string BodyElementName = ElementNames.DataTableElementName + "__body";
+    const string CellElementName = ElementNames.DataTableElementName + "__cell";
+    const string ToggleChildRowCellElementName = ElementNames.DataTableElementName + "__toggleChildRowCell";
 }
 
 @* "width=100%" is required to force the DataTables plugin to stretch the table.
     See: https://datatables.net/examples/basic_init/flexible_width.html *@
-<table id="@tableId" class="@BlockName row-border stripe" width="100%">
+<table id="@dataTableId" class="@ElementNames.DataTableElementName row-border stripe" width="100%">
     <thead class="@HeaderElementName">
         <tr class="@HeaderRowElementName">
             @if (childRowsEnabled)
@@ -37,7 +36,7 @@
         {
             foreach (var row in rows)
             {
-                <tr class="@RowElementName">
+                <tr class="@ElementNames.DataTableRowElementName">
                     @foreach (var cell in row)
                     {
                         <td class="@CellElementName">

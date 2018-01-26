@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="Constants\DataTableColumnDefinitionSettingsKeys.cs" />
     <Compile Include="Constants\DataTableDataSources.cs" />
+    <Compile Include="Constants\ElementNames.cs" />
     <Compile Include="Constants\ResourceNames.cs" />
     <Compile Include="Constants\SortingDirection.cs" />
     <Compile Include="Controllers\Api\DataTablesChildRowController.cs" />
