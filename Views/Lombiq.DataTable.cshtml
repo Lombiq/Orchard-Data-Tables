@@ -27,8 +27,8 @@
     var childRowsEnabled = (bool?)Model.ChildRowsEnabled ?? false;
     var progressiveLoadingEnabled = (bool?)Model.ProgressiveLoadingEnabled ?? false;
     var dataProvider = (string)Model.DataProvider ?? "";
-    var dataTableId = (string)Model.DataTableId ?? ElementNames.DataTableElementName;
-    var dataTableCssClasses = (string)Model.DataTableCssClasses ?? ElementNames.DataTableWrapperDefaultElementName;
+    var dataTableId = string.IsNullOrEmpty(Model.DataTableId) ? ElementNames.DataTableElementName : (string)Model.DataTableId;
+    var dataTableCssClasses = string.IsNullOrEmpty(Model.DataTableCssClasses) ? ElementNames.DataTableWrapperDefaultElementName : (string)Model.DataTableCssClasses;
 
     var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
     var childRowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesChildRow", Action = "Get" });
