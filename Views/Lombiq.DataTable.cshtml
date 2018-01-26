@@ -4,7 +4,7 @@
 
 @{
     Script.Require(ResourceNames.Lombiq_DataTables).AtHead();
-    //Style.Require(ResourceNames.Lombiq_DataTables);
+    Style.Require(ResourceNames.Lombiq_DataTables);
 
     var projectionPart = Model.ContentPart as ProjectionPart;
     var pageSize = (int?)Model.PageSize;
