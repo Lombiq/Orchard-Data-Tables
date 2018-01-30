@@ -22,12 +22,22 @@
         <tr class="@HeaderRowElementName">
             @if (childRowsEnabled)
             {
-                <td class="@HeaderCellElementName" data-class-name="@ToggleChildRowCellElementName"></td>
+                <th class="@HeaderCellElementName" data-class-name="@ToggleChildRowCellElementName"></th>
             }
 
             @foreach (var column in columns)
             {
-                <th class="@HeaderCellElementName" data-name="@column.Name" data-data="@column.Name" data-class-name="@CellElementName">@column.Text</th>
+                <th class="@HeaderCellElementName" 
+                    data-class-name="@CellElementName"
+                    @if (!string.IsNullOrEmpty(column.Name))
+                    {
+                        <text>
+                            data-name="@column.Name"
+                            data-data="@column.Name"
+                        </text>
+                    }>
+                    @column.Text
+                </th>
             }
         </tr>
     </thead>
