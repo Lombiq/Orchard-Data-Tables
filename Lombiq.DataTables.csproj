@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="Constants\DataTableColumnDefinitionSettingsKeys.cs" />
     <Compile Include="Constants\DataTableDataSources.cs" />
+    <Compile Include="Constants\ElementNames.cs" />
     <Compile Include="Constants\ResourceNames.cs" />
     <Compile Include="Constants\SortingDirection.cs" />
     <Compile Include="Controllers\Api\DataTablesChildRowController.cs" />
@@ -141,39 +142,36 @@
     <Compile Include="Services\TaxonomyTermDataTableSortingProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.bootstrap.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.bootstrap.min.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.bootstrap4.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.bootstrap4.min.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.foundation.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.foundation.min.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.jqueryui.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.jqueryui.min.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.semanticui.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\dataTables.semanticui.min.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\jquery.dataTables.css" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\css\jquery.dataTables.min.css" />
+    <Content Include="Content\DataTables\DataTables-1.10.16\css\jquery.dataTables.css">
+      <DependentUpon>jquery.dataTables.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\DataTables\DataTables-1.10.16\css\jquery.dataTables.min.css">
+      <DependentUpon>jquery.dataTables.css</DependentUpon>
+    </Content>
     <Content Include="Content\DataTables\DataTables-1.10.16\images\sort_asc.png" />
     <Content Include="Content\DataTables\DataTables-1.10.16\images\sort_asc_disabled.png" />
     <Content Include="Content\DataTables\DataTables-1.10.16\images\sort_both.png" />
     <Content Include="Content\DataTables\DataTables-1.10.16\images\sort_desc.png" />
     <Content Include="Content\DataTables\DataTables-1.10.16\images\sort_desc_disabled.png" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\js\dataTables.bootstrap.js" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\js\dataTables.bootstrap.min.js" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\js\dataTables.bootstrap4.js" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\js\dataTables.bootstrap4.min.js" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\js\dataTables.foundation.js" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\js\dataTables.foundation.min.js" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\js\dataTables.jqueryui.js" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\js\dataTables.jqueryui.min.js" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\js\dataTables.semanticui.js" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\js\dataTables.semanticui.min.js" />
     <Content Include="Content\DataTables\DataTables-1.10.16\js\jquery.dataTables.js" />
-    <Content Include="Content\DataTables\DataTables-1.10.16\js\jquery.dataTables.min.js" />
+    <Content Include="Content\DataTables\DataTables-1.10.16\js\jquery.dataTables.min.js">
+      <DependentUpon>jquery.dataTables.js</DependentUpon>
+    </Content>
     <Content Include="Content\DataTables\datatables.css" />
     <Content Include="Content\DataTables\datatables.js" />
-    <Content Include="Content\DataTables\datatables.min.css" />
-    <Content Include="Content\DataTables\datatables.min.js" />
+    <Content Include="Content\DataTables\datatables.min.css">
+      <DependentUpon>datatables.css</DependentUpon>
+    </Content>
+    <Content Include="Content\DataTables\datatables.min.js">
+      <DependentUpon>datatables.js</DependentUpon>
+    </Content>
+    <Content Include="Content\DataTables\Extensions\Responsive\css\responsive.dataTables.min.css">
+      <DependentUpon>responsive.dataTables.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\DataTables\Extensions\Responsive\js\dataTables.responsive.js" />
+    <Content Include="Content\DataTables\Extensions\Responsive\js\dataTables.responsive.min.js">
+      <DependentUpon>dataTables.responsive.js</DependentUpon>
+    </Content>
     <Content Include="Content\DataTables\Plugins\processing%28%29.js" />
     <Content Include="Content\URI.js\URI.js" />
     <Content Include="Content\URI.js\URI.min.js" />
@@ -215,12 +213,20 @@
       <Name>Piedone.HelpfulLibraries</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Content\DataTables\DataTables-1.10.16\css\jquery.dataTables.scss" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Lombiq.DataTable.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Lombiq.DataTable.Table.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\DataTables\Extensions\Responsive\css\responsive.dataTables.scss" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

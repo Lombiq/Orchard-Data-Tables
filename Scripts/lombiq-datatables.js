@@ -17,7 +17,8 @@
             paging: true,
             processing: true,
             info: false,
-            lengthChange: false
+            lengthChange: false,
+            scrollX: true
         },
         rowClassName: "",
         queryId: "",
@@ -73,7 +74,9 @@
 
             dataTablesOptions.rowCallback = function (row, data, index) {
                 if (data.id) {
-                    $(row).attr("data-contentitemid", data.id);
+                    $(row)
+                        .addClass(plugin.settings.rowClassName)
+                        .attr("data-contentitemid", data.id);
                 }
             }
 
@@ -296,10 +299,12 @@
     });
 
     $.fn[pluginName] = function (options) {
-        return this.each(function () {
-            if (!$.data(this, "plugin_" + pluginName)) {
-                $.data(this, "plugin_" + pluginName, new Plugin(this, options));
-            }
-        });
+        var plugin = new Plugin(this, options);
+
+        if (!$.data(this, "plugin_" + pluginName)) {
+            $.data(this, "plugin_" + pluginName, plugin);
+        }
+
+        return plugin;
     };
 })(jQuery, window, document);
