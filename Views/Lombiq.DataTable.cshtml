@@ -3,9 +3,6 @@
 @using Lombiq.DataTables.Models
 
 @{
-    Script.Require(ResourceNames.Lombiq_DataTables).AtHead();
-    Style.Require(ResourceNames.Lombiq_DataTables);
-
     var projectionPart = Model.ContentPart as ProjectionPart;
     var pageSize = (int?)Model.PageSize;
     if (!pageSize.HasValue)
@@ -38,6 +35,8 @@
     const string ChildRowElementName = ElementNames.DataTableElementName + "__childRow";
     const string ToggleChildRowButtonElementName = ElementNames.DataTableElementName + "__toggleChildRowButton";
 }
+
+@Display.Lombiq_DataTable_Resources()
 
 <div class="@dataTableCssClasses">
     @Display.Lombiq_DataTable_Table(
