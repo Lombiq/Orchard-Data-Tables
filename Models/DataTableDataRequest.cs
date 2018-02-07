@@ -20,8 +20,8 @@ namespace Lombiq.DataTables.Models
         [JsonProperty(PropertyName = "length")]
         public int Length { get; set; }
 
-        [JsonProperty(PropertyName = "columns")]
-        public List<DataTableColumn> Columns { get; set; }
+        [JsonProperty(PropertyName = "columnFilters")]
+        public List<DataTableColumn> ColumnFilters { get; set; }
 
         [JsonProperty(PropertyName = "search")]
         public DataTableSearchParameters Search { get; set; }
