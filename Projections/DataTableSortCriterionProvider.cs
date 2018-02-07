@@ -45,10 +45,9 @@ namespace Lombiq.DataTables.Projections
                         var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.QueryString["dataProvider"]);
 
                         if (dataProvider == null) return;
-
-                        var columnIndexValue = request.QueryString["order[0][column]"] ?? "";
-                        var columnName = request.QueryString[$"columns[{columnIndexValue}][name]"];
-                        var direction = request.QueryString["order[0][dir]"];
+                        
+                        var columnName = request.QueryString["order[0][column]"];
+                        var direction = request.QueryString["order[0][direction]"];
 
                         if (string.IsNullOrEmpty(columnName) || string.IsNullOrEmpty(direction)) return;
 
@@ -63,7 +62,7 @@ namespace Lombiq.DataTables.Projections
                         sortingProvider.Sort(new DataTableSortingContext
                         {
                             ColumnDefinition = columnDefinition,
-                            Direction = direction == "asc" ? SortingDirection.Asc : SortingDirection.Desc,
+                            Direction = direction == "ascending" ? SortingDirection.Ascending : SortingDirection.Descending,
                             Query = context.Query
                         });
                     },

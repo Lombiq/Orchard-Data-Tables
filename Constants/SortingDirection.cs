@@ -4,10 +4,10 @@ namespace Lombiq.DataTables.Constants
 {
     public enum SortingDirection
     {
-        [EnumMember(Value = "asc")]
-        Asc = 0,
+        [EnumMember(Value = "ascending")]
+        Ascending = 0,
 
-        [EnumMember(Value = "desc")]
-        Desc
+        [EnumMember(Value = "descending")]
+        Descending
     }
 }

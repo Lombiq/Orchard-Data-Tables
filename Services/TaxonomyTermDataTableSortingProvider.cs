@@ -33,7 +33,7 @@ namespace Lombiq.DataTables.Services
                     alias => alias.Named(aliasName),
                     order =>
                     {
-                        if (context.Direction == SortingDirection.Asc) order.Asc(nameof(TitleSortableTermContentItem.Title));
+                        if (context.Direction == SortingDirection.Ascending) order.Asc(nameof(TitleSortableTermContentItem.Title));
                         else order.Desc(nameof(TitleSortableTermContentItem.Title));
                     });
         }
