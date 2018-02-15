@@ -61,7 +61,8 @@ namespace Lombiq.DataTables.Layouts
                 ProgressiveLoadingEnabled: values.ProgressiveLoadingEnabled,
                 DataProvider: dataProviderName,
                 DataTableId: values.DataTableId,
-                DataTableCssClasses: values.DataTableCssClasses);
+                DataTableCssClasses: values.DataTableCssClasses,
+                QueryStringParametersLocalStorageKey: values.QueryStringParametersLocalStorageKey);
         }
     }
 }

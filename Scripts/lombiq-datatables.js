@@ -25,6 +25,7 @@
         dataProvider: "",
         rowsApiUrl: "",
         serverSidePagingEnabled: false,
+        queryStringParametersLocalStorageKey: "",
         childRowOptions: {
             childRowsEnabled: false,
             asyncLoading: false,
@@ -67,7 +68,7 @@
          */
         init: function () {
             var plugin = this;
-            
+
             plugin.currentQueryStringParameters = new URI().search(true);
 
             var dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
@@ -104,8 +105,12 @@
                             dataProvider: plugin.settings.dataProvider
                         }));
 
-                        localStorage.setItem("queryStringParameters", JSON.stringify(updatedParamsWithQueryStringParameters));
-
+                        if (plugin.settings.queryStringParametersLocalStorageKey) {
+                            localStorage.setItem(
+                                plugin.settings.queryStringParametersLocalStorageKey,
+                                JSON.stringify(updatedParamsWithQueryStringParameters));
+                        }
+                        
                         return updatedParamsWithQueryStringParameters;
                     }
                 }
