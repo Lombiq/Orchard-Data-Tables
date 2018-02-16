@@ -23,6 +23,7 @@
     var columns = Model.Columns as IEnumerable<DataTableColumnDefinition>;
     var childRowsEnabled = (bool?)Model.ChildRowsEnabled ?? false;
     var progressiveLoadingEnabled = (bool?)Model.ProgressiveLoadingEnabled ?? false;
+    var queryStringParametersLocalStorageKey = (string)Model.QueryStringParametersLocalStorageKey ?? "";
     var dataProvider = (string)Model.DataProvider ?? "";
     var dataTableId = string.IsNullOrEmpty(Model.DataTableId) ? ElementNames.DataTableElementName : (string)Model.DataTableId;
     var dataTableCssClasses = string.IsNullOrEmpty(Model.DataTableCssClasses) ? ElementNames.DataTableWrapperDefaultElementName : (string)Model.DataTableCssClasses;
@@ -67,6 +68,7 @@
                         }
                     },
                     serverSidePagingEnabled: @(progressiveLoadingEnabled ? "false" : "true"),
+                    queryStringParametersLocalStorageKey: "@queryStringParametersLocalStorageKey",
                     progressiveLoadingOptions: {
                         progressiveLoadingEnabled: @(progressiveLoadingEnabled ? "true" : "false"),
                         @if (progressiveLoadingEnabled)
