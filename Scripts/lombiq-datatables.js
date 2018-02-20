@@ -102,7 +102,8 @@
 
                         var updatedParamsWithQueryStringParameters = $.extend({}, updatedParams, plugin.buildQueryStringParameters({
                             queryId: plugin.settings.queryId,
-                            dataProvider: plugin.settings.dataProvider
+                            dataProvider: plugin.settings.dataProvider,
+                            originalUrl: window.location.href
                         }));
 
                         if (plugin.settings.queryStringParametersLocalStorageKey) {
@@ -132,7 +133,8 @@
                             url: plugin.settings.childRowOptions.apiUrl,
                             data: {
                                 contentItemId: contentItemId,
-                                dataProvider: plugin.settings.dataProvider
+                                dataProvider: plugin.settings.dataProvider,
+                                originalUrl: window.location.href
                             },
                             success: function (data) {
                                 if (!data.error) {
@@ -270,7 +272,8 @@
                     queryId: options.queryId,
                     start: skip,
                     length: options.batchSize,
-                    dataProvider: options.dataProvider
+                    dataProvider: options.dataProvider,
+                    originalUrl: window.location.href
                 }),
                 success: function (response) {
                     if (callback) {
