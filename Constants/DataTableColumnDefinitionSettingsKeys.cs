@@ -16,5 +16,13 @@
 
             public const string FieldName = Prefix + nameof(FieldName);
         }
+
+        public static class ContentPartRecordPropertySorting
+        {
+            private const string Prefix = nameof(ContentPartRecordPropertySorting) + ".";
+
+            public const string RecordTypeAssemblyQualifiedName = nameof(RecordTypeAssemblyQualifiedName);
+            public const string PropertyName = nameof(PropertyName);
+        }
     }
 }

@@ -139,6 +139,7 @@
     <Compile Include="Services\IDataTableDataProviderAccessor.cs" />
     <Compile Include="Services\IDataTableSortingProvider.cs" />
     <Compile Include="Services\IDataTableSortingProviderAccessor.cs" />
+    <Compile Include="Services\TitlePartTitleDataTableSortingProvider.cs" />
     <Compile Include="Services\TaxonomyTermDataTableSortingProvider.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -252,7 +253,7 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>True</UseCustomServer>
+          <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>https://github.com/OrchardCMS/Orchard</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
