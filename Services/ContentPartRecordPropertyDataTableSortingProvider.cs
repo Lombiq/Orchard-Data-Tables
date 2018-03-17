@@ -6,7 +6,7 @@ using static Lombiq.DataTables.Constants.DataTableColumnDefinitionSettingsKeys.C
 
 namespace Lombiq.DataTables.Services
 {
-    public class TitlePartTitleDataTableSortingProvider : IDataTableSortingProvider
+    public class ContentPartRecordPropertyDataTableSortingProvider : IDataTableSortingProvider
     {
         public bool CanSort(string dataSource) => dataSource == DataTableDataSources.ContentPartRecordProperty;
 

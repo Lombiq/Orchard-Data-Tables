@@ -139,7 +139,7 @@
     <Compile Include="Services\IDataTableDataProviderAccessor.cs" />
     <Compile Include="Services\IDataTableSortingProvider.cs" />
     <Compile Include="Services\IDataTableSortingProviderAccessor.cs" />
-    <Compile Include="Services\TitlePartTitleDataTableSortingProvider.cs" />
+    <Compile Include="Services\ContentPartRecordPropertyDataTableSortingProvider.cs" />
     <Compile Include="Services\TaxonomyTermDataTableSortingProvider.cs" />
   </ItemGroup>
   <ItemGroup>
