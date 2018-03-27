@@ -52,7 +52,7 @@
                     @foreach (var cell in row)
                     {
                         <td class="@CellElementName">
-                            @cell
+                            @Html.Raw(cell)
                         </td>
                     }
                 </tr>
