@@ -338,14 +338,22 @@
             plugin.loadRows(skip, options, callback);
         }
     });
-
+    
     $.fn[pluginName] = function (options) {
-        var plugin = new Plugin(this, options);
+        // Return null if the element query is invalid.
+        if (!this || this.length == 0) return null;
 
-        if (!$.data(this, "plugin_" + pluginName)) {
-            $.data(this, "plugin_" + pluginName, plugin);
-        }
+        // "map" makes it possible to return the already existing or currently initialized plugin instances.
+        return this.map(function () {
+            // If "options" is defined, but the plugin is not instantiated on this element ...
+            if (options && !$.data(this, "plugin_" + pluginName)) {
+                // ... then create a plugin instance ...
+                $.data(this, "plugin_" + pluginName, new Plugin($(this), options));
+            }
 
-        return plugin;
+            // ... and then return the plugin instance, which might be null
+            // if the plugin is not instantiated on this element and "options" is undefined.
+            return $.data(this, "plugin_" + pluginName);
+        });
     };
 })(jQuery, window, document);
