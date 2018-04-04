@@ -81,6 +81,11 @@
                 }
             }
 
+            // This is a workaround to properly adjust column widths.
+            dataTablesOptions.initComplete = function () {
+                plugin.adjustColumns();
+            }
+
             if (plugin.settings.childRowOptions.childRowsEnabled) {
                 dataTablesOptions.order = [[1, "asc"]];
                 dataTablesOptions.columnDefs = [{
@@ -286,6 +291,18 @@
                     }
                 }
             });
+        },
+
+        /**
+         * Adjusts datatable columns.
+         */
+        adjustColumns: function () {
+            var plugin = this;
+
+            // This is a workaround to properly adjust column widths.
+            setTimeout(function () {
+                plugin.dataTableApi.columns.adjust();
+            }, 10);
         },
 
         /**
