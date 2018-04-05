@@ -46,54 +46,51 @@
         ChildRowsEnabled: childRowsEnabled)
 </div>
 
-@using (Script.Foot())
-{
-    <script type="text/javascript">
-        ; (function ($) {
-            $(function () {
-                $("#@dataTableId").lombiq_DataTables({
-                    rowClassName: "@ElementNames.DataTableRowElementName",
-                    queryId: @queryId,
-                    dataProvider: "@dataProvider",
-                    rowsApiUrl: "@rowApiUrl",
-                    dataTablesOptions: {
-                        @if (pageSize > 0)
-                        {
-                            <text>
-                                pageLength: @pageSize,
-                            </text>
-                        }
-                        language: {
-                            processing: "<div class=\"@LoadingIndicatorElementName\">@T("Loading...")</div>"
-                        }
-                    },
-                    serverSidePagingEnabled: @(progressiveLoadingEnabled ? "false" : "true"),
-                    queryStringParametersLocalStorageKey: "@queryStringParametersLocalStorageKey",
-                    progressiveLoadingOptions: {
-                        progressiveLoadingEnabled: @(progressiveLoadingEnabled ? "true" : "false"),
-                        @if (progressiveLoadingEnabled)
-                        {
-                            <text>
-                                skip: @skip,
-                                batchSize: @pageSize
-                            </text>
-                        }
-                    },
-                    childRowOptions: {
-                        childRowsEnabled: @(childRowsEnabled ? "true" : "false"),
-                        @if (childRowsEnabled)
-                        {
-                            <text>
-                                asyncLoading: true,
-                                apiUrl: "@childRowApiUrl",
-                                childRowClassName: "@ChildRowElementName",
-                                toggleChildRowButtonClassName: "@ToggleChildRowButtonElementName",
-                                childRowVisibleClassName: "@RowElementWithChildRowVisibleModifier",
-                            </text>
-                        }
+<script type="text/javascript">
+    ; (function ($) {
+        $(function () {
+            $("#@dataTableId").lombiq_DataTables({
+                rowClassName: "@ElementNames.DataTableRowElementName",
+                queryId: @queryId,
+                dataProvider: "@dataProvider",
+                rowsApiUrl: "@rowApiUrl",
+                dataTablesOptions: {
+                    @if (pageSize > 0)
+                    {
+                        <text>
+                            pageLength: @pageSize,
+                        </text>
                     }
-                });
+                    language: {
+                        processing: "<div class=\"@LoadingIndicatorElementName\">@T("Loading...")</div>"
+                    }
+                },
+                serverSidePagingEnabled: @(progressiveLoadingEnabled ? "false" : "true"),
+                queryStringParametersLocalStorageKey: "@queryStringParametersLocalStorageKey",
+                progressiveLoadingOptions: {
+                    progressiveLoadingEnabled: @(progressiveLoadingEnabled ? "true" : "false"),
+                    @if (progressiveLoadingEnabled)
+                    {
+                        <text>
+                            skip: @skip,
+                            batchSize: @pageSize
+                        </text>
+                    }
+                },
+                childRowOptions: {
+                    childRowsEnabled: @(childRowsEnabled ? "true" : "false"),
+                    @if (childRowsEnabled)
+                    {
+                        <text>
+                            asyncLoading: true,
+                            apiUrl: "@childRowApiUrl",
+                            childRowClassName: "@ChildRowElementName",
+                            toggleChildRowButtonClassName: "@ToggleChildRowButtonElementName",
+                            childRowVisibleClassName: "@RowElementWithChildRowVisibleModifier",
+                        </text>
+                    }
+                }
             });
-        })(jQuery);
-    </script>
-}
+        });
+    })(jQuery);
+</script>
