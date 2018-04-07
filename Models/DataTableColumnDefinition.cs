@@ -10,6 +10,7 @@ namespace Lombiq.DataTables.Models
         public string Name { get; set; }
         public string Text { get; set; }
         public string DataSource { get; set; }
+        public bool Orderable { get; set; } = true;
 
         public string this[string key]
         {
