@@ -1,0 +1,152 @@
+﻿@using Orchard.Projections.Models
+@using Lombiq.DataTables.Constants
+@using Lombiq.DataTables.Models
+
+@{
+    var projectionPart = Model.ContentPart as ProjectionPart;
+    var pageSize = (int?)Model.PageSize;
+    if (!pageSize.HasValue)
+    {
+        // Let's assume that the layout is for a ProjectionPage. If not then get the page size from site settings.
+        pageSize = projectionPart != null ?
+            projectionPart.Record.Items :
+            WorkContext.Resolve<Orchard.Settings.ISiteService>().GetSiteSettings().PageSize;
+    }
+
+    var skip = (int?)Model.Skip;
+    if (!skip.HasValue)
+    {
+        skip = projectionPart != null ? projectionPart.Record.Skip : 0;
+    }
+
+    const string DefaultBlockName = ElementNames.ContentPickerBlockName;
+    const string DefaultDataTableId = DefaultBlockName + "__dataTable";
+    const string SelectedContentIdsElementName = ElementNames.ContentPickerSelectedContentIdsElementName;
+    const string ContentSelectorElementName = DefaultBlockName + "__contentSelector";
+    const string ButtonPaneElementName = DefaultBlockName + "__buttonPane";
+    const string CancelButtonElementName = DefaultBlockName + "__cancelButton";
+    const string FinishButtonElementName = DefaultBlockName + "__finishedButton";
+    const string LoadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
+    const string PickerInputDataName = "ContentPicker";
+
+    var queryId = (int)Model.QueryId;
+    var columns = (new DataTableColumnDefinition[] { new DataTableColumnDefinition { Name = PickerInputDataName, Orderable = false } })
+        .Concat(Model.Columns as IEnumerable<DataTableColumnDefinition>);
+    var dataProvider = (string)Model.DataProvider ?? "";
+    var dataTableId = string.IsNullOrEmpty(Model.DataTableId) ?
+        DefaultDataTableId : (string)Model.DataTableId;
+    var wrapperClassNames = string.IsNullOrEmpty(Model.DataTableCssClasses) ?
+        DefaultBlockName : (string)Model.DataTableCssClasses;
+
+    var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
+    var childRowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesChildRow", Action = "Get" });
+}
+
+@Display.Lombiq_DataTable_Resources()
+
+<div class="@wrapperClassNames @DefaultBlockName js-@DefaultBlockName">
+    <input type="hidden" name="@SelectedContentIdsElementName" class="@SelectedContentIdsElementName js-@SelectedContentIdsElementName" value="[]" />
+
+    @Display.Lombiq_DataTable_Table(
+        DataTableId: dataTableId,
+        Columns: columns)
+
+    <div class="@ButtonPaneElementName">
+        <div class="btn button @CancelButtonElementName js-@CancelButtonElementName">@T("Cancel")</div>
+        <div class="btn button @FinishButtonElementName js-@FinishButtonElementName">@T("Finish")</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    ; (function ($) {
+        $(function () {
+            var hasParent = window.hasOwnProperty("parent");
+            var contentPicker = { selectedContentItemIds: [] };
+            if (hasParent) {
+                if (!window.parent.hasOwnProperty("contentPicker")) {
+                    window.parent.contentPicker = contentPicker;
+                }
+            }
+            else {
+                if (!window.hasOwnProperty("contentPicker")) {
+                    window.contentPicker = contentPicker;
+                }
+            }
+
+            contentPicker = hasParent ? window.parent.contentPicker : window.contentPicker;
+            contentPicker.finish = false;
+
+            if (contentPicker.cancelButtonContent) {
+                $(".js-@CancelButtonElementName").html(window.parent.contentPicker.cancelButtonContent);
+            }
+
+            if (contentPicker.finishButtonContent) {
+                $(".js-@FinishButtonElementName").html(window.parent.contentPicker.finishButtonContent);
+            }
+
+            var $selectedIdsElement = $(".js-@SelectedContentIdsElementName");
+
+            $(".js-@DefaultBlockName").on("change", ".js-@ContentSelectorElementName", function (e) {
+                var contentItemId = parseInt($(this).closest(".@ElementNames.DataTableRowElementName").attr("data-contentItemId"));
+
+                if (this.checked) {
+                    contentPicker.selectedContentItemIds.push(contentItemId);
+                }
+                else {
+                    contentPicker.selectedContentItemIds = $.grep(contentPicker.selectedContentItemIds, function (value) {
+                        return value != contentItemId;
+                    });
+                }
+
+                $selectedIdsElement.val(JSON.stringify(contentPicker.selectedContentItemIds));
+            });
+
+            $(".js-@CancelButtonElementName").on("click", function () {
+                if (hasParent) {
+                    window.parent.jQuery.fn.colorbox.close();
+                }
+            });
+
+            $(".js-@FinishButtonElementName").on("click", function () {
+                if (hasParent) {
+                    contentPicker.finish = true;
+                    window.parent.jQuery.colorbox.close();
+                }
+            });
+
+
+            function createCheckboxElementHtml(contentItemId) {
+                var checked = contentPicker.selectedContentItemIds.indexOf(contentItemId) > -1;
+
+                return "<input type=\"checkbox\" class=\"checkbox @ContentSelectorElementName js-@ContentSelectorElementName\" " + (checked ? "checked" : "") + "/>";
+            }
+
+            $("#@dataTableId").lombiq_DataTables({
+                rowClassName: "@ElementNames.DataTableRowElementName",
+                queryId: @queryId,
+                dataProvider: "@dataProvider",
+                rowsApiUrl: "@rowApiUrl",
+                dataTablesOptions: {
+                    @if (pageSize > 0)
+                    {
+                        <text>
+                            pageLength: @pageSize,
+                        </text>
+                    }
+                    language: {
+                        processing: "<div class=\"@LoadingIndicatorElementName\">@T("Processing...")</div>"
+                    },
+                    order: [[@(columns.ToList().FindIndex(column => column.Orderable)), "asc"]]
+                },
+                serverSidePagingEnabled: true,
+                callbacks: {
+                    ajaxDataLoadedCallback: function (response) {
+                        $.each(response.data, function (index, value) {
+                            value["@PickerInputDataName"] = createCheckboxElementHtml(value.id);
+                        });
+                    }
+                }
+            });
+        });
+    })(jQuery);
+</script>
