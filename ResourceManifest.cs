@@ -20,8 +20,10 @@ namespace Lombiq.DataTables
 
             // Custom resources.
             manifest.DefineScript(Lombiq_DataTables).SetUrl("lombiq-datatables.js").SetDependencies(Uri_Js, JQuery_DataTables_Plugins_Processing);
+            manifest.DefineScript(Lombiq_ContentPicker).SetUrl("lombiq-contentpicker.js").SetDependencies("jQueryColorBox");
             
             manifest.DefineStyle(Lombiq_DataTables).SetDependencies(JQuery_DataTables);
+            manifest.DefineStyle(Lombiq_ContentPicker).SetDependencies("jQueryColorBox");
         }
     }
 }

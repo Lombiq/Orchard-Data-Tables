@@ -118,6 +118,7 @@
     <Compile Include="Constants\SortingDirection.cs" />
     <Compile Include="Controllers\Api\DataTablesChildRowController.cs" />
     <Compile Include="Controllers\Api\DataTablesRowController.cs" />
+    <Compile Include="Extensions\HttpRequestExtensions.cs" />
     <Compile Include="Forms\DataTableLayoutForm.cs" />
     <Compile Include="Layouts\DataTableLayout.cs" />
     <Compile Include="Models\DataTableChildRowResponse.cs" />
@@ -133,6 +134,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Services\ContentFieldDataTableSortingProvider.cs" />
+    <Compile Include="Services\ContentPickerDataTableShapeTableProvider.cs" />
+    <Compile Include="Services\ContentPickerLayoutShapeTableProvider.cs" />
     <Compile Include="Services\DataTableDataProviderAccessor.cs" />
     <Compile Include="Services\DataTableSortingProviderAccessor.cs" />
     <Compile Include="Services\IDataTableDataProvider.cs" />
@@ -176,6 +179,7 @@
     <Content Include="Content\DataTables\Plugins\processing%28%29.js" />
     <Content Include="Content\URI.js\URI.js" />
     <Content Include="Content\URI.js\URI.min.js" />
+    <Content Include="Scripts\lombiq-contentpicker.js" />
     <Content Include="Scripts\lombiq-datatables.js" />
     <Content Include="packages.config" />
     <Content Include="Web.config" />
@@ -231,6 +235,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Lombiq.DataTable.Resources.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Lombiq.ContentPicker.DataTable.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
