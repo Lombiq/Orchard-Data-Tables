@@ -31,6 +31,7 @@
             {
                 <th class="@HeaderCellElementName" 
                     data-class-name="@CellElementName"
+                    data-orderable="@Json.Encode(column.Orderable)"
                     @if (!string.IsNullOrEmpty(column.Name))
                     {
                         <text>

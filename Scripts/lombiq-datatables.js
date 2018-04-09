@@ -43,9 +43,12 @@
             progressiveLoadingEnabled: false,
             skip: 0,
             batchSize: 0,
-            finishedCallback: null,
-            batchCallback: null,
-            itemCallback: null
+            finishedCallback: function () { },
+            batchCallback: function () { },
+            itemCallback: function () { }
+        },
+        callbacks: {
+            ajaxDataLoadedCallback: function (response) { }
         }
     };
 
@@ -118,6 +121,11 @@
                         }
                         
                         return updatedParamsWithQueryStringParameters;
+                    },
+                    dataSrc: function (response) {
+                        plugin.settings.callbacks.ajaxDataLoadedCallback(response);
+
+                        return response.data;
                     }
                 }
             }

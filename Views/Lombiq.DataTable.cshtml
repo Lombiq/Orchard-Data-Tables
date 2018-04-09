@@ -63,7 +63,8 @@
                     }
                     language: {
                         processing: "<div class=\"@LoadingIndicatorElementName\">@T("Loading...")</div>"
-                    }
+                    },
+                    order: [[@(columns.ToList().FindIndex(column => column.Orderable)), "asc"]]
                 },
                 serverSidePagingEnabled: @(progressiveLoadingEnabled ? "false" : "true"),
                 queryStringParametersLocalStorageKey: "@queryStringParametersLocalStorageKey",
