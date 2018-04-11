@@ -42,6 +42,7 @@
     var childRowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesChildRow", Action = "Get" });
 }
 
+@Display.Lombiq_TargetBlank()
 @Display.Lombiq_DataTable_Resources()
 
 <div class="@wrapperClassNames @DefaultBlockName js-@DefaultBlockName">
