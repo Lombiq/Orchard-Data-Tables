@@ -61,28 +61,28 @@
 <script type="text/javascript">
     ; (function ($) {
         $(function () {
-            var hasParent = window.hasOwnProperty("parent");
+            var hasParent = parent != null;
             var contentPicker = { selectedContentItemIds: [] };
             if (hasParent) {
-                if (!window.parent.hasOwnProperty("contentPicker")) {
-                    window.parent.contentPicker = contentPicker;
+                if (!parent.contentPicker) {
+                    parent.contentPicker = contentPicker;
                 }
             }
             else {
-                if (!window.hasOwnProperty("contentPicker")) {
+                if (!contentPicker) {
                     window.contentPicker = contentPicker;
                 }
             }
 
-            contentPicker = hasParent ? window.parent.contentPicker : window.contentPicker;
+            contentPicker = hasParent ? parent.contentPicker : window.contentPicker;
             contentPicker.finish = false;
 
             if (contentPicker.cancelButtonContent) {
-                $(".js-@CancelButtonElementName").html(window.parent.contentPicker.cancelButtonContent);
+                $(".js-@CancelButtonElementName").html(parent.contentPicker.cancelButtonContent);
             }
 
             if (contentPicker.finishButtonContent) {
-                $(".js-@FinishButtonElementName").html(window.parent.contentPicker.finishButtonContent);
+                $(".js-@FinishButtonElementName").html(parent.contentPicker.finishButtonContent);
             }
 
             var $selectedIdsElement = $(".js-@SelectedContentIdsElementName");
@@ -104,14 +104,14 @@
 
             $(".js-@CancelButtonElementName").on("click", function () {
                 if (hasParent) {
-                    window.parent.jQuery.fn.colorbox.close();
+                    parent.jQuery.fn.colorbox.close();
                 }
             });
 
             $(".js-@FinishButtonElementName").on("click", function () {
                 if (hasParent) {
                     contentPicker.finish = true;
-                    window.parent.jQuery.colorbox.close();
+                    parent.jQuery.colorbox.close();
                 }
             });
 
@@ -148,6 +148,8 @@
                     }
                 }
             });
+            console.log(window);
+            console.log(parent);
         });
     })(jQuery);
 </script>
