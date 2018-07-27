@@ -4,20 +4,9 @@
 
 @{
     var projectionPart = Model.ContentPart as ProjectionPart;
-    var pageSize = (int?)Model.PageSize;
-    if (!pageSize.HasValue)
-    {
-        // Let's assume that the layout is for a ProjectionPage. If not then get the page size from site settings.
-        pageSize = projectionPart != null ?
-            projectionPart.Record.Items :
-            WorkContext.Resolve<Orchard.Settings.ISiteService>().GetSiteSettings().PageSize;
-    }
 
-    var skip = (int?)Model.Skip;
-    if (!skip.HasValue)
-    {
-        skip = projectionPart != null ? projectionPart.Record.Skip : 0;
-    }
+    var pageSize = (int?)Model?.PageSize ?? projectionPart?.Record.Items ?? WorkContext.CurrentSite.PageSize;
+    var skip = (int?)Model?.Skip ?? projectionPart?.Record.Skip ?? 0;
 
     var queryId = (int)Model.QueryId;
     var columns = Model.Columns as IEnumerable<DataTableColumnDefinition>;
