@@ -17,6 +17,13 @@
     var dataTableId = string.IsNullOrEmpty(Model.DataTableId) ? ElementNames.DataTableElementName : (string)Model.DataTableId;
     var dataTableCssClasses = string.IsNullOrEmpty(Model.DataTableCssClasses) ? ElementNames.DataTableWrapperDefaultElementName : (string)Model.DataTableCssClasses;
 
+    var firstOrderableColumnIndex = columns.ToList().FindIndex(column => column.Orderable);
+    var defaultSortingColumnIndex = (int?)Model?.DefaultSortingColumnIndex;
+    defaultSortingColumnIndex = defaultSortingColumnIndex.HasValue && (columns.ElementAtOrDefault(defaultSortingColumnIndex.Value)?.Orderable ?? false) ?
+        defaultSortingColumnIndex : firstOrderableColumnIndex;
+    var defaultSortingDirection = (SortingDirection?)Model?.DefaultSortingDirection ?? SortingDirection.Ascending;
+    var defaultSortingDirectionValue = defaultSortingDirection == SortingDirection.Ascending ? "asc" : "desc";
+
     var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
     var childRowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesChildRow", Action = "Get" });
 
@@ -53,7 +60,12 @@
                     language: {
                         processing: "<div class=\"@LoadingIndicatorElementName\">@T("Loading...")</div>"
                     },
-                    order: [[@(columns.ToList().FindIndex(column => column.Orderable)), "asc"]]
+                    @if (defaultSortingColumnIndex >= 0)
+                    {
+                        <text>
+                            order: [["@defaultSortingColumnIndex", "@defaultSortingDirectionValue"]]
+                        </text>
+                    }
                 },
                 serverSidePagingEnabled: @(progressiveLoadingEnabled ? "false" : "true"),
                 queryStringParametersLocalStorageKey: "@queryStringParametersLocalStorageKey",
