@@ -28,5 +28,8 @@ namespace Lombiq.DataTables.Models
 
         public IEnumerable<string> GetValues() =>
             ValuesDictionary.Values.Select(value => value.Value<string>());
+
+        public IEnumerable<string> GetValuesForColumnsOrdered(IEnumerable<DataTableColumnDefinition> columnDefinitions) =>
+            columnDefinitions.Select(columnDefinition => this[columnDefinition.Name] ?? "");
     }
 }
