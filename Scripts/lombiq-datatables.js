@@ -64,7 +64,7 @@
     $.extend(Plugin.prototype, {
         dataTableElement: null,
         dataTableApi: null,
-        currentQueryStringParameters: null,
+        originalQueryStringParameters: "",
 
         /**
          * Initializes the Lombiq DataTable plugin where the jQuery DataTables plugin will be also initialized.
@@ -72,7 +72,7 @@
         init: function () {
             var plugin = this;
 
-            plugin.currentQueryStringParameters = new URI().search(true);
+            plugin.originalQueryStringParameters = new URI().search(true);
 
             var dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
 
@@ -106,21 +106,21 @@
                     method: "GET",
                     url: plugin.settings.rowsApiUrl,
                     data: function (params) {
-                        var updatedParams = plugin.cleanUpDataTablesAjaxParameters(params);
+                        var internalParameters = plugin.cleanUpDataTablesAjaxParameters(params);
 
-                        var updatedParamsWithQueryStringParameters = $.extend({}, updatedParams, plugin.buildQueryStringParameters({
+                        var extendedParameters = $.extend({}, internalParameters, {
                             queryId: plugin.settings.queryId,
                             dataProvider: plugin.settings.dataProvider,
                             originalUrl: window.location.href
-                        }));
+                        });
 
                         if (plugin.settings.queryStringParametersLocalStorageKey) {
                             localStorage.setItem(
                                 plugin.settings.queryStringParametersLocalStorageKey,
-                                JSON.stringify(updatedParamsWithQueryStringParameters));
+                                JSON.stringify(extendedParameters));
                         }
-                        
-                        return updatedParamsWithQueryStringParameters;
+
+                        return plugin.buildQueryStringParameters(extendedParameters);
                     },
                     dataSrc: function (response) {
                         plugin.settings.callbacks.ajaxDataLoadedCallback(response);
@@ -202,7 +202,6 @@
 
             // Remove global search parameters if there is no search value given.
             if (!parameters.search.value) delete parameters.search;
-
             return parameters;
         },
 
@@ -263,11 +262,26 @@
 
         /**
          * Builds query string parameters that includes the given parameters and the current URL's query string parameters.
+         * The original query string parameters are traditionally encoded to preserve their query string keys,
+         * while the ones used by DataTables aren't.
          * @param {object} data Data that needs to be merged with the current URL query string parameters.
          * @returns {object} Merged query string parameters.
          */
         buildQueryStringParameters: function (data) {
-            return $.extend(true, {}, this.currentQueryStringParameters, data);
+            var finalQueryString = "";
+
+            // This is necessary to preserve the original structure of the initial query string:
+            // Traditional encoding ensures that if a key has multiple values (e.g. "?name=value1&name=value2"),
+            // then the key won't be changed to "name[]".
+            var originalQueryStringEncoded = $.param(this.originalQueryStringParameters, true);
+
+            if (originalQueryStringEncoded) {
+                finalQueryString += originalQueryStringEncoded + "&";
+            }
+
+            finalQueryString += $.param(data);
+
+            return finalQueryString;
         },
 
         /**
