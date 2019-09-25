@@ -30,7 +30,7 @@
     const string PickerInputDataName = "ContentPicker";
 
     var queryId = (int)Model.QueryId;
-    var columns = (new DataTableColumnDefinition[] { new DataTableColumnDefinition { Name = PickerInputDataName, Orderable = false } })
+    var columns = (new DataTableColumnDefinition[] { new DataTableColumnDefinition { Name = PickerInputDataName, Orderable = false, Text = T("Select").Text } })
         .Concat(Model.Columns as IEnumerable<DataTableColumnDefinition>);
     var dataProvider = (string)Model.DataProvider ?? "";
     var dataTableId = string.IsNullOrEmpty(Model.DataTableId) ?
