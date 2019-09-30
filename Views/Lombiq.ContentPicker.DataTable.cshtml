@@ -138,7 +138,7 @@
                     language: {
                         processing: "<div class=\"@LoadingIndicatorElementName\">@T("Processing...")</div>"
                     },
-                    order: [[@(columns.ToList().FindIndex(column => column.Orderable)), "asc"]]
+                    order: [[@(columns.Any(column => column.Orderable) ? columns.ToList().FindIndex(column => column.Orderable) : 1), "asc"]]
                 },
                 serverSidePagingEnabled: true,
                 callbacks: {
