@@ -37,6 +37,7 @@
         DefaultDataTableId : (string)Model.DataTableId;
     var wrapperClassNames = string.IsNullOrEmpty(Model.DataTableCssClasses) ?
         DefaultBlockName : (string)Model.DataTableCssClasses;
+    var hideActions = Model.HideActions != null ? (bool)Model.HideActions : Request.QueryString["HideActions"] != null;
 
     var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
     var childRowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesChildRow", Action = "Get" });
@@ -53,10 +54,13 @@
         DataTableId: dataTableId,
         Columns: columns)
 
-    <div class="@ButtonPaneElementName">
-        <div class="btn button @CancelButtonElementName js-@CancelButtonElementName">@T("Cancel")</div>
-        <div class="btn button @FinishButtonElementName js-@FinishButtonElementName">@T("Finish")</div>
-    </div>
+    @if (!hideActions)
+    {
+        <div class="@ButtonPaneElementName">
+            <div class="btn button @CancelButtonElementName js-@CancelButtonElementName">@T("Cancel")</div>
+            <div class="btn button @FinishButtonElementName js-@FinishButtonElementName">@T("Finish")</div>
+        </div>
+    }
 </div>
 
 <script type="text/javascript">
@@ -78,14 +82,6 @@
             contentPicker = hasParent ? parent.contentPicker : window.contentPicker;
             contentPicker.finish = false;
 
-            if (contentPicker.cancelButtonContent) {
-                $(".js-@CancelButtonElementName").html(parent.contentPicker.cancelButtonContent);
-            }
-
-            if (contentPicker.finishButtonContent) {
-                $(".js-@FinishButtonElementName").html(parent.contentPicker.finishButtonContent);
-            }
-
             var $selectedIdsElement = $(".js-@SelectedContentIdsElementName");
 
             $(".js-@DefaultBlockName").on("change", ".js-@ContentSelectorElementName", function (e) {
@@ -103,19 +99,31 @@
                 $selectedIdsElement.val(JSON.stringify(contentPicker.selectedContentItemIds));
             });
 
-            $(".js-@CancelButtonElementName").on("click", function () {
-                if (hasParent) {
-                    parent.jQuery.fn.colorbox.close();
-                }
-            });
+            @if (!hideActions)
+            {
+                <text>
+                    if (contentPicker.cancelButtonContent) {
+                        $(".js-@CancelButtonElementName").html(parent.contentPicker.cancelButtonContent);
+                    }
 
-            $(".js-@FinishButtonElementName").on("click", function () {
-                if (hasParent) {
-                    contentPicker.finish = true;
-                    parent.jQuery.colorbox.close();
-                }
-            });
+                    if (contentPicker.finishButtonContent) {
+                        $(".js-@FinishButtonElementName").html(parent.contentPicker.finishButtonContent);
+                    }
 
+                    $(".js-@CancelButtonElementName").on("click", function () {
+                        if (hasParent) {
+                            parent.jQuery.fn.colorbox.close();
+                        }
+                    });
+
+                    $(".js-@FinishButtonElementName").on("click", function () {
+                        if (hasParent) {
+                            contentPicker.finish = true;
+                            parent.jQuery.colorbox.close();
+                        }
+                    });
+                </text>
+            }
 
             function createCheckboxElementHtml(contentItemId) {
                 var checked = contentPicker.selectedContentItemIds.indexOf(contentItemId) > -1;
