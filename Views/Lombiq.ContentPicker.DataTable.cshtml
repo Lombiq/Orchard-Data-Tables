@@ -38,6 +38,7 @@
     var wrapperClassNames = string.IsNullOrEmpty(Model.DataTableCssClasses) ?
         DefaultBlockName : (string)Model.DataTableCssClasses;
     var hideActions = Model.HideActions != null ? (bool)Model.HideActions : Request.QueryString["HideActions"] != null;
+    var singleChoice = Model.SingleChoice != null ? (bool)Model.HideActions : Request.QueryString["SingleChoice"] != null;
 
     var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
     var childRowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesChildRow", Action = "Get" });
@@ -86,6 +87,23 @@
 
             $(".js-@DefaultBlockName").on("change", ".js-@ContentSelectorElementName", function (e) {
                 var contentItemId = parseInt($(this).closest(".@ElementNames.DataTableRowElementName").attr("data-contentItemId"));
+
+                @if (singleChoice)
+                {
+                    <text>
+                        $(".js-@DefaultBlockName .js-@ContentSelectorElementName").not(this).each(function () {
+                            if (this.checked) {
+                                var contentItemIdToRemove = parseInt(
+                                    $(this).closest(".@ElementNames.DataTableRowElementName").attr("data-contentItemId"));
+                                contentPicker.selectedContentItemIds = $.grep(contentPicker.selectedContentItemIds, function (value) {
+                                    return value != contentItemIdToRemove;
+                                })
+
+                                $(this).prop("checked", false);
+                            }
+                        });
+                    </text>
+                }
 
                 if (this.checked) {
                     contentPicker.selectedContentItemIds.push(contentItemId);
