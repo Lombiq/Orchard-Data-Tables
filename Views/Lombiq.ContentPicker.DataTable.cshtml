@@ -97,6 +97,8 @@
                 }
 
                 $selectedIdsElement.val(JSON.stringify(contentPicker.selectedContentItemIds));
+
+                $(document).trigger("@ContentPickerJavaScriptEvents.Change");
             });
 
             @if (!hideActions)

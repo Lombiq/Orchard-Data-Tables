@@ -111,6 +111,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\ContentPickerJavaScriptEvents.cs" />
     <Compile Include="Constants\DataTableColumnDefinitionSettingsKeys.cs" />
     <Compile Include="Constants\DataTableDataSources.cs" />
     <Compile Include="Constants\ElementNames.cs" />
