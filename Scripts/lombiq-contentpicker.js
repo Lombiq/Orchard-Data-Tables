@@ -27,7 +27,7 @@
             height: "80%",
             fixed: true,
             fastIframe: false,
-            closeButton: false,
+            closeButton: false
         }
     };
 
