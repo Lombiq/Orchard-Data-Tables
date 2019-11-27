@@ -34,7 +34,7 @@ namespace Lombiq.DataTables.Layouts
                     DisplayLayout, RenderLayout, nameof(DataTableLayout));
 
         public LocalizedString DisplayLayout(LayoutContext context) =>
-            T("Renders contents in a jQuery DataTable.");
+            T("Renders contents in a jQuery DataTable using {0}.", context.State.DataProvider);
 
         public dynamic RenderLayout(LayoutContext context, IEnumerable<LayoutComponentResult> layoutComponentResults)
         {

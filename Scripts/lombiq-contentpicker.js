@@ -15,6 +15,7 @@
         url: "",
         finishButtonContent: "",
         cancelButtonContent: "",
+        displayColorboxBorder: true,
         finishCallback: function (contentPicker) { },
         cancelCallback: function (contentPicker) { },
         contentPicker: {
@@ -48,6 +49,23 @@
                 }
                 else {
                     plugin.settings.cancelCallback();
+                }
+            },
+            onOpen: function () {
+                if (!plugin.settings.displayColorboxBorder) {
+                    $("#cboxTopLeft").hide();
+                    $("#cboxTopRight").hide();
+                    $("#cboxBottomLeft").hide();
+                    $("#cboxBottomRight").hide();
+                    $("#cboxMiddleLeft").hide();
+                    $("#cboxMiddleRight").hide();
+                    $("#cboxTopCenter").hide();
+                    $("#cboxBottomCenter").hide();
+                }
+            },
+            onLoad: function () {
+                if (!plugin.settings.displayColorboxBorder) {
+                    $("#cboxLoadedContent").css("margin-bottom", "0");
                 }
             }
         });
