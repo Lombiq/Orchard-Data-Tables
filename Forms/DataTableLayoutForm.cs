@@ -14,8 +14,6 @@ namespace Lombiq.DataTables.Forms
     {
         public string DataProvider { get; set; }
         public bool ProgressiveLoadingEnabled { get; set; }
-        public int DefaultSortingColumnIndex { get; set; }
-        public SortingDirection DefaultSortingDirection { get; set; }
         public bool ChildRowsEnabled { get; set; }
         public string DataTableId { get; set; }
         public string DataTableCssClasses { get; set; }
@@ -25,10 +23,6 @@ namespace Lombiq.DataTables.Forms
         public DataTableLayoutFormElements(dynamic formState)
         {
             DataProvider = (string)formState?.DataProvider ?? "";
-            DefaultSortingColumnIndex = int.TryParse((string)formState?.DefaultSortingColumnIndex, out int defaultSortingColumnIndex) ?
-                defaultSortingColumnIndex : 0;
-            DefaultSortingDirection = Enum.TryParse((string)formState?.DefaultSortingDirection, out SortingDirection defaultSortingDirection) ?
-                defaultSortingDirection : SortingDirection.Ascending;
             ChildRowsEnabled = (bool?)formState?.ChildRowsEnabled ?? false;
             ProgressiveLoadingEnabled = (bool?)formState?.ProgressiveLoadingEnabled ?? false;
             DataTableId = (string)formState?.DataTableId ?? "";
@@ -70,20 +64,6 @@ namespace Lombiq.DataTables.Forms
                             Title: T("Progressive loading"),
                             Value: "true",
                             Description: T("When enabled, the items are loaded progressively immediately after opening the page instead of using server-side paging.")),
-                        // "min" attribute is not supported here, but at least we can use type="number".
-                        _DefaultSortingColumnIndex: _shapeFactory.Input(
-                            Id: "sortingColumnIndex", Name: nameof(DataTableLayoutFormElements.DefaultSortingColumnIndex), Type: "number",
-                            Title: T("Default sorting column index"), Value: 0,
-                            Description: T("The zero-based index of the column whose values will define the order of the rows when the table renders.")),
-                        _DefaultSortingDirection: _shapeFactory.FieldSet(
-                            _Label: _shapeFactory.InputLabel(
-                                Title: T("Default sorting direction")),
-                            _AnyTerm: _shapeFactory.Radio(
-                                Id: "sortingDirectionAscending", Name: nameof(DataTableLayoutFormElements.DefaultSortingDirection),
-                                Title: T("Ascending"), Value: SortingDirection.Ascending, Checked: true),
-                            _AllTerms: _shapeFactory.Radio(
-                                Id: "sortingDirectionDescending", Name: nameof(DataTableLayoutFormElements.DefaultSortingDirection),
-                                Title: T("Descending"), Value: SortingDirection.Descending)),
                         _ChildRowsEnabled: _shapeFactory.Checkbox(
                             Id: nameof(DataTableLayoutFormElements.ChildRowsEnabled),
                             Name: nameof(DataTableLayoutFormElements.ChildRowsEnabled),
