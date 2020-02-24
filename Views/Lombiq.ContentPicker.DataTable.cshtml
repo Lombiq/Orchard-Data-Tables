@@ -1,23 +1,14 @@
 ﻿@using Orchard.Projections.Models
 @using Lombiq.DataTables.Constants
 @using Lombiq.DataTables.Models
+@using Lombiq.DataTables.ViewModels
 
 @{
     var projectionPart = Model.ContentPart as ProjectionPart;
-    var pageSize = (int?)Model.PageSize;
-    if (!pageSize.HasValue)
-    {
-        // Let's assume that the layout is for a ProjectionPage. If not then get the page size from site settings.
-        pageSize = projectionPart != null ?
-            projectionPart.Record.Items :
-            WorkContext.Resolve<Orchard.Settings.ISiteService>().GetSiteSettings().PageSize;
-    }
+    var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
 
-    var skip = (int?)Model.Skip;
-    if (!skip.HasValue)
-    {
-        skip = projectionPart != null ? projectionPart.Record.Skip : 0;
-    }
+    var pageSize = viewModel?.PageSize ?? projectionPart?.Record.Items ?? WorkContext.CurrentSite.PageSize;
+    var skip = viewModel?.Skip ?? projectionPart?.Record.Skip ?? 0;
 
     const string DefaultBlockName = ElementNames.ContentPickerBlockName;
     const string DefaultDataTableId = DefaultBlockName + "__dataTable";
@@ -29,14 +20,13 @@
     const string LoadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
     const string PickerInputDataName = "ContentPicker";
 
-    var queryId = (int)Model.QueryId;
+    var queryId = viewModel?.QueryId ?? 0;
+    var columnsDefinition = viewModel?.ColumnsDefinition as DataTableColumnsDefinition;
     var columns = (new DataTableColumnDefinition[] { new DataTableColumnDefinition { Name = PickerInputDataName, Orderable = false, Text = T("Select").Text } })
-        .Concat(Model.Columns as IEnumerable<DataTableColumnDefinition>);
-    var dataProvider = (string)Model.DataProvider ?? "";
-    var dataTableId = string.IsNullOrEmpty(Model.DataTableId) ?
-        DefaultDataTableId : (string)Model.DataTableId;
-    var wrapperClassNames = string.IsNullOrEmpty(Model.DataTableCssClasses) ?
-        DefaultBlockName : (string)Model.DataTableCssClasses;
+        .Concat(columnsDefinition.Columns);
+    var dataProvider = viewModel?.DataProvider ?? "";
+    var dataTableId = string.IsNullOrEmpty(viewModel?.DataTableId) ? DefaultDataTableId : viewModel.DataTableId;
+    var wrapperClassNames = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? DefaultBlockName : viewModel.DataTableCssClasses;
     var hideActions = Model.HideActions != null ? (bool)Model.HideActions : Request.QueryString["HideActions"] != null;
     var singleChoice = Model.SingleChoice != null ? (bool)Model.HideActions : Request.QueryString["SingleChoice"] != null;
 
