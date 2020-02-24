@@ -125,6 +125,7 @@
     <Compile Include="Models\DataTableChildRowResponse.cs" />
     <Compile Include="Models\DataTableColumn.cs" />
     <Compile Include="Models\DataTableColumnDefinition.cs" />
+    <Compile Include="Models\DataTableColumnsDefinition.cs" />
     <Compile Include="Models\DataTableDataRequest.cs" />
     <Compile Include="Models\DataTableDataResponse.cs" />
     <Compile Include="Models\DataTableOrder.cs" />

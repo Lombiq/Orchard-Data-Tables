@@ -45,7 +45,7 @@ namespace Lombiq.DataTables.Layouts
             return _shapeFactory.Lombiq_DataTable(
                 // The QueryId property in the context.State can be invalid since it is exported instead of the Query's identity.
                 QueryId: context.LayoutRecord.QueryPartRecord.Id,
-                Columns: _dataTableDataProviderAccessor.GetDataProvider(dataProviderName)?.GetColumns(),
+                ColumnsDefinition: _dataTableDataProviderAccessor.GetDataProvider(dataProviderName)?.GetColumnsDefinition(),
                 DefaultSortingColumnIndex: values.DefaultSortingColumnIndex,
                 DefaultSortingDirection: values.DefaultSortingDirection,
                 ChildRowsEnabled: values.ChildRowsEnabled,

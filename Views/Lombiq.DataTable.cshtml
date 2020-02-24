@@ -9,7 +9,8 @@
     var skip = (int?)Model?.Skip ?? projectionPart?.Record.Skip ?? 0;
 
     var queryId = (int)Model.QueryId;
-    var columns = Model.Columns as IEnumerable<DataTableColumnDefinition>;
+    var columnsDefinition = Model.ColumnsDefinition as DataTableColumnsDefinition;
+    var columns = columnsDefinition.Columns;
     var childRowsEnabled = (bool?)Model.ChildRowsEnabled ?? false;
     var progressiveLoadingEnabled = (bool?)Model.ProgressiveLoadingEnabled ?? false;
     var queryStringParametersLocalStorageKey = (string)Model.QueryStringParametersLocalStorageKey ?? "";
