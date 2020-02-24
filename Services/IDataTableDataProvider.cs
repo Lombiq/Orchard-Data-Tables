@@ -2,7 +2,6 @@
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Localization;
-using System.Collections.Generic;
 
 namespace Lombiq.DataTables.Services
 {
@@ -16,7 +15,7 @@ namespace Lombiq.DataTables.Services
 
         DataTableDataResponse GetRows(DataTableDataRequest request);
 
-        IEnumerable<DataTableColumnDefinition> GetColumns();
+        DataTableColumnsDefinition GetColumnsDefinition();
 
         DataTableChildRowResponse GetChildRow(int contentItemId);
     }

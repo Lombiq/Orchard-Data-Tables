@@ -51,7 +51,7 @@ namespace Lombiq.DataTables.Projections
 
                         if (string.IsNullOrEmpty(columnName) || string.IsNullOrEmpty(direction)) return;
 
-                        var columnDefinition = dataProvider.GetColumns().FirstOrDefault(column => column.Name == columnName);
+                        var columnDefinition = dataProvider.GetColumnsDefinition().Columns.FirstOrDefault(column => column.Name == columnName);
 
                         if (columnDefinition == null) return;
 
