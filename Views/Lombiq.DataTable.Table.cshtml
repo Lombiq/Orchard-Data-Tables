@@ -2,6 +2,8 @@
 @using Lombiq.DataTables.Models
 
 @{
+    // TODO: Use DataTableDataViewModel.
+
     var columns = Model.Columns as IEnumerable<DataTableColumnDefinition>;
     var childRowsEnabled = (bool?)Model.ChildRowsEnabled ?? false;
     var rows = Model.Rows as IEnumerable<IEnumerable<string>>;

@@ -1,5 +1,6 @@
 ﻿using Lombiq.DataTables.Forms;
 using Lombiq.DataTables.Services;
+using Lombiq.DataTables.ViewModels;
 using Orchard.DisplayManagement;
 using Orchard.Localization;
 using Orchard.Projections.Descriptors.Layout;
@@ -42,18 +43,18 @@ namespace Lombiq.DataTables.Layouts
 
             var dataProviderName = values.DataProvider;
 
-            return _shapeFactory.Lombiq_DataTable(
+            return _shapeFactory.Lombiq_DataTable(ViewModel: new DataTableDefinitionViewModel
+            {
                 // The QueryId property in the context.State can be invalid since it is exported instead of the Query's identity.
-                QueryId: context.LayoutRecord.QueryPartRecord.Id,
-                ColumnsDefinition: _dataTableDataProviderAccessor.GetDataProvider(dataProviderName)?.GetColumnsDefinition(),
-                DefaultSortingColumnIndex: values.DefaultSortingColumnIndex,
-                DefaultSortingDirection: values.DefaultSortingDirection,
-                ChildRowsEnabled: values.ChildRowsEnabled,
-                ProgressiveLoadingEnabled: values.ProgressiveLoadingEnabled,
-                DataProvider: dataProviderName,
-                DataTableId: values.DataTableId,
-                DataTableCssClasses: values.DataTableCssClasses,
-                QueryStringParametersLocalStorageKey: values.QueryStringParametersLocalStorageKey);
+                QueryId = context.LayoutRecord.QueryPartRecord.Id,
+                ColumnsDefinition = _dataTableDataProviderAccessor.GetDataProvider(dataProviderName)?.GetColumnsDefinition(),
+                ChildRowsEnabled = values.ChildRowsEnabled,
+                ProgressiveLoadingEnabled = values.ProgressiveLoadingEnabled,
+                DataProvider = dataProviderName,
+                DataTableId = values.DataTableId,
+                DataTableCssClasses = values.DataTableCssClasses,
+                QueryStringParametersLocalStorageKey = values.QueryStringParametersLocalStorageKey
+            });
         }
     }
 }
