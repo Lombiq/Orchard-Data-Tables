@@ -4,6 +4,8 @@
 @using Lombiq.DataTables.ViewModels
 
 @{
+    Script.Require(ResourceNames.Lombiq_DataTables).AtHead();
+
     var projectionPart = Model.ContentPart as ProjectionPart;
     var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
 
