@@ -14,9 +14,9 @@
     const string DefaultDataTableId = DefaultBlockName + "__dataTable";
     const string SelectedContentIdsElementName = ElementNames.ContentPickerSelectedContentIdsElementName;
     const string ContentSelectorElementName = DefaultBlockName + "__contentSelector";
-    const string ButtonPaneElementName = DefaultBlockName + "__buttonPane";
-    const string CancelButtonElementName = DefaultBlockName + "__cancelButton";
-    const string FinishButtonElementName = DefaultBlockName + "__finishedButton";
+    const string ActionsElementName = DefaultBlockName + "__actions";
+    const string CancelActionElementName = DefaultBlockName + "__cancelAction";
+    const string FinishActionElementName = DefaultBlockName + "__finishAction";
     const string LoadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
     const string PickerInputDataName = "ContentPicker";
 
@@ -47,9 +47,9 @@
 
     @if (!hideActions)
     {
-        <div class="@ButtonPaneElementName">
-            <div class="btn button @CancelButtonElementName js-@CancelButtonElementName">@T("Cancel")</div>
-            <div class="btn button @FinishButtonElementName js-@FinishButtonElementName">@T("Finish")</div>
+        <div class="@ActionsElementName">
+            <div class="@CancelActionElementName js-@CancelActionElementName">@T("Cancel")</div>
+            <div class="@FinishActionElementName js-@FinishActionElementName">@T("Finish")</div>
         </div>
     }
 </div>
@@ -113,20 +113,20 @@
             {
                 <text>
                     if (contentPicker.cancelButtonContent) {
-                        $(".js-@CancelButtonElementName").html(parent.contentPicker.cancelButtonContent);
+                        $(".js-@CancelActionElementName").html(parent.contentPicker.cancelButtonContent);
                     }
 
                     if (contentPicker.finishButtonContent) {
-                        $(".js-@FinishButtonElementName").html(parent.contentPicker.finishButtonContent);
+                        $(".js-@FinishActionElementName").html(parent.contentPicker.finishButtonContent);
                     }
 
-                    $(".js-@CancelButtonElementName").on("click", function () {
+                    $(".js-@CancelActionElementName").on("click", function () {
                         if (hasParent) {
                             parent.jQuery.fn.colorbox.close();
                         }
                     });
 
-                    $(".js-@FinishButtonElementName").on("click", function () {
+                    $(".js-@FinishActionElementName").on("click", function () {
                         if (hasParent) {
                             contentPicker.finish = true;
                             parent.jQuery.colorbox.close();
