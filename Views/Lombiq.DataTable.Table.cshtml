@@ -36,10 +36,7 @@
                     data-orderable="@Json.Encode(column.Orderable)"
                     @if (!string.IsNullOrEmpty(column.Name))
                     {
-                        <text>
-                            data-name="@column.Name"
-                            data-data="@column.Name"
-                        </text>
+                        <text>data-name="@column.Name" data-data="@column.Name"</text>
                     }>
                     @column.Text
                 </th>

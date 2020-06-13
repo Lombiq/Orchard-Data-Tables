@@ -23,11 +23,7 @@
     var dataTableCssClasses = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? ElementNames.DataTableWrapperDefaultElementName : viewModel.DataTableCssClasses;
 
     var defaultSortingColumnIndex = Math.Max(
-        0,
-        Math.Max(
-            columns.FindIndex(column => column.Orderable),
-            columns.FindIndex(column => column.Name == columnsDefinition.DefaultSortingColumnName)));
-    columns.FindIndex(column => column.Orderable && column.Name == columnsDefinition.DefaultSortingColumnName);
+        0, Math.Max(columns.FindIndex(column => column.Orderable), columns.FindIndex(column => column.Name == columnsDefinition.DefaultSortingColumnName)));
 
     var defaultSortingDirection = columnsDefinition?.DefaultSortingDirection ?? SortingDirection.Ascending;
     var defaultSortingDirectionValue = defaultSortingDirection == SortingDirection.Ascending ? "asc" : "desc";
