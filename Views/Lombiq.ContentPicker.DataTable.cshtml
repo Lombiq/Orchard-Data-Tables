@@ -20,6 +20,7 @@
     const string CancelActionElementName = DefaultBlockName + "__cancelAction";
     const string LoadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
     const string PickerInputDataName = "ContentPicker";
+    const string DataTableCheckboxBlockName = "dataTableCheckbox";
 
     var queryId = viewModel?.QueryId ?? 0;
     var columnsDefinition = viewModel?.ColumnsDefinition as DataTableColumnsDefinition;
@@ -139,7 +140,7 @@
             function createCheckboxElementHtml(contentItemId) {
                 var checked = contentPicker.selectedContentItemIds.indexOf(contentItemId) > -1;
 
-                return "<input type=\"checkbox\" class=\"checkbox @ContentSelectorElementName js-@ContentSelectorElementName\" " + (checked ? "checked" : "") + "/>";
+                return "<label class=\"@(DataTableCheckboxBlockName)__label\"><input type=\"checkbox\" class=\"checkbox @ContentSelectorElementName js-@ContentSelectorElementName @(DataTableCheckboxBlockName)__input\" " + (checked ? "checked" : "") + "/><span class=\"@(DataTableCheckboxBlockName)__indicator\"></span></label>";
             }
 
             $("#@dataTableId").lombiq_DataTables({
