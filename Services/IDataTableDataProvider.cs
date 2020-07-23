@@ -1,11 +1,10 @@
 ﻿using Lombiq.DataTables.Models;
-using Orchard;
+using Microsoft.Extensions.Localization;
 using Orchard.ContentManagement;
-using Orchard.Localization;
 
 namespace Lombiq.DataTables.Services
 {
-    public interface IDataTableDataProvider : IDependency
+    public interface IDataTableDataProvider
     {
         string Name { get; }
 

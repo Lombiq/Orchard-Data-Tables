@@ -1,8 +1,6 @@
-﻿using Orchard;
-
-namespace Lombiq.DataTables.Services
+﻿namespace Lombiq.DataTables.Services
 {
-    public interface IDataTableSortingProviderAccessor : IDependency
+    public interface IDataTableSortingProviderAccessor
     {
         IDataTableSortingProvider GetSortingProvider(string dataSource);
     }
