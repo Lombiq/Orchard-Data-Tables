@@ -1,5 +1,4 @@
 ﻿using Lombiq.DataTables.Models;
-using Orchard;
 
 namespace Lombiq.DataTables.Services
 {

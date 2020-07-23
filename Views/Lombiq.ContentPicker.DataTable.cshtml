@@ -1,5 +1,4 @@
-﻿@using Orchard.Projections.Models
-@using Lombiq.DataTables.Constants
+﻿@using Lombiq.DataTables.Constants
 @using Lombiq.DataTables.Models
 @using Lombiq.DataTables.ViewModels
 
@@ -24,7 +23,7 @@
 
     var queryId = viewModel?.QueryId ?? 0;
     var columnsDefinition = viewModel?.ColumnsDefinition as DataTableColumnsDefinition;
-    var columns = (new DataTableColumnDefinition[] { new DataTableColumnDefinition { Name = PickerInputDataName, Orderable = false, Text = T("Select").Text } })
+    var columns = (new DataTableColumnDefinition[] { new DataTableColumnDefinition { Name = PickerInputDataName, Orderable = false, Text = T["Select"].Text } })
         .Concat(columnsDefinition.Columns);
     var dataProvider = viewModel?.DataProvider ?? "";
     var dataTableId = string.IsNullOrEmpty(viewModel?.DataTableId) ? DefaultDataTableId : viewModel.DataTableId;
@@ -50,8 +49,8 @@
     @if (!hideActions)
     {
         <div class="@ActionsElementName">
-            <div class="@ActionElementName @CancelActionElementName js-@CancelActionElementName">@T("Cancel")</div>
-            <div class="@ActionElementName @SubmitActionElementName js-@SubmitActionElementName">@T("Finish")</div>
+            <div class="@ActionElementName @CancelActionElementName js-@CancelActionElementName">@T["Cancel"]</div>
+            <div class="@ActionElementName @SubmitActionElementName js-@SubmitActionElementName">@T["Finish"]</div>
         </div>
     }
 </div>
@@ -156,7 +155,7 @@
                         </text>
                     }
                     language: {
-                        processing: "<div class=\"@LoadingIndicatorElementName\">@T("Processing...")</div>"
+                        processing: "<div class=\"@LoadingIndicatorElementName\">@T["Processing..."]</div>"
                     },
                     order: [[@(columns.Any(column => column.Orderable) ? columns.ToList().FindIndex(column => column.Orderable) : 1), "asc"]]
                 },

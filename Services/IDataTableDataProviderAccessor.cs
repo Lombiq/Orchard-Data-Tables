@@ -1,6 +1,4 @@
-﻿using Orchard;
-
-namespace Lombiq.DataTables.Services
+﻿namespace Lombiq.DataTables.Services
 {
     public interface IDataTableDataProviderAccessor
     {

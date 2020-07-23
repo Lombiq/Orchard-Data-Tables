@@ -1,37 +1,39 @@
-﻿using Lombiq.DataTables.Models;
+﻿using System.Net;
+using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
-using Orchard.Localization;
-using System.Net;
-using System.Web.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace Lombiq.DataTables.Controllers.Api
 {
-    public class DataTablesRowController : ApiController
+    public class DataTablesRowController : Controller
     {
         private readonly IDataTableDataProviderAccessor _dataTableDataProviderAccessor;
         
-        public Localizer T { get; set; }
+        public IStringLocalizer T { get; }
 
 
-        public DataTablesRowController(IDataTableDataProviderAccessor dataTableDataProviderAccessor)
+        public DataTablesRowController(
+            IDataTableDataProviderAccessor dataTableDataProviderAccessor,
+            IStringLocalizer<DataTablesRowController> stringLocalizer)
         {
             _dataTableDataProviderAccessor = dataTableDataProviderAccessor;
-
-            T = NullLocalizer.Instance;
+            T = stringLocalizer;
         }
 
 
-        public IHttpActionResult Get([FromUri]DataTableDataRequest request)
+        public ActionResult<DataTableDataResponse> Get(DataTableDataRequest request)
         {
             var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
             if (dataProvider == null)
             {
-                return Content(HttpStatusCode.BadRequest, DataTableDataResponse.ErrorResult(T("The given data provider name is invalid.").Text));
+                var errorText = T["The given data provider name is invalid."].Value;
+                return BadRequest(DataTableDataResponse.ErrorResult(errorText));
             }
 
             if (request.Length == 0)
             {
-                return Content(HttpStatusCode.BadRequest, DataTableDataResponse.ErrorResult(T("Length can't be 0.").Text));
+                return BadRequest(DataTableDataResponse.ErrorResult(T["Length can't be 0."].Value));
             }
 
             var response = dataProvider.GetRows(request);
@@ -41,7 +43,7 @@ namespace Lombiq.DataTables.Controllers.Api
             // See: https://datatables.net/manual/server-side
             response.Draw = request.Draw;
 
-            return Content(HttpStatusCode.OK, response);
+            return response;
         }
     }
 }

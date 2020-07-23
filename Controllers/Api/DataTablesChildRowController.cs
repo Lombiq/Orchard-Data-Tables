@@ -1,37 +1,39 @@
 ﻿using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
-using Orchard.Localization;
 using System.Net;
-using System.Web.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace Lombiq.DataTables.Controllers.Api
 {
-    public class DataTablesChildRowController : ApiController
+    public class DataTablesChildRowController : Controller
     {
         private readonly IDataTableDataProviderAccessor _dataTableDataProviderAccessor;
 
-        public Localizer T { get; set; }
+        public IStringLocalizer T { get; }
 
 
-        public DataTablesChildRowController(IDataTableDataProviderAccessor dataTableDataProviderAccessor)
+        public DataTablesChildRowController(
+            IDataTableDataProviderAccessor dataTableDataProviderAccessor,
+            IStringLocalizer<DataTablesChildRowController> stringLocalizer)
         {
             _dataTableDataProviderAccessor = dataTableDataProviderAccessor;
-
-            T = NullLocalizer.Instance;
+            T = stringLocalizer;
         }
 
 
-        public IHttpActionResult Get(int contentItemId, string dataProvider)
+        public ActionResult<DataTableChildRowResponse> Get(int contentItemId, string dataProvider)
         {
             var provider = _dataTableDataProviderAccessor.GetDataProvider(dataProvider);
             if (provider == null)
             {
-                return Content(HttpStatusCode.BadRequest, DataTableChildRowResponse.ErrorResult(T("The given data provider name is invalid.").Text));
+                var errorText = T["The given data provider name is invalid."].Value;
+                return BadRequest(DataTableChildRowResponse.ErrorResult(errorText));
             }
 
             var response = provider.GetChildRow(contentItemId);
 
-            return Content(HttpStatusCode.OK, response);
+            return response;
         }
     }
 }

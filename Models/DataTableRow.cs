@@ -15,8 +15,8 @@ namespace Lombiq.DataTables.Models
 
         public string this[string name]
         {
-            get { return ValuesDictionary.ContainsKey(name) ? ValuesDictionary[name].Value<string>() : null; }
-            set { ValuesDictionary[name] = value; }
+            get => ValuesDictionary.ContainsKey(name) ? ValuesDictionary[name].Value<string>() : null;
+            set => ValuesDictionary[name] = value;
         }
 
 

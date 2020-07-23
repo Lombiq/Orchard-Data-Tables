@@ -1,11 +1,10 @@
-﻿using Lombiq.DataTables.Constants;
+﻿using System.Linq;
+using System.Web;
+using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
-using Orchard.Localization;
-using Orchard.Mvc;
-using Orchard.Projections.Descriptors.SortCriterion;
-using Orchard.Projections.Services;
-using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Localization;
 
 namespace Lombiq.DataTables.Projections
 {
@@ -14,40 +13,40 @@ namespace Lombiq.DataTables.Projections
         private readonly IHttpContextAccessor _hca;
         private readonly IDataTableDataProviderAccessor _dataTableDataProviderAccessor;
         private readonly IDataTableSortingProviderAccessor _dataTableSortingProviderAccessor;
-        public Localizer T { get; set; }
+        public IStringLocalizer T { get; }
 
 
         public DataTableSortCriterionProvider(
             IHttpContextAccessor hca, 
             IDataTableDataProviderAccessor dataTableDataProviderAccessor, 
-            IDataTableSortingProviderAccessor dataTableSortingProviderAccessor)
+            IDataTableSortingProviderAccessor dataTableSortingProviderAccessor,
+            IStringLocalizer<DataTableSortCriterionProvider> stringLocalizer)
         {
             _hca = hca;
             _dataTableDataProviderAccessor = dataTableDataProviderAccessor;
             _dataTableSortingProviderAccessor = dataTableSortingProviderAccessor;
-
-            T = NullLocalizer.Instance;
+            T = stringLocalizer;
         }
 
 
         public void Describe(DescribeSortCriterionContext describe)
         {
             describe
-                .For("Data Table", T("Data Table"), T("Data table sort criteria"))
+                .For("Data Table", T["Data Table"], T["Data table sort criteria"])
                 .Element(
                     "Data Table Column",
-                    T("Data Table Column"),
-                    T("Orders Data Table columns by the parameters given in the query string of the request."),
+                    T["Data Table Column"],
+                    T["Orders Data Table columns by the parameters given in the query string of the request."],
                     context =>
                     {
-                        var request = _hca.Current().Request;
+                        var query = HttpUtility.ParseQueryString(_hca.HttpContext?.Request?.QueryString.Value ?? "?");
 
-                        var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.QueryString["dataProvider"]);
+                        var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(query["dataProvider"]);
 
                         if (dataProvider == null) return;
                         
-                        var columnName = request.QueryString["order[0][column]"];
-                        var direction = request.QueryString["order[0][direction]"];
+                        var columnName = query["order[0][column]"];
+                        var direction = query["order[0][direction]"];
 
                         if (string.IsNullOrEmpty(columnName) || string.IsNullOrEmpty(direction)) return;
 
@@ -66,7 +65,7 @@ namespace Lombiq.DataTables.Projections
                             Query = context.Query
                         });
                     },
-                    context => T("Columns ordered by the Data Table sorting parameters in the query string.")
+                    context => T["Columns ordered by the Data Table sorting parameters in the query string."]
                 );
         }
     }

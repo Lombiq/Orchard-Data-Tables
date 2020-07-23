@@ -13,8 +13,4 @@
     <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-rc1-12811" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="3.1.6" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Extensions" />
-  </ItemGroup>
 </Project>

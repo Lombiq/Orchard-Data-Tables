@@ -6,6 +6,7 @@ using Orchard.Localization;
 using Orchard.Projections.Descriptors.Layout;
 using Orchard.Projections.Services;
 using System.Collections.Generic;
+using Microsoft.Extensions.Localization;
 
 namespace Lombiq.DataTables.Layouts
 {
@@ -14,28 +15,28 @@ namespace Lombiq.DataTables.Layouts
         private readonly dynamic _shapeFactory;
         private readonly IDataTableDataProviderAccessor _dataTableDataProviderAccessor;
 
-        public Localizer T { get; set; }
+        public IStringLocalizer T { get; }
 
 
         public DataTableLayout(
             IShapeFactory shapeFactory,
-            IDataTableDataProviderAccessor dataTableDataProviderAccessor)
+            IDataTableDataProviderAccessor dataTableDataProviderAccessor,
+            IStringLocalizer<DataTableLayout> stringLocalizer)
         {
             _shapeFactory = shapeFactory;
             _dataTableDataProviderAccessor = dataTableDataProviderAccessor;
-
-            T = NullLocalizer.Instance;
+            T = stringLocalizer;
         }
 
 
         public void Describe(DescribeLayoutContext describe) =>
             describe
-                .For("Html", T("Html"), T("Html Layouts"))
-                .Element("DataTable", T("Data Table"), T("Contents are displayed in a jQuery DataTable component."),
+                .For("Html", T["Html"], T["Html Layouts"])
+                .Element("DataTable", T["Data Table"], T["Contents are displayed in a jQuery DataTable component."],
                     DisplayLayout, RenderLayout, nameof(DataTableLayout));
 
         public LocalizedString DisplayLayout(LayoutContext context) =>
-            T("Renders contents in a jQuery DataTable using {0}.", context.State.DataProvider);
+            T["Renders contents in a jQuery DataTable using {0}.", context.State.DataProvider];
 
         public dynamic RenderLayout(LayoutContext context, IEnumerable<LayoutComponentResult> layoutComponentResults)
         {

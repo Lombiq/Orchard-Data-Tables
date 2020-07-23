@@ -1,6 +1,7 @@
 ﻿using Orchard.DisplayManagement.Descriptors;
 using Orchard.Mvc;
 using System.Web;
+using Microsoft.AspNetCore.Http;
 
 namespace Lombiq.DataTables.Services
 {
@@ -21,7 +22,7 @@ namespace Lombiq.DataTables.Services
                 .Describe("Lombiq_DataTable")
                 .OnDisplaying(displaying =>
                 {
-                    if (_hca.Current().Request.IsContentPickerRequest())
+                    if (_hca.HttpContext.Request.IsContentPickerRequest())
                     {
                         displaying.ShapeMetadata.Alternates.Add("Lombiq_ContentPicker_DataTable");
                     }
