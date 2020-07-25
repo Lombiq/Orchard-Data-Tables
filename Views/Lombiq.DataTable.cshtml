@@ -1,5 +1,4 @@
-﻿@using Orchard.Projections.Models
-@using Lombiq.DataTables.Constants
+﻿@using Lombiq.DataTables.Constants
 @using Lombiq.DataTables.Controllers.Api
 @using Lombiq.DataTables.Models
 @using Lombiq.DataTables.ViewModels
@@ -13,8 +12,8 @@
     var skip = viewModel?.Skip ?? projectionPart?.Record.Skip ?? 0;
 
     var queryId = viewModel?.QueryId ?? 0;
-    var columnsDefinition = viewModel?.ColumnsDefinition as DataTableColumnsDefinition;
-    var columns = columnsDefinition?.Columns.ToList();
+    var columnsDefinition = viewModel?.ColumnsDefinition;
+    var columns = columnsDefinition?.Columns.ToList() ?? new List<DataTableColumnDefinition>();
     var childRowsEnabled = viewModel?.ChildRowsEnabled ?? false;
     var progressiveLoadingEnabled = viewModel?.ProgressiveLoadingEnabled ?? false;
     var queryStringParametersLocalStorageKey = viewModel?.QueryStringParametersLocalStorageKey ?? "";
@@ -23,7 +22,7 @@
     var dataTableCssClasses = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? ElementNames.DataTableWrapperDefaultElementName : viewModel.DataTableCssClasses;
 
     var defaultSortingColumnIndex = Math.Max(
-        0, Math.Max(columns.FindIndex(column => column.Orderable), columns.FindIndex(column => column.Name == columnsDefinition.DefaultSortingColumnName)));
+        0, Math.Max(columns.FindIndex(column => column.Orderable), columns.FindIndex(column => column.Name == columnsDefinition?.DefaultSortingColumnName)));
 
     var defaultSortingDirection = columnsDefinition?.DefaultSortingDirection ?? SortingDirection.Ascending;
     var defaultSortingDirectionValue = defaultSortingDirection == SortingDirection.Ascending ? "asc" : "desc";
@@ -31,10 +30,10 @@
     var rowApiUrl = Url.Action(nameof(DataTablesRowController.Get), typeof(DataTablesRowController).ControllerName(), new { Area = ResourceNames.Lombiq_DataTables });
     var childRowApiUrl = Url.Action(nameof(DataTablesChildRowController.Get), typeof(DataTablesChildRowController).ControllerName(), new { Area = ResourceNames.Lombiq_DataTables });
 
-    const string LoadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
-    const string RowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
-    const string ChildRowElementName = ElementNames.DataTableElementName + "__childRow";
-    const string ToggleChildRowButtonElementName = ElementNames.DataTableElementName + "__toggleChildRowButton";
+    const string loadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
+    const string rowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
+    const string childRowElementName = ElementNames.DataTableElementName + "__childRow";
+    const string toggleChildRowButtonElementName = ElementNames.DataTableElementName + "__toggleChildRowButton";
 }
 
 <script asp-name="@ResourceNames.Lombiq_DataTables" at="Head"></script>
@@ -69,7 +68,7 @@
                         </text>
                     }
                     language: {
-                        processing: "<div class=\"@LoadingIndicatorElementName\">@T["Loading..."]</div>"
+                        processing: "<div class=\"@loadingIndicatorElementName\">@T["Loading..."]</div>"
                     },
                     order: [["@defaultSortingColumnIndex", "@defaultSortingDirectionValue"]]
                 },
@@ -92,9 +91,9 @@
                         <text>
                             asyncLoading: true,
                             apiUrl: "@childRowApiUrl",
-                            childRowClassName: "@ChildRowElementName",
-                            toggleChildRowButtonClassName: "@ToggleChildRowButtonElementName",
-                            childRowVisibleClassName: "@RowElementWithChildRowVisibleModifier",
+                            childRowClassName: "@childRowElementName",
+                            toggleChildRowButtonClassName: "@toggleChildRowButtonElementName",
+                            childRowVisibleClassName: "@rowElementWithChildRowVisibleModifier",
                         </text>
                     }
                 }

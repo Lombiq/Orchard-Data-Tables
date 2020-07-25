@@ -1,37 +1,36 @@
-﻿@using Lombiq.DataTables.Constants
+﻿@using OrchardCore.Mvc.Core.Utilities
+@using Lombiq.DataTables.Constants
+@using Lombiq.DataTables.Controllers.Api
 @using Lombiq.DataTables.Models
 @using Lombiq.DataTables.ViewModels
-@using Lombiq.DataTables.Controllers.Api
-@using OrchardCore.Mvc.Core.Utilities
-
 @{
     var projectionPart = Model.ContentPart as ProjectionPart;
     var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
 
     var pageSize = viewModel?.PageSize ?? projectionPart?.Record.Items ?? Site.PageSize;
-    var skip = viewModel?.Skip ?? projectionPart?.Record.Skip ?? 0;
+    //var skip = viewModel?.Skip ?? projectionPart?.Record.Skip ?? 0;
 
-    const string DefaultBlockName = ElementNames.ContentPickerBlockName;
-    const string DefaultDataTableId = DefaultBlockName + "__dataTable";
-    const string SelectedContentIdsElementName = ElementNames.ContentPickerSelectedContentIdsElementName;
-    const string ContentSelectorElementName = DefaultBlockName + "__contentSelector";
-    const string ActionsElementName = DefaultBlockName + "__actions";
-    const string ActionElementName = DefaultBlockName + "__action";
-    const string SubmitActionElementName = DefaultBlockName + "__submitAction";
-    const string CancelActionElementName = DefaultBlockName + "__cancelAction";
-    const string LoadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
-    const string PickerInputDataName = "ContentPicker";
-    const string DataTableCheckboxBlockName = "dataTableCheckbox";
+    const string defaultBlockName = ElementNames.ContentPickerBlockName;
+    const string defaultDataTableId = defaultBlockName + "__dataTable";
+    const string selectedContentIdsElementName = ElementNames.ContentPickerSelectedContentIdsElementName;
+    const string contentSelectorElementName = defaultBlockName + "__contentSelector";
+    const string actionsElementName = defaultBlockName + "__actions";
+    const string actionElementName = defaultBlockName + "__action";
+    const string submitActionElementName = defaultBlockName + "__submitAction";
+    const string cancelActionElementName = defaultBlockName + "__cancelAction";
+    const string loadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
+    const string pickerInputDataName = "ContentPicker";
+    const string dataTableCheckboxBlockName = "dataTableCheckbox";
 
     var query = Context.Request.Query;
 
     var queryId = viewModel?.QueryId ?? 0;
-    var columnsDefinition = viewModel?.ColumnsDefinition as DataTableColumnsDefinition;
-    var columns = (new DataTableColumnDefinition[] { new DataTableColumnDefinition { Name = PickerInputDataName, Orderable = false, Text = T["Select"].Value } })
-        .Concat(columnsDefinition.Columns);
+    var columnsDefinition = viewModel?.ColumnsDefinition;
+    var columns = (new[] { new DataTableColumnDefinition { Name = pickerInputDataName, Orderable = false, Text = T["Select"].Value } })
+        .Concat(columnsDefinition?.Columns ?? Array.Empty<DataTableColumnDefinition>());
     var dataProvider = viewModel?.DataProvider ?? "";
-    var dataTableId = string.IsNullOrEmpty(viewModel?.DataTableId) ? DefaultDataTableId : viewModel.DataTableId;
-    var wrapperClassNames = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? DefaultBlockName : viewModel.DataTableCssClasses;
+    var dataTableId = string.IsNullOrEmpty(viewModel?.DataTableId) ? defaultDataTableId : viewModel.DataTableId;
+    var wrapperClassNames = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? defaultBlockName : viewModel.DataTableCssClasses;
     var hideActions = Model.HideActions != null ? (bool)Model.HideActions : query["HideActions"].FirstOrDefault() != null;
     var singleChoice = Model.SingleChoice != null ? (bool)Model.HideActions : query["SingleChoice"].FirstOrDefault() != null;
 
@@ -45,8 +44,8 @@
 @New.Lombiq_DataTable_Resources()
 @New.Lombiq_ContentPicker_DataTable_Resources()
 
-<div class="@wrapperClassNames @DefaultBlockName js-@DefaultBlockName">
-    <input type="hidden" name="@SelectedContentIdsElementName" class="@SelectedContentIdsElementName js-@SelectedContentIdsElementName" value="[]" />
+<div class="@wrapperClassNames @defaultBlockName js-@defaultBlockName">
+    <input type="hidden" name="@selectedContentIdsElementName" class="@selectedContentIdsElementName js-@selectedContentIdsElementName" value="[]" />
 
     @New.Lombiq_DataTable_Table(
         DataTableId: dataTableId,
@@ -54,9 +53,9 @@
 
     @if (!hideActions)
     {
-        <div class="@ActionsElementName">
-            <div class="@ActionElementName @CancelActionElementName js-@CancelActionElementName">@T["Cancel"]</div>
-            <div class="@ActionElementName @SubmitActionElementName js-@SubmitActionElementName">@T["Finish"]</div>
+        <div class="@actionsElementName">
+            <div class="@actionElementName @cancelActionElementName js-@cancelActionElementName">@T["Cancel"]</div>
+            <div class="@actionElementName @submitActionElementName js-@submitActionElementName">@T["Finish"]</div>
         </div>
     }
 </div>
@@ -80,15 +79,15 @@
             contentPicker = hasParent ? parent.contentPicker : window.contentPicker;
             contentPicker.finish = false;
 
-            var $selectedIdsElement = $(".js-@SelectedContentIdsElementName");
+            var $selectedIdsElement = $(".js-@selectedContentIdsElementName");
 
-            $(".js-@DefaultBlockName").on("change", ".js-@ContentSelectorElementName", function (e) {
+            $(".js-@defaultBlockName").on("change", ".js-@contentSelectorElementName", function () {
                 var contentItemId = parseInt($(this).closest(".@ElementNames.DataTableRowElementName").attr("data-contentItemId"));
 
                 @if (singleChoice)
                 {
                     <text>
-                        $(".js-@DefaultBlockName .js-@ContentSelectorElementName").not(this).each(function () {
+                        $(".js-@defaultBlockName .js-@contentSelectorElementName").not(this).each(function () {
                             if (this.checked) {
                                 var contentItemIdToRemove = parseInt(
                                     $(this).closest(".@ElementNames.DataTableRowElementName").attr("data-contentItemId"));
@@ -120,20 +119,20 @@
             {
                 <text>
                     if (contentPicker.cancelButtonContent) {
-                        $(".js-@CancelActionElementName").html(parent.contentPicker.cancelButtonContent);
+                        $(".js-@cancelActionElementName").html(parent.contentPicker.cancelButtonContent);
                     }
 
                     if (contentPicker.finishButtonContent) {
-                        $(".js-@SubmitActionElementName").html(parent.contentPicker.finishButtonContent);
+                        $(".js-@submitActionElementName").html(parent.contentPicker.finishButtonContent);
                     }
 
-                    $(".js-@CancelActionElementName").on("click", function () {
+                    $(".js-@cancelActionElementName").on("click", function () {
                         if (hasParent) {
                             parent.jQuery.fn.colorbox.close();
                         }
                     });
 
-                    $(".js-@SubmitActionElementName").on("click", function () {
+                    $(".js-@submitActionElementName").on("click", function () {
                         if (hasParent) {
                             contentPicker.finish = true;
                             parent.jQuery.colorbox.close();
@@ -145,7 +144,7 @@
             function createCheckboxElementHtml(contentItemId) {
                 var checked = contentPicker.selectedContentItemIds.indexOf(contentItemId) > -1;
 
-                return "<label class=\"@(DataTableCheckboxBlockName)__label\"><input type=\"checkbox\" class=\"checkbox @ContentSelectorElementName js-@ContentSelectorElementName @(DataTableCheckboxBlockName)__input\" " + (checked ? "checked" : "") + "/><span class=\"@(DataTableCheckboxBlockName)__indicator\"></span></label>";
+                return "<label class=\"@(dataTableCheckboxBlockName)__label\"><input type=\"checkbox\" class=\"checkbox @contentSelectorElementName js-@contentSelectorElementName @(dataTableCheckboxBlockName)__input\" " + (checked ? "checked" : "") + "/><span class=\"@(dataTableCheckboxBlockName)__indicator\"></span></label>";
             }
 
             $("#@dataTableId").lombiq_DataTables({
@@ -161,7 +160,7 @@
                         </text>
                     }
                     language: {
-                        processing: "<div class=\"@LoadingIndicatorElementName\">@T["Processing..."]</div>"
+                        processing: "<div class=\"@loadingIndicatorElementName\">@T["Processing..."]</div>"
                     },
                     order: [[@(columns.Any(column => column.Orderable) ? columns.ToList().FindIndex(column => column.Orderable) : 1), "asc"]]
                 },
@@ -169,7 +168,7 @@
                 callbacks: {
                     ajaxDataLoadedCallback: function (response) {
                         $.each(response.data, function (index, value) {
-                            value["@PickerInputDataName"] = createCheckboxElementHtml(value.id);
+                            value["@pickerInputDataName"] = createCheckboxElementHtml(value.id);
                         });
                     }
                 }
