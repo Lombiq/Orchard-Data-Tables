@@ -1,11 +1,11 @@
-﻿using Orchard.UI.Resources;
+﻿using OrchardCore.ResourceManagement;
 using static Lombiq.DataTables.Constants.ResourceNames;
 
 namespace Lombiq.DataTables
 {
     public class ResourceManifest : IResourceManifestProvider
     {
-        public void BuildManifests(ResourceManifestBuilder builder)
+        public void BuildManifests(IResourceManifestBuilder builder)
         {
             var manifest = builder.Add();
 
