@@ -9,12 +9,12 @@
     var rows = Model.Rows as IEnumerable<IEnumerable<string>>;
     var dataTableId = Model.DataTableId as string;
 
-    const string HeaderElementName = ElementNames.DataTableElementName + "__header";
-    const string HeaderRowElementName = ElementNames.DataTableElementName + "__headerRow";
-    const string HeaderCellElementName = ElementNames.DataTableElementName + "__headerCell";
-    const string BodyElementName = ElementNames.DataTableElementName + "__body";
-    const string CellElementName = ElementNames.DataTableElementName + "__cell";
-    const string ToggleChildRowCellElementName = ElementNames.DataTableElementName + "__toggleChildRowCell";
+    const string headerElementName = ElementNames.DataTableElementName + "__header";
+    const string headerRowElementName = ElementNames.DataTableElementName + "__headerRow";
+    const string headerCellElementName = ElementNames.DataTableElementName + "__headerCell";
+    const string bodyElementName = ElementNames.DataTableElementName + "__body";
+    const string cellElementName = ElementNames.DataTableElementName + "__cell";
+    const string toggleChildRowCellElementName = ElementNames.DataTableElementName + "__toggleChildRowCell";
 }
 
 @*
@@ -22,18 +22,18 @@
     See: https://datatables.net/examples/basic_init/flexible_width.html
 *@
 <table id="@dataTableId" class="@ElementNames.DataTableElementName row-border stripe" width="100%">
-    <thead class="@HeaderElementName">
-        <tr class="@HeaderRowElementName">
+    <thead class="@headerElementName">
+        <tr class="@headerRowElementName">
             @if (childRowsEnabled)
             {
-                <th class="@HeaderCellElementName" data-class-name="@ToggleChildRowCellElementName"></th>
+                <th class="@headerCellElementName" data-class-name="@toggleChildRowCellElementName"></th>
             }
 
             @foreach (var column in columns)
             {
-                <th class="@HeaderCellElementName" 
-                    data-class-name="@CellElementName"
-                    data-orderable="@Json.Encode(column.Orderable)"
+                <th class="@headerCellElementName" 
+                    data-class-name="@cellElementName"
+                    data-orderable="@Json.Serialize(column.Orderable)"
                     @if (!string.IsNullOrEmpty(column.Name))
                     {
                         <text>data-name="@column.Name" data-data="@column.Name"</text>
@@ -43,7 +43,7 @@
             }
         </tr>
     </thead>
-    <tbody class="@BodyElementName">
+    <tbody class="@bodyElementName">
         @if (rows != null)
         {
             foreach (var row in rows)
@@ -51,7 +51,7 @@
                 <tr class="@ElementNames.DataTableRowElementName">
                     @foreach (var cell in row)
                     {
-                        <td class="@CellElementName">
+                        <td class="@cellElementName">
                             @Html.Raw(cell)
                         </td>
                     }

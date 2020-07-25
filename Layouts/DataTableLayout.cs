@@ -1,12 +1,8 @@
-﻿using Lombiq.DataTables.Forms;
+﻿using System.Collections.Generic;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.ViewModels;
-using Orchard.DisplayManagement;
-using Orchard.Localization;
-using Orchard.Projections.Descriptors.Layout;
-using Orchard.Projections.Services;
-using System.Collections.Generic;
 using Microsoft.Extensions.Localization;
+using OrchardCore.DisplayManagement;
 
 namespace Lombiq.DataTables.Layouts
 {
@@ -23,7 +19,7 @@ namespace Lombiq.DataTables.Layouts
             IDataTableDataProviderAccessor dataTableDataProviderAccessor,
             IStringLocalizer<DataTableLayout> stringLocalizer)
         {
-            _shapeFactory = shapeFactory;
+            _shapeFactory = shapeFactory.New;
             _dataTableDataProviderAccessor = dataTableDataProviderAccessor;
             T = stringLocalizer;
         }

@@ -1,12 +1,14 @@
 ﻿@using Lombiq.DataTables.Constants
 @using Lombiq.DataTables.Models
 @using Lombiq.DataTables.ViewModels
+@using Lombiq.DataTables.Controllers.Api
+@using OrchardCore.Mvc.Core.Utilities
 
 @{
     var projectionPart = Model.ContentPart as ProjectionPart;
     var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
 
-    var pageSize = viewModel?.PageSize ?? projectionPart?.Record.Items ?? WorkContext.CurrentSite.PageSize;
+    var pageSize = viewModel?.PageSize ?? projectionPart?.Record.Items ?? Site.PageSize;
     var skip = viewModel?.Skip ?? projectionPart?.Record.Skip ?? 0;
 
     const string DefaultBlockName = ElementNames.ContentPickerBlockName;
@@ -21,28 +23,32 @@
     const string PickerInputDataName = "ContentPicker";
     const string DataTableCheckboxBlockName = "dataTableCheckbox";
 
+    var query = Context.Request.Query;
+
     var queryId = viewModel?.QueryId ?? 0;
     var columnsDefinition = viewModel?.ColumnsDefinition as DataTableColumnsDefinition;
-    var columns = (new DataTableColumnDefinition[] { new DataTableColumnDefinition { Name = PickerInputDataName, Orderable = false, Text = T["Select"].Text } })
+    var columns = (new DataTableColumnDefinition[] { new DataTableColumnDefinition { Name = PickerInputDataName, Orderable = false, Text = T["Select"].Value } })
         .Concat(columnsDefinition.Columns);
     var dataProvider = viewModel?.DataProvider ?? "";
     var dataTableId = string.IsNullOrEmpty(viewModel?.DataTableId) ? DefaultDataTableId : viewModel.DataTableId;
     var wrapperClassNames = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? DefaultBlockName : viewModel.DataTableCssClasses;
-    var hideActions = Model.HideActions != null ? (bool)Model.HideActions : Request.QueryString["HideActions"] != null;
-    var singleChoice = Model.SingleChoice != null ? (bool)Model.HideActions : Request.QueryString["SingleChoice"] != null;
+    var hideActions = Model.HideActions != null ? (bool)Model.HideActions : query["HideActions"].FirstOrDefault() != null;
+    var singleChoice = Model.SingleChoice != null ? (bool)Model.HideActions : query["SingleChoice"].FirstOrDefault() != null;
 
-    var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
-    var childRowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesChildRow", Action = "Get" });
+    var rowApiUrl = Url.Action(
+        nameof(DataTablesRowController.Get),
+        typeof(DataTablesRowController).ControllerName(),
+        new { Area = ResourceNames.Lombiq_DataTables });
 }
 
-@Display.Lombiq_TargetBlank()
-@Display.Lombiq_DataTable_Resources()
-@Display.Lombiq_ContentPicker_DataTable_Resources()
+@New.Lombiq_TargetBlank()
+@New.Lombiq_DataTable_Resources()
+@New.Lombiq_ContentPicker_DataTable_Resources()
 
 <div class="@wrapperClassNames @DefaultBlockName js-@DefaultBlockName">
     <input type="hidden" name="@SelectedContentIdsElementName" class="@SelectedContentIdsElementName js-@SelectedContentIdsElementName" value="[]" />
 
-    @Display.Lombiq_DataTable_Table(
+    @New.Lombiq_DataTable_Table(
         DataTableId: dataTableId,
         Columns: columns)
 

@@ -1,15 +1,15 @@
 ﻿@using Orchard.Projections.Models
 @using Lombiq.DataTables.Constants
+@using Lombiq.DataTables.Controllers.Api
 @using Lombiq.DataTables.Models
 @using Lombiq.DataTables.ViewModels
+@using OrchardCore.Mvc.Core.Utilities
 
 @{
-    Script.Require(ResourceNames.Lombiq_DataTables).AtHead();
-
     var projectionPart = Model.ContentPart as ProjectionPart;
     var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
 
-    var pageSize = viewModel?.PageSize ?? projectionPart?.Record.Items ?? WorkContext.CurrentSite.PageSize;
+    var pageSize = viewModel?.PageSize ?? projectionPart?.Record.Items ?? Site.PageSize;
     var skip = viewModel?.Skip ?? projectionPart?.Record.Skip ?? 0;
 
     var queryId = viewModel?.QueryId ?? 0;
@@ -28,8 +28,8 @@
     var defaultSortingDirection = columnsDefinition?.DefaultSortingDirection ?? SortingDirection.Ascending;
     var defaultSortingDirectionValue = defaultSortingDirection == SortingDirection.Ascending ? "asc" : "desc";
 
-    var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
-    var childRowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesChildRow", Action = "Get" });
+    var rowApiUrl = Url.Action(nameof(DataTablesRowController.Get), typeof(DataTablesRowController).ControllerName(), new { Area = ResourceNames.Lombiq_DataTables });
+    var childRowApiUrl = Url.Action(nameof(DataTablesChildRowController.Get), typeof(DataTablesChildRowController).ControllerName(), new { Area = ResourceNames.Lombiq_DataTables });
 
     const string LoadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
     const string RowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
@@ -37,10 +37,12 @@
     const string ToggleChildRowButtonElementName = ElementNames.DataTableElementName + "__toggleChildRowButton";
 }
 
-@Display.Lombiq_DataTable_Resources()
+<script asp-name="@ResourceNames.Lombiq_DataTables" at="Head"></script>
+
+@New.Lombiq_DataTable_Resources()
 
 <div class="@dataTableCssClasses">
-    @Display.Lombiq_DataTable_Table(
+    @New.Lombiq_DataTable_Table(
         DataTableId: dataTableId,
         Columns: columns,
         ChildRowsEnabled: childRowsEnabled)
