@@ -4,11 +4,10 @@
 @using Lombiq.DataTables.Models
 @using Lombiq.DataTables.ViewModels
 @{
-    var projectionPart = Model.ContentPart as ProjectionPart;
     var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
 
-    var pageSize = viewModel?.PageSize ?? projectionPart?.Record.Items ?? Site.PageSize;
-    //var skip = viewModel?.Skip ?? projectionPart?.Record.Skip ?? 0;
+    var pageSize = viewModel?.PageSize ?? Site.PageSize;
+    //var skip = viewModel?.Skip ?? 0;
 
     const string defaultBlockName = ElementNames.ContentPickerBlockName;
     const string defaultDataTableId = defaultBlockName + "__dataTable";

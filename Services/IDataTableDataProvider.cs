@@ -1,6 +1,6 @@
 ﻿using Lombiq.DataTables.Models;
 using Microsoft.Extensions.Localization;
-using Orchard.ContentManagement;
+using OrchardCore.ContentManagement;
 
 namespace Lombiq.DataTables.Services
 {

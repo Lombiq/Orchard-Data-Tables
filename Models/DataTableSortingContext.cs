@@ -1,11 +1,11 @@
 ﻿using Lombiq.DataTables.Constants;
-using Orchard.ContentManagement;
+using OrchardCore.Queries;
 
 namespace Lombiq.DataTables.Models
 {
     public class DataTableSortingContext
     {
-        public IHqlQuery Query { get; set; }
+        public Query Query { get; set; }
         public SortingDirection Direction { get; set; }
         public DataTableColumnDefinition ColumnDefinition { get; set; }
     }

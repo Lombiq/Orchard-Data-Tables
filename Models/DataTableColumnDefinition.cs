@@ -1,5 +1,4 @@
-﻿using Orchard.ContentManagement.Records;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using static Lombiq.DataTables.Constants.DataTableColumnDefinitionSettingsKeys;
 
 namespace Lombiq.DataTables.Models
@@ -20,7 +19,7 @@ namespace Lombiq.DataTables.Models
 
 
         public static Dictionary<string, string> AdditionalSettingsForContentPartRecordPropertySorting<TRecord>(
-            string propertyName) where TRecord : ContentPartRecord =>
+            string propertyName) =>
             new Dictionary<string, string>()
             {
                 {

@@ -5,11 +5,10 @@
 @using OrchardCore.Mvc.Core.Utilities
 
 @{
-    var projectionPart = Model.ContentPart as ProjectionPart;
     var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
 
-    var pageSize = viewModel?.PageSize ?? projectionPart?.Record.Items ?? Site.PageSize;
-    var skip = viewModel?.Skip ?? projectionPart?.Record.Skip ?? 0;
+    var pageSize = viewModel?.PageSize ?? Site.PageSize;
+    var skip = viewModel?.Skip ?? 0;
 
     var queryId = viewModel?.QueryId ?? 0;
     var columnsDefinition = viewModel?.ColumnsDefinition;
