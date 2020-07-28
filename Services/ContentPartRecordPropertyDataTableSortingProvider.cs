@@ -1,6 +1,5 @@
 ﻿using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
-using Lombiq.Projections.Helpers;
 using System;
 using System.Linq;
 using static Lombiq.DataTables.Constants.DataTableColumnDefinitionSettingsKeys.ContentPartRecordPropertySorting;
@@ -13,6 +12,8 @@ namespace Lombiq.DataTables.Services
 
         public void Sort(DataTableSortingContext context)
         {
+            throw new NotImplementedException();
+            /*
             if (!CanSort(context.ColumnDefinition.DataSource)) return;
 
             var settings = context.ColumnDefinition.AdditionalSettings;
@@ -48,6 +49,7 @@ namespace Lombiq.DataTables.Services
                     if (context.Direction == SortingDirection.Ascending) order.Asc(filterPropertyName);
                     else order.Desc(filterPropertyName);
                 });
+                */
         }
     }
 }

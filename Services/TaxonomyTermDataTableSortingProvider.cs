@@ -1,6 +1,6 @@
-﻿using Lombiq.DataTables.Constants;
+﻿using System;
+using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
-using Lombiq.Projections.Models;
 using static Lombiq.DataTables.Constants.DataTableColumnDefinitionSettingsKeys;
 
 namespace Lombiq.DataTables.Services
@@ -19,6 +19,8 @@ namespace Lombiq.DataTables.Services
 
             var aliasName = "SortableTerms";
 
+            throw new NotImplementedException();
+            /*
             context
                 .Query
                 .Where(
@@ -35,7 +37,7 @@ namespace Lombiq.DataTables.Services
                     {
                         if (context.Direction == SortingDirection.Ascending) order.Asc(nameof(TitleSortableTermContentItem.Title));
                         else order.Desc(nameof(TitleSortableTermContentItem.Title));
-                    });
+                    }); */
         }
     }
 }
