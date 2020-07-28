@@ -16,11 +16,11 @@ namespace Lombiq.DataTables.Services
             var fieldName = context.ColumnDefinition[TaxonomyTermSorting.FieldName];
 
             if (string.IsNullOrEmpty(fieldName)) return;
+            throw new NotImplementedException();
+            /*
 
             var aliasName = "SortableTerms";
 
-            throw new NotImplementedException();
-            /*
             context
                 .Query
                 .Where(

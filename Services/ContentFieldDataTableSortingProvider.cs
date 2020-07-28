@@ -24,6 +24,7 @@ namespace Lombiq.DataTables.Services
         public void Sort(DataTableSortingContext context)
         {
             throw new NotImplementedException();
+            /*
             if (!CanSort(context.ColumnDefinition.DataSource)) return;
 
             var valueType = Type.GetType(context.ColumnDefinition[ContentFieldSorting.ValueType]);
@@ -33,7 +34,6 @@ namespace Lombiq.DataTables.Services
             var propertyName = context.ColumnDefinition[ContentFieldSorting.PropertyName];
             var aliasName = propertyName.ToSafeName();
 
-            /*
             context
                 .Query
                 .Where(
