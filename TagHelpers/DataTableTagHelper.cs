@@ -32,7 +32,7 @@ namespace Lombiq.DataTables.TagHelpers
         {
             if (ColumnsDefinition == null &&
                 _dataTableDataProviderAccessor.GetDataProvider(DataProvider) is { } dataProvider)
-                ColumnsDefinition = await dataProvider.GetColumnsDefinitionAsync();
+                ColumnsDefinition = await dataProvider.GetColumnsDefinitionAsync(QueryId);
             _shapeTagHelper.Properties["ViewModel"] = this;
 
             await _shapeTagHelper.ProcessAsync(context, output);

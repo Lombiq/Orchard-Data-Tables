@@ -12,8 +12,7 @@ namespace Lombiq.DataTables.Controllers.Api
     public class DataTablesRowController : Controller
     {
         private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviderAccessor;
-
-        public IStringLocalizer T { get; }
+        private readonly IStringLocalizer T;
 
 
         public DataTablesRowController(

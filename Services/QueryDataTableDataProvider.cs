@@ -15,10 +15,10 @@ namespace Lombiq.DataTables.Services
     {
         private readonly IQueryManager _queryManager;
         private readonly IContentManager _contentManager;
+        private readonly IStringLocalizer T;
 
         public string Name => nameof(QueryDataTableDataProvider);
         public LocalizedString Description => T["Query"];
-        public IStringLocalizer T { get; }
 
 
         public QueryDataTableDataProvider(
@@ -33,8 +33,7 @@ namespace Lombiq.DataTables.Services
 
 
         public Task<DataTableChildRowResponse> GetChildRowAsync(int id) => throw new NotImplementedException();
-        public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync() => throw new NotImplementedException();
-        public Task<DataTableRow> GetRowAsync(ContentItem contentItem) => throw new NotImplementedException();
+        public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) => throw new NotImplementedException();
 
 
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)

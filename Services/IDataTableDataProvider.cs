@@ -7,16 +7,11 @@ namespace Lombiq.DataTables.Services
 {
     public interface IDataTableDataProvider
     {
-        string Name { get; }
-
+        string Name => GetType().Name;
         LocalizedString Description { get; }
 
-        Task<DataTableRow> GetRowAsync(ContentItem contentItem);
-
         Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request);
-
-        Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync();
-
+        Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId);
         Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId);
     }
 }

@@ -35,8 +35,7 @@ namespace Lombiq.DataTables.Forms
     {
         private readonly dynamic _shapeFactory;
         private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviders;
-
-        public IStringLocalizer T { get; }
+        private readonly IStringLocalizer T;
 
 
         public DataTableLayoutForm(

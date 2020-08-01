@@ -19,9 +19,4 @@
     <PackageReference Include="Microsoft.Extensions.Localization" Version="3.1.6" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Properties\" />
-    <Folder Include="wwwroot" />
-  </ItemGroup>
-  
 </Project>
