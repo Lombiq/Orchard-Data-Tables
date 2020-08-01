@@ -28,7 +28,7 @@
 
             @foreach (var column in columns)
             {
-                <th class="@headerCellElementName" 
+                <th class="@headerCellElementName"
                     data-class-name="@cellElementName"
                     data-orderable="@Json.Serialize(column.Orderable)"
                     @if (!string.IsNullOrEmpty(column.Name))

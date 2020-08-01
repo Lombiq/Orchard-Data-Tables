@@ -1,3 +1,7 @@
+@using OrchardCore.ResourceManagement
+
+@inject IResourceManager ResourceManager
+
 @{
     var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
 
@@ -27,9 +31,10 @@
     const string rowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
     const string childRowElementName = ElementNames.DataTableElementName + "__childRow";
     const string toggleChildRowButtonElementName = ElementNames.DataTableElementName + "__toggleChildRowButton";
-}
 
-<script asp-name="@ResourceNames.Lombiq_DataTables" at="Head"></script>
+    ResourceManager.RegisterResource("script", ResourceNames.Lombiq_DataTables).AtHead();
+    ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Extensions_Responsive).AtHead();
+}
 
 @await DisplayAsync(await New.Lombiq_DataTable_Resources())
 

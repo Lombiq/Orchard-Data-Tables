@@ -15,8 +15,6 @@ namespace Lombiq.DataTables.TagHelpers
 
         public int Order { get; } = 0;
 
-        public DataTableDefinitionViewModel ViewModel { get; set; }
-
 
         public DataTableTagHelper(ShapeTagHelper shapeTagHelper,
             IEnumerable<IDataTableDataProvider> dataTableDataProviderAccessor)
@@ -27,21 +25,15 @@ namespace Lombiq.DataTables.TagHelpers
         }
 
 
-        public void Init(TagHelperContext context)
-        {
-        }
-
-        public void Process(TagHelperContext context, TagHelperOutput output)
-        {
-        }
+        public void Init(TagHelperContext context) { }
+        public void Process(TagHelperContext context, TagHelperOutput output) { }
 
         public async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            ViewModel ??= this;
-            if (ViewModel.ColumnsDefinition == null &&
-                _dataTableDataProviderAccessor.GetDataProvider(ViewModel.DataProvider) is { } dataProvider)
-                ViewModel.ColumnsDefinition = await dataProvider.GetColumnsDefinitionAsync();
-            _shapeTagHelper.Properties[nameof(ViewModel)] = ViewModel;
+            if (ColumnsDefinition == null &&
+                _dataTableDataProviderAccessor.GetDataProvider(DataProvider) is { } dataProvider)
+                ColumnsDefinition = await dataProvider.GetColumnsDefinitionAsync();
+            _shapeTagHelper.Properties["ViewModel"] = this;
 
             await _shapeTagHelper.ProcessAsync(context, output);
         }

@@ -32,7 +32,7 @@ namespace Lombiq.DataTables
                 .SetUrl("~/Lombiq.DataTables/Content/DataTables/dataTables.min.css", "~/Lombiq.DataTables/Content/DataTables/dataTables.css");
             manifest
                 .DefineStyle(JQuery_DataTables_Extensions_Responsive)
-                .SetUrl("~/Lombiq.DataTables/Content/DataTables/Extensions/Responsive/css/dataTables.responsive.min.css")
+                .SetUrl("~/Lombiq.DataTables/Content/DataTables/Extensions/Responsive/css/responsive.dataTables.min.css")
                 .SetDependencies(JQuery_DataTables);
 
             // Custom resources.
@@ -44,7 +44,7 @@ namespace Lombiq.DataTables
                 .DefineScript(Lombiq_ContentPicker)
                 .SetUrl("~/Lombiq.DataTables/Scripts/lombiq-contentpicker.js")
                 .SetDependencies("jQueryColorBox");
-            
+
             manifest
                 .DefineStyle(Lombiq_ContentPicker)
                 .SetDependencies("jQueryColorBox");

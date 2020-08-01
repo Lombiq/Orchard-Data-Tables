@@ -3,50 +3,39 @@ using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
 using OrchardCore.Queries;
-using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lombiq.DataTables.Constants;
 
 namespace Lombiq.DataTables.Services
 {
     public class QueryDataTableDataProvider : IDataTableDataProvider
     {
         private readonly IQueryManager _queryManager;
+        private readonly IContentManager _contentManager;
 
         public string Name => nameof(QueryDataTableDataProvider);
         public LocalizedString Description => T["Query"];
-
-        public IStringLocalizer T { get; set; }
+        public IStringLocalizer T { get; }
 
 
         public QueryDataTableDataProvider(
             IQueryManager queryManager,
+            IContentManager contentManager,
             IStringLocalizer<QueryDataTableDataProvider> stringLocalizer)
         {
             _queryManager = queryManager;
+            _contentManager = contentManager;
             T = stringLocalizer;
         }
 
 
-        public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) => throw new NotImplementedException();
+        public Task<DataTableChildRowResponse> GetChildRowAsync(int id) => throw new NotImplementedException();
+        public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync() => throw new NotImplementedException();
+        public Task<DataTableRow> GetRowAsync(ContentItem contentItem) => throw new NotImplementedException();
 
-        public async Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync()
-        {
-            //var queryResult = await _queryManager.ExecuteQueryAsync(_query, _queryParameters);
-            return new DataTableColumnsDefinition
-            {
-                //Columns = queryResult.Items.Select(x => new DataTableColumnDefinition()),
-                //DefaultSortingColumnName = _defaultSortingColumnName,
-                DefaultSortingDirection = Constants.SortingDirection.Ascending,
-            };
-        }
-
-        public Task<DataTableRow> GetRowAsync(ContentItem contentItem)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
@@ -55,31 +44,37 @@ namespace Lombiq.DataTables.Services
                 var query = await _queryManager.GetQueryAsync(request.QueryId);
                 var isContentItem = query is OrchardCore.Lucene.LuceneQuery { ReturnContentItems: true };
 
-                var parameters = new Dictionary<string, object>();
+                var order = request.Order.FirstOrDefault();
+                var parameters = new Dictionary<string, object>
+                {
+                    ["from"] = request.Start,
+                    ["size"] = request.Length,
+                    ["sort"] = order?.Column?.Replace('_', '.') ?? "Content.ContentItem.PublishedUtc",
+                    ["order"] = order?.Direction == SortingDirection.Descending ? "desc" : "asc",
+                };
                 var queryResult = await _queryManager.ExecuteQueryAsync(query, parameters);
 
-                var columnDefinitions = new DataTableColumnDefinition[]
-                    {
-                        new DataTableColumnDefinition { Name = "Content.ContentItem.DisplayText", Orderable = true, Text = "Display Text" },
-                        new DataTableColumnDefinition { Name = "Content.ContentItem.PublishedUtc", Orderable = true, Text = "Published UTC" },
-                    };
+                var items = isContentItem
+                    ? await Task.WhenAll(queryResult.Items.Cast<ContentItem>().Select(_contentManager.LoadAsync))
+                    : queryResult.Items.ToArray();
+                var count = queryResult is LuceneQueryResults lucene ? lucene.Count : items.Length;
 
-                return new DataTableDataResponse
+                var result = new DataTableDataResponse
                 {
-                    Data = queryResult.Items
-                    .Select((x, i) => new DataTableRow
+                    Data = items.Select((x, i) => new DataTableRow
                     {
                         Id = i,
-                        ValuesDictionary = JObject.FromObject(x)
+                        ValuesDictionary = (JObject.FromObject(x) as IDictionary<string, JToken>)
+                            .ToDictionary(x => x.Key.Replace(".", "_"), x => x.Value)
                     }),
+                    RecordsTotal = count,
+                    RecordsFiltered = count,
                 };
+                return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return new DataTableDataResponse
-                {
-                    Error = ex.Message,
-                };
+                return new DataTableDataResponse { Error = ex.Message, };
             }
         }
     }
