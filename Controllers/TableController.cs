@@ -10,30 +10,52 @@ using OrchardCore.ContentManagement;
 
 namespace Lombiq.DataTables.Controllers
 {
-    public class QueryController : Controller
+    [Admin]
+    public class TableController : Controller
     {
-        private readonly IDataTableDataProvider _dataTableDataProvider;
+        private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviders;
         private readonly IContentManager _contentManager;
 
-        public QueryController(
+        public TableController(
             IEnumerable<IDataTableDataProvider> dataTableDataProviders,
             IContentManager contentManager)
         {
-            _dataTableDataProvider = dataTableDataProviders.Single(x => x.Name == nameof(QueryDataTableDataProvider));
+            _dataTableDataProviders = dataTableDataProviders;
             _contentManager = contentManager;
         }
 
-        [Admin]
         public async Task<IActionResult> Query(string queryName, string contentId)
         {
-            var model = new DataTableDefinitionViewModel
+            var provider = _dataTableDataProviders
+                .Single(x => x.Name == nameof(QueryDataTableDataProvider));
+            var definition = new DataTableDefinitionViewModel
             {
-                DataProvider = _dataTableDataProvider.Name,
+                DataProvider = provider.Name,
                 QueryId = queryName,
-                ColumnsDefinition = (await _contentManager.GetAsync(contentId)).As<DataTableColumnsDefinition>(),
+                ColumnsDefinition = (await _contentManager.GetAsync(contentId))
+                    .As<DataTableColumnsDefinitionPart>()
+                    .Definition,
             };
 
-            return View(model);
+            return View(nameof(Get), new DataTableViewModel { Definition = definition, Provider = provider});
+        }
+
+        public async Task<IActionResult> Get(string providerName, string id = null)
+        {
+            var provider = _dataTableDataProviders.Single(x => x.Name == providerName);
+            if (string.IsNullOrEmpty(id)) id = providerName;
+            var definition = new DataTableDefinitionViewModel
+            {
+                DataProvider = providerName,
+                QueryId = id,
+                ColumnsDefinition = await provider.GetColumnsDefinitionAsync(id),
+            };
+
+            return View(nameof(Get), new DataTableViewModel
+            {
+                Definition = definition,
+                Provider = provider,
+            });
         }
     }
 }

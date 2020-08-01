@@ -1,0 +1,5 @@
+@model DataTableViewModel
+
+<h2>@Model.Provider.Description</h2>
+
+@await DisplayAsync(await New.Lombiq_DataTable(ViewModel: Model.Definition))
