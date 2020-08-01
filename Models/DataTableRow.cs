@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ namespace Lombiq.DataTables.Models
     public class DataTableRow
     {
         [JsonExtensionData]
-        internal Dictionary<string, JToken> ValuesDictionary { get; set; }
+        internal IDictionary<string, JToken> ValuesDictionary { get; set; }
 
         [JsonProperty(PropertyName = "id")]
         public int Id { get; set; }

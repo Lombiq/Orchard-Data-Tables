@@ -1,20 +1,22 @@
-﻿using Lombiq.DataTables.Models;
+using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Lombiq.DataTables.Controllers.Api
 {
     public class DataTablesChildRowController : Controller
     {
-        private readonly IDataTableDataProviderAccessor _dataTableDataProviderAccessor;
+        private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviderAccessor;
 
         public IStringLocalizer T { get; }
 
 
         public DataTablesChildRowController(
-            IDataTableDataProviderAccessor dataTableDataProviderAccessor,
+            IEnumerable<IDataTableDataProvider> dataTableDataProviderAccessor,
             IStringLocalizer<DataTablesChildRowController> stringLocalizer)
         {
             _dataTableDataProviderAccessor = dataTableDataProviderAccessor;
@@ -22,7 +24,7 @@ namespace Lombiq.DataTables.Controllers.Api
         }
 
 
-        public ActionResult<DataTableChildRowResponse> Get(int contentItemId, string dataProvider)
+        public async Task<ActionResult<DataTableChildRowResponse>> Get(int contentItemId, string dataProvider)
         {
             var provider = _dataTableDataProviderAccessor.GetDataProvider(dataProvider);
             if (provider == null)
@@ -31,7 +33,7 @@ namespace Lombiq.DataTables.Controllers.Api
                 return BadRequest(DataTableChildRowResponse.ErrorResult(errorText));
             }
 
-            var response = provider.GetChildRow(contentItemId);
+            var response = await provider.GetChildRowAsync(contentItemId);
 
             return response;
         }

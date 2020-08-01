@@ -1,6 +1,7 @@
-﻿using Lombiq.DataTables.Models;
+using Lombiq.DataTables.Models;
 using Microsoft.Extensions.Localization;
 using OrchardCore.ContentManagement;
+using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services
 {
@@ -10,12 +11,12 @@ namespace Lombiq.DataTables.Services
 
         LocalizedString Description { get; }
 
-        DataTableRow GetRow(ContentItem contentItem);
+        Task<DataTableRow> GetRowAsync(ContentItem contentItem);
 
-        DataTableDataResponse GetRows(DataTableDataRequest request);
+        Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request);
 
-        DataTableColumnsDefinition GetColumnsDefinition();
+        Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync();
 
-        DataTableChildRowResponse GetChildRow(int contentItemId);
+        Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId);
     }
 }

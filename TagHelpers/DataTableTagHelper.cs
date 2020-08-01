@@ -1,8 +1,9 @@
-using System.Threading.Tasks;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.ViewModels;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using OrchardCore.DisplayManagement.TagHelpers;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.TagHelpers
 {
@@ -10,7 +11,7 @@ namespace Lombiq.DataTables.TagHelpers
     public class DataTableTagHelper : DataTableDefinitionViewModel, ITagHelper
     {
         private readonly ShapeTagHelper _shapeTagHelper;
-        private readonly IDataTableDataProviderAccessor _dataTableDataProviderAccessor;
+        private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviderAccessor;
 
         public int Order { get; } = 0;
 
@@ -18,7 +19,7 @@ namespace Lombiq.DataTables.TagHelpers
 
 
         public DataTableTagHelper(ShapeTagHelper shapeTagHelper,
-            IDataTableDataProviderAccessor dataTableDataProviderAccessor)
+            IEnumerable<IDataTableDataProvider> dataTableDataProviderAccessor)
         {
             _shapeTagHelper = shapeTagHelper;
             _shapeTagHelper.Type = "Lombiq_DataTable";
@@ -34,14 +35,15 @@ namespace Lombiq.DataTables.TagHelpers
         {
         }
 
-        public Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             ViewModel ??= this;
-            ViewModel.ColumnsDefinition ??= _dataTableDataProviderAccessor.GetDataProvider(ViewModel.DataProvider)
-                ?.GetColumnsDefinition();
+            if (ViewModel.ColumnsDefinition == null &&
+                _dataTableDataProviderAccessor.GetDataProvider(ViewModel.DataProvider) is { } dataProvider)
+                ViewModel.ColumnsDefinition = await dataProvider.GetColumnsDefinitionAsync();
             _shapeTagHelper.Properties[nameof(ViewModel)] = ViewModel;
 
-            return _shapeTagHelper.ProcessAsync(context, output);
+            await _shapeTagHelper.ProcessAsync(context, output);
         }
     }
 }
