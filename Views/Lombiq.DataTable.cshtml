@@ -1,16 +1,10 @@
-﻿@using Lombiq.DataTables.Constants
-@using Lombiq.DataTables.Controllers.Api
-@using Lombiq.DataTables.Models
-@using Lombiq.DataTables.ViewModels
-@using OrchardCore.Mvc.Core.Utilities
-
 @{
     var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
 
     var pageSize = viewModel?.PageSize ?? Site.PageSize;
     var skip = viewModel?.Skip ?? 0;
 
-    var queryId = viewModel?.QueryId ?? 0;
+    var queryId = viewModel?.QueryId ?? "";
     var columnsDefinition = viewModel?.ColumnsDefinition;
     var columns = columnsDefinition?.Columns.ToList() ?? new List<DataTableColumnDefinition>();
     var childRowsEnabled = viewModel?.ChildRowsEnabled ?? false;
@@ -37,13 +31,13 @@
 
 <script asp-name="@ResourceNames.Lombiq_DataTables" at="Head"></script>
 
-@New.Lombiq_DataTable_Resources()
+@await DisplayAsync(await New.Lombiq_DataTable_Resources())
 
 <div class="@dataTableCssClasses">
-    @New.Lombiq_DataTable_Table(
+    @await DisplayAsync(await New.Lombiq_DataTable_Table(
         DataTableId: dataTableId,
         Columns: columns,
-        ChildRowsEnabled: childRowsEnabled)
+        ChildRowsEnabled: childRowsEnabled))
 </div>
 
 <script type="text/javascript">
@@ -51,10 +45,10 @@
         $(function () {
             $("#@dataTableId").lombiq_DataTables({
                 rowClassName: "@ElementNames.DataTableRowElementName",
-                @if (queryId > 0)
+                @if (!string.IsNullOrWhiteSpace(queryId))
                 {
                     <text>
-                        queryId: @queryId,
+                        queryId: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(queryId)),
                     </text>
                 }
                 dataProvider: "@dataProvider",

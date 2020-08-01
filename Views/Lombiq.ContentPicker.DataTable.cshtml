@@ -1,8 +1,3 @@
-﻿@using OrchardCore.Mvc.Core.Utilities
-@using Lombiq.DataTables.Constants
-@using Lombiq.DataTables.Controllers.Api
-@using Lombiq.DataTables.Models
-@using Lombiq.DataTables.ViewModels
 @{
     var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
 
@@ -23,7 +18,7 @@
 
     var query = Context.Request.Query;
 
-    var queryId = viewModel?.QueryId ?? 0;
+    var queryId = viewModel?.QueryId ?? "";
     var columnsDefinition = viewModel?.ColumnsDefinition;
     var columns = (new[] { new DataTableColumnDefinition { Name = pickerInputDataName, Orderable = false, Text = T["Select"].Value } })
         .Concat(columnsDefinition?.Columns ?? Array.Empty<DataTableColumnDefinition>());
@@ -39,16 +34,14 @@
         new { Area = ResourceNames.Lombiq_DataTables });
 }
 
-@New.Lombiq_TargetBlank()
-@New.Lombiq_DataTable_Resources()
-@New.Lombiq_ContentPicker_DataTable_Resources()
+@await DisplayAsync(await New.Lombiq_TargetBlank())
+@await DisplayAsync(await New.Lombiq_DataTable_Resources())
+@await DisplayAsync(await New.Lombiq_ContentPicker_DataTable_Resources())
 
 <div class="@wrapperClassNames @defaultBlockName js-@defaultBlockName">
     <input type="hidden" name="@selectedContentIdsElementName" class="@selectedContentIdsElementName js-@selectedContentIdsElementName" value="[]" />
 
-    @New.Lombiq_DataTable_Table(
-        DataTableId: dataTableId,
-        Columns: columns)
+    @await DisplayAsync(await New.Lombiq_DataTable_Table(DataTableId: dataTableId, Columns: columns))
 
     @if (!hideActions)
     {
@@ -148,7 +141,7 @@
 
             $("#@dataTableId").lombiq_DataTables({
                 rowClassName: "@ElementNames.DataTableRowElementName",
-                queryId: @queryId,
+                queryId: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(queryId)),
                 dataProvider: "@dataProvider",
                 rowsApiUrl: "@rowApiUrl",
                 dataTablesOptions: {

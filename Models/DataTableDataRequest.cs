@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace Lombiq.DataTables.Models
@@ -6,7 +6,7 @@ namespace Lombiq.DataTables.Models
     public class DataTableDataRequest
     {
         [JsonProperty(PropertyName = "queryId")]
-        public int QueryId { get; set; }
+        public string QueryId { get; set; }
 
         [JsonProperty(PropertyName = "dataProvider")]
         public string DataProvider { get; set; }
