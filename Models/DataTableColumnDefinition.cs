@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using static Lombiq.DataTables.Constants.DataTableColumnDefinitionSettingsKeys;
 
 namespace Lombiq.DataTables.Models
 {
@@ -13,23 +12,8 @@ namespace Lombiq.DataTables.Models
 
         public string this[string key]
         {
-            get { return AdditionalSettings.ContainsKey(key) ? AdditionalSettings[key] : null; }
-            set { AdditionalSettings[key] = value; }
+            get => AdditionalSettings.ContainsKey(key) ? AdditionalSettings[key] : null;
+            set => AdditionalSettings[key] = value;
         }
-
-
-        public static Dictionary<string, string> AdditionalSettingsForContentPartRecordPropertySorting<TRecord>(
-            string propertyName) =>
-            new Dictionary<string, string>()
-            {
-                {
-                    ContentPartRecordPropertySorting.RecordTypeAssemblyQualifiedName,
-                    typeof(TRecord).AssemblyQualifiedName
-                },
-                {
-                    ContentPartRecordPropertySorting.PropertyName,
-                    propertyName
-                }
-            };
     }
 }
