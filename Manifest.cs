@@ -13,10 +13,11 @@ using static Lombiq.DataTables.Constants.ResourceNames;
     Id = Lombiq_DataTables,
     Name = "Data Tables",
     Category = "Content",
-    Description = "Module for displaying data from Projections using jQuery Data Tables.",
+    Description = "Module for displaying data from Queries using jQuery Data Tables.",
     Dependencies = new[]
     {
         "OrchardCore.Contents",
-        "OrchardCore.ResourceManagement"
+        "OrchardCore.ResourceManagement",
+        "OrchardCore.Queries"
     }
 )]
