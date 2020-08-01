@@ -5,7 +5,7 @@ using OrchardCore.ContentManagement;
 
 namespace Lombiq.DataTables.Models
 {
-    public class DataTableColumnsDefinition : ContentPart
+    public class DataTableColumnsDefinition
     {
         public IEnumerable<DataTableColumnDefinition> Columns { get; set; } = Enumerable.Empty<DataTableColumnDefinition>();
 
