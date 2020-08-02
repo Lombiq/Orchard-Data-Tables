@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -5,6 +6,7 @@ using System.Threading.Tasks;
 using Lombiq.DataTables.Models;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
+using OrchardCore.DisplayManagement;
 
 namespace Lombiq.DataTables.Services
 {
@@ -62,6 +64,12 @@ namespace Lombiq.DataTables.Services
 
         public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) =>
             Task.FromResult(new DataTableChildRowResponse());
+
+        public virtual Task<IEnumerable<IShape>> GetShapesBeforeTableAsync() =>
+            Task.FromResult<IEnumerable<IShape>>(Array.Empty<IShape>());
+
+        public virtual Task<IEnumerable<IShape>> GetShapesAfterTableAsync() =>
+            Task.FromResult<IEnumerable<IShape>>(Array.Empty<IShape>());
 
 
         /// <summary>

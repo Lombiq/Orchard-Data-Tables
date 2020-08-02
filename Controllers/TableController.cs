@@ -37,7 +37,13 @@ namespace Lombiq.DataTables.Controllers
                     .Definition,
             };
 
-            return View(nameof(Get), new DataTableViewModel { Definition = definition, Provider = provider});
+            return View(nameof(Get), new DataTableViewModel
+            {
+                Definition = definition,
+                Provider = provider,
+                BeforeTable = await provider.GetShapesBeforeTableAsync(),
+                AfterTable = await provider.GetShapesAfterTableAsync(),
+            });
         }
 
         public async Task<IActionResult> Get(string providerName, string id = null)
@@ -55,6 +61,8 @@ namespace Lombiq.DataTables.Controllers
             {
                 Definition = definition,
                 Provider = provider,
+                BeforeTable = await provider.GetShapesBeforeTableAsync(),
+                AfterTable = await provider.GetShapesAfterTableAsync(),
             });
         }
     }

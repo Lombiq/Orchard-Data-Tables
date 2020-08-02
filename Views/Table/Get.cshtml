@@ -1,5 +1,14 @@
+@using OrchardCore.DisplayManagement
 @model DataTableViewModel
 
 <h2>@Model.Provider.Description</h2>
 
+@foreach (var x in Model.BeforeTable ?? Array.Empty<IShape>())
+{
+    @await DisplayAsync(x)
+}
 @await DisplayAsync(await New.Lombiq_DataTable(ViewModel: Model.Definition))
+@foreach (var x in Model.AfterTable ?? Array.Empty<IShape>())
+{
+    @await DisplayAsync(x)
+}
