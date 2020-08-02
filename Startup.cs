@@ -1,6 +1,8 @@
+using Lombiq.DataTables.Migrations;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.TagHelpers;
 using Microsoft.Extensions.DependencyInjection;
+using OrchardCore.Data.Migration;
 using OrchardCore.DisplayManagement.Descriptors;
 using OrchardCore.Modules;
 using OrchardCore.ResourceManagement;
@@ -24,6 +26,7 @@ namespace Lombiq.DataTables
             services.AddTagHelpers<DataTableTagHelper>();
 
             services.AddScoped<IResourceManifestProvider, ResourceManifest>();
+            services.AddScoped<IDataMigration, ColumnsDefinitionMigrations>();
         }
     }
 }
