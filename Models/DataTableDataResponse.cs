@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ namespace Lombiq.DataTables.Models
     public class DataTableDataResponse
     {
         [JsonProperty(PropertyName = "draw")]
+        [Obsolete("For internal use only. It's overwritten during normal use.")]
         public int Draw { get; set; }
 
         [JsonProperty(PropertyName = "recordsTotal")]
