@@ -89,7 +89,8 @@
             dataTablesOptions.columnDefs = [{
                 targets: "_all",
                 render: function (data) {
-                    var template = data.match ? data.match(/^\s*{{\s*([^:]+)\s*:\s*([^}]*[^ \t}])\s*}}\s*$/) : null;
+                    var template = typeof data === "string" ?
+                        data.match(/^\s*{{\s*([^:]+)\s*:\s*([^}]*[^ \t}])\s*}}\s*$/) : null;
                     if (template && template[1] && template[2]) {
                         var templateName = template[1];
                         var templateData = template[2];
