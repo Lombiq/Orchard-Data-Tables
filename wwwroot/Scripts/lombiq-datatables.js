@@ -26,6 +26,7 @@
         rowsApiUrl: "",
         serverSidePagingEnabled: false,
         queryStringParametersLocalStorageKey: "",
+        templates: {},
         childRowOptions: {
             childRowsEnabled: false,
             asyncLoading: false,
@@ -84,6 +85,21 @@
                 }
             };
 
+            // Conditional renderer.
+            dataTablesOptions.columnDefs = [{
+                targets: "_all",
+                render: function (data) {
+                    var template = data.match ? data.match(/^\s*{{\s*([^:]+)\s*:\s*([^}]*[^ \t}])\s*}}\s*$/) : null;
+                    if (template && template[1] && template[2]) {
+                        var templateName = template[1];
+                        var templateData = template[2];
+                        return dataTablesOptions.templates[templateName].replace(/{{\s*data\s*}}/g, templateData);
+                    }
+
+                    return data;
+                }
+            }];
+
             // This is a workaround to properly adjust column widths.
             dataTablesOptions.initComplete = function () {
                 plugin.adjustColumns();
@@ -91,11 +107,11 @@
 
             if (plugin.settings.childRowOptions.childRowsEnabled) {
                 dataTablesOptions.order = [[1, "asc"]];
-                dataTablesOptions.columnDefs = [{
+                dataTablesOptions.columnDefs.push({
                     orderable: false,
                     defaultContent: "<div class=\"btn button " + plugin.settings.childRowOptions.toggleChildRowButtonClassName + "\"></div>",
                     targets: 0
-                }];
+                });
             }
 
             // Initialize server-side paging unless progressive loading is enabled.
@@ -166,7 +182,7 @@
                     }
                 });
             }
-            
+
             // Fetch items if progressive loading is enabled.
             if (!plugin.settings.serverSidePagingEnabled &&
                 plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
@@ -180,7 +196,7 @@
          * @returns {object} Cleaned-up query string parameters.
          */
         cleanUpDataTablesAjaxParameters: function (parameters) {
-            // Replacing column index to column name. 
+            // Replacing column index to column name.
             // Also rename properties and values to match back-end data model.
             for (var i = 0; i < parameters.order.length; i++) {
                 var orderData = parameters.order[i];
@@ -245,14 +261,14 @@
                     if (plugin.settings.progressiveLoadingOptions.itemCallback) {
                         plugin.settings.progressiveLoadingOptions.itemCallback(id, data, response);
                     }
-                    
+
                     plugin.dataTableApi.row.add(data).draw();
                 },
                 finishedCallback: function (success, total) {
                     if (plugin.settings.progressiveLoadingOptions.finishedCallback) {
                         plugin.settings.progressiveLoadingOptions.finishedCallback(success, total);
                     }
-                    
+
                     plugin.dataTableApi.processing(false);
                 }
             };
@@ -378,7 +394,7 @@
             plugin.loadRows(skip, options, callback);
         }
     });
-    
+
     $.fn[pluginName] = function (options) {
         // Return null if the element query is invalid.
         if (!this || this.length === 0) return null;
