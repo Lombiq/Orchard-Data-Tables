@@ -28,15 +28,7 @@ namespace Lombiq.DataTables.Controllers.Api
             DataTableDataRequest request,
             [FromQuery(Name = "order")] ICollection<Dictionary<string, string>> order)
         {
-            request.Order = order
-                .Select(x => new DataTableOrder
-                {
-                    Column = x["column"],
-                    Direction = x["direction"] == "ascending"
-                        ? SortingDirection.Ascending
-                        : SortingDirection.Descending
-                })
-                .ToArray();
+            request.SetOrder(order);
             var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
             if (dataProvider == null)
             {

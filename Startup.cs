@@ -16,10 +16,6 @@ namespace Lombiq.DataTables
             services.AddScoped<IDataTableDataProvider, QueryDataTableDataProvider>();
             services.AddScoped<QueryDataTableDataProvider>();
 
-            services.AddScoped<IDataTableSortingProvider, ContentFieldDataTableSortingProvider>();
-            services.AddScoped<IDataTableSortingProvider, ContentPartRecordPropertyDataTableSortingProvider>();
-            services.AddScoped<IDataTableSortingProvider, TaxonomyTermDataTableSortingProvider>();
-
             services.AddScoped<IShapeTableProvider, ContentPickerDataTableShapeTableProvider>();
             services.AddScoped<IShapeTableProvider, ContentPickerLayoutShapeTableProvider>();
 
