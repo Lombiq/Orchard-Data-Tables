@@ -12,8 +12,13 @@ namespace Lombiq.DataTables.Services
     {
         private readonly IStringLocalizer<ExcelDataTableExportService> T;
 
+        public string Name => nameof(ExcelDataTableExportService);
+        public string DefaultFileName => "export.xlsx";
+
+
         public ExcelDataTableExportService(IStringLocalizer<ExcelDataTableExportService> stringLocalizer) =>
             T = stringLocalizer;
+
 
 
         public async Task<Stream> ExportAsync(

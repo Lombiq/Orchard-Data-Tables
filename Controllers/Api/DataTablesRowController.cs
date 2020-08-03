@@ -12,14 +12,17 @@ namespace Lombiq.DataTables.Controllers.Api
     public class DataTablesRowController : Controller
     {
         private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviderAccessor;
+        private readonly Dictionary<string, IDataTableExportService> _exportServices;
         private readonly IStringLocalizer T;
 
 
         public DataTablesRowController(
             IEnumerable<IDataTableDataProvider> dataTableDataProviderAccessor,
+            IEnumerable<IDataTableExportService> exportServices,
             IStringLocalizer<DataTablesRowController> stringLocalizer)
         {
             _dataTableDataProviderAccessor = dataTableDataProviderAccessor;
+            _exportServices = exportServices.ToDictionary(x => x.Name);
             T = stringLocalizer;
         }
 
@@ -46,11 +49,26 @@ namespace Lombiq.DataTables.Controllers.Api
             // This property identifies the request for the jQuery.DataTables plugin. This needs to be parsed and
             // sent back in order to prevent Cross Site Scripting (XSS) attack.
             // See: https://datatables.net/manual/server-side
-            #pragma warning disable 618
+#pragma warning disable 618
             response.Draw = request.Draw;
-            #pragma warning restore 618
+#pragma warning restore 618
 
             return response;
+        }
+
+
+        public async Task<ActionResult<DataTableDataResponse>> Export(
+            DataTableDataRequest request,
+            [FromQuery(Name = "order")] ICollection<Dictionary<string, string>> order,
+            string name)
+        {
+            var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
+            var stream = await _exportServices[name].ExportAsync(dataProvider, request);
+
+            return new FileStreamResult(stream, _exportServices[name].ContentType)
+            {
+                FileDownloadName = _exportServices[name].DefaultFileName
+            };
         }
     }
 }
