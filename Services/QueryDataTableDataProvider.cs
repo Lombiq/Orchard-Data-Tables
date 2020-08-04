@@ -8,13 +8,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Lombiq.DataTables.Constants;
+using Microsoft.Extensions.Logging;
+using OrchardCore.Modules;
 
 namespace Lombiq.DataTables.Services
 {
     public class QueryDataTableDataProvider : IDataTableDataProvider
     {
+        private const string ErrorMessage = "Error while getting DataTable rows.";
+
         private readonly IQueryManager _queryManager;
         private readonly IContentManager _contentManager;
+        private readonly ILogger<QueryDataTableDataProvider> _logger;
         private readonly IStringLocalizer T;
 
         public string Name => nameof(QueryDataTableDataProvider);
@@ -24,10 +29,12 @@ namespace Lombiq.DataTables.Services
         public QueryDataTableDataProvider(
             IQueryManager queryManager,
             IContentManager contentManager,
+            ILogger<QueryDataTableDataProvider> logger,
             IStringLocalizer<QueryDataTableDataProvider> stringLocalizer)
         {
             _queryManager = queryManager;
             _contentManager = contentManager;
+            _logger = logger;
             T = stringLocalizer;
         }
 
@@ -71,9 +78,10 @@ namespace Lombiq.DataTables.Services
                 };
                 return result;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!ex.IsFatal())
             {
-                return new DataTableDataResponse { Error = ex.Message, };
+                _logger.LogError(ex, ErrorMessage);
+                return new DataTableDataResponse { Error = T[ErrorMessage] };
             }
         }
     }

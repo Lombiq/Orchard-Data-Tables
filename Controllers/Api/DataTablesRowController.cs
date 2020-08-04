@@ -46,9 +46,9 @@ namespace Lombiq.DataTables.Controllers.Api
             // This property identifies the request for the jQuery.DataTables plugin. This needs to be parsed and
             // sent back in order to prevent Cross Site Scripting (XSS) attack.
             // See: https://datatables.net/manual/server-side
-            #pragma warning disable 618
+#pragma warning disable 618
             response.Draw = request.Draw;
-            #pragma warning restore 618
+#pragma warning restore 618
 
             return response;
         }
