@@ -30,7 +30,7 @@
     var rowApiUrl = Url.Action(
         nameof(DataTablesRowController.Get),
         typeof(DataTablesRowController).ControllerName(),
-        new { Area = ResourceNames.Lombiq_DataTables });
+        new { Area = FeatureIds.Lombiq_DataTables });
 }
 
 @await DisplayAsync(await New.Lombiq_TargetBlank())

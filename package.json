@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "scripts": {
+    "dotnet-prebuild": "gulp"
+  },
+  "dependencies": {
+    "datatables.net": "1.10.20",
+    "datatables.net-bs4": "1.10.20",
+    "urijs": "1.19.2"
+  }
+}

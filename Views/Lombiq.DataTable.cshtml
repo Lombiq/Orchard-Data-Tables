@@ -24,8 +24,8 @@
     var defaultSortingDirection = columnsDefinition?.DefaultSortingDirection ?? SortingDirection.Ascending;
     var defaultSortingDirectionValue = defaultSortingDirection == SortingDirection.Ascending ? "asc" : "desc";
 
-    var rowApiUrl = Url.Action(nameof(DataTablesRowController.Get), typeof(DataTablesRowController).ControllerName(), new { Area = ResourceNames.Lombiq_DataTables });
-    var childRowApiUrl = Url.Action(nameof(DataTablesChildRowController.Get), typeof(DataTablesChildRowController).ControllerName(), new { Area = ResourceNames.Lombiq_DataTables });
+    var rowApiUrl = Url.Action(nameof(DataTablesRowController.Get), typeof(DataTablesRowController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
+    var childRowApiUrl = Url.Action(nameof(DataTablesChildRowController.Get), typeof(DataTablesChildRowController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
 
     const string loadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
     const string rowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";

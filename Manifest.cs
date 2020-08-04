@@ -1,5 +1,5 @@
 using OrchardCore.Modules.Manifest;
-using static Lombiq.DataTables.Constants.ResourceNames;
+using static Lombiq.DataTables.Constants.FeatureIds;
 
 [assembly: Module(
     Name = "Data Tables",
