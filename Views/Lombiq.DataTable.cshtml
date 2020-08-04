@@ -35,8 +35,8 @@
 
     const string templatePlaceholder = "{{data}}";
 
-    ResourceManager.RegisterResource("script", ResourceNames.Lombiq_DataTables).AtHead();
-    ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Extensions_Responsive).AtHead();
+    ResourceManager.RegisterResource("script", ResourceNames.Lombiq_DataTables).AtFoot();
+    ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Bootstrap4);
 }
 
 @await DisplayAsync(await New.Lombiq_DataTable_Resources())
@@ -69,7 +69,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<script depends-on="@ResourceNames.Lombiq_DataTables" at="Foot">
     ; (function ($) {
         $(function () {
             var templates = {};

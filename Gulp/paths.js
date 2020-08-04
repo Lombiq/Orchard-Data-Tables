@@ -14,6 +14,10 @@ module.exports = {
         {
             name: 'datatables.net-bs4-css',
             path: nodeModulesBasePath + 'datatables.net-bs4/css/*'
+        },
+        {
+            name: 'urijs',
+            path: nodeModulesBasePath + 'urijs/src/**'
         }
     ],
     lombiqAssets: [

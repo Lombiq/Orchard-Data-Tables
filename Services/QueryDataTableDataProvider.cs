@@ -73,8 +73,8 @@ namespace Lombiq.DataTables.Services
                         ValuesDictionary = (JObject.FromObject(x) as IDictionary<string, JToken>)
                             .ToDictionary(x => x.Key.Replace(".", "_"), x => x.Value)
                     }),
-                    ItemsTotal = count,
-                    ItemsFiltered = count,
+                    RecordsTotal = count,
+                    RecordsFiltered = count,
                 };
                 return result;
             }
