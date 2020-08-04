@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <AssemblyVersion>9.0.30729</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
