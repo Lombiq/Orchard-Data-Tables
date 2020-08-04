@@ -62,6 +62,10 @@ namespace Lombiq.DataTables.Controllers.Api
             [FromQuery(Name = "order")] ICollection<Dictionary<string, string>> order,
             string name)
         {
+            request.SetOrder(order);
+            request.Start = 0;
+            request.Length = 999_999; // One for the header, Excel can take a million rows.
+
             var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
             var stream = await _exportServices[name].ExportAsync(dataProvider, request);
 
