@@ -66,11 +66,11 @@ namespace Lombiq.DataTables.Services
         public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) =>
             Task.FromResult(new DataTableChildRowResponse());
 
-        public virtual Task<IEnumerable<IShape>> GetShapesBeforeTableAsync() =>
-            Task.FromResult<IEnumerable<IShape>>(Array.Empty<IShape>());
+        public virtual Task<IEnumerable<dynamic>> GetShapesBeforeTableAsync() =>
+            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
 
-        public virtual Task<IEnumerable<IShape>> GetShapesAfterTableAsync() =>
-            Task.FromResult<IEnumerable<IShape>>(Array.Empty<IShape>());
+        public virtual Task<IEnumerable<dynamic>> GetShapesAfterTableAsync() =>
+            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
 
 
         /// <summary>
