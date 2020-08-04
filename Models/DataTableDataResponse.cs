@@ -14,9 +14,9 @@ namespace Lombiq.DataTables.Models
         /// sent back in order to prevent Cross Site Scripting (XSS) attack.
         /// See: https://datatables.net/manual/server-side
         /// </summary>
+        /// <remarks>For internal use only. It's overwritten during normal use.</remarks>
         [JsonProperty(PropertyName = "draw")]
-        [Obsolete("For internal use only. It's overwritten during normal use.")]
-        public int Draw { get; set; }
+        internal int Draw { get; set; }
 
         /// <summary>
         /// Extra informational field that shows the actual total if filtering (such as keyword search) is used. When
