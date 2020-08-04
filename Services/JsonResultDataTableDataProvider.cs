@@ -56,7 +56,7 @@ namespace Lombiq.DataTables.Services
 
             return new DataTableDataResponse
             {
-                Data = rows, RecordsFiltered = results.Count, RecordsTotal = results.Count
+                Data = rows, ItemsFiltered = results.Count, ItemsTotal = results.Count
             };
         }
 

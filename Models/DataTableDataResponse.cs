@@ -13,11 +13,11 @@ namespace Lombiq.DataTables.Models
         [Obsolete("For internal use only. It's overwritten during normal use.")]
         public int Draw { get; set; }
 
-        [JsonProperty(PropertyName = "recordsTotal")]
-        public int RecordsTotal { get; set; }
+        [JsonProperty(PropertyName = "itemsTotal")]
+        public int ItemsTotal { get; set; }
 
-        [JsonProperty(PropertyName = "recordsFiltered")]
-        public int RecordsFiltered { get; set; }
+        [JsonProperty(PropertyName = "itemsFiltered")]
+        public int ItemsFiltered { get; set; }
 
         [JsonProperty(PropertyName = "data")]
         public IEnumerable<DataTableRow> Data { get; set; }
