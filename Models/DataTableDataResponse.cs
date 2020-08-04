@@ -9,6 +9,11 @@ namespace Lombiq.DataTables.Models
 {
     public class DataTableDataResponse
     {
+        /// <summary>
+        /// This property identifies the request for the jQuery.DataTables plugin. This needs to be parsed and
+        /// sent back in order to prevent Cross Site Scripting (XSS) attack.
+        /// See: https://datatables.net/manual/server-side
+        /// </summary>
         [JsonProperty(PropertyName = "draw")]
         [Obsolete("For internal use only. It's overwritten during normal use.")]
         public int Draw { get; set; }
