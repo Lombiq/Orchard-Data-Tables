@@ -15,14 +15,14 @@ namespace Lombiq.DataTables.Services
             {
                 DefaultSortingColumnName = sortingColumn,
                 DefaultSortingDirection = sortingDirection,
-                Columns = columns.Select(x =>
+                Columns = columns.Select(column =>
                     {
-                        var nameParts = x.Name.Contains('|') ? x.Name.Split('|') : new[] { x.Name };
+                        var nameParts = column.Name.Contains('|') ? column.Name.Split('|') : new[] { column.Name };
                         return new DataTableColumnDefinition
                         {
                             DataSource = self.Name,
                             Name = nameParts[0],
-                            Text = x.Text,
+                            Text = column.Text,
                             Regex = nameParts.Length == 3 ? (nameParts[1], nameParts[2]) as (string, string)? : null,
                         };
                     })

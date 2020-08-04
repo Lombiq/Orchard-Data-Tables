@@ -25,7 +25,7 @@ namespace Lombiq.DataTables.Services
         {
             var columnsDefinition = GetColumnsDefinition(request.QueryId);
             var columns = columnsDefinition.Columns
-                .Select(x => new { Path = x.Name.Replace('_', '.'), x.Name, x.Regex })
+                .Select(column => new { Path = column.Name.Replace('_', '.'), column.Name, column.Regex })
                 .ToList();
             var order = request.Order.FirstOrDefault() ?? new DataTableOrder
             {
