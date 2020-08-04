@@ -13,8 +13,7 @@ namespace Lombiq.DataTables
     {
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IDataTableDataProvider, QueryDataTableDataProvider>();
-            services.AddScoped<QueryDataTableDataProvider>();
+            services.AddDataTableDataProvider<QueryDataTableDataProvider>();
 
             services.AddScoped<IShapeTableProvider, ContentPickerDataTableShapeTableProvider>();
             services.AddScoped<IShapeTableProvider, ContentPickerLayoutShapeTableProvider>();
