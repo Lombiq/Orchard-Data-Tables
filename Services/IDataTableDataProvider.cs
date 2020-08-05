@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Lombiq.DataTables.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using OrchardCore.DisplayManagement;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services
 {
@@ -28,7 +28,7 @@ namespace Lombiq.DataTables.Services
         LocalizedString Description { get; }
 
         /// <summary>
-        /// Returns the table body that result from the provided request.
+        /// Returns the table body created based on the provided request.
         /// </summary>
         /// <param name="request">Describes the desired state of the table.</param>
         /// <returns>The resulting table content and some metadata.</returns>

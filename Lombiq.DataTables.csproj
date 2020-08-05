@@ -3,8 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <DefaultItemExcludes>$(DefaultItemExcludes);Tests\**</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);.git*;node_modules\**;Tests\**</DefaultItemExcludes>
   </PropertyGroup>
+
+  <Import Project="..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
+  <Import Project="..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
 
   <ItemGroup>
     <None Remove="Tests\**" />
@@ -24,6 +27,11 @@
     <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-rc1-12811" />
     <PackageReference Include="OrchardCore.Lucene" Version="1.0.0-rc1-12811" />
     <PackageReference Include="OrchardCore.Queries" Version="1.0.0-rc1-12811" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.csproj" />
+    <ProjectReference Include="..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.csproj" />
   </ItemGroup>
 
 </Project>
