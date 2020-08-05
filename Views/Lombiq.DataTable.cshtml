@@ -26,6 +26,7 @@
 
     var rowApiUrl = Url.Action(nameof(DataTablesRowController.Get), typeof(DataTablesRowController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
     var childRowApiUrl = Url.Action(nameof(DataTablesChildRowController.Get), typeof(DataTablesChildRowController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
+    var exportApiUrl = Url.Action(nameof(DataTablesRowController.Export), typeof(DataTablesRowController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
 
     const string loadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
     const string rowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
@@ -90,6 +91,12 @@
                 }
                 dataProvider: "@dataProvider",
                 rowsApiUrl: "@rowApiUrl",
+                export: @Json.Serialize(new
+                               {
+                                   textAll = T["Export All"].Value,
+                                   textVisible = T["Export Visible"].Value,
+                                   api = exportApiUrl,
+                               }),
                 dataTablesOptions: {
                     @if (pageSize > 0)
                     {

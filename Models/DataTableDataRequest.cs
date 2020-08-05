@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lombiq.DataTables.Constants;
@@ -32,7 +33,8 @@ namespace Lombiq.DataTables.Models
         public DataTableOrder[] Order { get; set; }
 
         public void SetOrder(IEnumerable<Dictionary<string, string>> orders) =>
-            Order = orders
+            Order = orders?
+                .Where(order => order.ContainsKey("column") && order.ContainsKey("direction"))
                 .Select(order => new DataTableOrder
                 {
                     Column = order["column"],
@@ -40,6 +42,6 @@ namespace Lombiq.DataTables.Models
                         ? SortingDirection.Ascending
                         : SortingDirection.Descending
                 })
-                .ToArray();
+                .ToArray() ?? Array.Empty<DataTableOrder>();
     }
 }

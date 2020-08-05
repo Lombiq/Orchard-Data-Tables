@@ -5,7 +5,7 @@ using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Lombiq.DataTables.Constants;
+using Newtonsoft.Json;
 
 namespace Lombiq.DataTables.Controllers.Api
 {
@@ -66,17 +66,18 @@ namespace Lombiq.DataTables.Controllers.Api
 
 
         public async Task<ActionResult<DataTableDataResponse>> Export(
-            DataTableDataRequest request,
-            [FromQuery(Name = "order")] ICollection<Dictionary<string, string>> order,
-            string name,
+            string requestJson,
+            string name = null,
             bool exportAll = true)
         {
-            request.SetOrder(order);
+            var request = JsonConvert.DeserializeObject<DataTableDataRequest>(requestJson);
             if (exportAll)
             {
                 request.Start = 0;
                 request.Length = 999_999; // One for the header, Excel can take a million rows.
             }
+
+            if (string.IsNullOrWhiteSpace(name)) name = _exportServices.Keys.First();
 
             var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
             var stream = await _exportServices[name].ExportAsync(dataProvider, request);

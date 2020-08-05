@@ -10,6 +10,9 @@
     "use strict";
 
     var pluginName = "lombiq_DataTables";
+    var useDefaultButtons = "useDefaultButtons";
+
+    var state = {};
 
     var defaults = {
         dataTablesOptions: {
@@ -18,7 +21,9 @@
             processing: true,
             info: false,
             lengthChange: false,
-            scrollX: true
+            scrollX: true,
+            dom: 'Bfrtip',
+            buttons: useDefaultButtons
         },
         rowClassName: "",
         queryId: "",
@@ -72,10 +77,11 @@
          */
         init: function () {
             var plugin = this;
+            var instanceId = Math.random().toString();
 
             plugin.originalQueryStringParameters = new URI().search(true);
 
-            var dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
+            var dataTablesOptions = $.extend({ }, plugin.settings.dataTablesOptions);
 
             dataTablesOptions.rowCallback = function (row, data, index) {
                 if (data.id) {
@@ -130,6 +136,7 @@
                             dataProvider: plugin.settings.dataProvider,
                             originalUrl: window.location.href
                         });
+                        state[instanceId] = extendedParameters;
 
                         if (plugin.settings.queryStringParametersLocalStorageKey) {
                             localStorage.setItem(
@@ -145,6 +152,25 @@
                         return response.data;
                     }
                 };
+            }
+
+            function exportAction(exportAll) {
+                return function () {
+                    location.href = URI(plugin.settings.export.api)
+                        .search({ requestJson: JSON.stringify(state[instanceId]), exportAll: exportAll });
+                }
+            }
+            if (dataTablesOptions.buttons === useDefaultButtons) {
+                dataTablesOptions.buttons = [
+                    {
+                        text: plugin.settings.export.textAll,
+                        action: exportAction(true)
+                    },
+                    {
+                        text: plugin.settings.export.textVisible,
+                        action: exportAction(false)
+                    }
+                ];
             }
 
             plugin.dataTableElement = $(plugin.element).dataTable(dataTablesOptions);

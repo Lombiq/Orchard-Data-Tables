@@ -1,8 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Lombiq.DataTables.Models;
-using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
 
@@ -10,15 +10,8 @@ namespace Lombiq.DataTables.Services
 {
     public class ExcelDataTableExportService : IDataTableExportService
     {
-        private readonly IStringLocalizer<ExcelDataTableExportService> T;
-
         public string Name => nameof(ExcelDataTableExportService);
         public string DefaultFileName => "export.xlsx";
-
-
-        public ExcelDataTableExportService(IStringLocalizer<ExcelDataTableExportService> stringLocalizer) =>
-            T = stringLocalizer;
-
 
 
         public async Task<Stream> ExportAsync(
@@ -56,8 +49,19 @@ namespace Lombiq.DataTables.Services
                     var cell = worksheet.Cells[row, c + 1];
                     var value = item.ValuesDictionary[columns[c].Name];
 
-                    cell.Value = value;
                     if (value.Type == JTokenType.Date) cell.Style.Numberformat.Format = "mm/dd/yyyy hh:mm:ss AM/PM";
+
+                    cell.Value = value.Type switch
+                    {
+                        JTokenType.Boolean => value.ToObject<bool>(),
+                        JTokenType.Date => value.ToObject<DateTime>(),
+                        JTokenType.Float => value.ToObject<double>(),
+                        JTokenType.Integer => value.ToObject<int>(),
+                        JTokenType.Null => null,
+                        JTokenType.TimeSpan => value.ToObject<TimeSpan>(),
+                        JTokenType.Array => string.Join(", ", ((JArray)value).Select(item => item.ToString())),
+                        _ => value.ToString()
+                    };
                 }
             }
 
