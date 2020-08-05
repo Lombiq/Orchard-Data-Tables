@@ -15,8 +15,6 @@ namespace Lombiq.DataTables.Services
 {
     public class QueryDataTableDataProvider : IDataTableDataProvider
     {
-        private const string ErrorMessage = "Error while getting DataTable rows.";
-
         private readonly IQueryManager _queryManager;
         private readonly IContentManager _contentManager;
         private readonly ILogger<QueryDataTableDataProvider> _logger;
@@ -80,8 +78,8 @@ namespace Lombiq.DataTables.Services
             }
             catch (Exception ex) when (!ex.IsFatal())
             {
-                _logger.LogError(ex, ErrorMessage);
-                return new DataTableDataResponse { Error = T[ErrorMessage] };
+                _logger.LogError(ex, "Error while getting DataTable rows.");
+                return new DataTableDataResponse { Error = T["Error while getting DataTable rows."] };
             }
         }
     }
