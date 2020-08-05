@@ -8,12 +8,24 @@ module.exports = {
             path: nodeModulesBasePath + 'datatables.net/js/*'
         },
         {
+            name: 'datatables.net-buttons',
+            path: nodeModulesBasePath + 'datatables.net-buttons/js/*'
+        },
+        {
             name: 'datatables.net-bs4-js',
             path: nodeModulesBasePath + 'datatables.net-bs4/js/*'
         },
         {
             name: 'datatables.net-bs4-css',
             path: nodeModulesBasePath + 'datatables.net-bs4/css/*'
+        },
+        {
+            name: 'datatables.net-bs4-js',
+            path: nodeModulesBasePath + 'datatables.net-buttons-bs4/js/*'
+        },
+        {
+            name: 'datatables.net-bs4-css',
+            path: nodeModulesBasePath + 'datatables.net-buttons-bs4/css/*'
         },
         {
             name: 'urijs',

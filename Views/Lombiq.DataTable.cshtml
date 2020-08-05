@@ -36,7 +36,9 @@
     const string templatePlaceholder = "{{data}}";
 
     ResourceManager.RegisterResource("script", ResourceNames.Lombiq_DataTables).AtFoot();
+    ResourceManager.RegisterResource("script", ResourceNames.JQuery_DataTables_Buttons_Bootstrap4).AtFoot();
     ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Bootstrap4);
+    ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Buttons_Bootstrap4);
 }
 
 @await DisplayAsync(await New.Lombiq_DataTable_Resources())
