@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -10,14 +11,17 @@ namespace Lombiq.DataTables.Controllers.Api
     public class DataTablesChildRowController : Controller
     {
         private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviderAccessor;
+        private readonly IAuthorizationService _authorizationService;
         private readonly IStringLocalizer T;
 
 
         public DataTablesChildRowController(
             IEnumerable<IDataTableDataProvider> dataTableDataProviderAccessor,
+            IAuthorizationService authorizationService,
             IStringLocalizer<DataTablesChildRowController> stringLocalizer)
         {
             _dataTableDataProviderAccessor = dataTableDataProviderAccessor;
+            _authorizationService = authorizationService;
             T = stringLocalizer;
         }
 
@@ -31,6 +35,10 @@ namespace Lombiq.DataTables.Controllers.Api
                 return BadRequest(DataTableChildRowResponse.ErrorResult(errorText));
             }
 
+            if (!(await provider.Authorize(_authorizationService, User)))
+            {
+                return DataTableChildRowResponse.ErrorResult(T["Unauthorized!"]);
+            }
             return await provider.GetChildRowAsync(contentItemId);
         }
     }

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.0.0" />
     <PackageReference Include="OrchardCore.Contents" Version="1.0.0-rc1-12811" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="1.0.0-rc1-12811" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-rc1-12811" />

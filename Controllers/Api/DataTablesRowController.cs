@@ -1,25 +1,27 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Lombiq.DataTables.Constants;
 
 namespace Lombiq.DataTables.Controllers.Api
 {
     public class DataTablesRowController : Controller
     {
         private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviderAccessor;
+        private readonly IAuthorizationService _authorizationService;
         private readonly IStringLocalizer T;
 
 
         public DataTablesRowController(
             IEnumerable<IDataTableDataProvider> dataTableDataProviderAccessor,
+            IAuthorizationService authorizationService,
             IStringLocalizer<DataTablesRowController> stringLocalizer)
         {
             _dataTableDataProviderAccessor = dataTableDataProviderAccessor;
+            _authorizationService = authorizationService;
             T = stringLocalizer;
         }
 
@@ -51,6 +53,10 @@ namespace Lombiq.DataTables.Controllers.Api
                 return BadRequest(DataTableDataResponse.ErrorResult(T["Length can't be 0."].Value));
             }
 
+            if (!(await dataProvider.Authorize(_authorizationService, User)))
+            {
+                return DataTableDataResponse.ErrorResult(T["Unauthorized!"]);
+            }
             var response = await dataProvider.GetRowsAsync(request);
 
             // This property identifies the request for the jQuery.DataTables plugin. This needs to be parsed and

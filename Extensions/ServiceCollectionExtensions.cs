@@ -9,8 +9,6 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static IServiceCollection AddDataTableDataProvider<TDataProvider>(this IServiceCollection services)
             where TDataProvider : class, IDataTableDataProvider =>
-            services
-                .AddScoped<IDataTableDataProvider, TDataProvider>()
-                .AddScoped<TDataProvider>();
+            services.AddScoped<IDataTableDataProvider, TDataProvider>();
     }
 }
