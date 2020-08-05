@@ -14,6 +14,7 @@ namespace Lombiq.DataTables
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddDataTableDataProvider<QueryDataTableDataProvider>();
+            services.AddDataTableExportService<ExcelDataTableExportService>();
 
             services.AddScoped<IShapeTableProvider, ContentPickerDataTableShapeTableProvider>();
             services.AddScoped<IShapeTableProvider, ContentPickerLayoutShapeTableProvider>();

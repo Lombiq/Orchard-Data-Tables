@@ -12,5 +12,14 @@ namespace Microsoft.Extensions.DependencyInjection
             services
                 .AddScoped<IDataTableDataProvider, TDataProvider>()
                 .AddScoped<TDataProvider>();
+
+        /// <summary>
+        /// Registers a <see cref="IDataTableDataProvider"/> for DataTables.
+        /// </summary>
+        public static IServiceCollection AddDataTableExportService<TService>(this IServiceCollection services)
+            where TService : class, IDataTableExportService =>
+            services
+                .AddScoped<IDataTableExportService, TService>()
+                .AddScoped<TService>();
     }
 }
