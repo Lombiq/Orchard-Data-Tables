@@ -68,11 +68,15 @@ namespace Lombiq.DataTables.Controllers.Api
         public async Task<ActionResult<DataTableDataResponse>> Export(
             DataTableDataRequest request,
             [FromQuery(Name = "order")] ICollection<Dictionary<string, string>> order,
-            string name)
+            string name,
+            bool exportAll = true)
         {
             request.SetOrder(order);
-            request.Start = 0;
-            request.Length = 999_999; // One for the header, Excel can take a million rows.
+            if (exportAll)
+            {
+                request.Start = 0;
+                request.Length = 999_999; // One for the header, Excel can take a million rows.
+            }
 
             var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
             var stream = await _exportServices[name].ExportAsync(dataProvider, request);
