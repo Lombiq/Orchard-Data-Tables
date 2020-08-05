@@ -16,26 +16,4 @@
     <PackageReference Include="OrchardCore.Queries" Version="1.0.0-rc1-12811" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Gulpfile.js">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Gulp\tasks\copy-assets.js">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Gulp\paths.js">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Scripts\lombiq-contentpicker.js">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Scripts\lombiq-datatables.js">
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Assets\Scripts\jquery-datatables-autoinit.js" />
-  </ItemGroup>
-
 </Project>
