@@ -20,7 +20,7 @@ namespace Lombiq.DataTables.Services
             DataTableColumnsDefinition columnsDefinition = null)
         {
             columnsDefinition ??= await dataProvider.GetColumnsDefinitionAsync(request.QueryId);
-            var columns = columnsDefinition.Columns.ToList();
+            var columns = columnsDefinition.Columns.Where(column => column.Exportable).ToList();
 
             var stream = new MemoryStream();
             using var package = new ExcelPackage(stream);
