@@ -3,12 +3,12 @@
 
 <h2>@Model.Provider.Description</h2>
 
-@foreach (var x in Model.BeforeTable ?? Array.Empty<IShape>())
+@foreach (var beforeTableShape in Model.BeforeTable ?? Array.Empty<IShape>())
 {
-    @await DisplayAsync(x)
+    @await DisplayAsync(beforeTableShape)
 }
 @await DisplayAsync(await New.Lombiq_DataTable(ViewModel: Model.Definition))
-@foreach (var x in Model.AfterTable ?? Array.Empty<IShape>())
+@foreach (var afterTableShape in Model.AfterTable ?? Array.Empty<IShape>())
 {
-    @await DisplayAsync(x)
+    @await DisplayAsync(afterTableShape)
 }

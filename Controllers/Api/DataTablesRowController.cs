@@ -27,6 +27,16 @@ namespace Lombiq.DataTables.Controllers.Api
         }
 
 
+        /// <summary>
+        /// Gets the current table view's rows.
+        /// </summary>
+        /// <param name="request">The request to fulfill.</param>
+        /// <param name="order">The <see cref="DataTableDataRequest.Order"/> property.</param>
+        /// <returns>The response for this API call.</returns>
+        /// <remarks>
+        /// ASP.Net Core seems to have trouble with binding array properties in the object so it's necessary to bind
+        /// the array separately and manually set the property from the bound parameter.
+        /// </remarks>
         public async Task<ActionResult<DataTableDataResponse>> Get(
             DataTableDataRequest request,
             [FromQuery(Name = "order")] ICollection<Dictionary<string, string>> order)
@@ -49,9 +59,7 @@ namespace Lombiq.DataTables.Controllers.Api
             // This property identifies the request for the jQuery.DataTables plugin. This needs to be parsed and
             // sent back in order to prevent Cross Site Scripting (XSS) attack.
             // See: https://datatables.net/manual/server-side
-#pragma warning disable 618
             response.Draw = request.Draw;
-#pragma warning restore 618
 
             return response;
         }

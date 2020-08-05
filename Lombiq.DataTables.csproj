@@ -3,13 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <AssemblyVersion>9.0.30729</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="3.1.6" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="OrchardCore.Contents" Version="1.0.0-rc1-12811" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="1.0.0-rc1-12811" />
@@ -18,7 +15,6 @@
     <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-rc1-12811" />
     <PackageReference Include="OrchardCore.Lucene" Version="1.0.0-rc1-12811" />
     <PackageReference Include="OrchardCore.Queries" Version="1.0.0-rc1-12811" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="3.1.6" />
   </ItemGroup>
 
 </Project>

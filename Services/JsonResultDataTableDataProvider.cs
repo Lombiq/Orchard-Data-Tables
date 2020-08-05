@@ -10,21 +10,22 @@ using OrchardCore.DisplayManagement;
 
 namespace Lombiq.DataTables.Services
 {
-    public abstract class JsonResultedDataTableDataProvider : IDataTableDataProvider
+    /// <summary>
+    /// Classes which implement this class only have to provide the provider description, the dataset via
+    /// <see cref="GetResultsAsync"/> as <see cref="IList{T}"/> of either <see cref="object"/> or <see cref="JObject"/>
+    /// (the former is automatically converted to the latter) and the columns definition via
+    /// <see cref="GetColumnsDefinition"/>.
+    /// </summary>
+    public abstract class JsonResultDataTableDataProvider : IDataTableDataProvider
     {
-        private readonly IStringLocalizer T;
-
-        public LocalizedString Description => T["Users"];
-
-
-        protected JsonResultedDataTableDataProvider(IStringLocalizer stringLocalizer) => T = stringLocalizer;
+        public abstract LocalizedString Description { get; }
 
 
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
             var columnsDefinition = GetColumnsDefinition(request.QueryId);
             var columns = columnsDefinition.Columns
-                .Select(x => new { Path = x.Name.Replace('_', '.'), x.Name, x.Regex })
+                .Select(column => new { Path = column.Name.Replace('_', '.'), column.Name, column.Regex })
                 .ToList();
             var order = request.Order.FirstOrDefault() ?? new DataTableOrder
             {
@@ -33,7 +34,7 @@ namespace Lombiq.DataTables.Services
             };
 
             var results = await GetResultsAsync(request);
-            var json = results.Select(JObject.FromObject);
+            var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
             if (!string.IsNullOrEmpty(order.Column))
             {
                 var orderColumnName = order.Column.Replace('_', '.');
@@ -65,11 +66,11 @@ namespace Lombiq.DataTables.Services
         public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) =>
             Task.FromResult(new DataTableChildRowResponse());
 
-        public virtual Task<IEnumerable<IShape>> GetShapesBeforeTableAsync() =>
-            Task.FromResult<IEnumerable<IShape>>(Array.Empty<IShape>());
+        public virtual Task<IEnumerable<dynamic>> GetShapesBeforeTableAsync() =>
+            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
 
-        public virtual Task<IEnumerable<IShape>> GetShapesAfterTableAsync() =>
-            Task.FromResult<IEnumerable<IShape>>(Array.Empty<IShape>());
+        public virtual Task<IEnumerable<dynamic>> GetShapesAfterTableAsync() =>
+            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
 
 
         /// <summary>
@@ -77,9 +78,14 @@ namespace Lombiq.DataTables.Services
         /// necessary and then queried down using the column names into a dictionary.
         /// </summary>
         /// <param name="request">The input of <see cref="GetRowsAsync"/>.</param>
-        /// <returns>A list of results or <see cref="JToken"/>s.</returns>
+        /// <returns>A list of results or <see cref="JObject"/>s.</returns>
         protected abstract Task<IList<object>> GetResultsAsync(DataTableDataRequest request);
 
+        /// <summary>
+        /// When overridden in a derived class it gets the columns definition.
+        /// </summary>
+        /// <param name="queryId">May be used to dynamically generate the result.</param>
+        /// <returns>The default columns definition of this provider.</returns>
         protected abstract DataTableColumnsDefinition GetColumnsDefinition(string queryId);
     }
 }

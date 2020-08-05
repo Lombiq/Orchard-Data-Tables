@@ -11,6 +11,7 @@ namespace Lombiq.DataTables.Models
         [JsonProperty(PropertyName = "direction")]
         public SortingDirection Direction { get; set; }
 
-        [JsonIgnore] public bool IsAscending => Direction == SortingDirection.Ascending;
+        [JsonIgnore]
+        public bool IsAscending => Direction == SortingDirection.Ascending;
     }
 }

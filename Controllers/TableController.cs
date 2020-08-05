@@ -27,7 +27,7 @@ namespace Lombiq.DataTables.Controllers
         public async Task<IActionResult> Query(string queryName, string contentId)
         {
             var provider = _dataTableDataProviders
-                .Single(x => x.Name == nameof(QueryDataTableDataProvider));
+                .Single(provider => provider.Name == nameof(QueryDataTableDataProvider));
             var definition = new DataTableDefinitionViewModel
             {
                 DataProvider = provider.Name,
@@ -48,7 +48,7 @@ namespace Lombiq.DataTables.Controllers
 
         public async Task<IActionResult> Get(string providerName, string id = null)
         {
-            var provider = _dataTableDataProviders.Single(x => x.Name == providerName);
+            var provider = _dataTableDataProviders.Single(provider => provider.Name == providerName);
             if (string.IsNullOrEmpty(id)) id = providerName;
             var definition = new DataTableDefinitionViewModel
             {

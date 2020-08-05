@@ -31,12 +31,12 @@ namespace Lombiq.DataTables.Models
         [JsonProperty(PropertyName = "order")]
         public DataTableOrder[] Order { get; set; }
 
-        public void SetOrder(IEnumerable<Dictionary<string, string>> order) =>
-            Order = order
-                .Select(x => new DataTableOrder
+        public void SetOrder(IEnumerable<Dictionary<string, string>> orders) =>
+            Order = orders
+                .Select(order => new DataTableOrder
                 {
-                    Column = x["column"],
-                    Direction = x["direction"] == "ascending"
+                    Column = order["column"],
+                    Direction = order["direction"] == "ascending"
                         ? SortingDirection.Ascending
                         : SortingDirection.Descending
                 })

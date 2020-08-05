@@ -24,8 +24,8 @@
     var defaultSortingDirection = columnsDefinition?.DefaultSortingDirection ?? SortingDirection.Ascending;
     var defaultSortingDirectionValue = defaultSortingDirection == SortingDirection.Ascending ? "asc" : "desc";
 
-    var rowApiUrl = Url.Action(nameof(DataTablesRowController.Get), typeof(DataTablesRowController).ControllerName(), new { Area = ResourceNames.Lombiq_DataTables });
-    var childRowApiUrl = Url.Action(nameof(DataTablesChildRowController.Get), typeof(DataTablesChildRowController).ControllerName(), new { Area = ResourceNames.Lombiq_DataTables });
+    var rowApiUrl = Url.Action(nameof(DataTablesRowController.Get), typeof(DataTablesRowController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
+    var childRowApiUrl = Url.Action(nameof(DataTablesChildRowController.Get), typeof(DataTablesChildRowController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
 
     const string loadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
     const string rowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
@@ -35,8 +35,8 @@
 
     const string templatePlaceholder = "{{data}}";
 
-    ResourceManager.RegisterResource("script", ResourceNames.Lombiq_DataTables).AtHead();
-    ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Extensions_Responsive).AtHead();
+    ResourceManager.RegisterResource("script", ResourceNames.Lombiq_DataTables).AtFoot();
+    ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Bootstrap4);
 }
 
 @await DisplayAsync(await New.Lombiq_DataTable_Resources())
@@ -69,7 +69,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<script depends-on="@ResourceNames.Lombiq_DataTables" at="Foot">
     ; (function ($) {
         $(function () {
             var templates = {};

@@ -1,10 +1,9 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
-using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace Lombiq.DataTables.Controllers.Api
 {
@@ -32,9 +31,7 @@ namespace Lombiq.DataTables.Controllers.Api
                 return BadRequest(DataTableChildRowResponse.ErrorResult(errorText));
             }
 
-            var response = await provider.GetChildRowAsync(contentItemId);
-
-            return response;
+            return await provider.GetChildRowAsync(contentItemId);
         }
     }
 }
