@@ -4,14 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Lombiq.DataTables.Models;
+using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 
 namespace Lombiq.DataTables.Services
 {
     public class ExcelDataTableExportService : IDataTableExportService
     {
+        public IStringLocalizer<ExcelDataTableExportService> T { get; }
         public string Name => nameof(ExcelDataTableExportService);
         public string DefaultFileName => "export.xlsx";
+
+
+        public ExcelDataTableExportService(IStringLocalizer<ExcelDataTableExportService> stringLocalizer) =>
+            T = stringLocalizer;
 
 
         public async Task<Stream> ExportAsync(
@@ -36,7 +42,9 @@ namespace Lombiq.DataTables.Services
             // Create table header.
             for (var c = 0; c < columns.Count; c++) worksheet.Cell(1, c + 1).Value = columns[c].Text;
             worksheet.Range(1, 1, 1, columns.Count).Style.Font.Bold = true;
-            worksheet.SheetView.Freeze(2, 1);
+            worksheet.SheetView.Freeze(1, 0);
+
+            var dateFormat = T["mm/dd/yyyy hh:mm:ss AM/PM"].Value;
 
             // Create table body.
             var results = response.Data.ToList();
@@ -49,11 +57,11 @@ namespace Lombiq.DataTables.Services
                     var cell = worksheet.Cell(row, c + 1);
                     var value = item.ValuesDictionary[columns[c].Name];
 
-                    if (value.Type == JTokenType.Date) cell.Style.NumberFormat.Format = "mm/dd/yyyy hh:mm:ss AM/PM";
+                    if (value.Type == JTokenType.Date) cell.Style.DateFormat.Format = dateFormat;
 
                     cell.Value = value.Type switch
                     {
-                        JTokenType.Boolean => value.ToObject<bool>(),
+                        JTokenType.Boolean => value.ToObject<bool>() ? T["Yes"].Value : T["No"].Value,
                         JTokenType.Date => value.ToObject<DateTime>(),
                         JTokenType.Float => value.ToObject<double>(),
                         JTokenType.Integer => value.ToObject<int>(),

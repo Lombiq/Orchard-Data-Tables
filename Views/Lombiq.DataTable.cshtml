@@ -91,11 +91,16 @@
                 dataProvider: "@dataProvider",
                 rowsApiUrl: "@rowApiUrl",
                 export: @Json.Serialize(new
-                               {
-                                   textAll = T["Export All"].Value,
-                                   textVisible = T["Export Visible"].Value,
-                                   api = exportApiUrl,
-                               }),
+                    {
+                        textAll = T["Export All"].Value,
+                        textVisible = T["Export Visible"].Value,
+                        api = exportApiUrl,
+                    }),
+                texts: @Json.Serialize(new
+                    {
+                        yes = T["Yes"].Value,
+                        no = T["No"].Value
+                    }),
                 dataTablesOptions: {
                     @if (pageSize > 0)
                     {

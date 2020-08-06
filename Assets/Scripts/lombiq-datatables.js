@@ -93,6 +93,8 @@
             dataTablesOptions.columnDefs = [{
                 targets: "_all",
                 render: function (data) {
+                    if (data === !!data) return data ? plugin.settings.texts.yes : plugin.settings.texts.no;
+
                     var template = typeof data === "string" ?
                         data.match(/^\s*{{\s*([^:]+)\s*:\s*([^}]*[^ \t}])\s*}}\s*$/) : null;
                     if (template && template[1] && template[2]) {
