@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
+using Microsoft.Extensions.Localization;
+using Moq;
 using Shouldly;
 using Xunit;
 
@@ -24,7 +26,12 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
         {
             note.ShouldNotBeEmpty("Please state the purpose of this input set!");
 
-            var service = new ExcelDataTableExportService();
+            var stringLocalizerMock = new Mock<IStringLocalizer<ExcelDataTableExportService>>();
+            stringLocalizerMock
+                .Setup(localizer => localizer[It.IsAny<string>()])
+                .Returns<string>(parameter => new LocalizedString(parameter, parameter));
+
+            var service = new ExcelDataTableExportService(stringLocalizerMock.Object);
             var provider = (IDataTableDataProvider)new MockDataProvider(dataSet,
                 new DataTableColumnsDefinition()
                 {
@@ -124,6 +131,17 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 0,
                 10,
                 2
+            };
+
+            yield return new object[]
+            {
+                "Verify boolean formatting.",
+                new[] { new object[] { 1, true }, new object[] { 2, true }, new object[] { 3, false } },
+                new[] { ("Num", "Numbers", true), ("Bool", "Booleans", true) },
+                "1,Yes;2,Yes;3,No".Split(';').Select(row => row.Split(',')).ToArray(),
+                0,
+                10,
+                0
             };
         }
     }
