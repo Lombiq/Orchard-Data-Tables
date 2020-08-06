@@ -1,20 +1,16 @@
-﻿@using Orchard.Projections.Models
-@using Lombiq.DataTables.Constants
-@using Lombiq.DataTables.Models
-@using Lombiq.DataTables.ViewModels
+@using OrchardCore.ResourceManagement
+
+@inject IResourceManager ResourceManager
 
 @{
-    Script.Require(ResourceNames.Lombiq_DataTables).AtHead();
-
-    var projectionPart = Model.ContentPart as ProjectionPart;
     var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
 
-    var pageSize = viewModel?.PageSize ?? projectionPart?.Record.Items ?? WorkContext.CurrentSite.PageSize;
-    var skip = viewModel?.Skip ?? projectionPart?.Record.Skip ?? 0;
+    var pageSize = viewModel?.PageSize ?? Site.PageSize;
+    var skip = viewModel?.Skip ?? 0;
 
-    var queryId = viewModel?.QueryId ?? 0;
-    var columnsDefinition = viewModel?.ColumnsDefinition as DataTableColumnsDefinition;
-    var columns = columnsDefinition?.Columns.ToList();
+    var queryId = viewModel?.QueryId ?? "";
+    var columnsDefinition = viewModel?.ColumnsDefinition;
+    var columns = columnsDefinition?.Columns.ToList() ?? new List<DataTableColumnDefinition>();
     var childRowsEnabled = viewModel?.ChildRowsEnabled ?? false;
     var progressiveLoadingEnabled = viewModel?.ProgressiveLoadingEnabled ?? false;
     var queryStringParametersLocalStorageKey = viewModel?.QueryStringParametersLocalStorageKey ?? "";
@@ -23,38 +19,71 @@
     var dataTableCssClasses = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? ElementNames.DataTableWrapperDefaultElementName : viewModel.DataTableCssClasses;
 
     var defaultSortingColumnIndex = Math.Max(
-        0, Math.Max(columns.FindIndex(column => column.Orderable), columns.FindIndex(column => column.Name == columnsDefinition.DefaultSortingColumnName)));
+        0, Math.Max(columns.FindIndex(column => column.Orderable), columns.FindIndex(column => column.Name == columnsDefinition?.DefaultSortingColumnName)));
 
     var defaultSortingDirection = columnsDefinition?.DefaultSortingDirection ?? SortingDirection.Ascending;
     var defaultSortingDirectionValue = defaultSortingDirection == SortingDirection.Ascending ? "asc" : "desc";
 
-    var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
-    var childRowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesChildRow", Action = "Get" });
+    var rowApiUrl = Url.Action(nameof(DataTablesRowController.Get), typeof(DataTablesRowController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
+    var childRowApiUrl = Url.Action(nameof(DataTablesChildRowController.Get), typeof(DataTablesChildRowController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
 
-    const string LoadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
-    const string RowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
-    const string ChildRowElementName = ElementNames.DataTableElementName + "__childRow";
-    const string ToggleChildRowButtonElementName = ElementNames.DataTableElementName + "__toggleChildRowButton";
+    const string loadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
+    const string rowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
+    const string childRowElementName = ElementNames.DataTableElementName + "__childRow";
+    const string toggleChildRowButtonElementName = ElementNames.DataTableElementName + "__toggleChildRowButton";
+    const string templatesElementName = ElementNames.DataTableElementName + "__templates";
+
+    const string templatePlaceholder = "{{data}}";
+
+    ResourceManager.RegisterResource("script", ResourceNames.Lombiq_DataTables).AtFoot();
+    ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Bootstrap4);
 }
 
-@Display.Lombiq_DataTable_Resources()
+@await DisplayAsync(await New.Lombiq_DataTable_Resources())
 
 <div class="@dataTableCssClasses">
-    @Display.Lombiq_DataTable_Table(
+    @await DisplayAsync(await New.Lombiq_DataTable_Table(
         DataTableId: dataTableId,
         Columns: columns,
-        ChildRowsEnabled: childRowsEnabled)
+        ChildRowsEnabled: childRowsEnabled))
+    <div class="@templatesElementName" hidden>
+        <div data-id="actions" class="btn-group">
+            <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @T["Actions"]
+            </button>
+
+            @{
+                var values = new
+               {
+                   area = "OrchardCore.Contents",
+                   contentItemId = templatePlaceholder,
+                   returnUrl = FullRequestPath,
+               };
+            }
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item btn-sm" href="@Url.Action("Edit", "Admin", values)">@T["Edit"]</a>
+                <a class="dropdown-item btn-sm" href="@Url.Action("Display", "Item", values)">@T["View"]</a>
+                <a class="dropdown-item btn-sm" href="@Url.Action("Remove", "Admin", values)" itemprop="RemoveUrl UnsafeUrl" data-title="@T["Delete"]" data-message="@T["Are you sure you want to delete this content item?"]">@T["Delete"]</a>
+            </div>
+        </div>
+    </div>
 </div>
 
-<script type="text/javascript">
+<script depends-on="@ResourceNames.Lombiq_DataTables" at="Foot">
     ; (function ($) {
         $(function () {
+            var templates = {};
+            $(".@templatesElementName > div[data-id]").each(function(index, element) {
+                templates[element.getAttribute('data-id')] = element.innerHTML.replace(/%7B%7Bdata%7D%7D/g, '@templatePlaceholder');
+                element.parentElement.removeChild(element);
+            });
+
             $("#@dataTableId").lombiq_DataTables({
                 rowClassName: "@ElementNames.DataTableRowElementName",
-                @if (queryId > 0)
+                @if (!string.IsNullOrWhiteSpace(queryId))
                 {
                     <text>
-                        queryId: @queryId,
+                        queryId: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(queryId)),
                     </text>
                 }
                 dataProvider: "@dataProvider",
@@ -67,9 +96,10 @@
                         </text>
                     }
                     language: {
-                        processing: "<div class=\"@LoadingIndicatorElementName\">@T("Loading...")</div>"
+                        processing: "<div class=\"@loadingIndicatorElementName\">@T["Loading..."]</div>"
                     },
-                    order: [["@defaultSortingColumnIndex", "@defaultSortingDirectionValue"]]
+                    order: [["@defaultSortingColumnIndex", "@defaultSortingDirectionValue"]],
+                    templates: templates
                 },
                 serverSidePagingEnabled: @(progressiveLoadingEnabled ? "false" : "true"),
                 queryStringParametersLocalStorageKey: "@queryStringParametersLocalStorageKey",
@@ -90,9 +120,9 @@
                         <text>
                             asyncLoading: true,
                             apiUrl: "@childRowApiUrl",
-                            childRowClassName: "@ChildRowElementName",
-                            toggleChildRowButtonClassName: "@ToggleChildRowButtonElementName",
-                            childRowVisibleClassName: "@RowElementWithChildRowVisibleModifier",
+                            childRowClassName: "@childRowElementName",
+                            toggleChildRowButtonClassName: "@toggleChildRowButtonElementName",
+                            childRowVisibleClassName: "@rowElementWithChildRowVisibleModifier",
                         </text>
                     }
                 }

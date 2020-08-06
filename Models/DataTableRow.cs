@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,21 +8,27 @@ namespace Lombiq.DataTables.Models
     public class DataTableRow
     {
         [JsonExtensionData]
-        internal Dictionary<string, JToken> ValuesDictionary { get; set; }
+        internal IDictionary<string, JToken> ValuesDictionary { get; set; }
 
         [JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
 
         public string this[string name]
         {
-            get { return ValuesDictionary.ContainsKey(name) ? ValuesDictionary[name].Value<string>() : null; }
-            set { ValuesDictionary[name] = value; }
+            get => ValuesDictionary.ContainsKey(name) ? ValuesDictionary[name].Value<string>() : null;
+            set => ValuesDictionary[name] = value;
         }
 
 
         public DataTableRow()
         {
             ValuesDictionary = new Dictionary<string, JToken>();
+        }
+
+        public DataTableRow(int id, IDictionary<string, JToken> valuesDictionary)
+        {
+            Id = id;
+            ValuesDictionary = valuesDictionary;
         }
 
 

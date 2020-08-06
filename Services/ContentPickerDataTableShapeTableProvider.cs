@@ -1,6 +1,7 @@
-﻿using Orchard.DisplayManagement.Descriptors;
-using Orchard.Mvc;
-using System.Web;
+﻿using System.Web;
+using Lombiq.DataTables.Constants;
+using Microsoft.AspNetCore.Http;
+using OrchardCore.DisplayManagement.Descriptors;
 
 namespace Lombiq.DataTables.Services
 {
@@ -18,12 +19,12 @@ namespace Lombiq.DataTables.Services
         public void Discover(ShapeTableBuilder builder)
         {
             builder
-                .Describe("Lombiq_DataTable")
+                .Describe(ShapeNames.Lombiq_DataTable)
                 .OnDisplaying(displaying =>
                 {
-                    if (_hca.Current().Request.IsContentPickerRequest())
+                    if (_hca.HttpContext.Request.IsContentPickerRequest())
                     {
-                        displaying.ShapeMetadata.Alternates.Add("Lombiq_ContentPicker_DataTable");
+                        displaying.Shape.Metadata.Alternates.Add("Lombiq_ContentPicker_DataTable");
                     }
                 });
         }

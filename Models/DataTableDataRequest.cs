@@ -1,12 +1,14 @@
-﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
+using Lombiq.DataTables.Constants;
+using Newtonsoft.Json;
 
 namespace Lombiq.DataTables.Models
 {
     public class DataTableDataRequest
     {
         [JsonProperty(PropertyName = "queryId")]
-        public int QueryId { get; set; }
+        public string QueryId { get; set; }
 
         [JsonProperty(PropertyName = "dataProvider")]
         public string DataProvider { get; set; }
@@ -28,5 +30,16 @@ namespace Lombiq.DataTables.Models
 
         [JsonProperty(PropertyName = "order")]
         public DataTableOrder[] Order { get; set; }
+
+        public void SetOrder(IEnumerable<Dictionary<string, string>> orders) =>
+            Order = orders
+                .Select(order => new DataTableOrder
+                {
+                    Column = order["column"],
+                    Direction = order["direction"] == "ascending"
+                        ? SortingDirection.Ascending
+                        : SortingDirection.Descending
+                })
+                .ToArray();
     }
 }

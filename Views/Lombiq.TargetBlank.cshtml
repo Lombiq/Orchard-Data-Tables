@@ -1,25 +1,22 @@
-﻿@using (Script.Foot())
-{
-    <script type="text/javascript">
-        (function ($) {
-            ; $(function () {
-                $(document).on("click", "a:not(.no-target-blank)", function () {
-                    var href = $(this).attr("href");
+﻿<script at="Foot">
+    (function ($) {
+        ; $(function () {
+            $(document).on("click", "a:not(.no-target-blank)", function () {
+                var href = $(this).attr("href");
 
-                    if (!href) return;
+                if (!href) return;
 
-                    if (!href.match(/^mailto\:/)) {
-                        if (parent) {
-                            parent.open(href)
-                        }
-                        else {
-                            window.open(href);
-                        }
-
-                        return false;
+                if (!href.match(/^mailto\:/)) {
+                    if (parent) {
+                        parent.open(href)
                     }
-                });
+                    else {
+                        window.open(href);
+                    }
+
+                    return false;
+                }
             });
-        })(jQuery);
-    </script>
-}
+        });
+    })(jQuery);
+</script>

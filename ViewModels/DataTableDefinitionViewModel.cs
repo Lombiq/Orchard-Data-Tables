@@ -1,10 +1,10 @@
-﻿namespace Lombiq.DataTables.ViewModels
+namespace Lombiq.DataTables.ViewModels
 {
     public class DataTableDefinitionViewModel : DataTableDataViewModel
     {
         public int? PageSize { get; set; }
         public int? Skip { get; set; }
-        public int QueryId { get; set; }
+        public string QueryId { get; set; }
         public bool ProgressiveLoadingEnabled { get; set; }
         public string QueryStringParametersLocalStorageKey { get; set; }
         public string DataProvider { get; set; }

@@ -1,6 +1,4 @@
-﻿using Orchard.ContentManagement.Records;
-using System.Collections.Generic;
-using static Lombiq.DataTables.Constants.DataTableColumnDefinitionSettingsKeys;
+﻿using System.Collections.Generic;
 
 namespace Lombiq.DataTables.Models
 {
@@ -11,26 +9,12 @@ namespace Lombiq.DataTables.Models
         public string Text { get; set; }
         public string DataSource { get; set; }
         public bool Orderable { get; set; } = true;
+        public (string From, string To)? Regex { get; set; }
 
         public string this[string key]
         {
-            get { return AdditionalSettings.ContainsKey(key) ? AdditionalSettings[key] : null; }
-            set { AdditionalSettings[key] = value; }
+            get => AdditionalSettings.ContainsKey(key) ? AdditionalSettings[key] : null;
+            set => AdditionalSettings[key] = value;
         }
-
-
-        public static Dictionary<string, string> AdditionalSettingsForContentPartRecordPropertySorting<TRecord>(
-            string propertyName) where TRecord : ContentPartRecord =>
-            new Dictionary<string, string>()
-            {
-                {
-                    ContentPartRecordPropertySorting.RecordTypeAssemblyQualifiedName,
-                    typeof(TRecord).AssemblyQualifiedName
-                },
-                {
-                    ContentPartRecordPropertySorting.PropertyName,
-                    propertyName
-                }
-            };
     }
 }
