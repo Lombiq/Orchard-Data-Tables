@@ -2,10 +2,11 @@ using OrchardCore.Modules.Manifest;
 using static Lombiq.DataTables.Constants.FeatureIds;
 
 [assembly: Module(
-    Name = "Data Tables",
+    Name = "Lombiq Data Tables",
     Author = "Lombiq Technologies",
     Version = "2.0",
-    Description = "Module for displaying data using jQuery Data Tables."
+    Description = "Module for displaying data using jQuery Data Tables.",
+    Website = "https://lombiq.com"
 )]
 
 

@@ -5,6 +5,7 @@ using Lombiq.DataTables.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using OrchardCore.DisplayManagement;
+using OrchardCore.Security.Permissions;
 
 namespace Lombiq.DataTables.Services
 {
@@ -28,7 +29,12 @@ namespace Lombiq.DataTables.Services
         LocalizedString Description { get; }
 
         /// <summary>
-        /// Returns the table body that result from the provided request.
+        /// An optional collection of permissions. If not null, the user must authorize against at least one.
+        /// </summary>
+        IEnumerable<Permission> SupportedPermissions => null;
+
+        /// <summary>
+        /// Returns the table body created based on the provided request.
         /// </summary>
         /// <param name="request">Describes the desired state of the table.</param>
         /// <returns>The resulting table content and some metadata.</returns>

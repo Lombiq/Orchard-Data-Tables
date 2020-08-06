@@ -7,6 +7,7 @@ using Lombiq.DataTables.Models;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using OrchardCore.DisplayManagement;
+using OrchardCore.Security.Permissions;
 
 namespace Lombiq.DataTables.Services
 {
@@ -19,6 +20,7 @@ namespace Lombiq.DataTables.Services
     public abstract class JsonResultDataTableDataProvider : IDataTableDataProvider
     {
         public abstract LocalizedString Description { get; }
+        public abstract IEnumerable<Permission> SupportedPermissions { get; }
 
 
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
