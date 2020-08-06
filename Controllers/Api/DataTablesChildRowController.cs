@@ -1,10 +1,10 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Controllers.Api
 {
@@ -39,6 +39,7 @@ namespace Lombiq.DataTables.Controllers.Api
             {
                 return DataTableChildRowResponse.ErrorResult(T["Unauthorized!"]);
             }
+
             return await provider.GetChildRowAsync(contentItemId);
         }
     }

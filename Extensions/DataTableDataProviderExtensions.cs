@@ -1,10 +1,10 @@
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Authorization;
 using Nito.AsyncEx;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using static Lombiq.DataTables.Constants.SortingDirection;
 
 namespace Lombiq.DataTables.Services
@@ -47,8 +47,8 @@ namespace Lombiq.DataTables.Services
             var authorizations = await dataProvider.SupportedPermissions
                 .Select(permission => authorizationService.AuthorizeAsync(user, permission))
                 .WhenAll();
-            return authorizations.Any(success => success);
 
+            return authorizations.Any(success => success);
         }
     }
 }
