@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Tests
 {
@@ -12,6 +12,7 @@ namespace Lombiq.DataTables.Tests
     {
         private readonly object[][] _dataSet;
         private readonly DataTableColumnsDefinition _definition;
+
         public LocalizedString Description { get; } = new LocalizedString("Test", "Test");
 
 
@@ -24,8 +25,8 @@ namespace Lombiq.DataTables.Tests
 
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
-            // We aren't trying to test any fancy sorting, just point at which column to sort by. (asc)
-            var orderByColumn = request.Order.FirstOrDefault()?.Column is {} column ? int.Parse(column) : 0;
+            // We aren't trying to test any fancy sorting, just point at which column to sort by (asc).
+            var orderByColumn = request.Order.FirstOrDefault()?.Column is { } column ? int.Parse(column) : 0;
 
             var columns = (await GetColumnsDefinitionAsync(null))
                 .Columns
