@@ -2,9 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
 using Lombiq.DataTables.Models;
 using Newtonsoft.Json.Linq;
-using OfficeOpenXml;
 
 namespace Lombiq.DataTables.Services
 {
@@ -23,20 +23,20 @@ namespace Lombiq.DataTables.Services
             var columns = columnsDefinition.Columns.Where(column => column.Exportable).ToList();
 
             var stream = new MemoryStream();
-            using var package = new ExcelPackage(stream);
-            var worksheet = package.Workbook.Worksheets.Add(dataProvider.Description);
+            using var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add(dataProvider.Description);
 
             var response = await dataProvider.GetRowsAsync(request);
             if (!string.IsNullOrWhiteSpace(response.Error))
             {
-                worksheet.Cells[2, 1].Value = response.Error;
-                return Save(package, stream);
+                worksheet.Cell(2, 1).Value = response.Error;
+                return Save(workbook, stream);
             }
 
             // Create table header.
-            for (var c = 0; c < columns.Count; c++) worksheet.Cells[1, c + 1].Value = columns[c].Text;
-            worksheet.Cells[1, 1, 1, columns.Count].Style.Font.Bold = true;
-            worksheet.View.FreezePanes(2, 1);
+            for (var c = 0; c < columns.Count; c++) worksheet.Cell(1, c + 1).Value = columns[c].Text;
+            worksheet.Range(1, 1, 1, columns.Count).Style.Font.Bold = true;
+            worksheet.SheetView.Freeze(2, 1);
 
             // Create table body.
             var results = response.Data.ToList();
@@ -46,10 +46,10 @@ namespace Lombiq.DataTables.Services
                 var row = 2 + i;
                 for (var c = 0; c < columns.Count; c++)
                 {
-                    var cell = worksheet.Cells[row, c + 1];
+                    var cell = worksheet.Cell(row, c + 1);
                     var value = item.ValuesDictionary[columns[c].Name];
 
-                    if (value.Type == JTokenType.Date) cell.Style.Numberformat.Format = "mm/dd/yyyy hh:mm:ss AM/PM";
+                    if (value.Type == JTokenType.Date) cell.Style.NumberFormat.Format = "mm/dd/yyyy hh:mm:ss AM/PM";
 
                     cell.Value = value.Type switch
                     {
@@ -66,16 +66,16 @@ namespace Lombiq.DataTables.Services
             }
 
             // Make the content auto-fit the columns.
-            worksheet.Calculate();
-            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+            worksheet.RecalculateAllFormulas();
+            worksheet.Columns().AdjustToContents();
 
-            return Save(package, stream);
+            return Save(workbook, stream);
         }
 
 
-        private static Stream Save(ExcelPackage package, Stream stream)
+        private static Stream Save(XLWorkbook workbook, Stream stream)
         {
-            package.Save();
+            workbook.SaveAs(stream);
             stream.Position = 0;
             return stream;
         }

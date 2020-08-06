@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
-using OfficeOpenXml;
 using Shouldly;
 using Xunit;
 
@@ -42,18 +42,18 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             };
 
             var stream = await service.ExportAsync(provider, request);
-            using var package = new ExcelPackage(stream);
-            var worksheet = package.Workbook.Worksheets[1];
+            using var workbook = new XLWorkbook(stream);
+            var worksheet = workbook.Worksheets.Worksheet(1);
 
             Enumerable.Range(1, pattern[0].Length)
-                .Select(index => worksheet.Cells[1, index].Text)
+                .Select(index => worksheet.Cell(1, index).GetString())
                 .ToArray()
                 .ShouldBe(columns.Where(column => column.Exportable).Select(column => column.Text).ToArray());
 
             for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
             {
                 Enumerable.Range(1, pattern[0].Length)
-                    .Select(index => worksheet.Cells[2 + rowIndex, index].Text)
+                    .Select(index => worksheet.Cell(2 + rowIndex, index).GetString())
                     .ToArray()
                     .ShouldBe(pattern[rowIndex], $"Row {rowIndex + 1} didn't match expectation.");
             }

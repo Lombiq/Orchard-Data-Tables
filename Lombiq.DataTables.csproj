@@ -29,7 +29,7 @@
   <Import Project="..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
 
   <ItemGroup>
-    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+    <PackageReference Include="ClosedXML" Version="0.95.3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.0.0" />
     <PackageReference Include="OrchardCore.Contents" Version="1.0.0-rc1-12811" />
