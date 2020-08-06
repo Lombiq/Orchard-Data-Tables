@@ -12,8 +12,6 @@
     var pluginName = "lombiq_DataTables";
     var useDefaultButtons = "useDefaultButtons";
 
-    var state = {};
-
     var defaults = {
         dataTablesOptions: {
             searching: false,
@@ -77,11 +75,11 @@
          */
         init: function () {
             var plugin = this;
-            var instanceId = Math.random().toString();
+            var state = undefined;
 
             plugin.originalQueryStringParameters = new URI().search(true);
 
-            var dataTablesOptions = $.extend({ }, plugin.settings.dataTablesOptions);
+            var dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
 
             dataTablesOptions.rowCallback = function (row, data, index) {
                 if (data.id) {
@@ -136,7 +134,7 @@
                             dataProvider: plugin.settings.dataProvider,
                             originalUrl: window.location.href
                         });
-                        state[instanceId] = extendedParameters;
+                        state = extendedParameters;
 
                         if (plugin.settings.queryStringParametersLocalStorageKey) {
                             localStorage.setItem(
@@ -157,7 +155,7 @@
             function exportAction(exportAll) {
                 return function () {
                     location.href = URI(plugin.settings.export.api)
-                        .search({ requestJson: JSON.stringify(state[instanceId]), exportAll: exportAll });
+                        .search({ requestJson: JSON.stringify(state), exportAll: exportAll });
                 }
             }
             if (dataTablesOptions.buttons === useDefaultButtons) {
