@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
-using Microsoft.Extensions.Localization;
-using Moq;
+using Lombiq.Tests.Helpers;
+using Moq.AutoMock;
 using Shouldly;
 using Xunit;
 
@@ -26,12 +26,8 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
         {
             note.ShouldNotBeEmpty("Please state the purpose of this input set!");
 
-            var stringLocalizerMock = new Mock<IStringLocalizer<ExcelDataTableExportService>>();
-            stringLocalizerMock
-                .Setup(localizer => localizer[It.IsAny<string>()])
-                .Returns<string>(parameter => new LocalizedString(parameter, parameter));
-
-            var service = new ExcelDataTableExportService(stringLocalizerMock.Object);
+            var service = MockHelper.CreateAutoMockerInstance<ExcelDataTableExportService>(
+                mocker => mocker.MockStringLocalizer<ExcelDataTableExportService>());
             var provider = (IDataTableDataProvider)new MockDataProvider(dataSet,
                 new DataTableColumnsDefinition()
                 {
