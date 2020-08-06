@@ -22,6 +22,8 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             int length,
             int orderColumnIndex)
         {
+            note.ShouldNotBeEmpty("Please state the purpose of this input set!");
+
             var service = new ExcelDataTableExportService();
             var provider = (IDataTableDataProvider)new MockDataProvider(dataSet,
                 new DataTableColumnsDefinition()

@@ -72,7 +72,6 @@ namespace Lombiq.DataTables.Controllers.Api
             return response;
         }
 
-
         public async Task<ActionResult<DataTableDataResponse>> Export(
             string requestJson,
             string name = null,
