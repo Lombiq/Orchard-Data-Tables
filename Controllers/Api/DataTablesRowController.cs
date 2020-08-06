@@ -1,12 +1,12 @@
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Controllers.Api
 {
@@ -62,6 +62,7 @@ namespace Lombiq.DataTables.Controllers.Api
             {
                 return DataTableDataResponse.ErrorResult(T["Unauthorized!"]);
             }
+
             var response = await dataProvider.GetRowsAsync(request);
 
             // This property identifies the request for the jQuery.DataTables plugin. This needs to be parsed and
