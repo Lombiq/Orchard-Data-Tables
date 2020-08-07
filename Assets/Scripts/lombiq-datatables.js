@@ -93,9 +93,20 @@
             dataTablesOptions.columnDefs = [{
                 targets: "_all",
                 render: function (data) {
+                    // If data is Boolean.
                     if (data === !!data) return data ? plugin.settings.texts.yes : plugin.settings.texts.no;
 
-                    var template = typeof data === "string" ?
+                    var isString = typeof data === "string";
+
+                    // If data is ISO date.
+                    if (isString && data.match(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/)) {
+                        var locale = 'en-US';
+                        if (plugin.settings.culture) locale = plugin.settings.culture;
+                        return (new Date(data)).toLocaleDateString(locale);
+                    }
+
+                    // If data is a template.
+                    var template = isString ?
                         data.match(/^\s*{{\s*([^:]+)\s*:\s*([^}]*[^ \t}])\s*}}\s*$/) : null;
                     if (template && template[1] && template[2]) {
                         var templateName = template[1];
