@@ -19,8 +19,13 @@ namespace Lombiq.DataTables.Services
     /// </summary>
     public abstract class JsonResultDataTableDataProvider : IDataTableDataProvider
     {
+        private readonly IStringLocalizer T;
+
         public abstract LocalizedString Description { get; }
         public abstract IEnumerable<Permission> SupportedPermissions { get; }
+
+
+        protected JsonResultDataTableDataProvider(IStringLocalizer stringLocalizer) => T = stringLocalizer;
 
 
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
@@ -37,6 +42,7 @@ namespace Lombiq.DataTables.Services
 
             var enumerableResults = await GetResultsAsync(request);
             var results = enumerableResults is IList<object> listResults ? listResults : enumerableResults.ToList();
+            if (results.Count == 0) return DataTableDataResponse.ErrorResult(T["No results found."]);
             var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
             if (!string.IsNullOrEmpty(order.Column))
             {
@@ -50,11 +56,11 @@ namespace Lombiq.DataTables.Services
 
             var rows = json.Select((result, index) =>
                 new DataTableRow(index, columns
-                    .Select(column => new { column.Name, column.Regex, Token = result.SelectToken(column.Path, true) })
+                    .Select(column => new { column.Name, column.Regex, Token = result.SelectToken(column.Path, false) })
                     .ToDictionary(
                         cell => cell.Name,
                         cell => cell.Regex is {} regex
-                            ? new JValue(Regex.Replace(cell.Token.ToString(), regex.From, regex.To))
+                            ? new JValue(Regex.Replace(cell.Token?.ToString() ?? string.Empty, regex.From, regex.To))
                             : cell.Token)));
 
             return new DataTableDataResponse
