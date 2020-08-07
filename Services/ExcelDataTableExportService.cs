@@ -27,57 +27,17 @@ namespace Lombiq.DataTables.Services
         {
             columnsDefinition ??= await dataProvider.GetColumnsDefinitionAsync(request.QueryId);
             var columns = columnsDefinition.Columns.Where(column => column.Exportable).ToList();
-
-            var stream = new MemoryStream();
-            using var workbook = new XLWorkbook();
-            var worksheet = workbook.Worksheets.Add(dataProvider.Description);
-
             var response = await dataProvider.GetRowsAsync(request);
-            if (!string.IsNullOrWhiteSpace(response.Error))
-            {
-                worksheet.Cell(2, 1).Value = response.Error;
-                return Save(workbook, stream);
-            }
+            var results = response.Data
+                .Select(item => columns.Select(column => item.ValuesDictionary[column.Name]).ToArray())
+                .ToArray();
 
-            // Create table header.
-            for (var c = 0; c < columns.Count; c++) worksheet.Cell(1, c + 1).Value = columns[c].Text;
-            worksheet.Range(1, 1, 1, columns.Count).Style.Font.Bold = true;
-            worksheet.SheetView.Freeze(1, 0);
-
-            var dateFormat = T["mm/dd/yyyy hh:mm:ss AM/PM"].Value;
-
-            // Create table body.
-            var results = response.Data.ToList();
-            for (int i = 0; i < results.Count; i++)
-            {
-                var item = results[i];
-                var row = 2 + i;
-                for (var c = 0; c < columns.Count; c++)
-                {
-                    var cell = worksheet.Cell(row, c + 1);
-                    var value = item.ValuesDictionary[columns[c].Name];
-
-                    if (value.Type == JTokenType.Date) cell.Style.DateFormat.Format = dateFormat;
-
-                    cell.Value = value.Type switch
-                    {
-                        JTokenType.Boolean => value.ToObject<bool>() ? T["Yes"].Value : T["No"].Value,
-                        JTokenType.Date => value.ToObject<DateTime>(),
-                        JTokenType.Float => value.ToObject<double>(),
-                        JTokenType.Integer => value.ToObject<int>(),
-                        JTokenType.Null => null,
-                        JTokenType.TimeSpan => value.ToObject<TimeSpan>(),
-                        JTokenType.Array => string.Join(", ", ((JArray)value).Select(item => item.ToString())),
-                        _ => value.ToString()
-                    };
-                }
-            }
-
-            // Make the content auto-fit the columns.
-            worksheet.RecalculateAllFormulas();
-            worksheet.Columns().AdjustToContents();
-
-            return Save(workbook, stream);
+            return CollectionToStream(
+                dataProvider.Description,
+                columns.Select(column => column.Text).ToArray(),
+                results,
+                T,
+                response.Error);
         }
 
 
@@ -86,6 +46,75 @@ namespace Lombiq.DataTables.Services
             workbook.SaveAs(stream);
             stream.Position = 0;
             return stream;
+        }
+
+
+        public static Stream CollectionToStream(
+            string worksheetName,
+            string[] columns,
+            JToken[][] results,
+            IStringLocalizer localizer,
+            string error = null)
+        {
+
+            var stream = new MemoryStream();
+            using var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add(worksheetName);
+
+            if (!string.IsNullOrWhiteSpace(error))
+            {
+                worksheet.Cell(2, 1).Value = error;
+                return Save(workbook, stream);
+            }
+
+            // Create table header.
+            for (var c = 0; c < columns.Length; c++) worksheet.Cell(1, c + 1).Value = columns[c];
+            worksheet.Range(1, 1, 1, columns.Length).Style.Font.Bold = true;
+            worksheet.SheetView.Freeze(1, 0);
+
+            var dateFormat = localizer["mm/dd/yyyy"].Value;
+
+            // Create table body.
+            for (int i = 0; i < results.Length; i++)
+            {
+                var item = results[i];
+                var row = 2 + i;
+                for (var c = 0; c < columns.Length; c++)
+                {
+                    var cell = worksheet.Cell(row, c + 1);
+                    var value = results[i][c];
+
+                    if (value.Type == JTokenType.Date) cell.Style.DateFormat.Format = dateFormat;
+
+                    if (value is JObject jObject && jObject["Type"]?.ToString() == nameof(ExportLink))
+                    {
+                        var link = jObject.ToObject<ExportLink>();
+                        cell.FormulaA1 = $"HYPERLINK(\"{link.Url}\",\"{link.Text}\")";
+                    }
+                    else
+                    {
+                        cell.Value = value.Type switch
+                        {
+                            JTokenType.Boolean => value.ToObject<bool>()
+                                ? localizer["Yes"].Value
+                                : localizer["No"].Value,
+                            JTokenType.Date => value.ToObject<DateTime>(),
+                            JTokenType.Float => value.ToObject<double>(),
+                            JTokenType.Integer => value.ToObject<int>(),
+                            JTokenType.Null => null,
+                            JTokenType.TimeSpan => value.ToObject<TimeSpan>(),
+                            JTokenType.Array => string.Join(", ", ((JArray)value).Select(item => item.ToString())),
+                            _ => value.ToString()
+                        };
+                    }
+                }
+            }
+
+            // Make the content auto-fit the columns.
+            worksheet.RecalculateAllFormulas();
+            worksheet.Columns().AdjustToContents();
+
+            return Save(workbook, stream);
         }
     }
 }
