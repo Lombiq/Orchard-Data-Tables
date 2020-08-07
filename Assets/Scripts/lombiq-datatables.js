@@ -93,6 +93,8 @@
             dataTablesOptions.columnDefs = [{
                 targets: "_all",
                 render: function (data) {
+                    if (data == null) return "";
+
                     // If data is Boolean.
                     if (data === !!data) return data ? plugin.settings.texts.yes : plugin.settings.texts.no;
 
@@ -112,6 +114,10 @@
                         var templateName = template[1];
                         var templateData = template[2];
                         return dataTablesOptions.templates[templateName].replace(/{{\s*data\s*}}/g, templateData);
+                    }
+
+                    switch (data.Type) {
+                        case "ExportLink" : return "<a href=\"" + data.Url + "\">" + data.Text + "</a>";
                     }
 
                     return data;
