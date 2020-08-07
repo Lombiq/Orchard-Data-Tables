@@ -24,8 +24,9 @@
     var defaultSortingDirection = columnsDefinition?.DefaultSortingDirection ?? SortingDirection.Ascending;
     var defaultSortingDirectionValue = defaultSortingDirection == SortingDirection.Ascending ? "asc" : "desc";
 
-    var rowApiUrl = Url.Action(nameof(DataTablesRowController.Get), typeof(DataTablesRowController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
-    var childRowApiUrl = Url.Action(nameof(DataTablesChildRowController.Get), typeof(DataTablesChildRowController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
+    var rowApiUrl = Url.Action(nameof(RowsController.Get), typeof(RowsController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
+    var childRowApiUrl = Url.Action(nameof(ChildRowsController.Get), typeof(ChildRowsController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
+    var exportApiUrl = Url.Action(nameof(RowsController.Export), typeof(RowsController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
 
     const string loadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
     const string rowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
@@ -36,7 +37,9 @@
     const string templatePlaceholder = "{{data}}";
 
     ResourceManager.RegisterResource("script", ResourceNames.Lombiq_DataTables).AtFoot();
+    ResourceManager.RegisterResource("script", ResourceNames.JQuery_DataTables_Buttons_Bootstrap4).AtFoot();
     ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Bootstrap4);
+    ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Buttons_Bootstrap4);
 }
 
 @await DisplayAsync(await New.Lombiq_DataTable_Resources())
@@ -62,7 +65,6 @@
             }
             <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item btn-sm" href="@Url.Action("Edit", "Admin", values)">@T["Edit"]</a>
-                <a class="dropdown-item btn-sm" href="@Url.Action("Display", "Item", values)">@T["View"]</a>
                 <a class="dropdown-item btn-sm" href="@Url.Action("Remove", "Admin", values)" itemprop="RemoveUrl UnsafeUrl" data-title="@T["Delete"]" data-message="@T["Are you sure you want to delete this content item?"]">@T["Delete"]</a>
             </div>
         </div>
@@ -88,6 +90,17 @@
                 }
                 dataProvider: "@dataProvider",
                 rowsApiUrl: "@rowApiUrl",
+                export: @Json.Serialize(new
+                    {
+                        textAll = T["Export All"].Value,
+                        textVisible = T["Export Visible"].Value,
+                        api = exportApiUrl,
+                    }),
+                texts: @Json.Serialize(new
+                    {
+                        yes = T["Yes"].Value,
+                        no = T["No"].Value
+                    }),
                 dataTablesOptions: {
                     @if (pageSize > 0)
                     {

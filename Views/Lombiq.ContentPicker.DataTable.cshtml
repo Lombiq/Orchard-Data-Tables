@@ -28,8 +28,8 @@
     var singleChoice = Model.SingleChoice != null ? (bool)Model.HideActions : query["SingleChoice"].FirstOrDefault() != null;
 
     var rowApiUrl = Url.Action(
-        nameof(DataTablesRowController.Get),
-        typeof(DataTablesRowController).ControllerName(),
+        nameof(RowsController.Get),
+        typeof(RowsController).ControllerName(),
         new { Area = FeatureIds.Lombiq_DataTables });
 }
 

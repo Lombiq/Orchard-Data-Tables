@@ -35,7 +35,8 @@ namespace Lombiq.DataTables.Services
                 Direction = columnsDefinition.DefaultSortingDirection
             };
 
-            var results = await GetResultsAsync(request);
+            var enumerableResults = await GetResultsAsync(request);
+            var results = enumerableResults is IList<object> listResults ? listResults : enumerableResults.ToList();
             var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
             if (!string.IsNullOrEmpty(order.Column))
             {
@@ -81,7 +82,7 @@ namespace Lombiq.DataTables.Services
         /// </summary>
         /// <param name="request">The input of <see cref="GetRowsAsync"/>.</param>
         /// <returns>A list of results or <see cref="JObject"/>s.</returns>
-        protected abstract Task<IList<object>> GetResultsAsync(DataTableDataRequest request);
+        protected abstract Task<IEnumerable<object>> GetResultsAsync(DataTableDataRequest request);
 
         /// <summary>
         /// When overridden in a derived class it gets the columns definition.
