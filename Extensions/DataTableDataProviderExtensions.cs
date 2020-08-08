@@ -66,7 +66,7 @@ namespace Lombiq.DataTables.Services
             IAuthorizationService authorizationService,
             ClaimsPrincipal user)
         {
-            if (dataProvider.SupportedPermissions == null) return true;
+            if (dataProvider.SupportedPermissions == null) return false;
 
             var authorizations = await dataProvider.SupportedPermissions
                 .Select(permission => authorizationService.AuthorizeAsync(user, permission))
