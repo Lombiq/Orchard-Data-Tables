@@ -32,7 +32,8 @@ namespace Lombiq.DataTables.Services
         {
             var columnsDefinition = GetColumnsDefinition(request.QueryId);
             var columns = columnsDefinition.Columns
-                .Select(column => new { Path = column.Name.Replace('_', '.'), column.Name, column.Regex })
+                .Select(column =>
+                    new { Path = column.Name.Replace('_', '.'), column.Name, column.Regex, column.Searchable })
                 .ToList();
             var order = request.Order.FirstOrDefault() ?? new DataTableOrder
             {
@@ -43,6 +44,9 @@ namespace Lombiq.DataTables.Services
             var enumerableResults = await GetResultsAsync(request);
             var results = enumerableResults is IList<object> listResults ? listResults : enumerableResults.ToList();
             if (results.Count == 0) return DataTableDataResponse.ErrorResult(T["No results found."]);
+            var recordsFiltered = results.Count;
+            var recordsTotal = results.Count;
+
             var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
             if (!string.IsNullOrEmpty(order.Column))
             {
@@ -50,9 +54,6 @@ namespace Lombiq.DataTables.Services
                 JToken Selector(JObject x) => x.SelectToken(orderColumnName)?.ToString();
                 json = order.IsAscending ? json.OrderBy(Selector) : json.OrderByDescending(Selector);
             }
-
-            if (request.Start > 0) json = json.Skip(request.Start);
-            json = json.Take(request.Length);
 
             var rows = json.Select((result, index) =>
                 new DataTableRow(index, columns
@@ -63,9 +64,33 @@ namespace Lombiq.DataTables.Services
                             ? new JValue(Regex.Replace(cell.Token?.ToString() ?? string.Empty, regex.From, regex.To))
                             : cell.Token)));
 
+            if (!string.IsNullOrWhiteSpace(request.Search.Value))
+            {
+                if (request.Search.Regex)
+                {
+                    return DataTableDataResponse.ErrorResult(T["Regex search is not supported at this time."]);
+                }
+                var words = request.Search.Value
+                    .Split()
+                    .Where(word => !string.IsNullOrWhiteSpace(word))
+                    .Select(word => word.ToLower())
+                    .ToList();
+                var filteredRows = rows.Where(row =>
+                    words.All(word =>
+                        columns.Any(x =>
+                            x.Searchable &&
+                            row[x.Name]?.ToLower().Contains(word) == true)))
+                    .ToList();
+                rows = filteredRows;
+                recordsFiltered = filteredRows.Count;
+            }
+
+            if (request.Start > 0) rows = rows.Skip(request.Start);
+            rows = rows.Take(request.Length);
+
             return new DataTableDataResponse
             {
-                Data = rows, RecordsFiltered = results.Count, RecordsTotal = results.Count
+                Data = rows, RecordsFiltered = recordsFiltered, RecordsTotal = recordsTotal
             };
         }
 

@@ -8,6 +8,6 @@ namespace Lombiq.DataTables.Models
         public string Value { get; set; }
 
         [JsonProperty(PropertyName = "regex")]
-        public string Regex { get; set; }
+        public bool Regex { get; set; }
     }
 }
