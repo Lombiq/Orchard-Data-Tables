@@ -64,7 +64,7 @@ namespace Lombiq.DataTables.Services
                             ? new JValue(Regex.Replace(cell.Token?.ToString() ?? string.Empty, regex.From, regex.To))
                             : cell.Token)));
 
-            if (!string.IsNullOrWhiteSpace(request.Search.Value))
+            if (!string.IsNullOrWhiteSpace(request.Search?.Value))
             {
                 if (request.Search.Regex)
                 {
