@@ -14,10 +14,10 @@
 
     var defaults = {
         dataTablesOptions: {
-            searching: false,
+            searching: true,
             paging: true,
             processing: true,
-            info: false,
+            info: true,
             lengthChange: false,
             scrollX: true,
             dom: 'Bfrtip',
@@ -75,7 +75,7 @@
          */
         init: function () {
             var plugin = this;
-            var state = undefined;
+            var stateJson = "{}";
 
             plugin.originalQueryStringParameters = new URI().search(true);
 
@@ -153,15 +153,16 @@
                             dataProvider: plugin.settings.dataProvider,
                             originalUrl: window.location.href
                         });
-                        state = extendedParameters;
+                        var jsonParameters = JSON.stringify(extendedParameters);
+                        stateJson = jsonParameters;
 
                         if (plugin.settings.queryStringParametersLocalStorageKey) {
                             localStorage.setItem(
                                 plugin.settings.queryStringParametersLocalStorageKey,
-                                JSON.stringify(extendedParameters));
+                                jsonParameters);
                         }
 
-                        return plugin.buildQueryStringParameters(extendedParameters);
+                        return plugin.buildQueryStringParameters({ requestJson: jsonParameters });
                     },
                     dataSrc: function (response) {
                         plugin.settings.callbacks.ajaxDataLoadedCallback(response);
@@ -174,7 +175,7 @@
             function exportAction(exportAll) {
                 return function () {
                     location.href = URI(plugin.settings.export.api)
-                        .search({ requestJson: JSON.stringify(state), exportAll: exportAll });
+                        .search({ requestJson: stateJson, exportAll: exportAll });
                 }
             }
             if (dataTablesOptions.buttons === useDefaultButtons) {

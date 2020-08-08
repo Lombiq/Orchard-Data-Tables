@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using Lombiq.DataTables.Constants;
 using Newtonsoft.Json;
 
 namespace Lombiq.DataTables.Models
@@ -31,17 +28,5 @@ namespace Lombiq.DataTables.Models
 
         [JsonProperty(PropertyName = "order")]
         public DataTableOrder[] Order { get; set; }
-
-        public void SetOrder(IEnumerable<Dictionary<string, string>> orders) =>
-            Order = orders?
-                .Where(order => order.ContainsKey("column") && order.ContainsKey("direction"))
-                .Select(order => new DataTableOrder
-                {
-                    Column = order["column"],
-                    Direction = order["direction"] == "ascending"
-                        ? SortingDirection.Ascending
-                        : SortingDirection.Descending
-                })
-                .ToArray() ?? Array.Empty<DataTableOrder>();
     }
 }
