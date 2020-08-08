@@ -6,6 +6,7 @@ using Nito.AsyncEx;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using OrchardCore.Security.Permissions;
 using static Lombiq.DataTables.Constants.SortingDirection;
 
 namespace Lombiq.DataTables.Services
@@ -38,10 +39,28 @@ namespace Lombiq.DataTables.Services
                     .ToArray()
             };
 
+        /// <summary>
+        /// Creates columns definition using tuple parameters.
+        /// </summary>
+        /// <param name="dataProvider">The data provider to create for.</param>
+        /// <param name="columns">
+        /// Tuples each describing a column. They must be (string Name, string Text, bool Searchable, bool Exportable)
+        /// with the last 2 being optional.
+        /// </param>
+        /// <returns>The generated columns definition</returns>
         public static DataTableColumnsDefinition DefineColumns(this IDataTableDataProvider dataProvider,
             params object[] columns) =>
             DefineColumns(dataProvider, ToColumnTuple(columns[0]).Item1, Ascending, columns);
 
+        /// <summary>
+        /// Checks if the <see cref="user"/> can be authorized against the <see cref="dataProvider"/>.
+        /// </summary>
+        /// <param name="dataProvider">Supplies the acceptable <see cref="Permission"/>s.</param>
+        /// <param name="authorizationService">Authorizes the user.</param>
+        /// <param name="user">The user to check.</param>
+        /// <returns>
+        /// True if the user has at least one of the <see cref="Permission"/>s given by the <see cref="dataProvider"/>.
+        /// </returns>
         public static async Task<bool> Authorize(
             this IDataTableDataProvider dataProvider,
             IAuthorizationService authorizationService,
