@@ -79,7 +79,7 @@ namespace Lombiq.DataTables.Services
             catch (Exception ex) when (!ex.IsFatal())
             {
                 _logger.LogError(ex, "Error while getting DataTable rows.");
-                return new DataTableDataResponse { Error = T["Error while getting DataTable rows."] };
+                return DataTableDataResponse.ErrorResult(T["Error while getting DataTable rows."]);
             }
         }
     }

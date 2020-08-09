@@ -49,6 +49,12 @@ namespace Lombiq.DataTables.Models
         /// </summary>
         /// <param name="errorText">The text to display.</param>
         public static DataTableDataResponse ErrorResult(string errorText) =>
-            new DataTableDataResponse { Error = errorText };
+            new DataTableDataResponse
+            {
+                Error = errorText,
+                Data = Array.Empty<DataTableRow>(),
+                RecordsFiltered = 0,
+                RecordsTotal = 0
+            };
     }
 }

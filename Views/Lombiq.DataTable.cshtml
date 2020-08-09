@@ -34,6 +34,7 @@
     const string childRowElementName = ElementNames.DataTableElementName + "__childRow";
     const string toggleChildRowButtonElementName = ElementNames.DataTableElementName + "__toggleChildRowButton";
     const string templatesElementName = ElementNames.DataTableElementName + "__templates";
+    const string errorsElementName = ElementNames.DataTableElementName + "__errors";
 
     const string templatePlaceholder = "{{data}}";
 
@@ -50,6 +51,7 @@
         DataTableId: dataTableId,
         Columns: columns,
         ChildRowsEnabled: childRowsEnabled))
+    <div class="@errorsElementName" style="display: none;"></div>
     <div class="@templatesElementName" hidden>
         <div data-id="actions" class="btn-group">
             <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -102,6 +104,7 @@
                         yes = T["Yes"].Value,
                         no = T["No"].Value
                     }),
+                errorsSelector: ".@errorsElementName",
                 dataTablesOptions: {
                     @if (pageSize > 0)
                     {

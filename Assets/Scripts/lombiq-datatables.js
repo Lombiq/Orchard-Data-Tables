@@ -30,6 +30,7 @@
         serverSidePagingEnabled: false,
         queryStringParametersLocalStorageKey: "",
         templates: {},
+        errorsSelector: null,
         childRowOptions: {
             childRowsEnabled: false,
             asyncLoading: false,
@@ -162,6 +163,8 @@
                                 jsonParameters);
                         }
 
+                        if (plugin.settings.errorsSelector) $(plugin.settings.errorsSelector).hide();
+
                         return plugin.buildQueryStringParameters({ requestJson: jsonParameters });
                     },
                     dataSrc: function (response) {
@@ -189,6 +192,13 @@
                         action: exportAction(false)
                     }
                 ];
+            }
+
+            if (plugin.settings.errorsSelector) {
+                $.fn.dataTable.ext.errMode = 'none';
+                $(plugin.element).on('error.dt', function (e, settings, techNote, message) {
+                    $(plugin.settings.errorsSelector).text(message).show();
+                });
             }
 
             plugin.dataTableElement = $(plugin.element).dataTable(dataTablesOptions);
