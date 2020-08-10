@@ -56,5 +56,10 @@ namespace Lombiq.DataTables.Models
                 RecordsFiltered = 0,
                 RecordsTotal = 0
             };
+
+        /// <summary>
+        /// Creates a new response with empty <see cref="Data"/>.
+        /// </summary>
+        public static DataTableDataResponse Empty() => ErrorResult(null);
     }
 }

@@ -43,7 +43,7 @@ namespace Lombiq.DataTables.Services
 
             var enumerableResults = await GetResultsAsync(request);
             var results = enumerableResults is IList<object> listResults ? listResults : enumerableResults.ToList();
-            if (results.Count == 0) return DataTableDataResponse.ErrorResult(T["No results found."]);
+            if (results.Count == 0) return DataTableDataResponse.Empty();
             var recordsFiltered = results.Count;
             var recordsTotal = results.Count;
 
