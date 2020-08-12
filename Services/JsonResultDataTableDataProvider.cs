@@ -70,6 +70,7 @@ namespace Lombiq.DataTables.Services
                 {
                     return DataTableDataResponse.ErrorResult(T["Regex search is not supported at this time."]);
                 }
+
                 var words = request.Search.Value
                     .Split()
                     .Where(word => !string.IsNullOrWhiteSpace(word))

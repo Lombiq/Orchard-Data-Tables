@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,14 +38,6 @@ namespace Lombiq.DataTables.Services
                 results,
                 T,
                 response.Error);
-        }
-
-
-        private static Stream Save(XLWorkbook workbook, Stream stream)
-        {
-            workbook.SaveAs(stream);
-            stream.Position = 0;
-            return stream;
         }
 
 
@@ -115,6 +107,14 @@ namespace Lombiq.DataTables.Services
             worksheet.Columns().AdjustToContents();
 
             return Save(workbook, stream);
+        }
+
+
+        private static Stream Save(XLWorkbook workbook, Stream stream)
+        {
+            workbook.SaveAs(stream);
+            stream.Position = 0;
+            return stream;
         }
     }
 }
