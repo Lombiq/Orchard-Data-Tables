@@ -6,6 +6,8 @@ using OrchardCore.Admin;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
 
 namespace Lombiq.DataTables.Controllers
@@ -46,7 +48,7 @@ namespace Lombiq.DataTables.Controllers
             });
         }
 
-        public async Task<IActionResult> Get(string providerName, string id = null)
+        public async Task<IActionResult> Get(string providerName, string id = null, bool paging = true, bool viewAction = false)
         {
             var provider = _dataTableDataProviders.Single(provider => provider.Name == providerName);
             if (string.IsNullOrEmpty(id)) id = providerName;
@@ -55,6 +57,7 @@ namespace Lombiq.DataTables.Controllers
                 DataProvider = providerName,
                 QueryId = id,
                 ColumnsDefinition = await provider.GetColumnsDefinitionAsync(id),
+                AdditionalDatatableOptions = JObject.FromObject(new { paging, viewAction })
             };
 
             return View(nameof(Get), new DataTableViewModel
