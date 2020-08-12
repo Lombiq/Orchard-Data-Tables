@@ -28,5 +28,7 @@ namespace Lombiq.DataTables.Models
 
         [JsonProperty(PropertyName = "order")]
         public DataTableOrder[] Order { get; set; }
+
+
     }
 }
