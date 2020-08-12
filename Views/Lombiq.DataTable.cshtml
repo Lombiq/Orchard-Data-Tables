@@ -64,11 +64,11 @@
 
             @{
                 var values = new
-               {
-                   area = "OrchardCore.Contents",
-                   contentItemId = templatePlaceholder,
-                   returnUrl = FullRequestPath,
-               };
+                {
+                    area = "OrchardCore.Contents",
+                    contentItemId = templatePlaceholder,
+                    returnUrl = FullRequestPath,
+                };
             }
             <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item btn-sm" href="@Url.Action("Edit", "Admin", values)">@T["Edit"]</a>

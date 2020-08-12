@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace OrchardCore.ContentManagement
 {
-    public static class ContentItemExtensions
+    public static class DataTableContentItemExtensions
     {
         public static string CreateEditLink(this ContentItem contentItem, LinkGenerator linkGenerator, HttpContext httpContext) =>
             linkGenerator.GetUriByAction(httpContext,

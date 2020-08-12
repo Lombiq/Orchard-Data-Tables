@@ -15,5 +15,7 @@ namespace Lombiq.DataTables.Models
         public List<DataTableColumn> ColumnFilters { get; set; }
         public DataTableSearchParameters Search { get; set; }
         public DataTableOrder[] Order { get; set; }
+
+
     }
 }
