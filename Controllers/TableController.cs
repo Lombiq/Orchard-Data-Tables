@@ -3,12 +3,12 @@ using Lombiq.DataTables.Services;
 using Lombiq.DataTables.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using OrchardCore.Admin;
+using OrchardCore.ContentManagement;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using OrchardCore.ContentManagement;
 
 namespace Lombiq.DataTables.Controllers
 {
@@ -48,15 +48,15 @@ namespace Lombiq.DataTables.Controllers
             });
         }
 
-        public async Task<IActionResult> Get(string providerName, string id = null, bool paging = true, bool viewAction = false)
+        public async Task<IActionResult> Get(string providerName, string queryId = null, bool paging = true, bool viewAction = false)
         {
             var provider = _dataTableDataProviders.Single(provider => provider.Name == providerName);
-            if (string.IsNullOrEmpty(id)) id = providerName;
+            if (string.IsNullOrEmpty(queryId)) queryId = providerName;
             var definition = new DataTableDefinitionViewModel
             {
                 DataProvider = providerName,
-                QueryId = id,
-                ColumnsDefinition = await provider.GetColumnsDefinitionAsync(id),
+                QueryId = queryId,
+                ColumnsDefinition = await provider.GetColumnsDefinitionAsync(queryId),
                 AdditionalDatatableOptions = JObject.FromObject(new { paging, viewAction })
             };
 
