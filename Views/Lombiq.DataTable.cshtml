@@ -44,7 +44,7 @@
     ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Bootstrap4);
     ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Buttons_Bootstrap4);
 
-    var additionalOptions = Model.AdditionalDatatableOptions;
+    dynamic additionalOptions = viewModel.AdditionalDatatableOptions;
     var hasViewAction = (bool)(additionalOptions?.viewAction == true);
 }
 
@@ -74,7 +74,7 @@
                 <a class="dropdown-item btn-sm" href="@Url.Action("Edit", "Admin", values)">@T["Edit"]</a>
                 @if (hasViewAction)
                 {
-                    <a class="dropdown-item btn-sm" href="@Url.Action("View", "Content", values)">@T["View"]</a>
+                    <a class="dropdown-item btn-sm" href="@Url.Action("Display", "Item", values)">@T["View"]</a>
                 }
                 <a class="dropdown-item btn-sm" href="@Url.Action("Remove", "Admin", values)" itemprop="RemoveUrl UnsafeUrl" data-title="@T["Delete"]" data-message="@T["Are you sure you want to delete this content item?"]">@T["Delete"]</a>
             </div>
@@ -107,7 +107,7 @@
             @if (additionalOptions is JObject options)
             {
                 <text>
-                $.extend({}, dataTablesOptions, @Html.Raw(options.ToString());
+                $.extend({}, dataTablesOptions, @Html.Raw(options.ToString()));
                 </text>
             }
 
