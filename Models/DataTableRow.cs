@@ -36,6 +36,6 @@ namespace Lombiq.DataTables.Models
             ValuesDictionary.Values.Select(value => value.Value<string>());
 
         public IEnumerable<string> GetValuesOrderedByColumns(IEnumerable<DataTableColumnDefinition> columnDefinitions) =>
-            columnDefinitions.Select(columnDefinition => this[columnDefinition.Name] ?? "");
+            columnDefinitions.Select(columnDefinition => this[columnDefinition.Name] ?? string.Empty);
     }
 }

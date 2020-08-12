@@ -1,15 +1,15 @@
+using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
+using OrchardCore.Modules;
 using OrchardCore.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Lombiq.DataTables.Constants;
-using Microsoft.Extensions.Logging;
-using OrchardCore.Modules;
 
 namespace Lombiq.DataTables.Services
 {
@@ -37,8 +37,8 @@ namespace Lombiq.DataTables.Services
         }
 
 
-        public Task<DataTableChildRowResponse> GetChildRowAsync(int id) => throw new NotImplementedException();
-        public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) => throw new NotImplementedException();
+        public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) => throw new NotSupportedException();
+        public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) => throw new NotSupportedException();
 
 
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
