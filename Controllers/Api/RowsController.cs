@@ -41,6 +41,8 @@ namespace Lombiq.DataTables.Controllers.Api
         /// ASP.Net Core seems to have trouble with binding array properties in the object, so for reliability the input
         /// is serialized into JSON.
         /// </remarks>
+        [IgnoreAntiforgeryToken]
+        [HttpGet]
         public async Task<ActionResult<DataTableDataResponse>> Get(string requestJson)
         {
             if (requestJson is null) throw new ArgumentNullException(nameof(requestJson));
