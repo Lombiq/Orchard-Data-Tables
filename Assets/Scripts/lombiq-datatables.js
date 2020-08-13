@@ -165,6 +165,14 @@
 
                         if (plugin.settings.errorsSelector) $(plugin.settings.errorsSelector).hide();
 
+                        if (!jsonParameters || !jsonParameters.match || jsonParameters.match(/^\s*$/)) {
+                            alert("jsonParameters is null or empty!\n" +
+                                "params:\n" + JSON.stringify(params) + "\n" +
+                                "internalParameters:\n" + JSON.stringify(internalParameters) + "\n" +
+                                "extendedParameters:\n" + JSON.stringify(extendedParameters) + "\n" +
+                                "jsonParameters:\n" + JSON.stringify(jsonParameters) + "\n"
+                            );
+                        }
                         return plugin.buildQueryStringParameters({ requestJson: jsonParameters });
                     },
                     dataSrc: function (response) {

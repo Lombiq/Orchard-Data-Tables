@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
@@ -42,6 +43,8 @@ namespace Lombiq.DataTables.Controllers.Api
         /// </remarks>
         public async Task<ActionResult<DataTableDataResponse>> Get(string requestJson)
         {
+            if (requestJson is null) throw new ArgumentNullException(nameof(requestJson));
+
             var request = JsonConvert.DeserializeObject<DataTableDataRequest>(requestJson);
             var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
             if (dataProvider == null)
