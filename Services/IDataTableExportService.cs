@@ -1,6 +1,6 @@
-﻿using System.IO;
+﻿using Lombiq.DataTables.Models;
+using System.IO;
 using System.Threading.Tasks;
-using Lombiq.DataTables.Models;
 
 namespace Lombiq.DataTables.Services
 {

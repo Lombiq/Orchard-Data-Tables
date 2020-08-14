@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 using Lombiq.DataTables.Services;
-using OrchardCore.DisplayManagement;
+using System.Collections.Generic;
 
 namespace Lombiq.DataTables.ViewModels
 {

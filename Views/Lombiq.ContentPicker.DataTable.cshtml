@@ -1,3 +1,4 @@
+@using Newtonsoft.Json
 @{
     var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
 
@@ -140,7 +141,7 @@
 
             $("#@dataTableId").lombiq_DataTables({
                 rowClassName: "@ElementNames.DataTableRowElementName",
-                queryId: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(queryId)),
+                queryId: @Html.Raw(JsonConvert.SerializeObject(queryId)),
                 dataProvider: "@dataProvider",
                 rowsApiUrl: "@rowApiUrl",
                 dataTablesOptions: {

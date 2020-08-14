@@ -2,11 +2,10 @@ using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Authorization;
 using Nito.AsyncEx;
+using OrchardCore.Security.Permissions;
 using System.Linq;
 using System.Security.Claims;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using OrchardCore.Security.Permissions;
 using static Lombiq.DataTables.Constants.SortingDirection;
 
 namespace Lombiq.DataTables.Services
