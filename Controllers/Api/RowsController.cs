@@ -34,18 +34,32 @@ namespace Lombiq.DataTables.Controllers.Api
         /// <summary>
         /// Gets the current table view's rows.
         /// </summary>
-        /// <param name="request">The request to fulfill.</param>
-        /// <param name="order">The <see cref="DataTableDataRequest.Order"/> property.</param>
+        /// <param name="requestJson">The request to fulfill serialized as JSON.</param>
         /// <returns>The response for this API call.</returns>
         /// <remarks>
-        /// ASP.Net Core seems to have trouble with binding array properties in the object so it's necessary to bind
-        /// the array separately and manually set the property from the bound parameter.
+        ///   <list type="bullet">
+        ///
+        ///     <item>
+        ///       <description>
+        ///         ASP.Net Core seems to have trouble with binding array properties in the object, so for reliability
+        ///         the input is serialized into JSON.
+        ///       </description>
+        ///     </item>
+        ///     <item>
+        ///       <description>
+        ///         <see cref="IgnoreAntiforgeryTokenAttribute"/> is used because of reported unwanted
+        ///         <see cref="Microsoft.AspNetCore.Antiforgery.AntiforgeryValidationException"/>s.
+        ///       </description>
+        ///     </item>
+        ///   </list>
         /// </remarks>
-        public async Task<ActionResult<DataTableDataResponse>> Get(
-            DataTableDataRequest request,
-            [FromQuery(Name = "order")] ICollection<Dictionary<string, string>> order)
+        [IgnoreAntiforgeryToken]
+        [HttpGet]
+        public async Task<ActionResult<DataTableDataResponse>> Get(string requestJson)
         {
-            request.SetOrder(order);
+            if (string.IsNullOrEmpty(requestJson)) return BadRequest();
+
+            var request = JsonConvert.DeserializeObject<DataTableDataRequest>(requestJson);
             var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
             if (dataProvider == null)
             {

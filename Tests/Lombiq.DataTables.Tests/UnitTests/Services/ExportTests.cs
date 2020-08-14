@@ -31,10 +31,12 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             var provider = (IDataTableDataProvider)new MockDataProvider(dataSet,
                 new DataTableColumnsDefinition()
                 {
-                    Columns = columns.Select(column => new DataTableColumnDefinition
-                    {
-                        Name = column.Name, Text = column.Text, Exportable = column.Exportable
-                    })
+                    Columns = columns
+                        .Select(column => new DataTableColumnDefinition
+                        {
+                            Name = column.Name, Text = column.Text, Exportable = column.Exportable
+                        })
+                        .ToList()
                 });
             var request = new DataTableDataRequest
             {

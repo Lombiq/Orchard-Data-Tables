@@ -10,6 +10,7 @@ namespace Lombiq.DataTables.Models
         public string DataSource { get; set; }
         public bool Orderable { get; set; } = true;
         public bool Exportable { get; set; } = true;
+        public bool Searchable { get; set; } = true;
         public (string From, string To)? Regex { get; set; }
 
         public string this[string key]

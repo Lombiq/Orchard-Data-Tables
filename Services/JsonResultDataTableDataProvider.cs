@@ -19,15 +19,21 @@ namespace Lombiq.DataTables.Services
     /// </summary>
     public abstract class JsonResultDataTableDataProvider : IDataTableDataProvider
     {
+        private readonly IStringLocalizer T;
+
         public abstract LocalizedString Description { get; }
         public abstract IEnumerable<Permission> SupportedPermissions { get; }
+
+
+        protected JsonResultDataTableDataProvider(IStringLocalizer stringLocalizer) => T = stringLocalizer;
 
 
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
             var columnsDefinition = GetColumnsDefinition(request.QueryId);
             var columns = columnsDefinition.Columns
-                .Select(column => new { Path = column.Name.Replace('_', '.'), column.Name, column.Regex })
+                .Select(column =>
+                    new { Path = column.Name.Replace('_', '.'), column.Name, column.Regex, column.Searchable })
                 .ToList();
             var order = request.Order.FirstOrDefault() ?? new DataTableOrder
             {
@@ -37,6 +43,10 @@ namespace Lombiq.DataTables.Services
 
             var enumerableResults = await GetResultsAsync(request);
             var results = enumerableResults is IList<object> listResults ? listResults : enumerableResults.ToList();
+            if (results.Count == 0) return DataTableDataResponse.Empty();
+            var recordsFiltered = results.Count;
+            var recordsTotal = results.Count;
+
             var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
             if (!string.IsNullOrEmpty(order.Column))
             {
@@ -45,21 +55,44 @@ namespace Lombiq.DataTables.Services
                 json = order.IsAscending ? json.OrderBy(Selector) : json.OrderByDescending(Selector);
             }
 
-            if (request.Start > 0) json = json.Skip(request.Start);
-            json = json.Take(request.Length);
-
             var rows = json.Select((result, index) =>
                 new DataTableRow(index, columns
-                    .Select(column => new { column.Name, column.Regex, Token = result.SelectToken(column.Path, true) })
+                    .Select(column => new { column.Name, column.Regex, Token = result.SelectToken(column.Path, false) })
                     .ToDictionary(
                         cell => cell.Name,
                         cell => cell.Regex is {} regex
-                            ? new JValue(Regex.Replace(cell.Token.ToString(), regex.From, regex.To))
+                            ? new JValue(Regex.Replace(cell.Token?.ToString() ?? string.Empty, regex.From, regex.To))
                             : cell.Token)));
+
+            if (!string.IsNullOrWhiteSpace(request.Search?.Value))
+            {
+                if (request.Search.IsRegex)
+                {
+                    return DataTableDataResponse.ErrorResult(T["Regex search is not supported at this time."]);
+                }
+
+                var words = request.Search.Value
+                    .Split()
+                    .Where(word => !string.IsNullOrWhiteSpace(word))
+                    .Select(word => word.ToLower())
+                    .ToList();
+                var filteredRows = rows.Where(row =>
+                    words.All(word =>
+                        columns.Any(x =>
+                            x.Searchable &&
+                            row.ValuesDictionary.TryGetValue(x.Name, out var token) &&
+                            token.ToString().ToLower().Contains(word))))
+                    .ToList();
+                rows = filteredRows;
+                recordsFiltered = filteredRows.Count;
+            }
+
+            if (request.Start > 0) rows = rows.Skip(request.Start);
+            rows = rows.Take(request.Length);
 
             return new DataTableDataResponse
             {
-                Data = rows, RecordsFiltered = results.Count, RecordsTotal = results.Count
+                Data = rows, RecordsFiltered = recordsFiltered, RecordsTotal = recordsTotal
             };
         }
 

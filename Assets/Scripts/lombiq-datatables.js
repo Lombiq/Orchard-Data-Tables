@@ -14,10 +14,10 @@
 
     var defaults = {
         dataTablesOptions: {
-            searching: false,
+            searching: true,
             paging: true,
             processing: true,
-            info: false,
+            info: true,
             lengthChange: false,
             scrollX: true,
             dom: 'Bfrtip',
@@ -30,6 +30,7 @@
         serverSidePagingEnabled: false,
         queryStringParametersLocalStorageKey: "",
         templates: {},
+        errorsSelector: null,
         childRowOptions: {
             childRowsEnabled: false,
             asyncLoading: false,
@@ -75,7 +76,7 @@
          */
         init: function () {
             var plugin = this;
-            var state = undefined;
+            var stateJson = "{}";
 
             plugin.originalQueryStringParameters = new URI().search(true);
 
@@ -93,14 +94,31 @@
             dataTablesOptions.columnDefs = [{
                 targets: "_all",
                 render: function (data) {
+                    if (data == null) return "";
+
+                    // If data is Boolean.
                     if (data === !!data) return data ? plugin.settings.texts.yes : plugin.settings.texts.no;
 
-                    var template = typeof data === "string" ?
+                    var isString = typeof data === "string";
+
+                    // If data is ISO date.
+                    if (isString && data.match(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.?\d*([+-][0-2]\d:[0-5]\d|Z)/)) {
+                        var locale = 'en-US';
+                        if (plugin.settings.culture) locale = plugin.settings.culture;
+                        return (new Date(data)).toLocaleDateString(locale);
+                    }
+
+                    // If data is a template.
+                    var template = isString ?
                         data.match(/^\s*{{\s*([^:]+)\s*:\s*([^}]*[^ \t}])\s*}}\s*$/) : null;
                     if (template && template[1] && template[2]) {
                         var templateName = template[1];
                         var templateData = template[2];
                         return dataTablesOptions.templates[templateName].replace(/{{\s*data\s*}}/g, templateData);
+                    }
+
+                    switch (data.Type) {
+                        case "ExportLink" : return "<a href=\"" + data.Url + "\">" + data.Text + "</a>";
                     }
 
                     return data;
@@ -136,15 +154,26 @@
                             dataProvider: plugin.settings.dataProvider,
                             originalUrl: window.location.href
                         });
-                        state = extendedParameters;
+                        var jsonParameters = JSON.stringify(extendedParameters);
+                        stateJson = jsonParameters;
 
                         if (plugin.settings.queryStringParametersLocalStorageKey) {
                             localStorage.setItem(
                                 plugin.settings.queryStringParametersLocalStorageKey,
-                                JSON.stringify(extendedParameters));
+                                jsonParameters);
                         }
 
-                        return plugin.buildQueryStringParameters(extendedParameters);
+                        if (plugin.settings.errorsSelector) $(plugin.settings.errorsSelector).hide();
+
+                        if (!jsonParameters || !jsonParameters.match || jsonParameters.match(/^\s*$/)) {
+                            alert("jsonParameters is null or empty!\n" +
+                                "params:\n" + JSON.stringify(params) + "\n" +
+                                "internalParameters:\n" + JSON.stringify(internalParameters) + "\n" +
+                                "extendedParameters:\n" + JSON.stringify(extendedParameters) + "\n" +
+                                "jsonParameters:\n" + JSON.stringify(jsonParameters) + "\n"
+                            );
+                        }
+                        return plugin.buildQueryStringParameters({ requestJson: jsonParameters });
                     },
                     dataSrc: function (response) {
                         plugin.settings.callbacks.ajaxDataLoadedCallback(response);
@@ -157,7 +186,7 @@
             function exportAction(exportAll) {
                 return function () {
                     location.href = URI(plugin.settings.export.api)
-                        .search({ requestJson: JSON.stringify(state), exportAll: exportAll });
+                        .search({ requestJson: stateJson, exportAll: exportAll });
                 }
             }
             if (dataTablesOptions.buttons === useDefaultButtons) {
@@ -171,6 +200,13 @@
                         action: exportAction(false)
                     }
                 ];
+            }
+
+            if (plugin.settings.errorsSelector) {
+                $.fn.dataTable.ext.errMode = 'none';
+                $(plugin.element).on('error.dt', function (e, settings, techNote, message) {
+                    $(plugin.settings.errorsSelector).text(message).show();
+                });
             }
 
             plugin.dataTableElement = $(plugin.element).dataTable(dataTablesOptions);

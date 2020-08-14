@@ -1,4 +1,6 @@
 @using OrchardCore.ResourceManagement
+@using System.Globalization
+@using Newtonsoft.Json.Linq
 
 @inject IResourceManager ResourceManager
 
@@ -33,6 +35,7 @@
     const string childRowElementName = ElementNames.DataTableElementName + "__childRow";
     const string toggleChildRowButtonElementName = ElementNames.DataTableElementName + "__toggleChildRowButton";
     const string templatesElementName = ElementNames.DataTableElementName + "__templates";
+    const string errorsElementName = ElementNames.DataTableElementName + "__errors";
 
     const string templatePlaceholder = "{{data}}";
 
@@ -40,6 +43,9 @@
     ResourceManager.RegisterResource("script", ResourceNames.JQuery_DataTables_Buttons_Bootstrap4).AtFoot();
     ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Bootstrap4);
     ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Buttons_Bootstrap4);
+
+    dynamic additionalOptions = viewModel.AdditionalDatatableOptions;
+    var hasViewAction = (bool)(additionalOptions?.viewAction == true);
 }
 
 @await DisplayAsync(await New.Lombiq_DataTable_Resources())
@@ -49,6 +55,7 @@
         DataTableId: dataTableId,
         Columns: columns,
         ChildRowsEnabled: childRowsEnabled))
+    <div class="@errorsElementName" style="display: none;"></div>
     <div class="@templatesElementName" hidden>
         <div data-id="actions" class="btn-group">
             <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -57,14 +64,18 @@
 
             @{
                 var values = new
-               {
-                   area = "OrchardCore.Contents",
-                   contentItemId = templatePlaceholder,
-                   returnUrl = FullRequestPath,
-               };
+                {
+                    area = "OrchardCore.Contents",
+                    contentItemId = templatePlaceholder,
+                    returnUrl = FullRequestPath,
+                };
             }
             <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item btn-sm" href="@Url.Action("Edit", "Admin", values)">@T["Edit"]</a>
+                @if (hasViewAction)
+                {
+                    <a class="dropdown-item btn-sm" href="@Url.Action("Display", "Item", values)">@T["View"]</a>
+                }
                 <a class="dropdown-item btn-sm" href="@Url.Action("Remove", "Admin", values)" itemprop="RemoveUrl UnsafeUrl" data-title="@T["Delete"]" data-message="@T["Are you sure you want to delete this content item?"]">@T["Delete"]</a>
             </div>
         </div>
@@ -80,12 +91,33 @@
                 element.parentElement.removeChild(element);
             });
 
+            var dataTablesOptions = {
+                @if (pageSize > 0)
+                {
+                    <text>
+                        pageLength: @pageSize,
+                    </text>
+                }
+                language: {
+                    processing: "<div class=\"@loadingIndicatorElementName\">@T["Loading..."]</div>"
+                },
+                order: [["@defaultSortingColumnIndex", "@defaultSortingDirectionValue"]],
+                templates: templates
+            };
+            @if (additionalOptions is JObject options)
+            {
+                <text>
+                $.extend({}, dataTablesOptions, @Html.Raw(options.ToString()));
+                </text>
+            }
+
+
             $("#@dataTableId").lombiq_DataTables({
                 rowClassName: "@ElementNames.DataTableRowElementName",
                 @if (!string.IsNullOrWhiteSpace(queryId))
                 {
                     <text>
-                        queryId: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(queryId)),
+                        queryId: @Json.Serialize(queryId),
                     </text>
                 }
                 dataProvider: "@dataProvider",
@@ -101,19 +133,8 @@
                         yes = T["Yes"].Value,
                         no = T["No"].Value
                     }),
-                dataTablesOptions: {
-                    @if (pageSize > 0)
-                    {
-                        <text>
-                            pageLength: @pageSize,
-                        </text>
-                    }
-                    language: {
-                        processing: "<div class=\"@loadingIndicatorElementName\">@T["Loading..."]</div>"
-                    },
-                    order: [["@defaultSortingColumnIndex", "@defaultSortingDirectionValue"]],
-                    templates: templates
-                },
+                errorsSelector: ".@errorsElementName",
+                dataTablesOptions: dataTablesOptions,
                 serverSidePagingEnabled: @(progressiveLoadingEnabled ? "false" : "true"),
                 queryStringParametersLocalStorageKey: "@queryStringParametersLocalStorageKey",
                 progressiveLoadingOptions: {
@@ -138,7 +159,8 @@
                             childRowVisibleClassName: "@rowElementWithChildRowVisibleModifier",
                         </text>
                     }
-                }
+                },
+                culture: @Json.Serialize(CultureInfo.CurrentUICulture.Name)
             });
         });
     })(jQuery);

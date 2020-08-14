@@ -1,3 +1,5 @@
+using Newtonsoft.Json.Linq;
+
 namespace Lombiq.DataTables.ViewModels
 {
     public class DataTableDefinitionViewModel : DataTableDataViewModel
@@ -9,5 +11,6 @@ namespace Lombiq.DataTables.ViewModels
         public string QueryStringParametersLocalStorageKey { get; set; }
         public string DataProvider { get; set; }
         public string DataTableCssClasses { get; set; }
+        public JObject AdditionalDatatableOptions { get; set; }
     }
 }
