@@ -1,8 +1,8 @@
+using Lombiq.DataTables.Constants;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using OrchardCore.ResourceManagement;
 using System.Text.Encodings.Web;
-using Lombiq.DataTables.Constants;
 
 namespace Lombiq.DataTables.TagHelpers
 {

@@ -1,5 +1,5 @@
-using System;
 using Lombiq.DataTables.Constants;
+using System;
 using System.Collections.Generic;
 
 namespace Lombiq.DataTables.Models

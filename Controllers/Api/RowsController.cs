@@ -1,4 +1,3 @@
-using System.Linq;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -6,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Controllers.Api

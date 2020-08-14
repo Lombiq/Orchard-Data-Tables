@@ -4,6 +4,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
+using OrchardCore.Lucene;
 using OrchardCore.Modules;
 using OrchardCore.Queries;
 using System;
@@ -46,7 +47,7 @@ namespace Lombiq.DataTables.Services
             try
             {
                 var query = await _queryManager.GetQueryAsync(request.QueryId);
-                var isContentItem = query is OrchardCore.Lucene.LuceneQuery { ReturnContentItems: true };
+                var isContentItem = query is LuceneQuery { ReturnContentItems: true };
 
                 var order = request.Order.FirstOrDefault();
                 var parameters = new Dictionary<string, object>
