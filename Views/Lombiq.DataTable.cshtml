@@ -14,19 +14,13 @@
 
     var queryId = viewModel?.QueryId ?? 0;
     var columnsDefinition = viewModel?.ColumnsDefinition as DataTableColumnsDefinition;
-    var columns = columnsDefinition?.Columns.ToList();
+    var columns = columnsDefinition?.GetVisibleColumns().ToList();
     var childRowsEnabled = viewModel?.ChildRowsEnabled ?? false;
     var progressiveLoadingEnabled = viewModel?.ProgressiveLoadingEnabled ?? false;
     var queryStringParametersLocalStorageKey = viewModel?.QueryStringParametersLocalStorageKey ?? "";
     var dataProvider = viewModel?.DataProvider ?? "";
     var dataTableId = string.IsNullOrEmpty(viewModel?.DataTableId) ? ElementNames.DataTableElementName : viewModel.DataTableId;
     var dataTableCssClasses = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? ElementNames.DataTableWrapperDefaultElementName : viewModel.DataTableCssClasses;
-
-    var defaultSortingColumnIndex = Math.Max(
-        0, Math.Max(columns.FindIndex(column => column.Orderable), columns.FindIndex(column => column.Name == columnsDefinition.DefaultSortingColumnName)));
-
-    var defaultSortingDirection = columnsDefinition?.DefaultSortingDirection ?? SortingDirection.Ascending;
-    var defaultSortingDirectionValue = defaultSortingDirection == SortingDirection.Ascending ? "asc" : "desc";
 
     var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
     var childRowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesChildRow", Action = "Get" });
@@ -69,7 +63,7 @@
                     language: {
                         processing: "<div class=\"@LoadingIndicatorElementName\">@T("Loading...")</div>"
                     },
-                    order: [["@defaultSortingColumnIndex", "@defaultSortingDirectionValue"]]
+                    order: [["@columnsDefinition.GetDefaultSortingColumnIndex()", "@columnsDefinition.GetDefaultSortingDirectionTechnicalValue()"]]
                 },
                 serverSidePagingEnabled: @(progressiveLoadingEnabled ? "false" : "true"),
                 queryStringParametersLocalStorageKey: "@queryStringParametersLocalStorageKey",

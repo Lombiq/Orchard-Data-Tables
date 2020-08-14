@@ -1,4 +1,5 @@
 ﻿using Orchard.ContentManagement.Records;
+using System;
 using System.Collections.Generic;
 using static Lombiq.DataTables.Constants.DataTableColumnDefinitionSettingsKeys;
 
@@ -11,6 +12,7 @@ namespace Lombiq.DataTables.Models
         public string Text { get; set; }
         public string DataSource { get; set; }
         public bool Orderable { get; set; } = true;
+        public Func<bool> DisplayCondition = () => true;
 
         public string this[string key]
         {
