@@ -57,7 +57,7 @@ namespace Lombiq.DataTables.Controllers.Api
         [HttpGet]
         public async Task<ActionResult<DataTableDataResponse>> Get(string requestJson)
         {
-            if (requestJson is null) return BadRequest();
+            if (string.IsNullOrEmpty(requestJson)) return BadRequest();
 
             var request = JsonConvert.DeserializeObject<DataTableDataRequest>(requestJson);
             var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
