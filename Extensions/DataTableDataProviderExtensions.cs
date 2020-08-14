@@ -1,10 +1,10 @@
-using System;
 using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Authorization;
 using Nito.AsyncEx;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OrchardCore.Security.Permissions;
 using static Lombiq.DataTables.Constants.SortingDirection;
@@ -16,15 +16,27 @@ namespace Lombiq.DataTables.Services
         public static DataTableColumnsDefinition DefineColumns(this IDataTableDataProvider dataProvider,
             string sortingColumn,
             SortingDirection sortingDirection,
-            params object[] columns) =>
+            params (string Name, string Text)[] columns) =>
             new DataTableColumnsDefinition
             {
                 DefaultSortingColumnName = sortingColumn,
                 DefaultSortingDirection = sortingDirection,
                 Columns = columns.Select(column =>
                     {
-                        var (name, text, searchable, exportable) = ToColumnTuple(column);
+                        var (name, text) = column;
                         var nameParts = name.Contains('|') ? name.Split('|') : new[] { name };
+                        var searchable = true;
+                        var exportable = true;
+
+                        if (nameParts.Length == 3 && nameParts[2] == "{{ actions: $0 }}")
+                        {
+                            searchable = false;
+                            exportable = false;
+                        }
+                        else if (nameParts[0].EndsWith("DateUtc"))
+                        {
+                            searchable = false;
+                        }
 
                         return new DataTableColumnDefinition
                         {
@@ -49,8 +61,8 @@ namespace Lombiq.DataTables.Services
         /// </param>
         /// <returns>The generated columns definition</returns>
         public static DataTableColumnsDefinition DefineColumns(this IDataTableDataProvider dataProvider,
-            params object[] columns) =>
-            DefineColumns(dataProvider, ToColumnTuple(columns[0]).Item1, Ascending, columns);
+            params (string Name, string Text)[] columns) =>
+            DefineColumns(dataProvider, columns[0].Name, Ascending, columns);
 
         /// <summary>
         /// Checks if the <see cref="user"/> can be authorized against the <see cref="dataProvider"/>.
@@ -73,28 +85,6 @@ namespace Lombiq.DataTables.Services
                 .WhenAll();
 
             return authorizations.Any(success => success);
-        }
-
-
-        private static (string, string, bool, bool) ToColumnTuple(object column)
-        {
-            string name, text;
-            bool searchable = true, exportable = true;
-            if (column is ValueTuple<string, string, bool, bool> tuple4)
-            {
-                (name, text, searchable, exportable) = tuple4;
-            }
-            else if (column is ValueTuple<string, string, bool> tuple3)
-            {
-                (name, text, searchable) = tuple3;
-            }
-            else if (column is ValueTuple<string, string> tuple2)
-            {
-                (name, text) = tuple2;
-            }
-            else throw new ArgumentException("The argument 'columns' must be (string, string, bool, bool)");
-
-            return (name, text, searchable, exportable);
         }
     }
 }
