@@ -38,13 +38,18 @@ namespace Lombiq.DataTables.Controllers.Api
         /// <returns>The response for this API call.</returns>
         /// <remarks>
         ///   <list type="bullet">
+        ///
         ///     <item>
-        ///       ASP.Net Core seems to have trouble with binding array properties in the object, so for reliability the
-        ///       input is serialized into JSON.
+        ///       <description>
+        ///         ASP.Net Core seems to have trouble with binding array properties in the object, so for reliability
+        ///         the input is serialized into JSON.
+        ///       </description>
         ///     </item>
         ///     <item>
-        ///       <see cref="IgnoreAntiforgeryTokenAttribute"/> is used because of reported unwanted
-        ///       <see cref="Microsoft.AspNetCore.Antiforgery.AntiforgeryValidationException"/>s.
+        ///       <description>
+        ///         <see cref="IgnoreAntiforgeryTokenAttribute"/> is used because of reported unwanted
+        ///         <see cref="Microsoft.AspNetCore.Antiforgery.AntiforgeryValidationException"/>s.
+        ///       </description>
         ///     </item>
         ///   </list>
         /// </remarks>
