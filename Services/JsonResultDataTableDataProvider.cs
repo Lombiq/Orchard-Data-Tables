@@ -66,7 +66,7 @@ namespace Lombiq.DataTables.Services
 
             if (!string.IsNullOrWhiteSpace(request.Search?.Value))
             {
-                if (request.Search.Regex)
+                if (request.Search.IsRegex)
                 {
                     return DataTableDataResponse.ErrorResult(T["Regex search is not supported at this time."]);
                 }

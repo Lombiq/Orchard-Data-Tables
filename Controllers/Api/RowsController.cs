@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
@@ -38,14 +37,22 @@ namespace Lombiq.DataTables.Controllers.Api
         /// <param name="requestJson">The request to fulfill serialized as JSON.</param>
         /// <returns>The response for this API call.</returns>
         /// <remarks>
-        /// ASP.Net Core seems to have trouble with binding array properties in the object, so for reliability the input
-        /// is serialized into JSON.
+        ///   <list type="bullet">
+        ///     <item>
+        ///       ASP.Net Core seems to have trouble with binding array properties in the object, so for reliability the
+        ///       input is serialized into JSON.
+        ///     </item>
+        ///     <item>
+        ///       <see cref="IgnoreAntiforgeryTokenAttribute"/> is used because of reported unwanted
+        ///       <see cref="Microsoft.AspNetCore.Antiforgery.AntiforgeryValidationException"/>s.
+        ///     </item>
+        ///   </list>
         /// </remarks>
         [IgnoreAntiforgeryToken]
         [HttpGet]
         public async Task<ActionResult<DataTableDataResponse>> Get(string requestJson)
         {
-            if (requestJson is null) throw new ArgumentNullException(nameof(requestJson));
+            if (requestJson is null) return BadRequest();
 
             var request = JsonConvert.DeserializeObject<DataTableDataRequest>(requestJson);
             var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
