@@ -34,11 +34,7 @@
     <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-rc2-13929" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-rc2-13929" />
     <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-rc2-13929" />
-    <!-- Not to include faulty Lucene analyzers, see:
-    https://github.com/apache/lucenenet/issues/286#issuecomment-642533649 -->
-    <PackageReference Include="OrchardCore.Lucene" Version="1.0.0-rc2-13929" NoWarn="NU5104;AD0001">
-      <ExcludeAssets>analyzers</ExcludeAssets>
-    </PackageReference>
+    <PackageReference Include="OrchardCore.Lucene" Version="1.0.0-rc2-13929" />
     <PackageReference Include="OrchardCore.Queries" Version="1.0.0-rc2-13929" />
   </ItemGroup>
 
