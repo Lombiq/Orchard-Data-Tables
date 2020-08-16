@@ -21,6 +21,15 @@ namespace Lombiq.DataTables.Models
         }
 
 
+        public DataTableColumnDefinition() { }
+
+        public DataTableColumnDefinition(string name, string text)
+        {
+            Name = name;
+            Text = text;
+        }
+
+
         public static Dictionary<string, string> AdditionalSettingsForContentPartRecordPropertySorting<TRecord>(
             string propertyName) where TRecord : ContentPartRecord =>
             new Dictionary<string, string>()
