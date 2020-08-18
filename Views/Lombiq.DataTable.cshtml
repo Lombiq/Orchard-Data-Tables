@@ -97,6 +97,7 @@
                         pageLength: @pageSize,
                     </text>
                 }
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, @Json.Serialize(T["All"].Value)]],
                 language: {
                     processing: "<div class=\"@loadingIndicatorElementName\">@T["Loading..."]</div>"
                 },

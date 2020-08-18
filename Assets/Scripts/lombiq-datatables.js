@@ -18,9 +18,12 @@
             paging: true,
             processing: true,
             info: true,
-            lengthChange: false,
+            lengthChange: true,
             scrollX: true,
-            dom: 'Bfrtip',
+            dom: "<'row dataTables_buttons'<'col-md-12'B>>" +
+                "<'row dataTables_controls'<'col-md-6 dataTables_length'l><'col-md-6 dataTables_search'f>>" +
+                "<'row dataTables_content'<'col-md-12't>>" +
+                "<'row dataTables_footer'<'col-md-12'ip>>",
             buttons: useDefaultButtons
         },
         rowClassName: "",
