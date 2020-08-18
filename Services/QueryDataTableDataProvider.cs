@@ -53,7 +53,7 @@ namespace Lombiq.DataTables.Services
                 var parameters = new Dictionary<string, object>
                 {
                     ["from"] = request.Start,
-                    ["size"] = request.Length,
+                    ["size"] = request.Length > 0 ? request.Length : int.MaxValue,
                     ["sort"] = order?.Column?.Replace('_', '.') ?? "Content.ContentItem.PublishedUtc",
                     ["order"] = order?.Direction == SortingDirection.Descending ? "desc" : "asc",
                 };

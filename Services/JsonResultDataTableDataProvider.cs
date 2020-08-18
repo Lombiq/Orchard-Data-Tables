@@ -88,7 +88,7 @@ namespace Lombiq.DataTables.Services
             }
 
             if (request.Start > 0) rows = rows.Skip(request.Start);
-            rows = rows.Take(request.Length);
+            if (request.Length > 0) rows = rows.Take(request.Length);
 
             return new DataTableDataResponse
             {
