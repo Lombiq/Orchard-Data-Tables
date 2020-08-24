@@ -47,10 +47,8 @@
     var hasViewAction = (bool)(additionalOptions?.viewAction == true);
 }
 
-@await DisplayAsync(await New.Lombiq_DataTable_Resources())
-
 <script at="Head">
-jQuery.dataTableResources = {
+window.dataTableResources = {
     options: {
         lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, @Json.Serialize(T["All"].Value)]],
         language: {
@@ -59,6 +57,8 @@ jQuery.dataTableResources = {
     }
 };
 </script>
+
+@await DisplayAsync(await New.Lombiq_DataTable_Resources())
 
 <div class="@dataTableCssClasses">
     @await DisplayAsync(await New.Lombiq_DataTable_Table(
@@ -102,12 +102,10 @@ jQuery.dataTableResources = {
             });
 
             var dataTablesOptions = $.extend({},
-                $.dataTableResources.options,
-                @Json.Serialize()
+                window.dataTableResources.options,
                 {
                     @if (pageSize > 0)
                     {
-
                         <text>
                             pageLength: @pageSize,
                         </text>
