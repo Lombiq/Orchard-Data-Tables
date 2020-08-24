@@ -49,6 +49,17 @@
 
 @await DisplayAsync(await New.Lombiq_DataTable_Resources())
 
+<script at="Head">
+jQuery.dataTableResources = {
+    options: {
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, @Json.Serialize(T["All"].Value)]],
+        language: {
+            processing: "<div class=\"@loadingIndicatorElementName\">@T["Loading..."]</div>"
+        },
+    }
+};
+</script>
+
 <div class="@dataTableCssClasses">
     @await DisplayAsync(await New.Lombiq_DataTable_Table(
         DataTableId: dataTableId,
@@ -90,24 +101,24 @@
                 element.parentElement.removeChild(element);
             });
 
-            var dataTablesOptions = {
-                @if (pageSize > 0)
+            var dataTablesOptions = $.extend({},
+                $.dataTableResources.options,
+                @Json.Serialize()
                 {
-                    <text>
-                        pageLength: @pageSize,
-                    </text>
-                }
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, @Json.Serialize(T["All"].Value)]],
-                language: {
-                    processing: "<div class=\"@loadingIndicatorElementName\">@T["Loading..."]</div>"
-                },
-                order: [["@defaultSortingColumnIndex", "@defaultSortingDirectionValue"]],
-                templates: templates
-            };
+                    @if (pageSize > 0)
+                    {
+
+                        <text>
+                            pageLength: @pageSize,
+                        </text>
+                    }
+                    order: [["@defaultSortingColumnIndex", "@defaultSortingDirectionValue"]],
+                    templates: templates
+                });
             @if (additionalOptions is JObject options)
             {
                 <text>
-                $.extend({}, dataTablesOptions, @Html.Raw(options.ToString()));
+                dataTablesOptions = $.extend({}, dataTablesOptions, @Html.Raw(options.ToString()));
                 </text>
             }
 
