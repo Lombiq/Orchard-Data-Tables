@@ -81,7 +81,7 @@ namespace Lombiq.DataTables.Services
                         columns.Any(x =>
                             x.Searchable &&
                             row.ValuesDictionary.TryGetValue(x.Name, out var token) &&
-                            token.ToString().ToLower().Contains(word))))
+                            token?.ToString().ToLower().Contains(word) == true)))
                     .ToList();
                 rows = filteredRows;
                 recordsFiltered = filteredRows.Count;
