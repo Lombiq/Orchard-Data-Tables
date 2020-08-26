@@ -122,7 +122,7 @@ window.dataTableResources = {
             }
 
 
-            $("#@dataTableId").lombiq_DataTables({
+            var plugin = $("#@dataTableId").lombiq_DataTables({
                 rowClassName: "@ElementNames.DataTableRowElementName",
                 @if (!string.IsNullOrWhiteSpace(queryId))
                 {
@@ -173,7 +173,9 @@ window.dataTableResources = {
                 culture: @Json.Serialize(CultureInfo.CurrentUICulture.Name)
             });
 
-            window.dataTableResources.created($("#@dataTableId").parents(".@ElementNames.DataTableWrapperDefaultElementName"));
+            window.dataTableResources.created(
+                    $("#@dataTableId").parents(".@ElementNames.DataTableWrapperDefaultElementName"),
+                    plugin);
         });
     })(jQuery);
 </script>

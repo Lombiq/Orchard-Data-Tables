@@ -152,11 +152,11 @@
                     data: function (params) {
                         var internalParameters = plugin.cleanUpDataTablesAjaxParameters(params);
 
-                        var extendedParameters = $.extend({}, internalParameters, {
+                        var extendedParameters = plugin.customizeAjaxParameters($.extend({}, internalParameters, {
                             queryId: plugin.settings.queryId,
                             dataProvider: plugin.settings.dataProvider,
                             originalUrl: window.location.href
-                        });
+                        }));
                         var jsonParameters = JSON.stringify(extendedParameters);
                         stateJson = jsonParameters;
 
@@ -262,6 +262,8 @@
                 plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
                 plugin.fetchRowsProgressively();
             }
+
+            plugin.customizeAjaxParameters = function(parameters) { return parameters };
         },
 
         /**
