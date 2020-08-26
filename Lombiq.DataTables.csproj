@@ -138,6 +138,7 @@
     <Compile Include="Services\ContentFieldDataTableSortingProvider.cs" />
     <Compile Include="Services\ContentPickerDataTableShapeTableProvider.cs" />
     <Compile Include="Services\ContentPickerLayoutShapeTableProvider.cs" />
+    <Compile Include="Services\ContentTypeDataTableSortingProvider.cs" />
     <Compile Include="Services\DataTableDataProviderAccessor.cs" />
     <Compile Include="Services\DataTableSortingProviderAccessor.cs" />
     <Compile Include="Services\IDataTableDataProvider.cs" />
