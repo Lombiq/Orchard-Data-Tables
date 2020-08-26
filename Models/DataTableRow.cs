@@ -1,16 +1,17 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Lombiq.DataTables.Models
 {
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class DataTableRow
     {
         [JsonExtensionData]
         internal IDictionary<string, JToken> ValuesDictionary { get; set; }
 
-        [JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
 
         public string this[string name]
