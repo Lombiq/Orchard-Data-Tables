@@ -19,8 +19,7 @@ namespace Lombiq.DataTables.Services
 
             var aliasName = "SortableTerms";
 
-            context
-                .Query
+            context.SortCriterionContext.Query
                 .Where(
                     alias => alias
                         .ContentPartRecord<TitleSortableTermsPartRecord>()

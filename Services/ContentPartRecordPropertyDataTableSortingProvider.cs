@@ -40,14 +40,15 @@ namespace Lombiq.DataTables.Services
                 .Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries)
                 .Skip(recordListReferencePropertyNames.Count()));
 
-            context.Query.OrderBy(
-                alias => ChainableMemberBindingHelper.GetChainableMemberBindingAlias(
-                    alias, recordType, recordListReferencePropertyNames, filterPropertyName),
-                order =>
-                {
-                    if (context.Direction == SortingDirection.Ascending) order.Asc(filterPropertyName);
-                    else order.Desc(filterPropertyName);
-                });
+            context.SortCriterionContext.Query
+                .OrderBy(
+                    alias => ChainableMemberBindingHelper.GetChainableMemberBindingAlias(
+                        alias, recordType, recordListReferencePropertyNames, filterPropertyName),
+                    order =>
+                    {
+                        if (context.Direction == SortingDirection.Ascending) order.Asc(filterPropertyName);
+                        else order.Desc(filterPropertyName);
+                    });
         }
     }
 }

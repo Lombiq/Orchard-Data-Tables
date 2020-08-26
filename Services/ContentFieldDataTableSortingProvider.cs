@@ -1,5 +1,6 @@
 ﻿using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
+using Orchard.Projections;
 using Orchard.Projections.FieldTypeEditors;
 using Orchard.Utility.Extensions;
 using System;
@@ -18,7 +19,7 @@ namespace Lombiq.DataTables.Services
         {
             _lazyFieldTypeEditors = lazyFieldTypeEditors;
         }
-        
+
 
         public bool CanSort(string dataSource) => dataSource == DataTableDataSources.ContentField;
 
@@ -34,9 +35,9 @@ namespace Lombiq.DataTables.Services
             var propertyName = context.ColumnDefinition[ContentFieldSorting.PropertyName];
             var aliasName = propertyName.ToSafeName();
             var relationship = fieldTypeEditor.GetFilterRelationship(aliasName);
+            var fieldIndexColumnName = context.SortCriterionContext.QueryPartRecord.VersionScope.ToVersionedFieldIndexColumnName();
 
-            context
-                .Query
+            context.SortCriterionContext.Query
                 .Where(
                     fieldTypeEditor.GetFilterRelationship(aliasName),
                     predicate => predicate.Eq("PropertyName", propertyName))
@@ -44,8 +45,8 @@ namespace Lombiq.DataTables.Services
                     alias => alias.Named(aliasName),
                     order =>
                     {
-                        if (context.Direction == SortingDirection.Ascending) order.Asc("Value");
-                        else order.Desc("Value");
+                        if (context.Direction == SortingDirection.Ascending) order.Asc(fieldIndexColumnName);
+                        else order.Desc(fieldIndexColumnName);
                     });
         }
     }

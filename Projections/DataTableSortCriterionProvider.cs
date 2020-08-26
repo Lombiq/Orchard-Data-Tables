@@ -18,8 +18,8 @@ namespace Lombiq.DataTables.Projections
 
 
         public DataTableSortCriterionProvider(
-            IHttpContextAccessor hca, 
-            IDataTableDataProviderAccessor dataTableDataProviderAccessor, 
+            IHttpContextAccessor hca,
+            IDataTableDataProviderAccessor dataTableDataProviderAccessor,
             IDataTableSortingProviderAccessor dataTableSortingProviderAccessor)
         {
             _hca = hca;
@@ -45,7 +45,7 @@ namespace Lombiq.DataTables.Projections
                         var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.QueryString["dataProvider"]);
 
                         if (dataProvider == null) return;
-                        
+
                         var columnName = request.QueryString["order[0][column]"];
                         var direction = request.QueryString["order[0][direction]"];
 
@@ -61,9 +61,9 @@ namespace Lombiq.DataTables.Projections
 
                         sortingProvider.Sort(new DataTableSortingContext
                         {
+                            SortCriterionContext = context,
                             ColumnDefinition = columnDefinition,
-                            Direction = direction == "ascending" ? SortingDirection.Ascending : SortingDirection.Descending,
-                            Query = context.Query
+                            Direction = direction == "ascending" ? SortingDirection.Ascending : SortingDirection.Descending
                         });
                     },
                     context => T("Columns ordered by the Data Table sorting parameters in the query string.")
