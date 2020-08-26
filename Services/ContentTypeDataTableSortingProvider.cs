@@ -12,7 +12,7 @@ namespace Lombiq.DataTables.Services
         {
             if (!CanSort(context.ColumnDefinition.DataSource)) return;
 
-            context.Query.OrderBy(
+            context.SortCriterionContext.Query.OrderBy(
                 alias => alias.ContentType(),
                 order =>
                 {
