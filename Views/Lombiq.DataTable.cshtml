@@ -17,7 +17,7 @@
     var queryStringParametersLocalStorageKey = viewModel?.QueryStringParametersLocalStorageKey ?? "";
     var dataProvider = viewModel?.DataProvider ?? "";
     var dataTableId = string.IsNullOrEmpty(viewModel?.DataTableId) ? ElementNames.DataTableElementName : viewModel.DataTableId;
-    var dataTableCssClasses = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? ElementNames.DataTableWrapperDefaultElementName : viewModel.DataTableCssClasses;
+    var dataTableCssClasses = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? "" : viewModel.DataTableCssClasses;
 
     var defaultSortingColumnIndex = Math.Max(
         0, Math.Max(columns.FindIndex(column => column.Orderable), columns.FindIndex(column => column.Name == columnsDefinition?.DefaultSortingColumnName)));
@@ -54,13 +54,14 @@ window.dataTableResources = {
         language: {
             processing: "<div class=\"@loadingIndicatorElementName\">@T["Loading..."]</div>"
         },
-    }
+    },
+    created: function() {},
 };
 </script>
 
 @await DisplayAsync(await New.Lombiq_DataTable_Resources())
 
-<div class="@dataTableCssClasses">
+<div class="@ElementNames.DataTableWrapperDefaultElementName @dataTableCssClasses">
     @await DisplayAsync(await New.Lombiq_DataTable_Table(
         DataTableId: dataTableId,
         Columns: columns,
@@ -171,6 +172,8 @@ window.dataTableResources = {
                 },
                 culture: @Json.Serialize(CultureInfo.CurrentUICulture.Name)
             });
+
+            window.dataTableResources.created($("#@dataTableId").parents(".@ElementNames.DataTableWrapperDefaultElementName"));
         });
     })(jQuery);
 </script>

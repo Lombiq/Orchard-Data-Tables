@@ -192,8 +192,8 @@
                         .search({ requestJson: stateJson, exportAll: exportAll });
                 }
             }
-            if (dataTablesOptions.buttons === useDefaultButtons) {
-                dataTablesOptions.buttons = [
+            function getExportButtons() {
+                return [
                     {
                         text: plugin.settings.export.textAll,
                         action: exportAction(true)
@@ -203,6 +203,14 @@
                         action: exportAction(false)
                     }
                 ];
+            }
+            if (dataTablesOptions.buttons === useDefaultButtons) {
+                dataTablesOptions.buttons = getExportButtons();
+            }
+            else if (dataTablesOptions.buttons && dataTablesOptions.buttons.forEach) {
+                dataTablesOptions.buttons.forEach(function(button) {
+                    if (button.buttons === useDefaultButtons) button.buttons = getExportButtons();
+                })
             }
 
             if (plugin.settings.errorsSelector) {
