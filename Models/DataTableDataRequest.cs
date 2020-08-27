@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Lombiq.DataTables.Models
 {
@@ -16,6 +17,10 @@ namespace Lombiq.DataTables.Models
         public DataTableSearchParameters Search { get; set; }
         public DataTableOrder[] Order { get; set; }
 
+        public List<DataTableColumn> GetColumnSearches() =>
+            ColumnFilters?
+                .Where(filter => !string.IsNullOrWhiteSpace(filter.Search?.Value))
+                .ToList() ?? new List<DataTableColumn>();
 
     }
 }

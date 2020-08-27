@@ -1,13 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Lombiq.DataTables.Models
 {
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class DataTableChildRowResponse
     {
-        [JsonProperty(PropertyName = "error")]
         public string Error { get; set; }
-
-        [JsonProperty(PropertyName = "content")]
         public string Content { get; set; }
 
 

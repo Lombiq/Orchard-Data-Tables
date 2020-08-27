@@ -1,14 +1,13 @@
 ﻿using Lombiq.DataTables.Constants;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Lombiq.DataTables.Models
 {
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class DataTableOrder
     {
-        [JsonProperty(PropertyName = "column")]
         public string Column { get; set; }
-
-        [JsonProperty(PropertyName = "direction")]
         public SortingDirection Direction { get; set; }
 
         [JsonIgnore]
