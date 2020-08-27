@@ -48,7 +48,8 @@
             itemCallback: function () { }
         },
         callbacks: {
-            ajaxDataLoadedCallback: function (response) { }
+            ajaxDataLoadedCallback: function (response) { },
+            onInitComplete: function () { }
         }
     };
 
@@ -87,6 +88,7 @@
             // This is a workaround to properly adjust column widths.
             dataTablesOptions.initComplete = function () {
                 plugin.adjustColumns();
+                plugin.settings.callbacks.onInitComplete();
             };
 
             if (plugin.settings.childRowOptions.childRowsEnabled) {
