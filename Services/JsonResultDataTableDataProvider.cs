@@ -64,27 +64,43 @@ namespace Lombiq.DataTables.Services
                             ? new JValue(Regex.Replace(cell.Token?.ToString() ?? string.Empty, regex.From, regex.To))
                             : cell.Token)));
 
-            if (!string.IsNullOrWhiteSpace(request.Search?.Value))
+            var hasSearch = !string.IsNullOrWhiteSpace(request.Search?.Value);
+            var columnFilters = request.GetColumnSearches();
+            if (hasSearch || columnFilters?.Count > 0)
             {
-                if (request.Search.IsRegex)
+                if (request.Search?.IsRegex == true)
                 {
                     return DataTableDataResponse.ErrorResult(T["Regex search is not supported at this time."]);
                 }
 
-                var words = request.Search.Value
-                    .Split()
-                    .Where(word => !string.IsNullOrWhiteSpace(word))
-                    .Select(word => word.ToLower())
-                    .ToList();
-                var filteredRows = rows.Where(row =>
-                    words.All(word =>
-                        columns.Any(x =>
-                            x.Searchable &&
-                            row.ValuesDictionary.TryGetValue(x.Name, out var token) &&
-                            token?.ToString().ToLower().Contains(word) == true)))
-                    .ToList();
-                rows = filteredRows;
-                recordsFiltered = filteredRows.Count;
+                var filteredRows = rows;
+
+                if (columnFilters?.Count > 0)
+                {
+                    filteredRows = filteredRows.Where(row =>
+                        columnFilters.All(filter =>
+                            row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
+                            token?.ToString().Contains(filter.Search.Value) == true));
+                }
+
+                if (hasSearch)
+                {
+                    var words = request.Search.Value
+                        .Split()
+                        .Where(word => !string.IsNullOrWhiteSpace(word))
+                        .Select(word => word.ToLower())
+                        .ToList();
+                    filteredRows = filteredRows.Where(row =>
+                            words.All(word =>
+                                columns.Any(filter =>
+                                    filter.Searchable &&
+                                    row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
+                                    token?.ToString().ToLower().Contains(word) == true)));
+                }
+
+                var list = filteredRows.ToList();
+                rows = list;
+                recordsFiltered = list.Count;
             }
 
             if (request.Start > 0) rows = rows.Skip(request.Start);

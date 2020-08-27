@@ -81,6 +81,7 @@
             var plugin = this;
             var stateJson = "{}";
 
+            plugin.customizeAjaxParameters = function(parameters) { return parameters };
             plugin.originalQueryStringParameters = new URI().search(true);
 
             var dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
@@ -262,8 +263,6 @@
                 plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
                 plugin.fetchRowsProgressively();
             }
-
-            plugin.customizeAjaxParameters = function(parameters) { return parameters };
         },
 
         /**
