@@ -17,7 +17,7 @@
     var queryStringParametersLocalStorageKey = viewModel?.QueryStringParametersLocalStorageKey ?? "";
     var dataProvider = viewModel?.DataProvider ?? "";
     var dataTableId = string.IsNullOrEmpty(viewModel?.DataTableId) ? ElementNames.DataTableElementName : viewModel.DataTableId;
-    var dataTableCssClasses = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? ElementNames.DataTableWrapperDefaultElementName : viewModel.DataTableCssClasses;
+    var dataTableCssClasses = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? "" : viewModel.DataTableCssClasses;
 
     var defaultSortingColumnIndex = Math.Max(
         0, Math.Max(columns.FindIndex(column => column.Orderable), columns.FindIndex(column => column.Name == columnsDefinition?.DefaultSortingColumnName)));
@@ -47,9 +47,21 @@
     var hasViewAction = (bool)(additionalOptions?.viewAction == true);
 }
 
+<script at="Head">
+window.dataTableResources = {
+    options: {
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, @Json.Serialize(T["All"].Value)]],
+        language: {
+            processing: "<div class=\"@loadingIndicatorElementName\">@T["Loading..."]</div>"
+        },
+    },
+    created: function() {},
+};
+</script>
+
 @await DisplayAsync(await New.Lombiq_DataTable_Resources())
 
-<div class="@dataTableCssClasses">
+<div class="@ElementNames.DataTableWrapperDefaultElementName @dataTableCssClasses">
     @await DisplayAsync(await New.Lombiq_DataTable_Table(
         DataTableId: dataTableId,
         Columns: columns,
@@ -90,29 +102,27 @@
                 element.parentElement.removeChild(element);
             });
 
-            var dataTablesOptions = {
-                @if (pageSize > 0)
+            var dataTablesOptions = $.extend({},
+                window.dataTableResources.options,
                 {
-                    <text>
-                        pageLength: @pageSize,
-                    </text>
-                }
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, @Json.Serialize(T["All"].Value)]],
-                language: {
-                    processing: "<div class=\"@loadingIndicatorElementName\">@T["Loading..."]</div>"
-                },
-                order: [["@defaultSortingColumnIndex", "@defaultSortingDirectionValue"]],
-                templates: templates
-            };
+                    @if (pageSize > 0)
+                    {
+                        <text>
+                            pageLength: @pageSize,
+                        </text>
+                    }
+                    order: [["@defaultSortingColumnIndex", "@defaultSortingDirectionValue"]],
+                    templates: templates
+                });
             @if (additionalOptions is JObject options)
             {
                 <text>
-                $.extend({}, dataTablesOptions, @Html.Raw(options.ToString()));
+                dataTablesOptions = $.extend({}, dataTablesOptions, @Html.Raw(options.ToString()));
                 </text>
             }
 
 
-            $("#@dataTableId").lombiq_DataTables({
+            var plugin = $("#@dataTableId").lombiq_DataTables({
                 rowClassName: "@ElementNames.DataTableRowElementName",
                 @if (!string.IsNullOrWhiteSpace(queryId))
                 {
@@ -162,6 +172,10 @@
                 },
                 culture: @Json.Serialize(CultureInfo.CurrentUICulture.Name)
             });
+
+            window.dataTableResources.created(
+                    $("#@dataTableId").parents(".@ElementNames.DataTableWrapperDefaultElementName"),
+                    plugin);
         });
     })(jQuery);
 </script>
