@@ -12,7 +12,8 @@ namespace Lombiq.DataTables.Services
 {
     public static class DataTableDataProviderExtensions
     {
-        public static DataTableColumnsDefinition DefineColumns(this IDataTableDataProvider dataProvider,
+        public static DataTableColumnsDefinition DefineColumns(
+            this IDataTableDataProvider dataProvider,
             string sortingColumn,
             SortingDirection sortingDirection,
             params (string Name, string Text)[] columns) =>
@@ -59,7 +60,8 @@ namespace Lombiq.DataTables.Services
         /// with the last 2 being optional.
         /// </param>
         /// <returns>The generated columns definition</returns>
-        public static DataTableColumnsDefinition DefineColumns(this IDataTableDataProvider dataProvider,
+        public static DataTableColumnsDefinition DefineColumns(
+            this IDataTableDataProvider dataProvider,
             params (string Name, string Text)[] columns) =>
             DefineColumns(dataProvider, columns[0].Name, Ascending, columns);
 
