@@ -22,15 +22,23 @@
     const string PickerInputDataName = "ContentPicker";
     const string DataTableCheckboxBlockName = "dataTableCheckbox";
 
+    const string hideActionsQueryStringVariableName = "HideActions";
+    const string singleChoiceQueryStringVariableName = "SingleChoice";
+    const string hidePickerInputQueryStringVariableName = "HidePickerInput";
+
     var queryId = viewModel?.QueryId ?? 0;
     var columnsDefinition = viewModel?.ColumnsDefinition as DataTableColumnsDefinition;
-    var columns = (new DataTableColumnDefinition[] { new DataTableColumnDefinition { Name = PickerInputDataName, Orderable = false, Text = T("Select").Text } })
-        .Concat(columnsDefinition.GetVisibleColumns());
+    var columns = columnsDefinition.GetVisibleColumns();
     var dataProvider = viewModel?.DataProvider ?? "";
     var dataTableId = string.IsNullOrEmpty(viewModel?.DataTableId) ? DefaultDataTableId : viewModel.DataTableId;
     var wrapperClassNames = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? DefaultBlockName : viewModel.DataTableCssClasses;
-    var hideActions = Model.HideActions != null ? (bool)Model.HideActions : Request.QueryString["HideActions"] != null;
-    var singleChoice = Model.SingleChoice != null ? (bool)Model.HideActions : Request.QueryString["SingleChoice"] != null;
+    var hideActions = Model.HideActions != null ? (bool)Model.HideActions : Request.QueryString[hideActionsQueryStringVariableName] != null;
+    var singleChoice = Model.SingleChoice != null ? (bool)Model.SingleChoice : Request.QueryString[singleChoiceQueryStringVariableName] != null;
+    var hidePickerInput = Model.HidePickerInput != null ? (bool)Model.HidePickerInput : Request.QueryString[hidePickerInputQueryStringVariableName] != null;
+    if (!hidePickerInput)
+    {
+        columns = (new DataTableColumnDefinition[] { new DataTableColumnDefinition { Name = PickerInputDataName, Orderable = false, Text = T("Select").Text } }).Concat(columns);
+    }
 
     var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
     var childRowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesChildRow", Action = "Get" });
@@ -42,6 +50,18 @@
 
 <div class="@wrapperClassNames @DefaultBlockName js-@DefaultBlockName">
     <input type="hidden" name="@SelectedContentIdsElementName" class="@SelectedContentIdsElementName js-@SelectedContentIdsElementName" value="[]" />
+    @if (hideActions)
+    {
+        @Html.Hidden(hideActionsQueryStringVariableName)
+    }
+    @if (singleChoice)
+    {
+        @Html.Hidden(singleChoiceQueryStringVariableName)
+    }
+    @if (hidePickerInput)
+    {
+        @Html.Hidden(hidePickerInputQueryStringVariableName)
+    }
 
     @Display.Lombiq_DataTable_Table(
         DataTableId: dataTableId,
