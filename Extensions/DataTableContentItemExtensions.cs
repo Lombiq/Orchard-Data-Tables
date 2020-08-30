@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using System.Collections.Generic;
 
 namespace OrchardCore.ContentManagement
 {
@@ -10,7 +9,6 @@ namespace OrchardCore.ContentManagement
             this ContentItem contentItem,
             LinkGenerator linkGenerator,
             HttpContext httpContext,
-            Dictionary<string, string> attributes = null,
             string bootstrapTabType = null) =>
                 linkGenerator.GetUriByAction(httpContext,
                     "Edit",
@@ -19,9 +17,9 @@ namespace OrchardCore.ContentManagement
                     {
                         area = "OrchardCore.Contents",
                         contentItemId = contentItem.ContentItemId,
-                        bootstraptab = attributes?["bootstraptab"] == null
+                        bootstraptab = bootstrapTabType == null
                         ? null
-                        : $"tab-{attributes?["bootstraptab"]}-{contentItem.ContentItemId}"
+                        : $"tab-{bootstrapTabType}-{contentItem.ContentItemId}"
                     });
     }
 }
