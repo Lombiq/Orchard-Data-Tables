@@ -2,10 +2,12 @@ using Lombiq.DataTables.Models;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using OrchardCore.DisplayManagement;
+using OrchardCore.Liquid;
 using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -20,12 +22,22 @@ namespace Lombiq.DataTables.Services
     public abstract class JsonResultDataTableDataProvider : IDataTableDataProvider
     {
         private readonly IStringLocalizer T;
+        private readonly ILiquidTemplateManager _liquidTemplateManager;
+        private readonly PlainTextEncoder _plainTextEncoder;
 
         public abstract LocalizedString Description { get; }
         public abstract IEnumerable<Permission> SupportedPermissions { get; }
 
 
-        protected JsonResultDataTableDataProvider(IStringLocalizer stringLocalizer) => T = stringLocalizer;
+        protected JsonResultDataTableDataProvider(
+            IStringLocalizer stringLocalizer,
+            ILiquidTemplateManager liquidTemplateManager)
+        {
+            T = stringLocalizer;
+            _liquidTemplateManager = liquidTemplateManager;
+
+            _plainTextEncoder = new PlainTextEncoder();
+        }
 
 
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
@@ -139,5 +151,12 @@ namespace Lombiq.DataTables.Services
         /// <param name="queryId">May be used to dynamically generate the result.</param>
         /// <returns>The default columns definition of this provider.</returns>
         protected abstract DataTableColumnsDefinition GetColumnsDefinition(string queryId);
+
+        private Task<string> EvaluateLiquid(string template, object model) =>
+            _liquidTemplateManager.RenderAsync(
+                template,
+                _plainTextEncoder,
+                model,
+                scope => { });
     }
 }
