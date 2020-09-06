@@ -43,7 +43,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 DataProvider = provider.Name,
                 Length = length,
                 Start = start,
-                Order = new[] { new DataTableOrder { Column = orderColumnIndex.ToString() } }
+                Order = new[] { new DataTableOrder { Column = columns[orderColumnIndex].Name } }
             };
 
             var stream = await service.ExportAsync(provider, request);
