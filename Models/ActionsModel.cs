@@ -15,7 +15,8 @@ namespace Lombiq.DataTables.Models
         public IEnumerable<ExportLink> GetAllMenuItems(
             HttpContext context,
             LinkGenerator linkGenerator,
-            IStringLocalizer stringLocalizer)
+            IStringLocalizer stringLocalizer,
+            string returnUrl)
         {
             if (string.IsNullOrEmpty(Id)) WithDefaults = false;
             if (!WithDefaults) return MenuItems ?? Enumerable.Empty<ExportLink>();
@@ -24,8 +25,7 @@ namespace Lombiq.DataTables.Models
             {
                 area = "OrchardCore.Contents",
                 contentItemId = Id,
-                // See RazorPage.FullRequestPath.
-                returnUrl = context.Request.PathBase + context.Request.Path + context.Request.QueryString,
+                returnUrl,
             };
             var links = new List<ExportLink>
             {

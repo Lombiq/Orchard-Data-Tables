@@ -1,4 +1,5 @@
 using Lombiq.DataTables.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using OrchardCore.DisplayManagement;
@@ -179,5 +180,14 @@ namespace Lombiq.DataTables.Services
         /// <param name="queryId">May be used to dynamically generate the result.</param>
         /// <returns>The default columns definition of this provider.</returns>
         protected abstract DataTableColumnsDefinition GetColumnsDefinition(string queryId);
+
+
+        protected static string GetActionsColumn(IHttpContextAccessor hca)
+        {
+            var context = hca.HttpContext;
+            // See RazorPage.FullRequestPath.
+            var returnUrl = context.Request.PathBase + context.Request.Path + context.Request.QueryString;
+            return "ContentItemId||^.*$||{{ '$0' | actions: returnUrl: '" + returnUrl + "' }}";
+        }
     }
 }

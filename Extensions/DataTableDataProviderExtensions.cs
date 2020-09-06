@@ -24,7 +24,7 @@ namespace Lombiq.DataTables.Services
                 Columns = columns.Select(column =>
                     {
                         var (name, text) = column;
-                        var nameParts = name.Contains('|') ? name.Split('|') : new[] { name };
+                        var nameParts = name.Contains("||") ? name.Split("||") : new[] { name };
                         var key = nameParts[nameParts.Length == 3 ? 2 : 0];
 
                         var searchable = true;
