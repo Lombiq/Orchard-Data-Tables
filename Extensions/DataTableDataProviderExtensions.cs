@@ -25,13 +25,17 @@ namespace Lombiq.DataTables.Services
                     {
                         var (name, text) = column;
                         var nameParts = name.Contains('|') ? name.Split('|') : new[] { name };
+                        var key = nameParts[nameParts.Length == 3 ? 2 : 0];
+
                         var searchable = true;
                         var exportable = true;
+                        var isLiquid = key.StartsWith("{{");
 
-                        if (nameParts.Length == 3 && nameParts[2] == "{{ actions: $0 }}")
+                        if (isLiquid)
                         {
+                            // Don't search if it is a liquid expression, also don't export if it's "actions".
                             searchable = false;
-                            exportable = false;
+                            exportable = !key.Contains("actions:");
                         }
                         else if (nameParts[0].EndsWith("DateUtc"))
                         {
@@ -45,7 +49,8 @@ namespace Lombiq.DataTables.Services
                             Text = text,
                             Regex = nameParts.Length == 3 ? (nameParts[1], nameParts[2]) as (string, string)? : null,
                             Searchable = searchable,
-                            Exportable = exportable
+                            Exportable = exportable,
+                            IsLiquid = isLiquid
                         };
                     })
                     .ToArray()

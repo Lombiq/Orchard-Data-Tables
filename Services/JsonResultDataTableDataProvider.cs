@@ -7,7 +7,6 @@ using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -45,7 +44,14 @@ namespace Lombiq.DataTables.Services
             var columnsDefinition = GetColumnsDefinition(request.QueryId);
             var columns = columnsDefinition.Columns
                 .Select(column =>
-                    new { Path = column.Name.Replace('_', '.'), column.Name, column.Regex, column.Searchable })
+                    new
+                    {
+                        Path = column.Name.Replace('_', '.'),
+                        column.Name,
+                        column.Regex,
+                        column.Searchable,
+                        column.IsLiquid,
+                    })
                 .ToList();
             var order = request.Order.FirstOrDefault() ?? new DataTableOrder
             {
@@ -76,7 +82,8 @@ namespace Lombiq.DataTables.Services
                             ? new JValue(Regex.Replace(cell.Token?.ToString() ?? string.Empty, regex.From, regex.To))
                             : cell.Token)));
 
-            var hasSearch = !string.IsNullOrWhiteSpace(request.Search?.Value);
+            var searchValue = request.Search?.Value;
+            var hasSearch = !string.IsNullOrWhiteSpace(searchValue);
             var columnFilters = request.GetColumnSearches();
             if (hasSearch || columnFilters?.Count > 0)
             {
@@ -97,7 +104,7 @@ namespace Lombiq.DataTables.Services
 
                 if (hasSearch)
                 {
-                    var words = request.Search.Value
+                    var words = searchValue
                         .Split()
                         .Where(word => !string.IsNullOrWhiteSpace(word))
                         .Select(word => word.ToLower())
@@ -117,10 +124,31 @@ namespace Lombiq.DataTables.Services
 
             if (request.Start > 0) rows = rows.Skip(request.Start);
             if (request.Length > 0) rows = rows.Take(request.Length);
+            var rowList = rows.ToList();
+
+            var liquidColumns = columns.Where(column => column.IsLiquid).Select(column => column.Name).ToList();
+            if (liquidColumns.Count > 0)
+            {
+                foreach (var row in rowList)
+                {
+                    foreach (var liquidColumn in liquidColumns)
+                    {
+                        if (row.ValuesDictionary.TryGetValue(liquidColumn, out var token) &&
+                            token?.ToString() is { } template)
+                        {
+                            row[liquidColumn] = await _liquidTemplateManager.RenderAsync(
+                                template,
+                                _plainTextEncoder,
+                                row,
+                                scope => { });
+                        }
+                    }
+                }
+            }
 
             return new DataTableDataResponse
             {
-                Data = rows, RecordsFiltered = recordsFiltered, RecordsTotal = recordsTotal
+                Data = rowList, RecordsFiltered = recordsFiltered, RecordsTotal = recordsTotal
             };
         }
 
@@ -151,12 +179,5 @@ namespace Lombiq.DataTables.Services
         /// <param name="queryId">May be used to dynamically generate the result.</param>
         /// <returns>The default columns definition of this provider.</returns>
         protected abstract DataTableColumnsDefinition GetColumnsDefinition(string queryId);
-
-        private Task<string> EvaluateLiquid(string template, object model) =>
-            _liquidTemplateManager.RenderAsync(
-                template,
-                _plainTextEncoder,
-                model,
-                scope => { });
     }
 }
