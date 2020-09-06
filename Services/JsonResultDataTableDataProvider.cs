@@ -1,9 +1,12 @@
+using Lombiq.DataTables.Controllers;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using OrchardCore.DisplayManagement;
 using OrchardCore.Liquid;
+using OrchardCore.Mvc.Core.Utilities;
 using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
@@ -182,11 +185,14 @@ namespace Lombiq.DataTables.Services
         protected abstract DataTableColumnsDefinition GetColumnsDefinition(string queryId);
 
 
-        protected static string GetActionsColumn(IHttpContextAccessor hca)
+        protected string GetActionsColumn(IHttpContextAccessor hca, LinkGenerator linkGenerator)
         {
-            var context = hca.HttpContext;
-            // See RazorPage.FullRequestPath.
-            var returnUrl = context.Request.PathBase + context.Request.Path + context.Request.QueryString;
+
+            var returnUrl = linkGenerator.GetPathByAction(
+                hca.HttpContext,
+                nameof(TableController.Get),
+                typeof(TableController).ControllerName(),
+                new { providerName = this.GetType().Name });
             return "ContentItemId||^.*$||{{ '$0' | actions: returnUrl: '" + returnUrl + "' }}";
         }
     }

@@ -32,12 +32,8 @@ namespace Lombiq.DataTables.Liquid
         public ValueTask<FluidValue> ProcessAsync(FluidValue input, FilterArguments arguments, TemplateContext ctx)
         {
             string title, returnUrl;
-            title = arguments.HasNamed(nameof(title)) ? arguments[nameof(title)].ToStringValue() :
-                arguments.Count > 0 ? arguments.At(0).ToStringValue() :
-                T["Actions"];
-            returnUrl = arguments.HasNamed(nameof(returnUrl)) ? arguments[nameof(returnUrl)].ToStringValue() :
-                arguments.Count > 1 ? arguments.At(1).ToStringValue() :
-                null;
+            title = arguments.HasNamed(nameof(title)) ? arguments[nameof(title)].ToStringValue() : T["Actions"];
+            returnUrl = arguments.HasNamed(nameof(returnUrl)) ? arguments[nameof(returnUrl)].ToStringValue() : null;
 
             return input?.Type switch
             {
