@@ -29,7 +29,7 @@ namespace Lombiq.DataTables.Services
 
                         var searchable = true;
                         var exportable = true;
-                        var isLiquid = key.StartsWith("{{");
+                        var isLiquid = key.StartsWith("{{") || key.StartsWith("{%");
 
                         if (isLiquid)
                         {

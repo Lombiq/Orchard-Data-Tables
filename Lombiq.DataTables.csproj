@@ -36,6 +36,7 @@
     <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0-rc2-13929" />
     <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0-rc2-13929" />
     <PackageReference Include="OrchardCore.Lucene" Version="1.0.0-rc2-13929" />
+    <PackageReference Include="OrchardCore.Liquid.Abstractions" Version="1.0.0-rc2-13929" />
     <PackageReference Include="OrchardCore.Queries" Version="1.0.0-rc2-13929" />
   </ItemGroup>
 
