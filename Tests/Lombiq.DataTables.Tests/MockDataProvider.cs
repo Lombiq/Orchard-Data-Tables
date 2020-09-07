@@ -15,21 +15,21 @@ namespace Lombiq.DataTables.Tests
 {
     public class MockDataProvider : JsonResultDataTableDataProvider
     {
+        public DataTableColumnsDefinition Definition { get; set; }
         private readonly object[][] _dataSet;
-        private readonly DataTableColumnsDefinition _definition;
 
         public override LocalizedString Description { get; } = new LocalizedString("Test", "Test");
         public override IEnumerable<Permission> SupportedPermissions { get; } = null;
 
 
-        public MockDataProvider(object[][] dataSet, DataTableColumnsDefinition definition)
+        public MockDataProvider(object[][] dataSet, DataTableColumnsDefinition definition = null)
             : base(
                 new StringLocalizer<MockDataProvider>(new NullStringLocalizerFactory()),
                 new LiquidTemplateManager(
                     new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()))))
         {
+            Definition = definition;
             _dataSet = dataSet;
-            _definition = definition;
         }
 
 
@@ -43,6 +43,6 @@ namespace Lombiq.DataTables.Tests
                 JObject.FromObject(columns.ToDictionary(column => column.Name, column => row[column.Index])));
         }
 
-        protected override DataTableColumnsDefinition GetColumnsDefinition(string queryId) => _definition;
+        protected override DataTableColumnsDefinition GetColumnsDefinition(string queryId) => Definition;
     }
 }

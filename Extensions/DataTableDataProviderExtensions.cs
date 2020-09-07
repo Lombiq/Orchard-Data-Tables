@@ -3,6 +3,7 @@ using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Authorization;
 using Nito.AsyncEx;
 using OrchardCore.Security.Permissions;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -68,7 +69,11 @@ namespace Lombiq.DataTables.Services
         public static DataTableColumnsDefinition DefineColumns(
             this IDataTableDataProvider dataProvider,
             params (string Name, string Text)[] columns) =>
-            DefineColumns(dataProvider, columns[0].Name, Ascending, columns);
+            DefineColumns(
+                dataProvider,
+                columns[0].Name.Split(new [] {"||"}, StringSplitOptions.None)[0],
+                Ascending,
+                columns);
 
         /// <summary>
         /// Checks if the <see cref="user"/> can be authorized against the <see cref="dataProvider"/>.

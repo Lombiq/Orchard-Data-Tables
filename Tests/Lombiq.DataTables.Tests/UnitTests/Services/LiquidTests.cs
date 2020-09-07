@@ -1,5 +1,22 @@
-﻿using Shouldly;
+﻿using Lombiq.DataTables.Services;
+using Lombiq.Tests.Helpers;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Moq;
+using Moq.AutoMock;
+using OrchardCore.DisplayManagement;
+using OrchardCore.DisplayManagement.Implementation;
+using OrchardCore.DisplayManagement.Layout;
+using OrchardCore.Environment.Shell.Builders;
+using OrchardCore.Environment.Shell.Scope;
+using OrchardCore.Liquid;
+using Shouldly;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -19,6 +36,20 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             int length,
             int orderColumnIndex)
         {
+            var shellScope = new ShellScope(new ShellContext
+            {
+                ServiceProvider = new ServiceCollection()
+                    .AddScoped<IOptions<LiquidOptions>>(provider => new OptionsWrapper<LiquidOptions>(new LiquidOptions()))
+                    .AddScoped(provider => new ViewContextAccessor { ViewContext = new ViewContext() })
+                    .AddScoped(provider => new Mock<IDisplayHelper>().Object)
+                    .AddScoped(provider => new Mock<IUrlHelperFactory>().Object)
+                    .AddScoped(provider => new Mock<IShapeFactory>().Object)
+                    .AddScoped(provider => new Mock<ILayoutAccessor>().Object)
+                    .AddScoped(provider => new Mock<IViewLocalizer>().Object)
+                    .BuildServiceProvider()
+            });
+            shellScope.StartAsyncFlow();
+
             var (provider, request) = GetProviderAndRequest(note, dataSet, columns, start, length, orderColumnIndex);
             var rows = (await provider.GetRowsAsync(request)).Data.ToList();
 
@@ -26,7 +57,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             {
                 var row = rows[rowIndex];
                 columns
-                    .Select(column => row[column.Name])
+                    .Select(column => row[column.Name.Split(new[] { "||" }, StringSplitOptions.None)[0]])
                     .ToArray()
                     .ShouldBe(pattern[rowIndex], $"Row {rowIndex + 1} didn't match expectation.");
             }
@@ -36,78 +67,28 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
         {
             var dataset = new[]
             {
-                new object[] { 1, "z", "foo" }, new object[] { 2, "y", "bar" }, new object[] { 3, "x", "baz" }
+                new object[] { "now", "FOO BAR BAZ" },
+                new object[] { "2020-12-31", "The quick brown fox" },
+                new object[] { "1970-01-01", "Lorem Ipsum Dolor Sit Amet" }
             };
-            var columns = new[]
-            {
-                ("Num", "Numbers", true), ("Letters", "Letters", true), ("MagicWords", "Magic Words", true)
-            };
+            var today = DateTime.Today.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
 
             yield return new object[]
             {
-                "Show full data set.",
+                "Demonstrate some built-in filters.",
                 dataset,
-                columns,
-                "1,z,foo;2,y,bar;3,x,baz".Split(';').Select(row => row.Split(',')).ToArray(),
-                0,
-                10,
-                0
-            };
-
-
-            yield return new object[]
-            {
-                "Make last column not exportable.",
-                dataset,
-                new[] { ("Num", "Numbers", true), ("Letters", "Letters", true), ("MagicWords", "Magic Words", false) },
-                "1,z;2,y;3,x".Split(';').Select(row => row.Split(',')).ToArray(),
-                0,
-                10,
-                0
-            };
-
-            yield return new object[]
-            {
-                "Test pagination.",
-                dataset,
-                columns,
-                new[] { "3,x,baz".Split(',') },
-                2,
-                10,
-                0
-            };
-
-            yield return new object[]
-            {
-                "Test sorting on 2nd column.",
-                dataset,
-                columns,
-                "3,x,baz;2,y,bar;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
+                new[]
+                {
+                    ("Num||^.*$||{{ '$0' | date: '%m/%d/%Y' }}", "Dates", true),
+                    ("Cls||^.*$||{{ '$0' | html_class  }}", "Magic Words", true)
+                },
+                $"{today},foo-bar-baz;01/01/1970,lorem-ipsum-dolor-sit-amet;12/31/2020,the-quick-brown-fox"
+                    .Split(';')
+                    .Select(row => row.Split(','))
+                    .ToArray(),
                 0,
                 10,
                 1
-            };
-
-            yield return new object[]
-            {
-                "Test sorting on 3nd column.",
-                dataset,
-                columns,
-                "2,y,bar;3,x,baz;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
-                0,
-                10,
-                2
-            };
-
-            yield return new object[]
-            {
-                "Verify boolean formatting.",
-                new[] { new object[] { 1, true }, new object[] { 2, true }, new object[] { 3, false } },
-                new[] { ("Num", "Numbers", true), ("Bool", "Booleans", true) },
-                "1,Yes;2,Yes;3,No".Split(';').Select(row => row.Split(',')).ToArray(),
-                0,
-                10,
-                0
             };
         }
     }

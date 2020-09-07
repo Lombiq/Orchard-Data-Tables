@@ -1,6 +1,7 @@
 ﻿using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Shouldly;
+using System;
 using System.Linq;
 
 namespace Lombiq.DataTables.Tests.UnitTests.Services
@@ -17,22 +18,21 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
         {
             note.ShouldNotBeEmpty("Please state the purpose of this input set!");
 
-            var provider = (IDataTableDataProvider)new MockDataProvider(dataSet,
-                new DataTableColumnsDefinition()
-                {
-                    Columns = columns
-                        .Select(column => new DataTableColumnDefinition
-                        {
-                            Name = column.Name, Text = column.Text, Exportable = column.Exportable
-                        })
-                        .ToList()
-                });
+            var provider = new MockDataProvider(dataSet);
+            provider.Definition = provider.DefineColumns(
+                columns.Select(column => (column.Name, column.Text)).ToArray());
+            for (var i = 0; i < columns.Length; i++)
+            {
+                if (!columns[i].Exportable) provider.Definition.Columns[i].Exportable = false;
+            }
+
+            var order = columns[orderColumnIndex].Name.Split(new[] { "||" }, StringSplitOptions.None)[0];
             var request = new DataTableDataRequest
             {
-                DataProvider = provider.Name,
+                DataProvider = nameof(MockDataProvider),
                 Length = length,
                 Start = start,
-                Order = new[] { new DataTableOrder { Column = columns[orderColumnIndex].Name } }
+                Order = new[] { new DataTableOrder { Column = order } }
             };
 
             return (provider, request);
