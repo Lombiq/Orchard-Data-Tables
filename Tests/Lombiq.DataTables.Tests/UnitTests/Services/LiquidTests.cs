@@ -67,7 +67,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
         {
             var dataset = new[]
             {
-                new object[] { "now", "FOO BAR BAZ" },
+                new object[] { "now", "Foo Bar Baz" },
                 new object[] { "2020-12-31", "The quick brown fox" },
                 new object[] { "1970-01-01", "Lorem Ipsum Dolor Sit Amet" }
             };
