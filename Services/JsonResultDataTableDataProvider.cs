@@ -1,6 +1,7 @@
 using Lombiq.DataTables.Controllers;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
@@ -187,12 +188,17 @@ namespace Lombiq.DataTables.Services
 
         protected string GetActionsColumn(IHttpContextAccessor hca, LinkGenerator linkGenerator)
         {
+            if (hca?.HttpContext == null)
+            {
+                // The httpContext would be required to generate the returnUrl parameter.
+                return "ContentItemId||^.*$||{{ '$0' | actions }}";
+            }
 
             var returnUrl = linkGenerator.GetPathByAction(
-                hca.HttpContext,
+                hca?.HttpContext,
                 nameof(TableController.Get),
                 typeof(TableController).ControllerName(),
-                new { providerName = this.GetType().Name });
+                new { providerName = GetType().Name });
             return "ContentItemId||^.*$||{{ '$0' | actions: returnUrl: '" + returnUrl + "' }}";
         }
     }
