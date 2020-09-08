@@ -1,4 +1,4 @@
-﻿using Fluid;
+using Fluid;
 using Fluid.Values;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Html;
@@ -19,6 +19,7 @@ namespace Lombiq.DataTables.Liquid
         private readonly LinkGenerator _linkGenerator;
         private readonly IStringLocalizer<ActionsLiquidFilter> T;
 
+
         public ActionsLiquidFilter(
             IHttpContextAccessor hca,
             LinkGenerator linkGenerator,
@@ -28,6 +29,7 @@ namespace Lombiq.DataTables.Liquid
             _linkGenerator = linkGenerator;
             T = stringLocalizer;
         }
+
 
         public ValueTask<FluidValue> ProcessAsync(FluidValue input, FilterArguments arguments, TemplateContext ctx)
         {
@@ -42,7 +44,7 @@ namespace Lombiq.DataTables.Liquid
                 {
                     ActionsModel model => FromObject(model, title, returnUrl),
                     JToken jToken => FromObject(jToken.ToObject<ActionsModel>(), title, returnUrl),
-                    {} unknown => throw GetException(unknown),
+                    { } unknown => throw GetException(unknown),
                     _ => throw new ArgumentNullException(nameof(input))
                 },
                 _ => throw GetException(input?.Type)

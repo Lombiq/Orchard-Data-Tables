@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
@@ -11,6 +11,7 @@ namespace Lombiq.DataTables.Models
         public string Id { get; set; }
         public IEnumerable<ExportLink> MenuItems { get; set; }
         public bool WithDefaults { get; set; } = true;
+
 
         public IEnumerable<ExportLink> GetAllMenuItems(
             HttpContext context,
@@ -44,6 +45,5 @@ namespace Lombiq.DataTables.Models
             if (MenuItems != null) links.AddRange(MenuItems);
             return links;
         }
-
     }
 }
