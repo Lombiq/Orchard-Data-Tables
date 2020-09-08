@@ -49,7 +49,7 @@ namespace Lombiq.DataTables.Models
                 Error = errorText,
                 Data = Array.Empty<DataTableRow>(),
                 RecordsFiltered = 0,
-                RecordsTotal = 0
+                RecordsTotal = 0,
             };
 
         /// <summary>

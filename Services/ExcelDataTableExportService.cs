@@ -96,7 +96,7 @@ namespace Lombiq.DataTables.Services
                             JTokenType.Null => null,
                             JTokenType.TimeSpan => value.ToObject<TimeSpan>(),
                             JTokenType.Array => string.Join(", ", ((JArray)value).Select(item => item.ToString())),
-                            _ => value.ToString()
+                            _ => value.ToString(),
                         };
                     }
                 }

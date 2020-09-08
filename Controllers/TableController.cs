@@ -56,7 +56,7 @@ namespace Lombiq.DataTables.Controllers
                 DataProvider = providerName,
                 QueryId = queryId,
                 ColumnsDefinition = await provider.GetColumnsDefinitionAsync(queryId),
-                AdditionalDatatableOptions = JObject.FromObject(new { paging, viewAction })
+                AdditionalDatatableOptions = JObject.FromObject(new { paging, viewAction }),
             };
 
             return View(nameof(Get), new DataTableViewModel

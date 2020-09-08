@@ -38,7 +38,7 @@ namespace Lombiq.DataTables.Services
             var order = request.Order.FirstOrDefault() ?? new DataTableOrder
             {
                 Column = columnsDefinition.DefaultSortingColumnName,
-                Direction = columnsDefinition.DefaultSortingDirection
+                Direction = columnsDefinition.DefaultSortingDirection,
             };
 
             var enumerableResults = await GetResultsAsync(request);
@@ -108,7 +108,7 @@ namespace Lombiq.DataTables.Services
 
             return new DataTableDataResponse
             {
-                Data = rows, RecordsFiltered = recordsFiltered, RecordsTotal = recordsTotal
+                Data = rows, RecordsFiltered = recordsFiltered, RecordsTotal = recordsTotal,
             };
         }
 

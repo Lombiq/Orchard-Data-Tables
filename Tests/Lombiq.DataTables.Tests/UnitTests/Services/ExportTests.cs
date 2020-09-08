@@ -34,16 +34,16 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                     Columns = columns
                         .Select(column => new DataTableColumnDefinition
                         {
-                            Name = column.Name, Text = column.Text, Exportable = column.Exportable
+                            Name = column.Name, Text = column.Text, Exportable = column.Exportable,
                         })
-                        .ToList()
+                        .ToList(),
                 });
             var request = new DataTableDataRequest
             {
                 DataProvider = provider.Name,
                 Length = length,
                 Start = start,
-                Order = new[] { new DataTableOrder { Column = orderColumnIndex.ToString() } }
+                Order = new[] { new DataTableOrder { Column = orderColumnIndex.ToString() } },
             };
 
             var stream = await service.ExportAsync(provider, request);
@@ -68,11 +68,11 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
         {
             var dataset = new[]
             {
-                new object[] { 1, "z", "foo" }, new object[] { 2, "y", "bar" }, new object[] { 3, "x", "baz" }
+                new object[] { 1, "z", "foo" }, new object[] { 2, "y", "bar" }, new object[] { 3, "x", "baz" },
             };
             var columns = new[]
             {
-                ("Num", "Numbers", true), ("Letters", "Letters", true), ("MagicWords", "Magic Words", true)
+                ("Num", "Numbers", true), ("Letters", "Letters", true), ("MagicWords", "Magic Words", true),
             };
 
             yield return new object[]
@@ -83,7 +83,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "1,z,foo;2,y,bar;3,x,baz".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
-                0
+                0,
             };
 
 
@@ -95,7 +95,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "1,z;2,y;3,x".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
-                0
+                0,
             };
 
             yield return new object[]
@@ -106,7 +106,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 new[] { "3,x,baz".Split(',') },
                 2,
                 10,
-                0
+                0,
             };
 
             yield return new object[]
@@ -117,7 +117,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "3,x,baz;2,y,bar;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
-                1
+                1,
             };
 
             yield return new object[]
@@ -128,7 +128,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "2,y,bar;3,x,baz;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
-                2
+                2,
             };
 
             yield return new object[]
@@ -139,7 +139,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "1,Yes;2,Yes;3,No".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
-                0
+                0,
             };
         }
     }

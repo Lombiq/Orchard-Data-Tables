@@ -19,7 +19,7 @@ namespace OrchardCore.ContentManagement
                         contentItemId = contentItem.ContentItemId,
                         bootstraptab = bootstrapTabType == null
                         ? null
-                        : $"tab-{bootstrapTabType}-{contentItem.ContentItemId}"
+                        : $"tab-{bootstrapTabType}-{contentItem.ContentItemId}",
                     });
     }
 }

@@ -45,10 +45,10 @@ namespace Lombiq.DataTables.Services
                             Text = text,
                             Regex = nameParts.Length == 3 ? (nameParts[1], nameParts[2]) as (string, string)? : null,
                             Searchable = searchable,
-                            Exportable = exportable
+                            Exportable = exportable,
                         };
                     })
-                    .ToArray()
+                    .ToArray(),
             };
 
         /// <summary>

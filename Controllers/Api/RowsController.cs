@@ -106,7 +106,7 @@ namespace Lombiq.DataTables.Controllers.Api
 
             return new FileStreamResult(stream, _exportServices[name].ContentType)
             {
-                FileDownloadName = _exportServices[name].DefaultFileName
+                FileDownloadName = _exportServices[name].DefaultFileName,
             };
         }
     }

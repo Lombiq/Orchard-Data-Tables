@@ -8,6 +8,6 @@ namespace Lombiq.DataTables.Constants
         Ascending = 0,
 
         [EnumMember(Value = "descending")]
-        Descending
+        Descending,
     }
 }

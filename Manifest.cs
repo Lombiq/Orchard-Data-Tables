@@ -19,6 +19,6 @@ using static Lombiq.DataTables.Constants.FeatureIds;
     {
         "OrchardCore.Contents",
         "OrchardCore.ResourceManagement",
-        "OrchardCore.Queries"
+        "OrchardCore.Queries",
     }
 )]
