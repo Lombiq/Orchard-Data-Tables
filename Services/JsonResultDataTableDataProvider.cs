@@ -29,16 +29,23 @@ namespace Lombiq.DataTables.Services
         private readonly ILiquidTemplateManager _liquidTemplateManager;
         private readonly PlainTextEncoder _plainTextEncoder;
 
+        protected readonly LinkGenerator _linkGenerator;
+        protected readonly IHttpContextAccessor _hca;
+
         public abstract LocalizedString Description { get; }
         public abstract IEnumerable<Permission> SupportedPermissions { get; }
 
 
         protected JsonResultDataTableDataProvider(
             IStringLocalizer stringLocalizer,
-            ILiquidTemplateManager liquidTemplateManager)
+            ILiquidTemplateManager liquidTemplateManager,
+            LinkGenerator linkGenerator,
+            IHttpContextAccessor hca)
         {
             T = stringLocalizer;
             _liquidTemplateManager = liquidTemplateManager;
+            _linkGenerator = linkGenerator;
+            _hca = hca;
 
             _plainTextEncoder = new PlainTextEncoder();
         }
@@ -186,16 +193,16 @@ namespace Lombiq.DataTables.Services
         protected abstract DataTableColumnsDefinition GetColumnsDefinition(string queryId);
 
 
-        protected string GetActionsColumn(IHttpContextAccessor hca, LinkGenerator linkGenerator)
+        protected string GetActionsColumn()
         {
-            if (hca?.HttpContext == null)
+            if (_hca?.HttpContext == null)
             {
                 // The httpContext would be required to generate the returnUrl parameter.
                 return "ContentItemId||^.*$||{{ '$0' | actions }}";
             }
 
-            var returnUrl = linkGenerator.GetPathByAction(
-                hca?.HttpContext,
+            var returnUrl = _linkGenerator.GetPathByAction(
+                _hca?.HttpContext,
                 nameof(TableController.Get),
                 typeof(TableController).ControllerName(),
                 new { providerName = GetType().Name });
