@@ -1,0 +1,20 @@
+﻿<div class="btn-group">
+    <button type="button"
+            class="btn btn-secondary btn-sm dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false">
+        @Model.ButtonTitle
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+        @foreach (ExportLink menuItem in Model.ExportLinks)
+        {
+            var attributes = string.Join(" ", menuItem.Attributes?.
+                Select(attribute => $" {attribute.Key}=\"{attribute.Value}\"")
+                                              ?? Enumerable.Empty<string>());
+            <a class="dropdown-item btn-sm" href="@menuItem.Url" @Html.Raw(attributes)>
+                @menuItem.Text
+            </a>
+        }
+    </div>
+</div>

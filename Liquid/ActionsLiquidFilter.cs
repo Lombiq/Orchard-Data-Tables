@@ -1,3 +1,4 @@
+using DocumentFormat.OpenXml.EMMA;
 using Fluid;
 using Fluid.Values;
 using Lombiq.DataTables.Models;
@@ -6,9 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
+using OrchardCore.DisplayManagement;
 using OrchardCore.Liquid;
 using System;
+using System.IO;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Liquid
@@ -17,16 +21,22 @@ namespace Lombiq.DataTables.Liquid
     {
         private readonly IHttpContextAccessor _hca;
         private readonly LinkGenerator _linkGenerator;
+        private readonly IShapeFactory _shapeFactory;
+        private readonly IDisplayHelper _displayHelper;
         private readonly IStringLocalizer<ActionsLiquidFilter> T;
 
 
         public ActionsLiquidFilter(
             IHttpContextAccessor hca,
             LinkGenerator linkGenerator,
+            IShapeFactory shapeFactory,
+            IDisplayHelper displayHelper,
             IStringLocalizer<ActionsLiquidFilter> stringLocalizer)
         {
             _hca = hca;
             _linkGenerator = linkGenerator;
+            _shapeFactory = shapeFactory;
+            _displayHelper = displayHelper;
             T = stringLocalizer;
         }
 
@@ -53,26 +63,17 @@ namespace Lombiq.DataTables.Liquid
             };
         }
 
-        private ValueTask<FluidValue> FromObject(ActionsModel model, string title, string returnUrl)
+        private async ValueTask<FluidValue> FromObject(ActionsModel model, string title, string returnUrl)
         {
-            var html = new StringBuilder();
-            html.AppendLine("<div class=\"btn-group\">")
-                .Append("<button type=\"button\" class=\"btn btn-secondary btn-sm dropdown-toggle\" ")
-                .AppendLine("data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">")
-                .AppendLine(title)
-                .AppendLine("</button>")
-                .AppendLine("<div class=\"dropdown-menu dropdown-menu-right\">");
+            IShape shape = await _shapeFactory.New.Lombiq_Datatables_Actions(
+                ButtonTitle: title,
+                ExportLinks: model.GetAllMenuItems(_hca.HttpContext, _linkGenerator, T, returnUrl));
+            var content = await _displayHelper.ShapeExecuteAsync(shape);
 
-            foreach (var menuItem in model.GetAllMenuItems(_hca.HttpContext, _linkGenerator, T, returnUrl))
-            {
-                html.Append($"<a class=\"dropdown-item btn-sm\" href=\"{menuItem.Url}\"");
-                foreach (var (name, value) in menuItem.Attributes) html.Append($" {name}=\"{value}\"");
-                html.AppendLine($">{menuItem.Text}</a>");
-            }
+            await using var stringWriter = new StringWriter();
+            content.WriteTo(stringWriter, HtmlEncoder.Default);
 
-            html.AppendLine("</div></div>");
-
-            return new ValueTask<FluidValue>(FluidValue.Create(new HtmlString(html.ToString())));
+            return FluidValue.Create(new HtmlString(stringWriter.ToString()));
         }
 
         private static InvalidOperationException GetException(object input) =>
