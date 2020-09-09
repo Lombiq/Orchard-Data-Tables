@@ -1,5 +1,4 @@
 ﻿using ClosedXML.Excel;
-using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.Tests.Helpers;
 using Moq.AutoMock;
