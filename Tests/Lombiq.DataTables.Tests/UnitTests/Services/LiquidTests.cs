@@ -36,6 +36,9 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             int length,
             int orderColumnIndex)
         {
+            // Everything in this section of code is required for the Liquid renderer to work. Otherwise it will throw
+            // NRE or render empty string results. On the final line shellScope.StartAsyncFlow() initializes the static
+            // variable representing the current ShellScope.
             var shellScope = new ShellScope(new ShellContext
             {
                 ServiceProvider = new ServiceCollection()
