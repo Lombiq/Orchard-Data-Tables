@@ -3,6 +3,7 @@ using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Authorization;
 using Nito.AsyncEx;
 using OrchardCore.Security.Permissions;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -24,14 +25,18 @@ namespace Lombiq.DataTables.Services
                 Columns = columns.Select(column =>
                     {
                         var (name, text) = column;
-                        var nameParts = name.Contains('|') ? name.Split('|') : new[] { name };
+                        var nameParts = name.Contains("||") ? name.Split("||") : new[] { name };
+                        var key = nameParts[nameParts.Length == 3 ? 2 : 0];
+
                         var searchable = true;
                         var exportable = true;
+                        var isLiquid = key.StartsWith("{{") || key.StartsWith("{%");
 
-                        if (nameParts.Length == 3 && nameParts[2] == "{{ actions: $0 }}")
+                        if (isLiquid)
                         {
+                            // Don't search if it is a liquid expression, also don't export if it's "actions".
                             searchable = false;
-                            exportable = false;
+                            exportable = !key.Contains("actions:");
                         }
                         else if (nameParts[0].EndsWith("DateUtc"))
                         {
@@ -45,7 +50,8 @@ namespace Lombiq.DataTables.Services
                             Text = text,
                             Regex = nameParts.Length == 3 ? (nameParts[1], nameParts[2]) as (string, string)? : null,
                             Searchable = searchable,
-                            Exportable = exportable
+                            Exportable = exportable,
+                            IsLiquid = isLiquid
                         };
                     })
                     .ToArray()
@@ -63,7 +69,11 @@ namespace Lombiq.DataTables.Services
         public static DataTableColumnsDefinition DefineColumns(
             this IDataTableDataProvider dataProvider,
             params (string Name, string Text)[] columns) =>
-            DefineColumns(dataProvider, columns[0].Name, Ascending, columns);
+            DefineColumns(
+                dataProvider,
+                columns[0].Name.Split(new [] {"||"}, StringSplitOptions.None)[0],
+                Ascending,
+                columns);
 
         /// <summary>
         /// Checks if the <see cref="user"/> can be authorized against the <see cref="dataProvider"/>.
