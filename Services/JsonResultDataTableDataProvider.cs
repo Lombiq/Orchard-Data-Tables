@@ -81,7 +81,7 @@ namespace Lombiq.DataTables.Services
             if (!string.IsNullOrEmpty(order.Column))
             {
                 var orderColumnName = order.Column.Replace('_', '.');
-                JToken Selector(JObject x) => x.SelectToken(orderColumnName)?.ToString();
+                JToken Selector(JObject x) => x.SelectToken(orderColumnName)?.ToString()?.ToLower();
                 json = order.IsAscending ? json.OrderBy(Selector) : json.OrderByDescending(Selector);
             }
 
