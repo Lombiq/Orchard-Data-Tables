@@ -1,5 +1,4 @@
 ﻿using ClosedXML.Excel;
-using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.Tests.Helpers;
 using Moq.AutoMock;
@@ -11,7 +10,7 @@ using Xunit;
 
 namespace Lombiq.DataTables.Tests.UnitTests.Services
 {
-    public class ExportTests
+    public class ExportTests : MockDataProviderTestsBase
     {
         [Theory]
         [MemberData(nameof(Data))]
@@ -24,29 +23,12 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             int length,
             int orderColumnIndex)
         {
-            note.ShouldNotBeEmpty("Please state the purpose of this input set!");
+            var (provider, request) = GetProviderAndRequest(note, dataSet, columns, start, length, orderColumnIndex);
 
             var service = MockHelper.CreateAutoMockerInstance<ExcelDataTableExportService>(
                 mocker => mocker.MockStringLocalizer<ExcelDataTableExportService>());
-            var provider = (IDataTableDataProvider)new MockDataProvider(dataSet,
-                new DataTableColumnsDefinition()
-                {
-                    Columns = columns
-                        .Select(column => new DataTableColumnDefinition
-                        {
-                            Name = column.Name, Text = column.Text, Exportable = column.Exportable
-                        })
-                        .ToList()
-                });
-            var request = new DataTableDataRequest
-            {
-                DataProvider = provider.Name,
-                Length = length,
-                Start = start,
-                Order = new[] { new DataTableOrder { Column = orderColumnIndex.ToString() } }
-            };
-
             var stream = await service.ExportAsync(provider, request);
+
             using var workbook = new XLWorkbook(stream);
             var worksheet = workbook.Worksheets.Worksheet(1);
 
