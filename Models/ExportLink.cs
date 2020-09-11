@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Lombiq.DataTables.Models
 {
@@ -6,7 +7,13 @@ namespace Lombiq.DataTables.Models
     {
         public string Type { get => nameof(ExportLink); set {} }
         public string Url { get; set; }
+
+
+        // Make sure this appears first after serialization for sorting purposes. This is faster and easier than trying
+        // to type-check the resulting JObjects after the fact.
+        [JsonProperty(Order = -1)]
         public string Text { get; set; }
+
         public IDictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
 
         public ExportLink() { }
@@ -17,5 +24,7 @@ namespace Lombiq.DataTables.Models
             Text = text;
             if (attributes != null) Attributes = attributes;
         }
+
+        public override string ToString() => Text;
     }
 }
