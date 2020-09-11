@@ -59,9 +59,10 @@ namespace Lombiq.DataTables.Services
                 };
                 var queryResult = await _queryManager.ExecuteQueryAsync(query, parameters);
 
-                var items = isContentItem
-                    ? await Task.WhenAll(queryResult.Items.Cast<ContentItem>().Select(_contentManager.LoadAsync))
-                    : queryResult.Items.ToArray();
+                var items = (isContentItem
+                    ? await _contentManager.LoadAsync(queryResult.Items.Cast<ContentItem>())
+                    : queryResult.Items)
+                    .ToArray();
                 var count = queryResult is LuceneQueryResults lucene ? lucene.Count : items.Length;
 
                 var result = new DataTableDataResponse
