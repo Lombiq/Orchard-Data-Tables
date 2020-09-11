@@ -1,7 +1,6 @@
 using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Authorization;
-using Nito.AsyncEx;
 using OrchardCore.Security.Permissions;
 using System.Linq;
 using System.Security.Claims;
@@ -81,11 +80,12 @@ namespace Lombiq.DataTables.Services
         {
             if (dataProvider.SupportedPermissions == null) return false;
 
-            var authorizations = await dataProvider.SupportedPermissions
-                .Select(permission => authorizationService.AuthorizeAsync(user, permission))
-                .WhenAll();
+            foreach (var permission in dataProvider.SupportedPermissions)
+            {
+                if (await authorizationService.AuthorizeAsync(user, permission)) return true;
+            }
 
-            return authorizations.Any(success => success);
+            return false;
         }
     }
 }
