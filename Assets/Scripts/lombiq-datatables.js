@@ -130,8 +130,12 @@
             }];
 
             // This is a workaround to properly adjust column widths.
+            var originalInitCompleteHandler = dataTablesOptions.initComplete
+                ? dataTablesOptions.initComplete
+                : function() { };
             dataTablesOptions.initComplete = function () {
                 plugin.adjustColumns();
+                originalInitCompleteHandler.apply(this);
             };
 
             if (plugin.settings.childRowOptions.childRowsEnabled) {
