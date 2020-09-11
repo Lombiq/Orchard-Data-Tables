@@ -11,6 +11,7 @@ namespace Lombiq.DataTables.Models
         public bool Orderable { get; set; } = true;
         public bool Exportable { get; set; } = true;
         public bool Searchable { get; set; } = true;
+        public bool IsLiquid { get; set; }
         public (string From, string To)? Regex { get; set; }
 
         public string this[string key]

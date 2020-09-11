@@ -1,56 +1,50 @@
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using OrchardCore.Liquid.Services;
+using OrchardCore.Localization;
+using OrchardCore.Security.Permissions;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Tests
 {
-    public class MockDataProvider : IDataTableDataProvider
+    public class MockDataProvider : JsonResultDataTableDataProvider
     {
+        public DataTableColumnsDefinition Definition { get; set; }
         private readonly object[][] _dataSet;
-        private readonly DataTableColumnsDefinition _definition;
 
-        public LocalizedString Description { get; } = new LocalizedString("Test", "Test");
+        public override LocalizedString Description { get; } = new LocalizedString("Test", "Test");
+        public override IEnumerable<Permission> SupportedPermissions { get; } = null;
 
 
-        public MockDataProvider(object[][] dataSet, DataTableColumnsDefinition definition)
+        public MockDataProvider(object[][] dataSet, DataTableColumnsDefinition definition = null)
+            : base(
+                new StringLocalizer<MockDataProvider>(new NullStringLocalizerFactory()),
+                new LiquidTemplateManager(
+                    new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()))),
+                linkGenerator:null,
+                hca: null)
         {
+            Definition = definition;
             _dataSet = dataSet;
-            _definition = definition;
         }
 
 
-        public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
+        protected override async Task<IEnumerable<object>> GetResultsAsync(DataTableDataRequest request)
         {
-            // We aren't trying to test any fancy sorting, just point at which column to sort by (asc).
-            var orderByColumn = request.Order.FirstOrDefault()?.Column is { } column ? int.Parse(column) : 0;
-
             var columns = (await GetColumnsDefinitionAsync(null))
                 .Columns
                 .Select((item, index) => new { item.Name, Index = index });
 
-            var data = _dataSet
-                .OrderBy(row => row[orderByColumn])
-                .Skip(request.Start)
-                .Take(request.Length)
-                .Select((row, index) => new DataTableRow(index, columns
-                    .ToDictionary(column => column.Name, column => JToken.FromObject(row[column.Index]))));
-
-            return new DataTableDataResponse
-            {
-                Data = data,
-                RecordsFiltered = _dataSet.Length,
-                RecordsTotal = _dataSet.Length,
-            };
+            return _dataSet.Select(row =>
+                JObject.FromObject(columns.ToDictionary(column => column.Name, column => row[column.Index])));
         }
 
-        public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) =>
-            Task.FromResult(_definition);
-
-        public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) =>
-            Task.FromCanceled<DataTableChildRowResponse>(CancellationToken.None);
+        protected override DataTableColumnsDefinition GetColumnsDefinition(string queryId) => Definition;
     }
 }
