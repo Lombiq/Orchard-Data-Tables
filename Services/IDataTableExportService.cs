@@ -1,4 +1,4 @@
-﻿using Lombiq.DataTables.Models;
+using Lombiq.DataTables.Models;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -16,17 +16,17 @@ namespace Lombiq.DataTables.Services
         public const string OctetStreamContentType = "application/octet-stream";
 
         /// <summary>
-        /// The technical name used to identify the service.
+        /// Gets the technical name used to identify the service.
         /// </summary>
         string Name => GetType().Name;
 
         /// <summary>
-        /// The suggested content-type header when returning the file as an HTTP response.
+        /// Gets the suggested content-type header when returning the file as an HTTP response.
         /// </summary>
         string ContentType => OctetStreamContentType;
 
         /// <summary>
-        /// The suggested file name when returning the file as an HTTP response.
+        /// Gets the suggested file name when returning the file as an HTTP response.
         /// </summary>
         string DefaultFileName { get; }
 
@@ -34,7 +34,7 @@ namespace Lombiq.DataTables.Services
         /// Requests the data from the provider and exports it into the desired file in stream.
         /// </summary>
         /// <param name="dataProvider">Gets the dataset.</param>
-        /// <param name="request">Configures the <see cref="dataProvider"/>.</param>
+        /// <param name="request">Configures the dataProvider.</param>
         /// <param name="columnsDefinition">Contains the list of columns to export.</param>
         /// <returns>The file serialized into a stream.</returns>
         /// <remarks>The <see cref="DataTableColumnDefinition.Exportable"/> is relevant here.</remarks>
