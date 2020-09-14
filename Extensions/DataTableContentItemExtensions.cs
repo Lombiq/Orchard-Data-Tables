@@ -10,7 +10,8 @@ namespace OrchardCore.ContentManagement
             LinkGenerator linkGenerator,
             HttpContext httpContext,
             string bootstrapTabType = null) =>
-                linkGenerator.GetUriByAction(httpContext,
+                linkGenerator.GetUriByAction(
+                    httpContext,
                     "Edit",
                     "Admin",
                     new

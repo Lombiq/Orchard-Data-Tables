@@ -1,4 +1,4 @@
-﻿namespace Lombiq.DataTables.Constants
+namespace Lombiq.DataTables.Constants
 {
     public static class ElementNames
     {

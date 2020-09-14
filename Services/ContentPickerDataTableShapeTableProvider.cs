@@ -1,4 +1,4 @@
-﻿using Lombiq.DataTables.Constants;
+using Lombiq.DataTables.Constants;
 using Microsoft.AspNetCore.Http;
 using OrchardCore.DisplayManagement.Descriptors;
 using System.Web;

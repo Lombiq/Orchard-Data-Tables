@@ -21,7 +21,7 @@ namespace Lombiq.DataTables.Services
     /// Classes which implement this class only have to provide the provider description, the dataset via
     /// <see cref="GetResultsAsync"/> as <see cref="IList{T}"/> of either <see cref="object"/> or <see cref="JObject"/>
     /// (the former is automatically converted to the latter) and the columns definition via
-    /// <see cref="GetColumnsDefinition"/>.
+    /// <see cref="GetColumnsDefinitionInner"/>.
     /// </summary>
     public abstract class JsonResultDataTableDataProvider : IDataTableDataProvider
     {
@@ -53,7 +53,7 @@ namespace Lombiq.DataTables.Services
 
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
-            var columnsDefinition = GetColumnsDefinition(request.QueryId);
+            var columnsDefinition = GetColumnsDefinitionInner(request.QueryId);
             var columns = columnsDefinition.Columns
                 .Select(column =>
                     new
@@ -165,7 +165,7 @@ namespace Lombiq.DataTables.Services
         }
 
         public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) =>
-            Task.FromResult(GetColumnsDefinition(queryId));
+            Task.FromResult(GetColumnsDefinitionInner(queryId));
 
         public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) =>
             Task.FromResult(new DataTableChildRowResponse());
@@ -190,7 +190,7 @@ namespace Lombiq.DataTables.Services
         /// </summary>
         /// <param name="queryId">May be used to dynamically generate the result.</param>
         /// <returns>The default columns definition of this provider.</returns>
-        protected abstract DataTableColumnsDefinition GetColumnsDefinition(string queryId);
+        protected abstract DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId);
 
 
         protected string GetActionsColumn()

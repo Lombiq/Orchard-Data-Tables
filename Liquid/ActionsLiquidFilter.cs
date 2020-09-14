@@ -49,11 +49,11 @@ namespace Lombiq.DataTables.Liquid
 
             return input?.Type switch
             {
-                FluidValues.String => FromObject(new ActionsModel { Id = input.ToStringValue() }, title, returnUrl),
-                FluidValues.Object => input.ToObjectValue() switch
+                FluidValues.String => FromObjectAsync(new ActionsModel { Id = input!.ToStringValue() }, title, returnUrl),
+                FluidValues.Object => input!.ToObjectValue() switch
                 {
-                    ActionsModel model => FromObject(model, title, returnUrl),
-                    JToken jToken => FromObject(jToken.ToObject<ActionsModel>(), title, returnUrl),
+                    ActionsModel model => FromObjectAsync(model, title, returnUrl),
+                    JToken jToken => FromObjectAsync(jToken.ToObject<ActionsModel>(), title, returnUrl),
                     { } unknown => throw GetException(unknown),
                     _ => throw new ArgumentNullException(nameof(input))
                 },
@@ -61,7 +61,7 @@ namespace Lombiq.DataTables.Liquid
             };
         }
 
-        private async ValueTask<FluidValue> FromObject(ActionsModel model, string title, string returnUrl)
+        private async ValueTask<FluidValue> FromObjectAsync(ActionsModel model, string title, string returnUrl)
         {
             IShape shape = await _shapeFactory.New.Lombiq_Datatables_Actions(
                 ButtonTitle: title,

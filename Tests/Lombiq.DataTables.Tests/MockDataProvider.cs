@@ -19,7 +19,7 @@ namespace Lombiq.DataTables.Tests
         private readonly object[][] _dataSet;
 
         public override LocalizedString Description { get; } = new LocalizedString("Test", "Test");
-        public override IEnumerable<Permission> SupportedPermissions { get; } = null;
+        public override IEnumerable<Permission> SupportedPermissions { get; }
 
 
         public MockDataProvider(object[][] dataSet, DataTableColumnsDefinition definition = null)
@@ -45,6 +45,6 @@ namespace Lombiq.DataTables.Tests
                 JObject.FromObject(columns.ToDictionary(column => column.Name, column => row[column.Index])));
         }
 
-        protected override DataTableColumnsDefinition GetColumnsDefinition(string queryId) => Definition;
+        protected override DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) => Definition;
     }
 }
