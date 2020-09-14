@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Lombiq.DataTables.Models
 {
@@ -7,7 +7,9 @@ namespace Lombiq.DataTables.Models
         public string Type { get => nameof(ExportLink); set {} }
         public string Url { get; set; }
         public string Text { get; set; }
-        public IDictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
+
+        [JsonProperty]
+        public IDictionary<string, string> Attributes { get; internal set; } = new Dictionary<string, string>();
 
         public ExportLink() { }
 

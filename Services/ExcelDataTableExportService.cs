@@ -40,7 +40,10 @@ namespace Lombiq.DataTables.Services
                 response.Error);
         }
 
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Blocker Code Smell",
+            "S2368:Public methods should not have multidimensional array parameters",
+            Justification = "We are rendering a table, what else would I use?!")]
         public static Stream CollectionToStream(
             string worksheetName,
             string[] columns,

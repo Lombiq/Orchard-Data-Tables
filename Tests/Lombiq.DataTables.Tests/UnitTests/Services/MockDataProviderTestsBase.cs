@@ -1,4 +1,4 @@
-﻿using Lombiq.DataTables.Models;
+using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Shouldly;
 using System;
@@ -21,10 +21,13 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             var provider = new MockDataProvider(dataSet);
             provider.Definition = provider.DefineColumns(
                 columns.Select(column => (column.Name, column.Text)).ToArray());
-            for (var i = 0; i < columns.Length; i++)
-            {
-                if (!columns[i].Exportable) provider.Definition.Columns[i].Exportable = false;
-            }
+
+            provider.Definition.Columns = provider.Definition.Columns
+                .Select((columnDefinition, index) =>
+                {
+                    if (!columns[index].Exportable) columnDefinition.Exportable = false;
+                    return columnDefinition;
+                });
 
             var order = columns[orderColumnIndex].Name.Split(new[] { "||" }, StringSplitOptions.None)[0];
             var request = new DataTableDataRequest
@@ -32,7 +35,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 DataProvider = nameof(MockDataProvider),
                 Length = length,
                 Start = start,
-                Order = new[] { new DataTableOrder { Column = order } }
+                Order = new[] { new DataTableOrder { Column = order } },
             };
 
             return (provider, request);
