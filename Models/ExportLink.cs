@@ -1,10 +1,13 @@
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace Lombiq.DataTables.Models
 {
     public class ExportLink
     {
-        public string Type { get => nameof(ExportLink); set {} }
+        [JsonProperty]
+        public string Type => nameof(ExportLink);
+
         public string Url { get; set; }
         public string Text { get; set; }
 

@@ -5,6 +5,7 @@ using OrchardCore.DisplayManagement;
 using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services
@@ -28,10 +29,11 @@ namespace Lombiq.DataTables.Services
         /// </summary>
         LocalizedString Description { get; }
 
+
         /// <summary>
         /// Gets an optional collection of permissions. If not null, the user must authorize against at least one.
         /// </summary>
-        IEnumerable<Permission> SupportedPermissions => null;
+        IEnumerable<Permission> SupportedPermissions => Enumerable.Empty<Permission>();
 
         /// <summary>
         /// Returns the table body created based on the provided request.

@@ -51,8 +51,7 @@ namespace Lombiq.DataTables.Services
             IStringLocalizer localizer,
             string error = null)
         {
-
-            var stream = new MemoryStream();
+            using var stream = new MemoryStream();
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add(worksheetName);
 
@@ -72,7 +71,6 @@ namespace Lombiq.DataTables.Services
             // Create table body.
             for (int i = 0; i < results.Length; i++)
             {
-                var item = results[i];
                 var row = 2 + i;
                 for (var c = 0; c < columns.Length; c++)
                 {
@@ -84,7 +82,7 @@ namespace Lombiq.DataTables.Services
                     if (value is JObject jObject && jObject["Type"]?.ToString() == nameof(ExportLink))
                     {
                         var link = jObject.ToObject<ExportLink>();
-                        cell.FormulaA1 = $"HYPERLINK(\"{link.Url}\",\"{link.Text}\")";
+                        if (link != null) cell.FormulaA1 = $"HYPERLINK(\"{link.Url}\",\"{link.Text}\")";
                     }
                     else
                     {
