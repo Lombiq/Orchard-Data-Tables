@@ -160,7 +160,7 @@ namespace Lombiq.DataTables.Services
 
             return new DataTableDataResponse
             {
-                Data = rowList, RecordsFiltered = recordsFiltered, RecordsTotal = recordsTotal
+                Data = rowList, RecordsFiltered = recordsFiltered, RecordsTotal = recordsTotal,
             };
         }
 
