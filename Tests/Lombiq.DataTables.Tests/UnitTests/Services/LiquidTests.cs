@@ -46,7 +46,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                     .AddScoped(provider => new Mock<IShapeFactory>().Object)
                     .AddScoped(provider => new Mock<ILayoutAccessor>().Object)
                     .AddScoped(provider => new Mock<IViewLocalizer>().Object)
-                    .BuildServiceProvider()
+                    .BuildServiceProvider(),
             });
             shellScope.StartAsyncFlow();
 
@@ -70,7 +70,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             {
                 new object[] { "now", "Foo Bar Baz" },
                 new object[] { "2020-12-31", "The quick brown fox" },
-                new object[] { "1970-01-01", "Lorem Ipsum Dolor Sit Amet" }
+                new object[] { "1970-01-01", "Lorem Ipsum Dolor Sit Amet" },
             };
             var today = DateTime.Today.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
 
@@ -81,7 +81,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 new[]
                 {
                     ("Num||^.*$||{{ '$0' | date: '%m/%d/%Y' }}", "Dates", true),
-                    ("Cls||^.*$||{{ '$0' | html_class  }}", "Magic Words", true)
+                    ("Cls||^.*$||{{ '$0' | html_class  }}", "Magic Words", true),
                 },
                 $"{today},foo-bar-baz;01/01/1970,lorem-ipsum-dolor-sit-amet;12/31/2020,the-quick-brown-fox"
                     .Split(';')
@@ -89,7 +89,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                     .ToArray(),
                 0,
                 10,
-                1
+                1,
             };
         }
     }
