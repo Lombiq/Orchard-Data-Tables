@@ -1,23 +1,27 @@
+using Lombiq.DataTables.Constants;
 using OrchardCore.ResourceManagement;
+using static Lombiq.DataTables.Constants.DataTablesResourceNames;
 using static Lombiq.DataTables.Constants.ResourceNames;
 
 namespace Lombiq.DataTables
 {
     public class ResourceManifest : IResourceManifestProvider
     {
+        private const string DataTables = DataTablesResourceNames.DataTables;
+
         public void BuildManifests(IResourceManifestBuilder builder)
         {
             var manifest = builder.Add();
 
             // jQuery.DataTables-related resources.
             manifest
-                .DefineScript(Uri_Js)
+                .DefineScript(UriJs)
                 .SetUrl("~/Lombiq.DataTables/vendors/urijs/URI.min.js", "~/Lombiq.DataTables/vendors/urijs/URI.js")
                 .SetDependencies(JQuery)
                 .SetVersion("1.19.2");
 
             manifest
-                .DefineScript(JQuery_DataTables)
+                .DefineScript(DataTables)
                 .SetDependencies(JQuery)
                 .SetUrl("~/Lombiq.DataTables/vendors/datatables.net/jquery.dataTables.min.js", "~/Lombiq.DataTables/vendors/datatables.net/jquery.dataTables.js")
                 .SetCdn("https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js", "https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js")
@@ -25,21 +29,21 @@ namespace Lombiq.DataTables
                 .SetVersion("1.10.20");
 
             manifest
-                .DefineScript(JQuery_DataTables_Buttons)
-                .SetDependencies(JQuery, JQuery_DataTables)
+                .DefineScript(Buttons)
+                .SetDependencies(JQuery, DataTables)
                 .SetUrl("~/Lombiq.DataTables/vendors/datatables.net-buttons/dataTables.buttons.min.js", "~/Lombiq.DataTables/vendors/datatables.net-buttons/dataTables.buttons.js")
                 .SetVersion("1.6.3");
 
             manifest
-                .DefineScript(JQuery_DataTables_Bootstrap4)
-                .SetDependencies(JQuery, JQuery_DataTables)
+                .DefineScript(Bootstrap4)
+                .SetDependencies(JQuery, DataTables)
                 .SetUrl("~/Lombiq.DataTables/vendors/datatables.net-bs4-js/dataTables.bootstrap4.min.js", "~/Lombiq.DataTables/vendors/datatables.net-bs4-js/dataTables.bootstrap4.js")
                 .SetCdn("https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js", "https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.js")
                 .SetCdnIntegrity("sha384-dsXH1jw5mvdtskz6tkzogTCdKWJv4k12j2BOHq3okVzlZiIsQhQXSh0I86ggUPPf", "sha384-zBJRQUocgzK6hCN4Er9zN2l2fljUYdgHRSFXhzsgHwU2/HxnMPRr50a9Uevh/DBF")
                 .SetVersion("1.10.20");
 
             manifest
-                .DefineStyle(JQuery_DataTables_Bootstrap4)
+                .DefineStyle(Bootstrap4)
                 .SetDependencies(Bootstrap)
                 .SetUrl("~/Lombiq.DataTables/vendors/datatables.net-bs4-css/dataTables.bootstrap4.min.css", "~/Lombiq.DataTables/vendors/datatables.net-bs4-css/dataTables.bootstrap4.css")
                 .SetCdn("https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css", "https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.css")
@@ -47,37 +51,37 @@ namespace Lombiq.DataTables
                 .SetVersion("1.10.20");
 
             manifest
-                .DefineScript(JQuery_DataTables_Buttons_Bootstrap4)
-                .SetDependencies(JQuery, JQuery_DataTables, JQuery_DataTables_Buttons)
+                .DefineScript(Bootstrap4Buttons)
+                .SetDependencies(JQuery, DataTables, Buttons)
                 .SetUrl("~/Lombiq.DataTables/vendors/datatables.net-bs4-js/buttons.bootstrap4.min.js", "~/Lombiq.DataTables/vendors/datatables.net-bs4-js/buttons.bootstrap4.js")
                 .SetVersion("1.6.3");
 
             manifest
-                .DefineStyle(JQuery_DataTables_Buttons_Bootstrap4)
-                .SetDependencies(Bootstrap, JQuery_DataTables_Bootstrap4, JQuery_DataTables_Buttons)
+                .DefineStyle(Bootstrap4Buttons)
+                .SetDependencies(Bootstrap, Bootstrap4, Buttons)
                 .SetUrl("~/Lombiq.DataTables/vendors/datatables.net-bs4-css/buttons.bootstrap4.min.css", "~/Lombiq.DataTables/vendors/datatables.net-bs4-css/buttons.bootstrap4.css")
                 .SetVersion("1.6.3");
 
             // Custom resources.
             manifest
-                .DefineScript(JQuery_DataTables_AutoInit)
-                .SetDependencies(JQuery_DataTables_Bootstrap4, JQuery_DataTables_Buttons_Bootstrap4)
+                .DefineScript(AutoInit)
+                .SetDependencies(Bootstrap4, Bootstrap4Buttons)
                 .SetUrl("~/Lombiq.DataTables/lombiq/jquery-datatables-autoinit/jquery-datatables-autoinit.js")
                 .SetVersion("1.0");
 
             manifest
-                .DefineScript(Lombiq_DataTables)
-                .SetDependencies(JQuery, Uri_Js, JQuery_DataTables, JQuery_DataTables_Bootstrap4, JQuery_DataTables_Buttons, JQuery_DataTables_Buttons_Bootstrap4)
+                .DefineScript(LombiqResourceNames.DataTables)
+                .SetDependencies(JQuery, UriJs, DataTables, Bootstrap4, Buttons, Bootstrap4Buttons)
                 .SetUrl("~/Lombiq.DataTables/lombiq/lombiq-datatables/lombiq-datatables.js")
                 .SetVersion("1.0");
 
             manifest
-                .DefineScript(Lombiq_ContentPicker)
+                .DefineScript(LombiqResourceNames.ContentPicker)
                 .SetUrl("~/Lombiq.DataTables/Scripts/lombiq-contentpicker.js")
                 .SetDependencies("jQueryColorBox");
 
             manifest
-                .DefineStyle(Lombiq_ContentPicker)
+                .DefineStyle(LombiqResourceNames.ContentPicker)
                 .SetDependencies("jQueryColorBox");
         }
     }

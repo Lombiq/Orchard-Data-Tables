@@ -11,7 +11,7 @@ using static Lombiq.DataTables.Constants.FeatureIds;
 
 
 [assembly: Feature(
-    Id = Lombiq_DataTables,
+    Id = DataTables,
     Name = "Data Tables",
     Category = "Content",
     Description = "Displays data using jQuery Data Tables.",

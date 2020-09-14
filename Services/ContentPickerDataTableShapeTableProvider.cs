@@ -10,16 +10,12 @@ namespace Lombiq.DataTables.Services
         private readonly IHttpContextAccessor _hca;
 
 
-        public ContentPickerDataTableShapeTableProvider(IHttpContextAccessor hca)
-        {
-            _hca = hca;
-        }
+        public ContentPickerDataTableShapeTableProvider(IHttpContextAccessor hca) => _hca = hca;
 
 
-        public void Discover(ShapeTableBuilder builder)
-        {
+        public void Discover(ShapeTableBuilder builder) =>
             builder
-                .Describe(ShapeNames.Lombiq_DataTable)
+                .Describe(ShapeNames.LombiqDataTable)
                 .OnDisplaying(displaying =>
                 {
                     if (_hca.HttpContext.Request.IsContentPickerRequest())
@@ -27,6 +23,5 @@ namespace Lombiq.DataTables.Services
                         displaying.Shape.Metadata.Alternates.Add("Lombiq_ContentPicker_DataTable");
                     }
                 });
-        }
     }
 }
