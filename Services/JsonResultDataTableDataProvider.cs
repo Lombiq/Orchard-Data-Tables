@@ -68,7 +68,7 @@ namespace Lombiq.DataTables.Services
             var order = request.Order.FirstOrDefault() ?? new DataTableOrder
             {
                 Column = columnsDefinition.DefaultSortingColumnName,
-                Direction = columnsDefinition.DefaultSortingDirection
+                Direction = columnsDefinition.DefaultSortingDirection,
             };
 
             var enumerableResults = await GetResultsAsync(request);
@@ -80,8 +80,7 @@ namespace Lombiq.DataTables.Services
             var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
             if (!string.IsNullOrEmpty(order.Column))
             {
-                var orderColumnName = order.Column.Replace('_', '.');
-                JToken Selector(JObject x) => x.SelectToken(orderColumnName)?.ToString();
+                JToken Selector(JObject x) => x.SelectToken(order.Column.Replace('_', '.'))?.ToString();
                 json = order.IsAscending ? json.OrderBy(Selector) : json.OrderByDescending(Selector);
             }
 
@@ -90,7 +89,7 @@ namespace Lombiq.DataTables.Services
                     .Select(column => new { column.Name, column.Regex, Token = result.SelectToken(column.Path, false) })
                     .ToDictionary(
                         cell => cell.Name,
-                        cell => cell.Regex is {} regex
+                        cell => cell.Regex is { } regex
                             ? new JValue(Regex.Replace(cell.Token?.ToString() ?? string.Empty, regex.From, regex.To))
                             : cell.Token)));
 
@@ -111,7 +110,7 @@ namespace Lombiq.DataTables.Services
                     filteredRows = filteredRows.Where(row =>
                         columnFilters.All(filter =>
                             row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
-                            token?.ToString().Contains(filter.Search.Value) == true));
+                            token?.ToString().Contains(filter.Search.Value, StringComparison.InvariantCulture) == true));
                 }
 
                 if (hasSearch)
@@ -119,14 +118,17 @@ namespace Lombiq.DataTables.Services
                     var words = searchValue
                         .Split()
                         .Where(word => !string.IsNullOrWhiteSpace(word))
-                        .Select(word => word.ToLower())
+                        .Select(word => word.ToUpperInvariant())
                         .ToList();
                     filteredRows = filteredRows.Where(row =>
                             words.All(word =>
                                 columns.Any(filter =>
                                     filter.Searchable &&
                                     row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
-                                    token?.ToString().ToLower().Contains(word) == true)));
+                                    token?
+                                        .ToString()
+                                        .ToUpperInvariant()
+                                        .Contains(word, StringComparison.InvariantCulture) == true)));
                 }
 
                 var list = filteredRows.ToList();

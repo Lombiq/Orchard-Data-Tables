@@ -6,6 +6,6 @@ namespace System.Web
     public static class HttpRequestExtensions
     {
         public static bool IsContentPickerRequest(this HttpRequest request) =>
-            UriHelper.GetEncodedUrl(request).Contains("/ContentPicker/");
+            UriHelper.GetEncodedUrl(request).Contains("/ContentPicker/", StringComparison.InvariantCultureIgnoreCase);
     }
 }
