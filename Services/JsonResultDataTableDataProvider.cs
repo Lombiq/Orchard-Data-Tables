@@ -80,12 +80,18 @@ namespace Lombiq.DataTables.Services
             if (!string.IsNullOrEmpty(order.Column))
             {
                 var orderColumnName = order.Column.Replace('_', '.');
-                string Selector(JObject x)
+                JToken Selector(JObject x)
                 {
                     var jToken = x.SelectToken(orderColumnName);
-                    if (jToken is JObject jObject && jObject.ContainsKey(nameof(ExportLink.Text)))
+                    switch (jToken)
                     {
-                        jToken = jObject[nameof(ExportLink.Text)];
+                        case null:
+                            return null;
+                        case JValue jValue when jValue.Type != JTokenType.String:
+                            return jValue;
+                        case JObject jObject when jObject.ContainsKey(nameof(ExportLink.Text)):
+                            jToken = jObject[nameof(ExportLink.Text)];
+                            break;
                     }
 
                     return jToken?.ToString().ToLower();
