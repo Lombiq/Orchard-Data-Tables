@@ -1,5 +1,6 @@
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
+using Microsoft.Extensions.Caching.Memory;
 using Shouldly;
 using System;
 using System.Linq;
@@ -14,11 +15,12 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             (string Name, string Text, bool Exportable)[] columns,
             int start,
             int length,
-            int orderColumnIndex)
+            int orderColumnIndex,
+            IMemoryCache memoryCache)
         {
             note.ShouldNotBeEmpty("Please state the purpose of this input set!");
 
-            var provider = new MockDataProvider(dataSet);
+            var provider = new MockDataProvider(dataSet, memoryCache);
             provider.Definition = provider.DefineColumns(
                 columns.Select(column => (column.Name, column.Text)).ToArray());
 

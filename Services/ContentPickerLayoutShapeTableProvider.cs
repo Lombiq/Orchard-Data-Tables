@@ -9,14 +9,10 @@ namespace Lombiq.DataTables.Services
         private readonly IHttpContextAccessor _hca;
 
 
-        public ContentPickerLayoutShapeTableProvider(IHttpContextAccessor hca)
-        {
-            _hca = hca;
-        }
+        public ContentPickerLayoutShapeTableProvider(IHttpContextAccessor hca) => _hca = hca;
 
 
-        public void Discover(ShapeTableBuilder builder)
-        {
+        public void Discover(ShapeTableBuilder builder) =>
             builder
                 .Describe("Layout")
                 .OnDisplaying(displaying =>
@@ -26,6 +22,5 @@ namespace Lombiq.DataTables.Services
                         displaying.Shape.Metadata.Alternates.Add("Layout__ContentPicker");
                     }
                 });
-        }
     }
 }

@@ -1,6 +1,8 @@
-﻿using ClosedXML.Excel;
+using ClosedXML.Excel;
 using Lombiq.DataTables.Services;
 using Lombiq.Tests.Helpers;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Moq.AutoMock;
 using Shouldly;
 using System.Collections.Generic;
@@ -23,7 +25,8 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             int length,
             int orderColumnIndex)
         {
-            var (provider, request) = GetProviderAndRequest(note, dataSet, columns, start, length, orderColumnIndex);
+            using var memoryCache = new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()));
+            var (provider, request) = GetProviderAndRequest(note, dataSet, columns, start, length, orderColumnIndex, memoryCache);
 
             var service = MockHelper.CreateAutoMockerInstance<ExcelDataTableExportService>(
                 mocker => mocker.MockStringLocalizer<ExcelDataTableExportService>());

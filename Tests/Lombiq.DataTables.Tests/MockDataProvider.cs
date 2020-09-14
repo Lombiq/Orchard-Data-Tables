@@ -22,11 +22,10 @@ namespace Lombiq.DataTables.Tests
         public override IEnumerable<Permission> SupportedPermissions { get; }
 
 
-        public MockDataProvider(object[][] dataSet, DataTableColumnsDefinition definition = null)
+        public MockDataProvider(object[][] dataSet, IMemoryCache memoryCache, DataTableColumnsDefinition definition = null)
             : base(
                 new StringLocalizer<MockDataProvider>(new NullStringLocalizerFactory()),
-                new LiquidTemplateManager(
-                    new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()))),
+                new LiquidTemplateManager(memoryCache),
                 linkGenerator:null,
                 hca: null)
         {

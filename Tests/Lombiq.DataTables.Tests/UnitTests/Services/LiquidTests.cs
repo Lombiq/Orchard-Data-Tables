@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -49,7 +50,8 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             });
             shellScope.StartAsyncFlow();
 
-            var (provider, request) = GetProviderAndRequest(note, dataSet, columns, start, length, orderColumnIndex);
+            using var memoryCache = new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()));
+            var (provider, request) = GetProviderAndRequest(note, dataSet, columns, start, length, orderColumnIndex, memoryCache);
             var rows = (await provider.GetRowsAsync(request)).Data.ToList();
 
             for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
