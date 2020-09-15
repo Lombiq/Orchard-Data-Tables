@@ -1,7 +1,6 @@
 using Lombiq.DataTables.Controllers;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
@@ -81,7 +80,23 @@ namespace Lombiq.DataTables.Services
             if (!string.IsNullOrEmpty(order.Column))
             {
                 var orderColumnName = order.Column.Replace('_', '.');
-                JToken Selector(JObject x) => x.SelectToken(orderColumnName)?.ToString();
+                JToken Selector(JObject x)
+                {
+                    var jToken = x.SelectToken(orderColumnName);
+
+                    if (jToken is JObject jObject && jObject.ContainsKey(nameof(ExportLink.Text)))
+                    {
+                        jToken = jObject[nameof(ExportLink.Text)];
+                    }
+
+                    return jToken switch
+                    {
+                        null => null,
+                        JValue jValue when jValue.Type != JTokenType.String => jValue,
+                        _ => jToken.ToString().ToLower(),
+                    };
+                }
+
                 json = order.IsAscending ? json.OrderBy(Selector) : json.OrderByDescending(Selector);
             }
 
