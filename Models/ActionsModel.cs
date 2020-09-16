@@ -30,10 +30,12 @@ namespace Lombiq.DataTables.Models
             };
             var links = new List<ExportLink>
             {
-                new ExportLink(linkGenerator.GetUriByAction(context, "Edit", "Admin", values), stringLocalizer["Edit"]),
+                new ExportLink(
+                    linkGenerator.GetUriByAction(context, "Edit", "Admin", values),
+                    stringLocalizer["Edit"].Value),
                 new ExportLink(
                     linkGenerator.GetUriByAction(context, "Remove", "Admin", values),
-                    stringLocalizer["Delete"],
+                    stringLocalizer["Delete"].Value,
                     new Dictionary<string, string>
                     {
                         ["itemprop"] = "RemoveUrl UnsafeUrl",

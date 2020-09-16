@@ -1,7 +1,6 @@
 using Lombiq.DataTables.Controllers;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
@@ -50,7 +49,6 @@ namespace Lombiq.DataTables.Services
             _plainTextEncoder = new PlainTextEncoder();
         }
 
-
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
             var columnsDefinition = GetColumnsDefinitionInner(request.QueryId);
@@ -80,7 +78,27 @@ namespace Lombiq.DataTables.Services
             var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
             if (!string.IsNullOrEmpty(order.Column))
             {
-                JToken Selector(JObject x) => x.SelectToken(order.Column.Replace('_', '.'))?.ToString();
+                // How is this useless? It is consumed in the closure of Selector.
+#pragma warning disable S1854 // Unused assignments should be removed
+                var orderColumnName = order.Column.Replace('_', '.');
+#pragma warning restore S1854 // Unused assignments should be removed
+                JToken Selector(JObject x)
+                {
+                    var jToken = x.SelectToken(orderColumnName);
+
+                    if (jToken is JObject jObject && jObject.ContainsKey(nameof(ExportLink.Text)))
+                    {
+                        jToken = jObject[nameof(ExportLink.Text)];
+                    }
+
+                    return jToken switch
+                    {
+                        null => null,
+                        JValue jValue when jValue.Type != JTokenType.String => jValue,
+                        _ => jToken.ToString().ToUpperInvariant(),
+                    };
+                }
+
                 json = order.IsAscending ? json.OrderBy(Selector) : json.OrderByDescending(Selector);
             }
 
@@ -118,17 +136,13 @@ namespace Lombiq.DataTables.Services
                     var words = searchValue
                         .Split()
                         .Where(word => !string.IsNullOrWhiteSpace(word))
-                        .Select(word => word.ToUpperInvariant())
                         .ToList();
                     filteredRows = filteredRows.Where(row =>
                             words.All(word =>
                                 columns.Any(filter =>
                                     filter.Searchable &&
                                     row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
-                                    token?
-                                        .ToString()
-                                        .ToUpperInvariant()
-                                        .Contains(word, StringComparison.InvariantCulture) == true)));
+                                    token?.ToString().Contains(word, StringComparison.InvariantCultureIgnoreCase) == true)));
                 }
 
                 var list = filteredRows.ToList();

@@ -1,4 +1,5 @@
 using ClosedXML.Excel;
+using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.Tests.Helpers;
 using Lombiq.Tests.Helpers;
@@ -51,7 +52,12 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
             {
                 Enumerable.Range(1, pattern[0].Length)
-                    .Select(index => worksheet.Cell(2 + rowIndex, index).GetString())
+                    .Select(index => worksheet.Cell(2 + rowIndex, index).Value switch
+                    {
+                        XLHyperlink hyperlink => hyperlink.Tooltip,
+                        { } value => value.ToString(),
+                        null => "NULL",
+                    })
                     .ToArray()
                     .ShouldBe(pattern[rowIndex], $"Row {rowIndex + 1} didn't match expectation.");
             }
@@ -61,11 +67,15 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
         {
             var dataset = new[]
             {
-                new object[] { 1, "z", "foo" }, new object[] { 2, "y", "bar" }, new object[] { 3, "x", "baz" },
+                new object[] { 1, "z", "foo" },
+                new object[] { new ExportLink("http://example.com/", 2), "y", "bar" },
+                new object[] { 10, "x", "baz" },
             };
             var columns = new[]
             {
-                ("Num", "Numbers", true), ("Letters", "Letters", true), ("MagicWords", "Magic Words", true),
+                ("Num", "Numbers", true),
+                ("Letters", "Letters", true),
+                ("MagicWords", "Magic Words", true),
             };
 
             yield return new object[]
@@ -73,7 +83,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "Show full data set.",
                 dataset,
                 columns,
-                "1,z,foo;2,y,bar;3,x,baz".Split(';').Select(row => row.Split(',')).ToArray(),
+                "1,z,foo;2,y,bar;10,x,baz".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
                 0,
@@ -85,7 +95,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "Make last column not exportable.",
                 dataset,
                 new[] { ("Num", "Numbers", true), ("Letters", "Letters", true), ("MagicWords", "Magic Words", false) },
-                "1,z;2,y;3,x".Split(';').Select(row => row.Split(',')).ToArray(),
+                "1,z;2,y;10,x".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
                 0,
@@ -96,7 +106,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "Test pagination.",
                 dataset,
                 columns,
-                new[] { "3,x,baz".Split(',') },
+                new[] { "10,x,baz".Split(',') },
                 2,
                 10,
                 0,
@@ -107,7 +117,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "Test sorting on 2nd column.",
                 dataset,
                 columns,
-                "3,x,baz;2,y,bar;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
+                "10,x,baz;2,y,bar;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
                 1,
@@ -118,7 +128,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "Test sorting on 3nd column.",
                 dataset,
                 columns,
-                "2,y,bar;3,x,baz;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
+                "2,y,bar;10,x,baz;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
                 2,
