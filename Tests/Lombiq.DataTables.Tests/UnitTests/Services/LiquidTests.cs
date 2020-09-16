@@ -1,3 +1,4 @@
+using Lombiq.DataTables.Tests.Helpers;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -20,7 +21,7 @@ using Xunit;
 
 namespace Lombiq.DataTables.Tests.UnitTests.Services
 {
-    public class LiquidTests : MockDataProviderTestsBase
+    public class LiquidTests
     {
         [Theory]
         [MemberData(nameof(Data))]
@@ -36,10 +37,11 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             // Everything in this section of code is required for the Liquid renderer to work. Otherwise it will throw
             // NRE or render empty string results. On the final line shellScope.StartAsyncFlow() initializes the static
             // variable representing the current ShellScope.
-            var shellScope = new ShellScope(new ShellContext
+            using var shellContext = new ShellContext
             {
                 ServiceProvider = new ServiceCollection()
-                    .AddScoped<IOptions<LiquidOptions>>(provider => new OptionsWrapper<LiquidOptions>(new LiquidOptions()))
+                    .AddScoped<IOptions<LiquidOptions>>(provider =>
+                        new OptionsWrapper<LiquidOptions>(new LiquidOptions()))
                     .AddScoped(provider => new ViewContextAccessor { ViewContext = new ViewContext() })
                     .AddScoped(provider => new Mock<IDisplayHelper>().Object)
                     .AddScoped(provider => new Mock<IUrlHelperFactory>().Object)
@@ -47,11 +49,19 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                     .AddScoped(provider => new Mock<ILayoutAccessor>().Object)
                     .AddScoped(provider => new Mock<IViewLocalizer>().Object)
                     .BuildServiceProvider(),
-            });
+            };
+            await using var shellScope = new ShellScope(shellContext);
             shellScope.StartAsyncFlow();
 
             using var memoryCache = new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()));
-            var (provider, request) = GetProviderAndRequest(note, dataSet, columns, start, length, orderColumnIndex, memoryCache);
+            var (provider, request) = MockDataProviderHelper.GetProviderAndRequest(
+                note,
+                dataSet,
+                columns,
+                start,
+                length,
+                orderColumnIndex,
+                memoryCache);
             var rows = (await provider.GetRowsAsync(request)).Data.ToList();
 
             for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)

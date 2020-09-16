@@ -5,11 +5,11 @@ using Shouldly;
 using System;
 using System.Linq;
 
-namespace Lombiq.DataTables.Tests.UnitTests.Services
+namespace Lombiq.DataTables.Tests.Helpers
 {
-    public class MockDataProviderTestsBase
+    public static class MockDataProviderHelper
     {
-        protected (IDataTableDataProvider, DataTableDataRequest) GetProviderAndRequest(
+        public static (IDataTableDataProvider, DataTableDataRequest) GetProviderAndRequest(
             string note,
             object[][] dataSet,
             (string Name, string Text, bool Exportable)[] columns,

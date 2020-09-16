@@ -26,7 +26,7 @@ namespace Lombiq.DataTables.Tests
             : base(
                 new StringLocalizer<MockDataProvider>(new NullStringLocalizerFactory()),
                 new LiquidTemplateManager(memoryCache),
-                linkGenerator:null,
+                linkGenerator: null,
                 hca: null)
         {
             Definition = definition;

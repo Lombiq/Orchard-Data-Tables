@@ -1,5 +1,6 @@
 using ClosedXML.Excel;
 using Lombiq.DataTables.Services;
+using Lombiq.DataTables.Tests.Helpers;
 using Lombiq.Tests.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -12,7 +13,7 @@ using Xunit;
 
 namespace Lombiq.DataTables.Tests.UnitTests.Services
 {
-    public class ExportTests : MockDataProviderTestsBase
+    public class ExportTests
     {
         [Theory]
         [MemberData(nameof(Data))]
@@ -26,7 +27,14 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             int orderColumnIndex)
         {
             using var memoryCache = new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()));
-            var (provider, request) = GetProviderAndRequest(note, dataSet, columns, start, length, orderColumnIndex, memoryCache);
+            var (provider, request) = MockDataProviderHelper.GetProviderAndRequest(
+                note,
+                dataSet,
+                columns,
+                start,
+                length,
+                orderColumnIndex,
+                memoryCache);
 
             var service = MockHelper.CreateAutoMockerInstance<ExcelDataTableExportService>(
                 mocker => mocker.MockStringLocalizer<ExcelDataTableExportService>());
