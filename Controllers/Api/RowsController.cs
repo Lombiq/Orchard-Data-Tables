@@ -72,7 +72,7 @@ namespace Lombiq.DataTables.Controllers.Api
                 return BadRequest(DataTableDataResponse.ErrorResult(T["Length can't be 0."].Value));
             }
 
-            if (!(await dataProvider.AuthorizeAsync(_authorizationService, User)))
+            if (!await dataProvider.AuthorizeAsync(_authorizationService, User))
             {
                 return DataTableDataResponse.ErrorResult(T["Unauthorized!"]);
             }
