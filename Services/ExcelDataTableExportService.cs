@@ -51,15 +51,13 @@ namespace Lombiq.DataTables.Services
             IStringLocalizer localizer,
             string error = null)
         {
-            var resultStream = new MemoryStream();
-
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add(worksheetName);
 
             if (!string.IsNullOrWhiteSpace(error))
             {
                 worksheet.Cell(2, 1).Value = error;
-                return Save(workbook, resultStream);
+                return Save(workbook);
             }
 
             // Create table header.
@@ -108,14 +106,17 @@ namespace Lombiq.DataTables.Services
             worksheet.RecalculateAllFormulas();
             worksheet.Columns().AdjustToContents();
 
-            return Save(workbook, resultStream);
+            return Save(workbook);
         }
 
 
-        private static Stream Save(XLWorkbook workbook, Stream stream)
+        private static Stream Save(XLWorkbook workbook)
         {
+            var stream = new MemoryStream();
+
             workbook.SaveAs(stream);
             stream.Position = 0;
+
             return stream;
         }
     }
