@@ -50,7 +50,12 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                     .AddScoped(provider => new Mock<IViewLocalizer>().Object)
                     .BuildServiceProvider(),
             };
-            await using var shellScope = new ShellScope(shellContext);
+
+            // Disposing this will cause an NRE somehow. This is outside of the scope of the test so we can let it go.
+#pragma warning disable CA2000 // Dispose objects before losing scope
+            var shellScope = new ShellScope(shellContext);
+#pragma warning restore CA2000 // Dispose objects before losing scope
+
             shellScope.StartAsyncFlow();
 
             using var memoryCache = new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()));

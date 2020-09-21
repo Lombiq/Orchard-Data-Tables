@@ -38,10 +38,10 @@
 
     const string templatePlaceholder = "{{data}}";
 
-    ResourceManager.RegisterResource("script", LombiqResourceNames.DataTables).AtFoot();
-    ResourceManager.RegisterResource("script", DataTablesResourceNames.Bootstrap4Buttons).AtFoot();
-    ResourceManager.RegisterResource("stylesheet", DataTablesResourceNames.Bootstrap4);
-    ResourceManager.RegisterResource("stylesheet", DataTablesResourceNames.Bootstrap4Buttons);
+    ResourceManager.RegisterResource("script", ResourceNames.LombiqDataTables).AtFoot();
+    ResourceManager.RegisterResource("script", ResourceNames.DataTables.Bootstrap4Buttons).AtFoot();
+    ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4);
+    ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4Buttons);
 
     dynamic additionalOptions = viewModel.AdditionalDatatableOptions;
     var hasViewAction = (bool)(additionalOptions?.viewAction == true);
@@ -93,7 +93,7 @@ window.dataTableResources = {
     </div>
 </div>
 
-<script depends-on="@LombiqResourceNames.DataTables" at="Foot">
+<script depends-on="@ResourceNames.LombiqDataTables" at="Foot">
     ; (function ($) {
         $(function () {
             var templates = {};
