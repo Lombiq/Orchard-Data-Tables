@@ -78,7 +78,7 @@ namespace Lombiq.DataTables.Services
             var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
             if (!string.IsNullOrEmpty(order.Column))
             {
-                // How is this useless? It is consumed in the closure of Selector.
+                // Known issue: https://github.com/SonarSource/sonar-dotnet/issues/3126
 #pragma warning disable S1854 // Unused assignments should be removed
                 var orderColumnName = order.Column.Replace('_', '.');
 #pragma warning restore S1854 // Unused assignments should be removed
