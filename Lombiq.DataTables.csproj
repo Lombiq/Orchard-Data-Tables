@@ -46,7 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Views\Testing.Header.cshtml">
+    <EmbeddedResource Update="Views\Lombiq.Datatable.Testing.Header.cshtml">
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </EmbeddedResource>
   </ItemGroup>
