@@ -18,7 +18,7 @@ namespace Lombiq.DataTables.Models
         internal int Draw { get; set; }
 
         /// <summary>
-        /// Gets or sets the rxtra informational field that shows the actual total if filtering (such as keyword
+        /// Gets or sets the extra informational field that shows the actual total if filtering (such as keyword
         /// search) is used. When not filtering it must be the same as <see cref="RecordsFiltered"/>.
         /// </summary>
         public int RecordsTotal { get; set; }

@@ -55,9 +55,9 @@ namespace Lombiq.DataTables.Liquid
                     ActionsModel model => FromObjectAsync(model, title, returnUrl),
                     JToken jToken => FromObjectAsync(jToken.ToObject<ActionsModel>(), title, returnUrl),
                     { } unknown => throw GetException(unknown),
-                    _ => throw new ArgumentNullException(nameof(input))
+                    _ => throw new ArgumentNullException(nameof(input)),
                 },
-                _ => throw GetException(input?.Type)
+                _ => throw GetException(input?.Type),
             };
         }
 

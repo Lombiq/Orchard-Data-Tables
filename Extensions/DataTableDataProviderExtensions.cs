@@ -24,23 +24,23 @@ namespace Lombiq.DataTables.Services
                 Columns = columns.Select(column =>
                     {
                         var (name, text) = column;
-                        var nameParts = name.Contains("||", StringComparison.InvariantCulture)
+                        var nameParts = name.Contains("||", StringComparison.Ordinal)
                             ? name.Split("||")
                             : new[] { name };
                         var key = nameParts[nameParts.Length == 3 ? 2 : 0];
 
                         var searchable = true;
                         var exportable = true;
-                        var isLiquid = key.StartsWith("{{", StringComparison.InvariantCulture) ||
-                                       key.StartsWith("{%", StringComparison.InvariantCulture);
+                        var isLiquid = key.StartsWith("{{", StringComparison.Ordinal) ||
+                                       key.StartsWith("{%", StringComparison.Ordinal);
 
                         if (isLiquid)
                         {
                             // Don't search if it is a liquid expression, also don't export if it's "actions".
                             searchable = false;
-                            exportable = !key.Contains("actions:", StringComparison.InvariantCulture);
+                            exportable = !key.Contains("actions:", StringComparison.InvariantCultureIgnoreCase);
                         }
-                        else if (nameParts[0].EndsWith("DateUtc", StringComparison.InvariantCulture))
+                        else if (nameParts[0].EndsWith("DateUtc", StringComparison.InvariantCultureIgnoreCase))
                         {
                             searchable = false;
                         }

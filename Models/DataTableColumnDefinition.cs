@@ -4,9 +4,7 @@ namespace Lombiq.DataTables.Models
 {
     public class DataTableColumnDefinition
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4004:Collection properties should be readonly", Justification = "JSON")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "JSON")]
-        public Dictionary<string, string> AdditionalSettings { get; set; }
+        public Dictionary<string, string> AdditionalSettings { get; private set; } = new Dictionary<string, string>();
         public string Name { get; set; }
         public string Text { get; set; }
         public string DataSource { get; set; }
