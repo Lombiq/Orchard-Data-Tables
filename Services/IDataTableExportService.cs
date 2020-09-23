@@ -34,7 +34,7 @@ namespace Lombiq.DataTables.Services
         /// Requests the data from the provider and exports it into the desired file in stream.
         /// </summary>
         /// <param name="dataProvider">Gets the dataset.</param>
-        /// <param name="request">Configures the dataProvider.</param>
+        /// <param name="request">Configures the <paramref name="dataProvider"/>.</param>
         /// <param name="columnsDefinition">Contains the list of columns to export.</param>
         /// <returns>The file serialized into a stream.</returns>
         /// <remarks><para>The <see cref="DataTableColumnDefinition.Exportable"/> is relevant here.</para></remarks>
