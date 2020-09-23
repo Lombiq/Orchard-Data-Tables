@@ -1,25 +1,20 @@
 ﻿using Lombiq.DataTables.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using OrchardCore;
 using OrchardCore.DisplayManagement;
 using OrchardCore.DisplayManagement.Layout;
-using OrchardCore.Environment.Shell;
-using OrchardCore.Modules;
 using System.Threading.Tasks;
 
-namespace Lombiq.DataTables.Services
+namespace Lombiq.DataTables.LombiqTests.Services
 {
     public class TestingFilter : IAsyncResultFilter
     {
         private readonly ILayoutAccessor _layoutAccessor;
         private readonly IShapeFactory _shapeFactory;
-        private readonly IShellFeaturesManager _orchardHelper;
 
-        public TestingFilter(ILayoutAccessor layoutAccessor, IShapeFactory shapeFactory, IShellFeaturesManager orchardHelper)
+        public TestingFilter(ILayoutAccessor layoutAccessor, IShapeFactory shapeFactory)
         {
             _layoutAccessor = layoutAccessor;
             _shapeFactory = shapeFactory;
-            _orchardHelper = orchardHelper;
         }
 
         public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
