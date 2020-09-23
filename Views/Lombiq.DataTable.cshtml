@@ -63,6 +63,12 @@ window.dataTableResources = {
 
 <div class="@ElementNames.DataTableWrapperDefaultElementName @dataTableCssClasses">
     @await DisplayAsync(await New.Lombiq_DataTable_Table(
+        ViewModel: new DataTableDataViewModel
+        {
+            DataTableId = dataTableId,
+            ColumnsDefinition = columnsDefinition,
+            ChildRowsEnabled = childRowsEnabled,
+        },
         DataTableId: dataTableId,
         Columns: columns,
         ChildRowsEnabled: childRowsEnabled))
