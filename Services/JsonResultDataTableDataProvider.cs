@@ -36,7 +36,7 @@ namespace Lombiq.DataTables.Services
 
 
         protected JsonResultDataTableDataProvider(
-            IStringLocalizer stringLocalizer,
+            IStringLocalizer<JsonResultDataTableDataProvider> stringLocalizer,
             ILiquidTemplateManager liquidTemplateManager,
             LinkGenerator linkGenerator,
             IHttpContextAccessor hca)
@@ -105,7 +105,7 @@ namespace Lombiq.DataTables.Services
                     .Select(column => new { column.Name, column.Regex, Token = result.SelectToken(column.Path, false) })
                     .ToDictionary(
                         cell => cell.Name,
-                        cell => cell.Regex is {} regex
+                        cell => cell.Regex is { } regex
                             ? new JValue(Regex.Replace(cell.Token?.ToString() ?? string.Empty, regex.From, regex.To))
                             : cell.Token)));
 
@@ -175,7 +175,9 @@ namespace Lombiq.DataTables.Services
 
             return new DataTableDataResponse
             {
-                Data = rowList, RecordsFiltered = recordsFiltered, RecordsTotal = recordsTotal
+                Data = rowList,
+                RecordsFiltered = recordsFiltered,
+                RecordsTotal = recordsTotal
             };
         }
 
