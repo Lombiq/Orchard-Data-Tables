@@ -48,7 +48,7 @@ namespace Lombiq.DataTables.Services
             string worksheetName,
             string[] columns,
             JToken[][] results,
-            IStringLocalizer localizer,
+            IStringLocalizer<ExcelDataTableExportService> localizer,
             string error = null)
         {
             using var workbook = new XLWorkbook();

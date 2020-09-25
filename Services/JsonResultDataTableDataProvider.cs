@@ -36,7 +36,7 @@ namespace Lombiq.DataTables.Services
 
 
         protected JsonResultDataTableDataProvider(
-            IStringLocalizer stringLocalizer,
+            IStringLocalizer<JsonResultDataTableDataProvider> stringLocalizer,
             ILiquidTemplateManager liquidTemplateManager,
             LinkGenerator linkGenerator,
             IHttpContextAccessor hca)
@@ -176,7 +176,9 @@ namespace Lombiq.DataTables.Services
 
             return new DataTableDataResponse
             {
-                Data = rowList, RecordsFiltered = recordsFiltered, RecordsTotal = recordsTotal,
+                Data = rowList,
+                RecordsFiltered = recordsFiltered,
+                RecordsTotal = recordsTotal,
             };
         }
 

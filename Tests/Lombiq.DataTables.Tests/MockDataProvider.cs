@@ -2,7 +2,6 @@ using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using OrchardCore.Liquid.Services;
 using OrchardCore.Localization;

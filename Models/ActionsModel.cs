@@ -16,7 +16,7 @@ namespace Lombiq.DataTables.Models
         public IEnumerable<ExportLink> GetAllMenuItems(
             HttpContext context,
             LinkGenerator linkGenerator,
-            IStringLocalizer stringLocalizer,
+            IStringLocalizer<ActionsModel> stringLocalizer,
             string returnUrl)
         {
             if (string.IsNullOrEmpty(Id)) WithDefaults = false;
