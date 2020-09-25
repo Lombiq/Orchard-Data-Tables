@@ -20,7 +20,7 @@ namespace Lombiq.DataTables.Services
     /// Classes which implement this class only have to provide the provider description, the dataset via
     /// <see cref="GetResultsAsync"/> as <see cref="IList{T}"/> of either <see cref="object"/> or <see cref="JObject"/>
     /// (the former is automatically converted to the latter) and the columns definition via
-    /// <see cref="GetColumnsDefinition"/>.
+    /// <see cref="GetColumnsDefinitionInner"/>.
     /// </summary>
     public abstract class JsonResultDataTableDataProvider : IDataTableDataProvider
     {
@@ -49,10 +49,9 @@ namespace Lombiq.DataTables.Services
             _plainTextEncoder = new PlainTextEncoder();
         }
 
-
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
-            var columnsDefinition = GetColumnsDefinition(request.QueryId);
+            var columnsDefinition = GetColumnsDefinitionInner(request.QueryId);
             var columns = columnsDefinition.Columns
                 .Select(column =>
                     new
@@ -67,7 +66,7 @@ namespace Lombiq.DataTables.Services
             var order = request.Order.FirstOrDefault() ?? new DataTableOrder
             {
                 Column = columnsDefinition.DefaultSortingColumnName,
-                Direction = columnsDefinition.DefaultSortingDirection
+                Direction = columnsDefinition.DefaultSortingDirection,
             };
 
             var enumerableResults = await GetResultsAsync(request);
@@ -79,7 +78,10 @@ namespace Lombiq.DataTables.Services
             var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
             if (!string.IsNullOrEmpty(order.Column))
             {
+                // Known issue: https://github.com/SonarSource/sonar-dotnet/issues/3126
+#pragma warning disable S1854 // Unused assignments should be removed
                 var orderColumnName = order.Column.Replace('_', '.');
+#pragma warning restore S1854 // Unused assignments should be removed
                 JToken Selector(JObject x)
                 {
                     var jToken = x.SelectToken(orderColumnName);
@@ -93,7 +95,7 @@ namespace Lombiq.DataTables.Services
                     {
                         null => null,
                         JValue jValue when jValue.Type != JTokenType.String => jValue,
-                        _ => jToken.ToString().ToLower(),
+                        _ => jToken.ToString().ToUpperInvariant(),
                     };
                 }
 
@@ -126,7 +128,7 @@ namespace Lombiq.DataTables.Services
                     filteredRows = filteredRows.Where(row =>
                         columnFilters.All(filter =>
                             row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
-                            token?.ToString().Contains(filter.Search.Value) == true));
+                            token?.ToString().Contains(filter.Search.Value, StringComparison.InvariantCulture) == true));
                 }
 
                 if (hasSearch)
@@ -134,14 +136,13 @@ namespace Lombiq.DataTables.Services
                     var words = searchValue
                         .Split()
                         .Where(word => !string.IsNullOrWhiteSpace(word))
-                        .Select(word => word.ToLower())
                         .ToList();
                     filteredRows = filteredRows.Where(row =>
                             words.All(word =>
                                 columns.Any(filter =>
                                     filter.Searchable &&
                                     row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
-                                    token?.ToString().ToLower().Contains(word) == true)));
+                                    token?.ToString().Contains(word, StringComparison.InvariantCultureIgnoreCase) == true)));
                 }
 
                 var list = filteredRows.ToList();
@@ -177,12 +178,12 @@ namespace Lombiq.DataTables.Services
             {
                 Data = rowList,
                 RecordsFiltered = recordsFiltered,
-                RecordsTotal = recordsTotal
+                RecordsTotal = recordsTotal,
             };
         }
 
         public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) =>
-            Task.FromResult(GetColumnsDefinition(queryId));
+            Task.FromResult(GetColumnsDefinitionInner(queryId));
 
         public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) =>
             Task.FromResult(new DataTableChildRowResponse());
@@ -207,7 +208,7 @@ namespace Lombiq.DataTables.Services
         /// </summary>
         /// <param name="queryId">May be used to dynamically generate the result.</param>
         /// <returns>The default columns definition of this provider.</returns>
-        protected abstract DataTableColumnsDefinition GetColumnsDefinition(string queryId);
+        protected abstract DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId);
 
 
         protected string GetActionsColumn()
