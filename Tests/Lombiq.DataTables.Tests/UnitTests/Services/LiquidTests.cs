@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.Localization;
+using Lombiq.DataTables.Tests.Helpers;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -19,7 +21,7 @@ using Xunit;
 
 namespace Lombiq.DataTables.Tests.UnitTests.Services
 {
-    public class LiquidTests : MockDataProviderTestsBase
+    public class LiquidTests
     {
         [Theory]
         [MemberData(nameof(Data))]
@@ -35,21 +37,36 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             // Everything in this section of code is required for the Liquid renderer to work. Otherwise it will throw
             // NRE or render empty string results. On the final line shellScope.StartAsyncFlow() initializes the static
             // variable representing the current ShellScope.
-            var shellScope = new ShellScope(new ShellContext
+            using var shellContext = new ShellContext
             {
                 ServiceProvider = new ServiceCollection()
-                    .AddScoped<IOptions<LiquidOptions>>(provider => new OptionsWrapper<LiquidOptions>(new LiquidOptions()))
+                    .AddScoped<IOptions<LiquidOptions>>(provider =>
+                        new OptionsWrapper<LiquidOptions>(new LiquidOptions()))
                     .AddScoped(provider => new ViewContextAccessor { ViewContext = new ViewContext() })
                     .AddScoped(provider => new Mock<IDisplayHelper>().Object)
                     .AddScoped(provider => new Mock<IUrlHelperFactory>().Object)
                     .AddScoped(provider => new Mock<IShapeFactory>().Object)
                     .AddScoped(provider => new Mock<ILayoutAccessor>().Object)
                     .AddScoped(provider => new Mock<IViewLocalizer>().Object)
-                    .BuildServiceProvider()
-            });
+                    .BuildServiceProvider(),
+            };
+
+            // Disposing this will cause an NRE somehow. This is outside of the scope of the test so we can let it go.
+#pragma warning disable CA2000 // Dispose objects before losing scope
+            var shellScope = new ShellScope(shellContext);
+#pragma warning restore CA2000 // Dispose objects before losing scope
+
             shellScope.StartAsyncFlow();
 
-            var (provider, request) = GetProviderAndRequest(note, dataSet, columns, start, length, orderColumnIndex);
+            using var memoryCache = new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()));
+            var (provider, request) = MockDataProviderHelper.GetProviderAndRequest(
+                note,
+                dataSet,
+                columns,
+                start,
+                length,
+                orderColumnIndex,
+                memoryCache);
             var rows = (await provider.GetRowsAsync(request)).Data.ToList();
 
             for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
@@ -68,7 +85,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             {
                 new object[] { "now", "Foo Bar Baz" },
                 new object[] { "2020-12-31", "The quick brown fox" },
-                new object[] { "1970-01-01", "Lorem Ipsum Dolor Sit Amet" }
+                new object[] { "1970-01-01", "Lorem Ipsum Dolor Sit Amet" },
             };
             var today = DateTime.Today.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
 
@@ -79,7 +96,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 new[]
                 {
                     ("Num||^.*$||{{ '$0' | date: '%m/%d/%Y' }}", "Dates", true),
-                    ("Cls||^.*$||{{ '$0' | html_class  }}", "Magic Words", true)
+                    ("Cls||^.*$||{{ '$0' | html_class  }}", "Magic Words", true),
                 },
                 $"{today},foo-bar-baz;01/01/1970,lorem-ipsum-dolor-sit-amet;12/31/2020,the-quick-brown-fox"
                     .Split(';')
@@ -87,7 +104,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                     .ToArray(),
                 0,
                 10,
-                1
+                1,
             };
         }
     }

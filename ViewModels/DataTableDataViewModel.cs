@@ -1,4 +1,4 @@
-﻿using Lombiq.DataTables.Models;
+using Lombiq.DataTables.Models;
 using System.Collections.Generic;
 
 namespace Lombiq.DataTables.ViewModels

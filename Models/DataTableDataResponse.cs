@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -9,32 +9,32 @@ namespace Lombiq.DataTables.Models
     public class DataTableDataResponse
     {
         /// <summary>
-        /// This property identifies the request for the jQuery.DataTables plugin. This needs to be parsed and
+        /// Gets or sets the request identifier for the jQuery.DataTables plugin. This needs to be parsed and
         /// sent back in order to prevent Cross Site Scripting (XSS) attack.
-        /// See: https://datatables.net/manual/server-side
+        /// See https://datatables.net/manual/server-side for more info.
         /// </summary>
-        /// <remarks>For internal use only. It's overwritten during normal use.</remarks>
+        /// <remarks><para>For internal use only. It's overwritten during normal use.</para></remarks>
         [JsonProperty]
         internal int Draw { get; set; }
 
         /// <summary>
-        /// Extra informational field that shows the actual total if filtering (such as keyword search) is used. When
-        /// not filtering it must be the same as <see cref="RecordsFiltered"/>.
+        /// Gets or sets the extra informational field that shows the actual total if filtering (such as keyword
+        /// search) is used. When not filtering it must be the same as <see cref="RecordsFiltered"/>.
         /// </summary>
         public int RecordsTotal { get; set; }
 
         /// <summary>
-        /// The total number of results; used for paging.
+        /// Gets or sets the total number of results; used for paging.
         /// </summary>
         public int RecordsFiltered { get; set; }
 
         /// <summary>
-        /// The table contents of the current page.
+        /// Gets or sets the table contents of the current page.
         /// </summary>
         public IEnumerable<DataTableRow> Data { get; set; }
 
         /// <summary>
-        /// User-facing error message in case something went wrong.
+        /// Gets or sets the user-facing error message in case something went wrong.
         /// </summary>
         public string Error { get; set; }
 
@@ -49,7 +49,7 @@ namespace Lombiq.DataTables.Models
                 Error = errorText,
                 Data = Array.Empty<DataTableRow>(),
                 RecordsFiltered = 0,
-                RecordsTotal = 0
+                RecordsTotal = 0,
             };
 
         /// <summary>

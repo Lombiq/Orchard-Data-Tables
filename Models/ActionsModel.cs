@@ -40,7 +40,7 @@ namespace Lombiq.DataTables.Models
                     {
                         ["itemprop"] = "RemoveUrl UnsafeUrl",
                         ["data-title"] = stringLocalizer["Delete"],
-                        ["data-message"] = stringLocalizer["Are you sure you want to delete this content item?"]
+                        ["data-message"] = stringLocalizer["Are you sure you want to delete this content item?"],
                     }),
             };
 

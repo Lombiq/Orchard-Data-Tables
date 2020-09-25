@@ -25,9 +25,9 @@
     var defaultSortingDirection = columnsDefinition?.DefaultSortingDirection ?? SortingDirection.Ascending;
     var defaultSortingDirectionValue = defaultSortingDirection == SortingDirection.Ascending ? "asc" : "desc";
 
-    var rowApiUrl = Url.Action(nameof(RowsController.Get), typeof(RowsController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
-    var childRowApiUrl = Url.Action(nameof(ChildRowsController.Get), typeof(ChildRowsController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
-    var exportApiUrl = Url.Action(nameof(RowsController.Export), typeof(RowsController).ControllerName(), new { Area = FeatureIds.Lombiq_DataTables });
+    var rowApiUrl = Url.Action(nameof(RowsController.Get), typeof(RowsController).ControllerName(), new { Area = FeatureIds.DataTables });
+    var childRowApiUrl = Url.Action(nameof(ChildRowsController.Get), typeof(ChildRowsController).ControllerName(), new { Area = FeatureIds.DataTables });
+    var exportApiUrl = Url.Action(nameof(RowsController.Export), typeof(RowsController).ControllerName(), new { Area = FeatureIds.DataTables });
 
     const string loadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
     const string rowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
@@ -38,10 +38,10 @@
 
     const string templatePlaceholder = "{{data}}";
 
-    ResourceManager.RegisterResource("script", ResourceNames.Lombiq_DataTables).AtFoot();
-    ResourceManager.RegisterResource("script", ResourceNames.JQuery_DataTables_Buttons_Bootstrap4).AtFoot();
-    ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Bootstrap4);
-    ResourceManager.RegisterResource("stylesheet", ResourceNames.JQuery_DataTables_Buttons_Bootstrap4);
+    ResourceManager.RegisterResource("script", ResourceNames.LombiqDataTables).AtFoot();
+    ResourceManager.RegisterResource("script", ResourceNames.DataTables.Bootstrap4Buttons).AtFoot();
+    ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4);
+    ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4Buttons);
 
     dynamic additionalOptions = viewModel.AdditionalDatatableOptions;
     var hasViewAction = (bool)(additionalOptions?.viewAction == true);
@@ -63,6 +63,12 @@ window.dataTableResources = {
 
 <div class="@ElementNames.DataTableWrapperDefaultElementName @dataTableCssClasses">
     @await DisplayAsync(await New.Lombiq_DataTable_Table(
+        ViewModel: new DataTableDataViewModel
+        {
+            DataTableId = dataTableId,
+            ColumnsDefinition = columnsDefinition,
+            ChildRowsEnabled = childRowsEnabled,
+        },
         DataTableId: dataTableId,
         Columns: columns,
         ChildRowsEnabled: childRowsEnabled))
@@ -93,7 +99,7 @@ window.dataTableResources = {
     </div>
 </div>
 
-<script depends-on="@ResourceNames.Lombiq_DataTables" at="Foot">
+<script depends-on="@ResourceNames.LombiqDataTables" at="Foot">
     ; (function ($) {
         $(function () {
             var templates = {};
@@ -141,7 +147,7 @@ window.dataTableResources = {
                 texts: @Json.Serialize(new
                     {
                         yes = T["Yes"].Value,
-                        no = T["No"].Value
+                        no = T["No"].Value,
                     }),
                 errorsSelector: ".@errorsElementName",
                 dataTablesOptions: dataTablesOptions,
@@ -170,7 +176,7 @@ window.dataTableResources = {
                         </text>
                     }
                 },
-                culture: @Json.Serialize(CultureInfo.CurrentUICulture.Name)
+                culture: @Json.Serialize(CultureInfo.CurrentCulture.Name)
             });
 
             window.dataTableResources.created(

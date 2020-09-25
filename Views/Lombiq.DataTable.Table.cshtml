@@ -1,10 +1,8 @@
 @{
-    // TODO: Use DataTableDataViewModel.
+    var viewModel = Model.ViewModel as DataTableDataViewModel ?? new DataTableDataViewModel();
 
-    var columns = Model.Columns as IEnumerable<DataTableColumnDefinition> ?? Array.Empty<DataTableColumnDefinition>();
-    var childRowsEnabled = (bool?)Model.ChildRowsEnabled ?? false;
-    var rows = Model.Rows as IEnumerable<IEnumerable<string>>;
-    var dataTableId = Model.DataTableId as string;
+    var columns = viewModel.ColumnsDefinition?.Columns ?? Enumerable.Empty<DataTableColumnDefinition>();
+    var dataTableId = viewModel.DataTableId ?? $"datatable_{Guid.NewGuid():N}";
 
     const string headerElementName = ElementNames.DataTableElementName + "__header";
     const string headerRowElementName = ElementNames.DataTableElementName + "__headerRow";
@@ -21,7 +19,7 @@
 <table id="@dataTableId" class="@ElementNames.DataTableElementName row-border stripe table data-table" width="100%">
     <thead class="@headerElementName">
         <tr class="@headerRowElementName">
-            @if (childRowsEnabled)
+            @if (viewModel.ChildRowsEnabled)
             {
                 <th class="@headerCellElementName" data-class-name="@toggleChildRowCellElementName"></th>
             }
@@ -41,9 +39,9 @@
         </tr>
     </thead>
     <tbody class="@bodyElementName">
-        @if (rows != null)
+        @if (viewModel.Rows != null)
         {
-            foreach (var row in rows)
+            foreach (var row in viewModel.Rows)
             {
                 <tr class="@ElementNames.DataTableRowElementName">
                     @foreach (var cell in row)

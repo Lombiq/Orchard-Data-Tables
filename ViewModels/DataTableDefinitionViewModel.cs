@@ -11,6 +11,11 @@ namespace Lombiq.DataTables.ViewModels
         public string QueryStringParametersLocalStorageKey { get; set; }
         public string DataProvider { get; set; }
         public string DataTableCssClasses { get; set; }
-        public JObject AdditionalDatatableOptions { get; set; }
+        public JObject AdditionalDatatableOptions { get; }
+
+        public DataTableDefinitionViewModel(JObject additionalDatatableOptions = null)
+        {
+            if (additionalDatatableOptions != null) AdditionalDatatableOptions = additionalDatatableOptions;
+        }
     }
 }

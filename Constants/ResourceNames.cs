@@ -6,14 +6,17 @@
         public const string JQuery = "jQuery";
         public const string Bootstrap = "bootstrap";
 
-        public const string JQuery_DataTables = nameof(JQuery_DataTables);
-        public const string JQuery_DataTables_Buttons = nameof(JQuery_DataTables_Buttons);
-        public const string JQuery_DataTables_Bootstrap4 = nameof(JQuery_DataTables_Bootstrap4);
-        public const string JQuery_DataTables_Buttons_Bootstrap4 = nameof(JQuery_DataTables_Buttons_Bootstrap4);
-        public const string JQuery_DataTables_AutoInit = nameof(JQuery_DataTables_AutoInit);
+        public const string UriJs = nameof(UriJs);
+        public const string LombiqDataTables = nameof(LombiqDataTables);
+        public const string LombiqContentPicker = nameof(LombiqContentPicker);
 
-        public const string Uri_Js = nameof(Uri_Js);
-        public const string Lombiq_DataTables = nameof(Lombiq_DataTables);
-        public const string Lombiq_ContentPicker = nameof(Lombiq_ContentPicker);
+        public static class DataTables
+        {
+            public const string Library = nameof(DataTables);
+            public const string Buttons = nameof(Buttons);
+            public const string Bootstrap4 = nameof(Bootstrap4);
+            public const string Bootstrap4Buttons = nameof(Bootstrap4Buttons);
+            public const string AutoInit = nameof(AutoInit);
+        }
     }
 }

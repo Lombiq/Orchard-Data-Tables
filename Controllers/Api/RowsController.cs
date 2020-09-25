@@ -72,7 +72,7 @@ namespace Lombiq.DataTables.Controllers.Api
                 return BadRequest(DataTableDataResponse.ErrorResult(T["Length can't be 0."].Value));
             }
 
-            if (!(await dataProvider.Authorize(_authorizationService, User)))
+            if (!await dataProvider.AuthorizeAsync(_authorizationService, User))
             {
                 return DataTableDataResponse.ErrorResult(T["Unauthorized!"]);
             }
@@ -106,7 +106,7 @@ namespace Lombiq.DataTables.Controllers.Api
 
             return new FileStreamResult(stream, _exportServices[name].ContentType)
             {
-                FileDownloadName = _exportServices[name].DefaultFileName
+                FileDownloadName = _exportServices[name].DefaultFileName,
             };
         }
     }

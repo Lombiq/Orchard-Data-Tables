@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
 
 namespace Lombiq.DataTables.Constants
 {
@@ -8,6 +8,6 @@ namespace Lombiq.DataTables.Constants
         Ascending = 0,
 
         [EnumMember(Value = "descending")]
-        Descending
+        Descending,
     }
 }
