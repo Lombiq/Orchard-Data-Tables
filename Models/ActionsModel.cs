@@ -1,4 +1,3 @@
-using Lombiq.DataTables.Liquid;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
@@ -17,7 +16,7 @@ namespace Lombiq.DataTables.Models
         public IEnumerable<ExportLink> GetAllMenuItems(
             HttpContext context,
             LinkGenerator linkGenerator,
-            IStringLocalizer<ActionsLiquidFilter> stringLocalizer,
+            IStringLocalizer<ActionsModel> stringLocalizer,
             string returnUrl)
         {
             if (string.IsNullOrEmpty(Id)) WithDefaults = false;

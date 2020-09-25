@@ -22,6 +22,7 @@ namespace Lombiq.DataTables.Liquid
         private readonly IShapeFactory _shapeFactory;
         private readonly IDisplayHelper _displayHelper;
         private readonly IStringLocalizer<ActionsLiquidFilter> T;
+        private readonly IStringLocalizer<ActionsModel> _actionsModelT;
 
 
         public ActionsLiquidFilter(
@@ -29,13 +30,15 @@ namespace Lombiq.DataTables.Liquid
             LinkGenerator linkGenerator,
             IShapeFactory shapeFactory,
             IDisplayHelper displayHelper,
-            IStringLocalizer<ActionsLiquidFilter> stringLocalizer)
+            IStringLocalizer<ActionsLiquidFilter> stringLocalizer,
+            IStringLocalizer<ActionsModel> actionsModelStringLocalizer)
         {
             _hca = hca;
             _linkGenerator = linkGenerator;
             _shapeFactory = shapeFactory;
             _displayHelper = displayHelper;
             T = stringLocalizer;
+            _actionsModelT = actionsModelStringLocalizer;
         }
 
 
@@ -65,7 +68,7 @@ namespace Lombiq.DataTables.Liquid
         {
             IShape shape = await _shapeFactory.New.Lombiq_Datatables_Actions(
                 ButtonTitle: title,
-                ExportLinks: model.GetAllMenuItems(_hca.HttpContext, _linkGenerator, T, returnUrl));
+                ExportLinks: model.GetAllMenuItems(_hca.HttpContext, _linkGenerator, _actionsModelT, returnUrl));
             var content = await _displayHelper.ShapeExecuteAsync(shape);
 
             await using var stringWriter = new StringWriter();
