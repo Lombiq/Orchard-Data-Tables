@@ -51,12 +51,11 @@ namespace Lombiq.DataTables.Controllers
         {
             var provider = _dataTableDataProviders.Single(provider => provider.Name == providerName);
             if (string.IsNullOrEmpty(queryId)) queryId = providerName;
-            var definition = new DataTableDefinitionViewModel
+            var definition = new DataTableDefinitionViewModel(JObject.FromObject(new { paging, viewAction }))
             {
                 DataProvider = providerName,
                 QueryId = queryId,
                 ColumnsDefinition = await provider.GetColumnsDefinitionAsync(queryId),
-                AdditionalDatatableOptions = JObject.FromObject(new { paging, viewAction })
             };
 
             return View(nameof(Get), new DataTableViewModel

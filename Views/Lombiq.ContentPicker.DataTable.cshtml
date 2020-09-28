@@ -31,7 +31,7 @@
     var rowApiUrl = Url.Action(
         nameof(RowsController.Get),
         typeof(RowsController).ControllerName(),
-        new { Area = FeatureIds.Lombiq_DataTables });
+        new { Area = FeatureIds.DataTables });
 }
 
 @await DisplayAsync(await New.Lombiq_TargetBlank())

@@ -1,7 +1,10 @@
-﻿using ClosedXML.Excel;
+using ClosedXML.Excel;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
+using Lombiq.DataTables.Tests.Helpers;
 using Lombiq.Tests.Helpers;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Moq.AutoMock;
 using Shouldly;
 using System.Collections.Generic;
@@ -11,7 +14,7 @@ using Xunit;
 
 namespace Lombiq.DataTables.Tests.UnitTests.Services
 {
-    public class ExportTests : MockDataProviderTestsBase
+    public class ExportTests
     {
         [Theory]
         [MemberData(nameof(Data))]
@@ -24,7 +27,15 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             int length,
             int orderColumnIndex)
         {
-            var (provider, request) = GetProviderAndRequest(note, dataSet, columns, start, length, orderColumnIndex);
+            using var memoryCache = new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()));
+            var (provider, request) = MockDataProviderHelper.GetProviderAndRequest(
+                note,
+                dataSet,
+                columns,
+                start,
+                length,
+                orderColumnIndex,
+                memoryCache);
 
             var service = MockHelper.CreateAutoMockerInstance<ExcelDataTableExportService>(
                 mocker => mocker.MockStringLocalizer<ExcelDataTableExportService>());
@@ -44,7 +55,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                     .Select(index => worksheet.Cell(2 + rowIndex, index).Value switch
                     {
                         XLHyperlink hyperlink => hyperlink.Tooltip,
-                        {} value => value.ToString(),
+                        { } value => value.ToString(),
                         null => "NULL",
                     })
                     .ToArray()
@@ -58,11 +69,13 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             {
                 new object[] { 1, "z", "foo" },
                 new object[] { new ExportLink("http://example.com/", 2), "y", "bar" },
-                new object[] { 10, "x", "baz" }
+                new object[] { 10, "x", "baz" },
             };
             var columns = new[]
             {
-                ("Num", "Numbers", true), ("Letters", "Letters", true), ("MagicWords", "Magic Words", true)
+                ("Num", "Numbers", true),
+                ("Letters", "Letters", true),
+                ("MagicWords", "Magic Words", true),
             };
 
             yield return new object[]
@@ -73,7 +86,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "1,z,foo;2,y,bar;10,x,baz".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
-                0
+                0,
             };
 
 
@@ -85,7 +98,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "1,z;2,y;10,x".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
-                0
+                0,
             };
 
             yield return new object[]
@@ -96,7 +109,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 new[] { "10,x,baz".Split(',') },
                 2,
                 10,
-                0
+                0,
             };
 
             yield return new object[]
@@ -107,7 +120,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "10,x,baz;2,y,bar;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
-                1
+                1,
             };
 
             yield return new object[]
@@ -118,7 +131,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "2,y,bar;10,x,baz;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
-                2
+                2,
             };
 
             yield return new object[]
@@ -129,7 +142,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "1,Yes;2,Yes;3,No".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
-                0
+                0,
             };
         }
     }

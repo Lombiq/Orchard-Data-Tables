@@ -11,7 +11,7 @@ using static Lombiq.DataTables.Constants.FeatureIds;
 
 
 [assembly: Feature(
-    Id = Lombiq_DataTables,
+    Id = DataTables,
     Name = "Data Tables",
     Category = "Content",
     Description = "Displays data using jQuery Data Tables.",
@@ -19,6 +19,6 @@ using static Lombiq.DataTables.Constants.FeatureIds;
     {
         "OrchardCore.Contents",
         "OrchardCore.ResourceManagement",
-        "OrchardCore.Queries"
+        "OrchardCore.Queries",
     }
 )]

@@ -22,6 +22,7 @@ namespace Lombiq.DataTables.Liquid
         private readonly IShapeFactory _shapeFactory;
         private readonly IDisplayHelper _displayHelper;
         private readonly IStringLocalizer<ActionsLiquidFilter> T;
+        private readonly IStringLocalizer<ActionsModel> _actionsModelT;
 
 
         public ActionsLiquidFilter(
@@ -29,13 +30,15 @@ namespace Lombiq.DataTables.Liquid
             LinkGenerator linkGenerator,
             IShapeFactory shapeFactory,
             IDisplayHelper displayHelper,
-            IStringLocalizer<ActionsLiquidFilter> stringLocalizer)
+            IStringLocalizer<ActionsLiquidFilter> stringLocalizer,
+            IStringLocalizer<ActionsModel> actionsModelStringLocalizer)
         {
             _hca = hca;
             _linkGenerator = linkGenerator;
             _shapeFactory = shapeFactory;
             _displayHelper = displayHelper;
             T = stringLocalizer;
+            _actionsModelT = actionsModelStringLocalizer;
         }
 
 
@@ -49,23 +52,23 @@ namespace Lombiq.DataTables.Liquid
 
             return input?.Type switch
             {
-                FluidValues.String => FromObject(new ActionsModel { Id = input.ToStringValue() }, title, returnUrl),
-                FluidValues.Object => input.ToObjectValue() switch
+                FluidValues.String => FromObjectAsync(new ActionsModel { Id = input!.ToStringValue() }, title, returnUrl),
+                FluidValues.Object => input!.ToObjectValue() switch
                 {
-                    ActionsModel model => FromObject(model, title, returnUrl),
-                    JToken jToken => FromObject(jToken.ToObject<ActionsModel>(), title, returnUrl),
+                    ActionsModel model => FromObjectAsync(model, title, returnUrl),
+                    JToken jToken => FromObjectAsync(jToken.ToObject<ActionsModel>(), title, returnUrl),
                     { } unknown => throw GetException(unknown),
-                    _ => throw new ArgumentNullException(nameof(input))
+                    _ => throw new ArgumentNullException(nameof(input)),
                 },
-                _ => throw GetException(input?.Type)
+                _ => throw GetException(input?.Type),
             };
         }
 
-        private async ValueTask<FluidValue> FromObject(ActionsModel model, string title, string returnUrl)
+        private async ValueTask<FluidValue> FromObjectAsync(ActionsModel model, string title, string returnUrl)
         {
             IShape shape = await _shapeFactory.New.Lombiq_Datatables_Actions(
                 ButtonTitle: title,
-                ExportLinks: model.GetAllMenuItems(_hca.HttpContext, _linkGenerator, T, returnUrl));
+                ExportLinks: model.GetAllMenuItems(_hca.HttpContext, _linkGenerator, _actionsModelT, returnUrl));
             var content = await _displayHelper.ShapeExecuteAsync(shape);
 
             await using var stringWriter = new StringWriter();

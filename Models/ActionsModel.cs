@@ -16,7 +16,7 @@ namespace Lombiq.DataTables.Models
         public IEnumerable<ExportLink> GetAllMenuItems(
             HttpContext context,
             LinkGenerator linkGenerator,
-            IStringLocalizer stringLocalizer,
+            IStringLocalizer<ActionsModel> stringLocalizer,
             string returnUrl)
         {
             if (string.IsNullOrEmpty(Id)) WithDefaults = false;
@@ -40,7 +40,7 @@ namespace Lombiq.DataTables.Models
                     {
                         ["itemprop"] = "RemoveUrl UnsafeUrl",
                         ["data-title"] = stringLocalizer["Delete"],
-                        ["data-message"] = stringLocalizer["Are you sure you want to delete this content item?"]
+                        ["data-message"] = stringLocalizer["Are you sure you want to delete this content item?"],
                     }),
             };
 

@@ -5,6 +5,7 @@ using OrchardCore.DisplayManagement;
 using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services
@@ -13,8 +14,8 @@ namespace Lombiq.DataTables.Services
     /// The data source for a DataTable.
     /// </summary>
     /// <remarks>
-    /// Unlike in O1, implementing services have to be registered manually using the extension method called
-    /// <see cref="ServiceCollectionExtensions.AddDataTableDataProvider{TDataProvider}"/>.
+    /// <para>Unlike in O1, implementing services have to be registered manually using the extension method called
+    /// <see cref="ServiceCollectionExtensions.AddDataTableDataProvider{TDataProvider}"/>.</para>
     /// </remarks>
     public interface IDataTableDataProvider
     {
@@ -28,10 +29,11 @@ namespace Lombiq.DataTables.Services
         /// </summary>
         LocalizedString Description { get; }
 
+
         /// <summary>
         /// Gets an optional collection of permissions. If not null, the user must authorize against at least one.
         /// </summary>
-        IEnumerable<Permission> SupportedPermissions => null;
+        IEnumerable<Permission> SupportedPermissions => Enumerable.Empty<Permission>();
 
         /// <summary>
         /// Returns the table body created based on the provided request.

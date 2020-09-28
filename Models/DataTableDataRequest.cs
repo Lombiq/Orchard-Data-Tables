@@ -13,14 +13,13 @@ namespace Lombiq.DataTables.Models
         public int Draw { get; set; }
         public int Start { get; set; }
         public int Length { get; set; }
-        public List<DataTableColumn> ColumnFilters { get; set; }
+        public IEnumerable<DataTableColumn> ColumnFilters { get; set; }
         public DataTableSearchParameters Search { get; set; }
-        public DataTableOrder[] Order { get; set; }
+        public IEnumerable<DataTableOrder> Order { get; set; }
 
         public List<DataTableColumn> GetColumnSearches() =>
             ColumnFilters?
                 .Where(filter => !string.IsNullOrWhiteSpace(filter.Search?.Value))
                 .ToList() ?? new List<DataTableColumn>();
-
     }
 }

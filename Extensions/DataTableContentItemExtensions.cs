@@ -10,7 +10,8 @@ namespace OrchardCore.ContentManagement
             LinkGenerator linkGenerator,
             HttpContext httpContext,
             string bootstrapTabType = null) =>
-                linkGenerator.GetUriByAction(httpContext,
+                linkGenerator.GetUriByAction(
+                    httpContext,
                     "Edit",
                     "Admin",
                     new
@@ -19,7 +20,7 @@ namespace OrchardCore.ContentManagement
                         contentItemId = contentItem.ContentItemId,
                         bootstraptab = bootstrapTabType == null
                         ? null
-                        : $"tab-{bootstrapTabType}-{contentItem.ContentItemId}"
+                        : $"tab-{bootstrapTabType}-{contentItem.ContentItemId}",
                     });
     }
 }
