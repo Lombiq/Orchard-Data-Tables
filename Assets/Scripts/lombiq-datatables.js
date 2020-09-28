@@ -103,6 +103,8 @@
                     // If data is Boolean.
                     if (data === !!data) return data ? plugin.settings.texts.yes : plugin.settings.texts.no;
 
+                    if ($.isArray(data)) return data.join(", ")
+
                     var isString = typeof data === "string";
 
                     // If data is ISO date.
