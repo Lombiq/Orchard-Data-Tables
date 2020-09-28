@@ -1,7 +1,7 @@
 @using OrchardCore.DisplayManagement
 @model DataTableViewModel
 
-<h2>@Model.Provider.Description</h2>
+<h2>@RenderTitleSegments(Model?.Provider?.Description ?? T["DataTable"].Value)</h2>
 
 @foreach (var beforeTableShape in Model.BeforeTable ?? Array.Empty<IShape>())
 {
