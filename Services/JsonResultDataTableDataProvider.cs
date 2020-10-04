@@ -154,22 +154,30 @@ namespace Lombiq.DataTables.Services
             if (request.Length > 0) rows = rows.Take(request.Length);
             var rowList = rows.ToList();
 
+
             var liquidColumns = columns.Where(column => column.IsLiquid).Select(column => column.Name).ToList();
-            if (liquidColumns.Count > 0)
+            if (liquidColumns.Count <= 0)
             {
-                foreach (var row in rowList)
+                return new DataTableDataResponse
                 {
-                    foreach (var liquidColumn in liquidColumns)
+                    Data = rowList,
+                    RecordsFiltered = recordsFiltered,
+                    RecordsTotal = recordsTotal,
+                };
+            }
+
+            foreach (var row in rowList)
+            {
+                foreach (var liquidColumn in liquidColumns)
+                {
+                    if (row.ValuesDictionary.TryGetValue(liquidColumn, out var token) &&
+                        token?.ToString() is { } template)
                     {
-                        if (row.ValuesDictionary.TryGetValue(liquidColumn, out var token) &&
-                            token?.ToString() is { } template)
-                        {
-                            row[liquidColumn] = await _liquidTemplateManager.RenderAsync(
-                                template,
-                                _plainTextEncoder,
-                                row,
-                                scope => { });
-                        }
+                        row[liquidColumn] = await _liquidTemplateManager.RenderAsync(
+                            template,
+                            _plainTextEncoder,
+                            row,
+                            scope => { });
                     }
                 }
             }
