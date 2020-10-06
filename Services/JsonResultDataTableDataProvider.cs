@@ -142,7 +142,7 @@ namespace Lombiq.DataTables.Services
             };
         }
 
-        private IList<DataTableRow> Search(
+        private static IList<DataTableRow> Search(
                 IEnumerable<DataTableRow> rows,
                 IEnumerable<ColumnModel> columns,
                 bool hasSearch,
