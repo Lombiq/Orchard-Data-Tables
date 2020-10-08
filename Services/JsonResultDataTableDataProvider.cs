@@ -87,37 +87,36 @@ namespace Lombiq.DataTables.Services
                             ? new JValue(Regex.Replace(cell.Token?.ToString() ?? string.Empty, regex.From, regex.To))
                             : cell.Token)));
 
+            if (request.Search?.IsRegex == true)
+            {
+                return DataTableDataResponse.ErrorResult(T["Regex search is not supported at this time."]);
+            }
+
             var searchValue = request.Search?.Value;
             var hasSearch = !string.IsNullOrWhiteSpace(searchValue);
             var columnFilters = request.GetColumnSearches();
             if (hasSearch || columnFilters?.Count > 0)
             {
-                if (request.Search?.IsRegex == true)
-                {
-                    return DataTableDataResponse.ErrorResult(T["Regex search is not supported at this time."]);
-                }
-
-                var list = Search(rows, columns, hasSearch, searchValue, columnFilters);
-                rows = list;
-                recordsFiltered = list.Count;
+                (rows, recordsFiltered) = Search(rows, columns, hasSearch, searchValue, columnFilters);
             }
 
             if (request.Start > 0) rows = rows.Skip(request.Start);
             if (request.Length > 0) rows = rows.Take(request.Length);
             var rowList = rows.ToList();
 
-
             var liquidColumns = columns.Where(column => column.IsLiquid).Select(column => column.Name).ToList();
-            if (liquidColumns.Count <= 0)
-            {
-                return new DataTableDataResponse
-                {
-                    Data = rowList,
-                    RecordsFiltered = recordsFiltered,
-                    RecordsTotal = recordsTotal,
-                };
-            }
+            if (liquidColumns.Count > 0) await RenderLiquidAsync(rowList, liquidColumns);
 
+            return new DataTableDataResponse
+            {
+                Data = rowList,
+                RecordsFiltered = recordsFiltered,
+                RecordsTotal = recordsTotal,
+            };
+        }
+
+        private async Task RenderLiquidAsync(IEnumerable<DataTableRow> rowList, IList<string> liquidColumns)
+        {
             foreach (var row in rowList)
             {
                 foreach (var liquidColumn in liquidColumns)
@@ -133,16 +132,9 @@ namespace Lombiq.DataTables.Services
                     }
                 }
             }
-
-            return new DataTableDataResponse
-            {
-                Data = rowList,
-                RecordsFiltered = recordsFiltered,
-                RecordsTotal = recordsTotal,
-            };
         }
 
-        private static IList<DataTableRow> Search(
+        private static (IEnumerable<DataTableRow> Results, int Count) Search(
                 IEnumerable<DataTableRow> rows,
                 IEnumerable<ColumnModel> columns,
                 bool hasSearch,
@@ -173,7 +165,8 @@ namespace Lombiq.DataTables.Services
                             token?.ToString().Contains(word, StringComparison.InvariantCultureIgnoreCase) == true)));
             }
 
-            return filteredRows.ToList();
+            var list = filteredRows.ToList();
+            return (list, list.Count);
         }
 
         public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) =>
