@@ -27,6 +27,8 @@ namespace Lombiq.DataTables
             services.AddScoped<IDataMigration, ColumnsDefinitionMigrations>();
 
             services.AddLiquidFilter<ActionsLiquidFilter>("actions");
+
+            services.AddScoped<IDataTableDataProviderServices, DataTableDataProviderServices>();
         }
     }
 }
