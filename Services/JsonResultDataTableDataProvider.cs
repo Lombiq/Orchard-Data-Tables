@@ -38,10 +38,10 @@ namespace Lombiq.DataTables.Services
         protected JsonResultDataTableDataProvider(
             IDataTableDataProviderServices services)
         {
-            T = services.StringLocalizer;
-            _liquidTemplateManager = services.LiquidTemplateManager;
-            _linkGenerator = services.LinkGenerator;
-            _hca = services.HttpContextAccessor;
+            T = services?.StringLocalizer;
+            _liquidTemplateManager = services?.LiquidTemplateManager;
+            _linkGenerator = services?.LinkGenerator;
+            _hca = services?.HttpContextAccessor;
 
             _plainTextEncoder = new PlainTextEncoder();
         }
