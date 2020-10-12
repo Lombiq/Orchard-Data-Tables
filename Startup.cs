@@ -2,6 +2,7 @@ using Lombiq.DataTables.Liquid;
 using Lombiq.DataTables.Migrations;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.TagHelpers;
+using Lombiq.HelpfulLibraries.Libraries.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Data.Migration;
 using OrchardCore.DisplayManagement.Descriptors;
@@ -29,6 +30,7 @@ namespace Lombiq.DataTables
             services.AddLiquidFilter<ActionsLiquidFilter>("actions");
 
             services.AddScoped<IDataTableDataProviderServices, DataTableDataProviderServices>();
+            services.AddOrchardServices();
         }
     }
 }
