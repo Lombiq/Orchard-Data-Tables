@@ -22,12 +22,13 @@ namespace Lombiq.DataTables.Tests
 
 
         public MockDataProvider(object[][] dataSet, IMemoryCache memoryCache, DataTableColumnsDefinition definition = null)
-            : base(new DataTableDataProviderServices(
-                httpContextAccessor: null,
-                linkGenerator: null,
-                new LiquidTemplateManager(memoryCache),
-                memoryCache,
-                new StringLocalizer<MockDataProvider>(new NullStringLocalizerFactory())))
+            : base(
+                new DataTableDataProviderServices(
+                    httpContextAccessor: null,
+                    linkGenerator: null,
+                    new LiquidTemplateManager(memoryCache),
+                    memoryCache),
+                new StringLocalizer<MockDataProvider>(new NullStringLocalizerFactory()))
         {
             _dataSet = dataSet;
             Definition = definition;

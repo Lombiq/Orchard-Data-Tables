@@ -36,9 +36,10 @@ namespace Lombiq.DataTables.Services
 
 
         protected JsonResultDataTableDataProvider(
-            IDataTableDataProviderServices services)
+            IDataTableDataProviderServices services,
+            IStringLocalizer implementationStringLocalizer)
         {
-            T = services?.StringLocalizer;
+            T = implementationStringLocalizer;
             _liquidTemplateManager = services?.LiquidTemplateManager;
             _linkGenerator = services?.LinkGenerator;
             _hca = services?.HttpContextAccessor;
@@ -51,7 +52,7 @@ namespace Lombiq.DataTables.Services
             var columnsDefinition = GetColumnsDefinitionInner(request.QueryId);
             var columns = columnsDefinition.Columns
                 .Select(column =>
-                    new ColumnModel
+                    new JsonResultColumn
                     {
                         Path = column.Name.Replace('_', '.'),
                         Name = column.Name,
@@ -133,7 +134,7 @@ namespace Lombiq.DataTables.Services
 
         private static (IEnumerable<DataTableRow> Results, int Count) Search(
                 IEnumerable<DataTableRow> rows,
-                IEnumerable<ColumnModel> columns,
+                IEnumerable<JsonResultColumn> columns,
                 bool hasSearch,
                 string searchValue,
                 IReadOnlyCollection<DataTableColumn> columnFilters)
@@ -240,7 +241,7 @@ namespace Lombiq.DataTables.Services
         }
 
 
-        private class ColumnModel
+        private class JsonResultColumn
         {
             public string Path { get; set; }
             public string Name { get; set; }

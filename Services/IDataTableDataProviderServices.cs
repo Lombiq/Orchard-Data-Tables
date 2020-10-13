@@ -17,6 +17,5 @@ namespace Lombiq.DataTables.Services
         LinkGenerator LinkGenerator { get; }
         ILiquidTemplateManager LiquidTemplateManager { get; }
         IMemoryCache MemoryCache { get; }
-        IStringLocalizer<JsonResultDataTableDataProvider> StringLocalizer { get; }
     }
 }
