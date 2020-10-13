@@ -6,6 +6,8 @@ using OrchardCore.Liquid;
 
 namespace Lombiq.DataTables.Services
 {
+    // Providers inheriting from JsonResultDataTableDataProvider should not be affected by S107, but they somehow are:
+    // https://github.com/SonarSource/sonar-dotnet/issues/1015
     public class DataTableDataProviderServices : IDataTableDataProviderServices
     {
         public IHttpContextAccessor HttpContextAccessor { get; }
