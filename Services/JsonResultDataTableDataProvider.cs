@@ -47,6 +47,7 @@ namespace Lombiq.DataTables.Services
             _plainTextEncoder = new PlainTextEncoder();
         }
 
+
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
             var columnsDefinition = GetColumnsDefinitionInner(request.QueryId);
@@ -112,6 +113,7 @@ namespace Lombiq.DataTables.Services
                 RecordsTotal = recordsTotal,
             };
         }
+
 
         private async Task RenderLiquidAsync(IEnumerable<DataTableRow> rowList, IList<string> liquidColumns)
         {
