@@ -86,6 +86,7 @@ namespace Lombiq.DataTables.Services
             return Save(workbook);
         }
 
+
         private static void CreateTableCell(IXLCell cell, JToken value, string dateFormat, IStringLocalizer localizer)
         {
             if (value.Type == JTokenType.Date) cell.Style.DateFormat.Format = dateFormat;
@@ -113,8 +114,7 @@ namespace Lombiq.DataTables.Services
             }
         }
 
-
-        private static Stream Save(XLWorkbook workbook)
+        private static Stream Save(IXLWorkbook workbook)
         {
             var stream = new MemoryStream();
 

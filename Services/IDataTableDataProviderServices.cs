@@ -13,10 +13,10 @@ namespace Lombiq.DataTables.Services
         Justification = "There is nothing to add past what's already on the individual services' documentations.")]
     public interface IDataTableDataProviderServices
     {
-        IStringLocalizer<JsonResultDataTableDataProvider> StringLocalizer { get; }
-        ILiquidTemplateManager LiquidTemplateManager { get; }
-        LinkGenerator LinkGenerator { get; }
         IHttpContextAccessor HttpContextAccessor { get; }
+        LinkGenerator LinkGenerator { get; }
+        ILiquidTemplateManager LiquidTemplateManager { get; }
         IMemoryCache MemoryCache { get; }
+        IStringLocalizer<JsonResultDataTableDataProvider> StringLocalizer { get; }
     }
 }

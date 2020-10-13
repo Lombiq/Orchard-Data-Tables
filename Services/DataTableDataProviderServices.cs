@@ -8,24 +8,24 @@ namespace Lombiq.DataTables.Services
 {
     public class DataTableDataProviderServices : IDataTableDataProviderServices
     {
-        public IStringLocalizer<JsonResultDataTableDataProvider> StringLocalizer { get; }
-        public ILiquidTemplateManager LiquidTemplateManager { get; }
-        public LinkGenerator LinkGenerator { get; }
         public IHttpContextAccessor HttpContextAccessor { get; }
+        public LinkGenerator LinkGenerator { get; }
+        public ILiquidTemplateManager LiquidTemplateManager { get; }
         public IMemoryCache MemoryCache { get; }
+        public IStringLocalizer<JsonResultDataTableDataProvider> StringLocalizer { get; }
 
         public DataTableDataProviderServices(
-            IStringLocalizer<JsonResultDataTableDataProvider> stringLocalizer,
-            ILiquidTemplateManager liquidTemplateManager,
-            LinkGenerator linkGenerator,
             IHttpContextAccessor httpContextAccessor,
-            IMemoryCache memoryCache)
+            LinkGenerator linkGenerator,
+            ILiquidTemplateManager liquidTemplateManager,
+            IMemoryCache memoryCache,
+            IStringLocalizer<JsonResultDataTableDataProvider> stringLocalizer)
         {
-            StringLocalizer = stringLocalizer;
-            LiquidTemplateManager = liquidTemplateManager;
-            LinkGenerator = linkGenerator;
             HttpContextAccessor = httpContextAccessor;
+            LinkGenerator = linkGenerator;
+            LiquidTemplateManager = liquidTemplateManager;
             MemoryCache = memoryCache;
+            StringLocalizer = stringLocalizer;
         }
     }
 }
