@@ -75,30 +75,7 @@ namespace Lombiq.DataTables.Services
                 {
                     var cell = worksheet.Cell(row, c + 1);
                     var value = results[i][c];
-
-                    if (value.Type == JTokenType.Date) cell.Style.DateFormat.Format = dateFormat;
-
-                    if (value is JObject jObject && jObject["Type"]?.ToString() == nameof(ExportLink))
-                    {
-                        var link = jObject.ToObject<ExportLink>();
-                        if (link != null) cell.FormulaA1 = $"HYPERLINK(\"{link.Url}\",\"{link.Text}\")";
-                    }
-                    else
-                    {
-                        cell.Value = value.Type switch
-                        {
-                            JTokenType.Boolean => value.ToObject<bool>()
-                                ? localizer["Yes"].Value
-                                : localizer["No"].Value,
-                            JTokenType.Date => value.ToObject<DateTime>(),
-                            JTokenType.Float => value.ToObject<double>(),
-                            JTokenType.Integer => value.ToObject<int>(),
-                            JTokenType.Null => null,
-                            JTokenType.TimeSpan => value.ToObject<TimeSpan>(),
-                            JTokenType.Array => string.Join(", ", ((JArray)value).Select(item => item.ToString())),
-                            _ => value.ToString(),
-                        };
-                    }
+                    CreateTableCell(cell, value, dateFormat, localizer);
                 }
             }
 
@@ -110,7 +87,34 @@ namespace Lombiq.DataTables.Services
         }
 
 
-        private static Stream Save(XLWorkbook workbook)
+        private static void CreateTableCell(IXLCell cell, JToken value, string dateFormat, IStringLocalizer localizer)
+        {
+            if (value.Type == JTokenType.Date) cell.Style.DateFormat.Format = dateFormat;
+
+            if (value is JObject jObject && jObject["Type"]?.ToString() == nameof(ExportLink))
+            {
+                var link = jObject.ToObject<ExportLink>();
+                if (link != null) cell.FormulaA1 = $"HYPERLINK(\"{link.Url}\",\"{link.Text}\")";
+            }
+            else
+            {
+                cell.Value = value.Type switch
+                {
+                    JTokenType.Boolean => value.ToObject<bool>()
+                        ? localizer["Yes"].Value
+                        : localizer["No"].Value,
+                    JTokenType.Date => value.ToObject<DateTime>(),
+                    JTokenType.Float => value.ToObject<double>(),
+                    JTokenType.Integer => value.ToObject<int>(),
+                    JTokenType.Null => null,
+                    JTokenType.TimeSpan => value.ToObject<TimeSpan>(),
+                    JTokenType.Array => string.Join(", ", ((JArray)value).Select(item => item.ToString())),
+                    _ => value.ToString(),
+                };
+            }
+        }
+
+        private static Stream Save(IXLWorkbook workbook)
         {
             var stream = new MemoryStream();
 

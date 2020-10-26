@@ -36,31 +36,30 @@ namespace Lombiq.DataTables.Services
 
 
         protected JsonResultDataTableDataProvider(
-            IStringLocalizer<JsonResultDataTableDataProvider> stringLocalizer,
-            ILiquidTemplateManager liquidTemplateManager,
-            LinkGenerator linkGenerator,
-            IHttpContextAccessor hca)
+            IDataTableDataProviderServices services,
+            IStringLocalizer implementationStringLocalizer)
         {
-            T = stringLocalizer;
-            _liquidTemplateManager = liquidTemplateManager;
-            _linkGenerator = linkGenerator;
-            _hca = hca;
+            T = implementationStringLocalizer;
+            _liquidTemplateManager = services?.LiquidTemplateManager;
+            _linkGenerator = services?.LinkGenerator;
+            _hca = services?.HttpContextAccessor;
 
             _plainTextEncoder = new PlainTextEncoder();
         }
+
 
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
             var columnsDefinition = GetColumnsDefinitionInner(request.QueryId);
             var columns = columnsDefinition.Columns
                 .Select(column =>
-                    new
+                    new JsonResultColumn
                     {
                         Path = column.Name.Replace('_', '.'),
-                        column.Name,
-                        column.Regex,
-                        column.Searchable,
-                        column.IsLiquid,
+                        Name = column.Name,
+                        Regex = column.Regex,
+                        Searchable = column.Searchable,
+                        IsLiquid = column.IsLiquid,
                     })
                 .ToList();
             var order = request.Order.FirstOrDefault() ?? new DataTableOrder
@@ -76,31 +75,7 @@ namespace Lombiq.DataTables.Services
             var recordsTotal = results.Count;
 
             var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
-            if (!string.IsNullOrEmpty(order.Column))
-            {
-                // Known issue: https://github.com/SonarSource/sonar-dotnet/issues/3126
-#pragma warning disable S1854 // Unused assignments should be removed
-                var orderColumnName = order.Column.Replace('_', '.');
-#pragma warning restore S1854 // Unused assignments should be removed
-                JToken Selector(JObject x)
-                {
-                    var jToken = x.SelectToken(orderColumnName);
-
-                    if (jToken is JObject jObject && jObject.ContainsKey(nameof(ExportLink.Text)))
-                    {
-                        jToken = jObject[nameof(ExportLink.Text)];
-                    }
-
-                    return jToken switch
-                    {
-                        null => null,
-                        JValue jValue when jValue.Type != JTokenType.String => jValue,
-                        _ => jToken.ToString().ToUpperInvariant(),
-                    };
-                }
-
-                json = order.IsAscending ? json.OrderBy(Selector) : json.OrderByDescending(Selector);
-            }
+            if (!string.IsNullOrEmpty(order.Column)) json = OrderByColumn(json, order);
 
             var rows = json.Select((result, index) =>
                 new DataTableRow(index, columns
@@ -111,43 +86,17 @@ namespace Lombiq.DataTables.Services
                             ? new JValue(Regex.Replace(cell.Token?.ToString() ?? string.Empty, regex.From, regex.To))
                             : cell.Token)));
 
+            if (request.Search?.IsRegex == true)
+            {
+                return DataTableDataResponse.ErrorResult(T["Regex search is not supported at this time."]);
+            }
+
             var searchValue = request.Search?.Value;
             var hasSearch = !string.IsNullOrWhiteSpace(searchValue);
             var columnFilters = request.GetColumnSearches();
             if (hasSearch || columnFilters?.Count > 0)
             {
-                if (request.Search?.IsRegex == true)
-                {
-                    return DataTableDataResponse.ErrorResult(T["Regex search is not supported at this time."]);
-                }
-
-                var filteredRows = rows;
-
-                if (columnFilters?.Count > 0)
-                {
-                    filteredRows = filteredRows.Where(row =>
-                        columnFilters.All(filter =>
-                            row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
-                            token?.ToString().Contains(filter.Search.Value, StringComparison.InvariantCulture) == true));
-                }
-
-                if (hasSearch)
-                {
-                    var words = searchValue
-                        .Split()
-                        .Where(word => !string.IsNullOrWhiteSpace(word))
-                        .ToList();
-                    filteredRows = filteredRows.Where(row =>
-                            words.All(word =>
-                                columns.Any(filter =>
-                                    filter.Searchable &&
-                                    row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
-                                    token?.ToString().Contains(word, StringComparison.InvariantCultureIgnoreCase) == true)));
-                }
-
-                var list = filteredRows.ToList();
-                rows = list;
-                recordsFiltered = list.Count;
+                (rows, recordsFiltered) = Search(rows, columns, hasSearch, searchValue, columnFilters);
             }
 
             if (request.Start > 0) rows = rows.Skip(request.Start);
@@ -155,24 +104,7 @@ namespace Lombiq.DataTables.Services
             var rowList = rows.ToList();
 
             var liquidColumns = columns.Where(column => column.IsLiquid).Select(column => column.Name).ToList();
-            if (liquidColumns.Count > 0)
-            {
-                foreach (var row in rowList)
-                {
-                    foreach (var liquidColumn in liquidColumns)
-                    {
-                        if (row.ValuesDictionary.TryGetValue(liquidColumn, out var token) &&
-                            token?.ToString() is { } template)
-                        {
-                            row[liquidColumn] = await _liquidTemplateManager.RenderAsync(
-                                template,
-                                _plainTextEncoder,
-                                row,
-                                scope => { });
-                        }
-                    }
-                }
-            }
+            if (liquidColumns.Count > 0) await RenderLiquidAsync(rowList, liquidColumns);
 
             return new DataTableDataResponse
             {
@@ -180,6 +112,61 @@ namespace Lombiq.DataTables.Services
                 RecordsFiltered = recordsFiltered,
                 RecordsTotal = recordsTotal,
             };
+        }
+
+
+        private async Task RenderLiquidAsync(IEnumerable<DataTableRow> rowList, IList<string> liquidColumns)
+        {
+            foreach (var row in rowList)
+            {
+                foreach (var liquidColumn in liquidColumns)
+                {
+                    if (row.ValuesDictionary.TryGetValue(liquidColumn, out var token) &&
+                        token?.ToString() is { } template)
+                    {
+                        row[liquidColumn] = await _liquidTemplateManager.RenderAsync(
+                            template,
+                            _plainTextEncoder,
+                            row,
+                            scope => { });
+                    }
+                }
+            }
+        }
+
+        private static (IEnumerable<DataTableRow> Results, int Count) Search(
+                IEnumerable<DataTableRow> rows,
+                IEnumerable<JsonResultColumn> columns,
+                bool hasSearch,
+                string searchValue,
+                IReadOnlyCollection<DataTableColumn> columnFilters)
+        {
+            var filteredRows = rows;
+
+            if (columnFilters?.Count > 0)
+            {
+                filteredRows = filteredRows.Where(row =>
+                    columnFilters.All(filter =>
+                        row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
+                        token?.ToString().Contains(filter.Search.Value, StringComparison.InvariantCulture) == true));
+            }
+
+            if (hasSearch)
+            {
+                var words = searchValue
+                    .Split()
+                    .Where(word => !string.IsNullOrWhiteSpace(word))
+                    .ToList();
+                filteredRows = filteredRows.Where(row =>
+                    words.All(word =>
+                        columns.Any(filter =>
+                            filter.Searchable &&
+                            row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
+                            token?.ToString().Contains(word, StringComparison.InvariantCultureIgnoreCase) == true)));
+            }
+
+            var list = filteredRows.ToList();
+            return (list, list.Count);
         }
 
         public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) =>
@@ -225,6 +212,44 @@ namespace Lombiq.DataTables.Services
                 typeof(TableController).ControllerName(),
                 new { providerName = GetType().Name });
             return "ContentItemId||^.*$||{{ '$0' | actions: returnUrl: '" + returnUrl + "' }}";
+        }
+
+
+        private IEnumerable<JObject> OrderByColumn(IEnumerable<JObject> json, DataTableOrder order)
+        {
+            // Known issue: https://github.com/SonarSource/sonar-dotnet/issues/3126
+#pragma warning disable S1854 // Unused assignments should be removed
+            var orderColumnName = order.Column.Replace('_', '.');
+#pragma warning restore S1854 // Unused assignments should be removed
+
+            JToken Selector(JObject x)
+            {
+                var jToken = x.SelectToken(orderColumnName);
+
+                if (jToken is JObject jObject && jObject.ContainsKey(nameof(ExportLink.Text)))
+                {
+                    jToken = jObject[nameof(ExportLink.Text)];
+                }
+
+                return jToken switch
+                {
+                    null => null,
+                    JValue jValue when jValue.Type != JTokenType.String => jValue,
+                    _ => jToken.ToString().ToUpperInvariant(),
+                };
+            }
+
+            return order.IsAscending ? json.OrderBy(Selector) : json.OrderByDescending(Selector);
+        }
+
+
+        private class JsonResultColumn
+        {
+            public string Path { get; set; }
+            public string Name { get; set; }
+            public (string From, string To)? Regex { get; set; }
+            public bool Searchable { get; set; }
+            public bool IsLiquid { get; set; }
         }
     }
 }
