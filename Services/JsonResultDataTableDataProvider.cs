@@ -10,6 +10,7 @@ using OrchardCore.Mvc.Core.Utilities;
 using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -243,6 +244,7 @@ namespace Lombiq.DataTables.Services
         }
 
 
+        [DebuggerDisplay("{ToString()}")]
         private class JsonResultColumn
         {
             public string Path { get; set; }
@@ -250,6 +252,9 @@ namespace Lombiq.DataTables.Services
             public (string From, string To)? Regex { get; set; }
             public bool Searchable { get; set; }
             public bool IsLiquid { get; set; }
+
+
+            public override string ToString() => Name;
         }
     }
 }
