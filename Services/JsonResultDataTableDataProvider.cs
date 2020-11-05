@@ -142,6 +142,14 @@ namespace Lombiq.DataTables.Services
                 string searchValue,
                 IReadOnlyCollection<DataTableColumn> columnFilters)
         {
+            static string PrepareToken(JToken token) =>
+                token switch
+                {
+                    JObject link when ExportLink.IsInstance(link) => ExportLink.GetText(link),
+                    { } => token.ToString(),
+                    null => null,
+                };
+
             var filteredRows = rows;
 
             if (columnFilters?.Count > 0)
@@ -163,7 +171,7 @@ namespace Lombiq.DataTables.Services
                         columns.Any(filter =>
                             filter.Searchable &&
                             row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
-                            token?.ToString().Contains(word, StringComparison.InvariantCultureIgnoreCase) == true)));
+                            PrepareToken(token)?.Contains(word, StringComparison.InvariantCultureIgnoreCase) == true)));
             }
 
             var list = filteredRows.ToList();
