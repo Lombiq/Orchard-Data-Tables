@@ -10,17 +10,24 @@ namespace OrchardCore.ContentManagement
             LinkGenerator linkGenerator,
             HttpContext httpContext,
             string bootstrapTabType = null) =>
-                linkGenerator.GetUriByAction(
-                    httpContext,
-                    "Edit",
-                    "Admin",
-                    new
-                    {
-                        area = "OrchardCore.Contents",
-                        contentItemId = contentItem.ContentItemId,
-                        bootstraptab = bootstrapTabType == null
+            CreateEditLink(contentItem.ContentItemId, linkGenerator, httpContext, bootstrapTabType);
+
+        public static string CreateEditLink(
+            string contentItemId,
+            LinkGenerator linkGenerator,
+            HttpContext httpContext,
+            string bootstrapTabType = null) =>
+            linkGenerator.GetUriByAction(
+                httpContext,
+                "Edit",
+                "Admin",
+                new
+                {
+                    area = "OrchardCore.Contents",
+                    contentItemId = contentItemId,
+                    bootstraptab = bootstrapTabType == null
                         ? null
-                        : $"tab-{bootstrapTabType}-{contentItem.ContentItemId}",
-                    });
+                        : $"tab-{bootstrapTabType}-{contentItemId}",
+                });
     }
 }
