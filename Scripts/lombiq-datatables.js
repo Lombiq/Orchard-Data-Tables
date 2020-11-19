@@ -18,7 +18,13 @@
             processing: true,
             info: false,
             lengthChange: false,
-            scrollX: true
+            scrollX: true,
+            colReorder: true,
+            stateSave: true,
+            stateSaveParams: function (settings, data) {
+                // The paging will be reset back to the first page instead of saving the current page.
+                data.start = 0;
+            }
         },
         rowClassName: "",
         queryId: "",
@@ -168,7 +174,7 @@
                     }
                 });
             }
-            
+
             // Fetch items if progressive loading is enabled.
             if (!plugin.settings.serverSidePagingEnabled &&
                 plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
@@ -247,14 +253,14 @@
                     if (plugin.settings.progressiveLoadingOptions.itemCallback) {
                         plugin.settings.progressiveLoadingOptions.itemCallback(id, data, response);
                     }
-                    
+
                     plugin.dataTableApi.row.add(data).draw();
                 },
                 finishedCallback: function (success, total) {
                     if (plugin.settings.progressiveLoadingOptions.finishedCallback) {
                         plugin.settings.progressiveLoadingOptions.finishedCallback(success, total);
                     }
-                    
+
                     plugin.dataTableApi.processing(false);
                 }
             };
@@ -380,7 +386,7 @@
             plugin.loadRows(skip, options, callback);
         }
     });
-    
+
     $.fn[pluginName] = function (options) {
         // Return null if the element query is invalid.
         if (!this || this.length === 0) return null;
