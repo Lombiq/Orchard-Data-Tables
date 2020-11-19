@@ -3,6 +3,8 @@
 
 <h2>@RenderTitleSegments(Model?.Provider?.Description ?? T["DataTable"].Value)</h2>
 
+@await DisplayAsync(await New.Lombiq_DataTable_Before(ViewModel: Model))
+
 @foreach (var beforeTableShape in Model.BeforeTable ?? Array.Empty<IShape>())
 {
     @await DisplayAsync(beforeTableShape)

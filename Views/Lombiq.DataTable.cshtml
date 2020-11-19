@@ -29,7 +29,6 @@
     var childRowApiUrl = Url.Action(nameof(ChildRowsController.Get), typeof(ChildRowsController).ControllerName(), new { Area = FeatureIds.DataTables });
     var exportApiUrl = Url.Action(nameof(RowsController.Export), typeof(RowsController).ControllerName(), new { Area = FeatureIds.DataTables });
 
-    const string loadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
     const string rowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
     const string childRowElementName = ElementNames.DataTableElementName + "__childRow";
     const string toggleChildRowButtonElementName = ElementNames.DataTableElementName + "__toggleChildRowButton";
@@ -46,18 +45,6 @@
     dynamic additionalOptions = viewModel.AdditionalDatatableOptions;
     var hasViewAction = (bool)(additionalOptions?.viewAction == true);
 }
-
-<script at="Head">
-window.dataTableResources = {
-    options: {
-        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, @Json.Serialize(T["All"].Value)]],
-        language: {
-            processing: "<div class=\"@loadingIndicatorElementName\">@T["Loading..."]</div>"
-        },
-    },
-    created: function() {},
-};
-</script>
 
 @await DisplayAsync(await New.Lombiq_DataTable_Resources())
 
