@@ -80,7 +80,7 @@ namespace Lombiq.DataTables.Services
 
             var rows = json.Select((result, index) =>
                 new DataTableRow(index, columns
-                    .Select(column => new { column.Name, column.Regex, Token = result.SelectToken(column.Path, false) })
+                    .Select(column => (column.Name, column.Regex, Token: result.SelectToken(column.Path, false)))
                     .ToDictionary(
                         cell => cell.Name,
                         cell => cell.Regex is { } regex
