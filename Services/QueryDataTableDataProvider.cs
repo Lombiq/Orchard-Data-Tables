@@ -39,8 +39,8 @@ namespace Lombiq.DataTables.Services
 
 
         public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) => throw new NotSupportedException();
-        public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) => throw new NotSupportedException();
 
+        public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) => throw new NotSupportedException();
 
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {

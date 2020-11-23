@@ -37,7 +37,9 @@ namespace Lombiq.DataTables.Services
         /// <param name="request">Configures the <paramref name="dataProvider"/>.</param>
         /// <param name="columnsDefinition">Contains the list of columns to export.</param>
         /// <returns>The file serialized into a stream.</returns>
-        /// <remarks><para>The <see cref="DataTableColumnDefinition.Exportable"/> is relevant here.</para></remarks>
+        /// <remarks>
+        /// <para>The <see cref="DataTableColumnDefinition.Exportable"/> is relevant here.</para>
+        /// </remarks>
         Task<Stream> ExportAsync(
             IDataTableDataProvider dataProvider,
             DataTableDataRequest request,
