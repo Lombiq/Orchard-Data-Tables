@@ -24,7 +24,7 @@ namespace OrchardCore.ContentManagement
                 new
                 {
                     area = "OrchardCore.Contents",
-                    contentItemId = contentItemId,
+                    contentItemId,
                     bootstraptab = bootstrapTabType == null
                         ? null
                         : $"tab-{bootstrapTabType}-{contentItemId}",
