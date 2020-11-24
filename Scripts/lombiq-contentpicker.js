@@ -24,13 +24,14 @@
         },
         colorboxSettings: {
             iframe: true,
-            width: "1000px",
-            height: "80%",
-            maxWidth: "95%",
-            maxHeight: "80%",
-            fixed: true,
+            width: "80%",
+            height: "90%",
+            maxWidth: "80%",
+            maxHeight: "90%",
+            left: "10%",
+            top: "5%",
             fastIframe: false,
-            closeButton: false
+            closeButton: false,
         }
     };
 
@@ -55,14 +56,14 @@
             },
             onOpen: function () {
                 if (!plugin.settings.displayColorboxBorder) {
-                    $("#cboxTopLeft").hide();
-                    $("#cboxTopRight").hide();
-                    $("#cboxBottomLeft").hide();
-                    $("#cboxBottomRight").hide();
-                    $("#cboxMiddleLeft").hide();
-                    $("#cboxMiddleRight").hide();
-                    $("#cboxTopCenter").hide();
-                    $("#cboxBottomCenter").hide();
+                    $("#cboxTopLeft").remove();
+                    $("#cboxTopRight").remove();
+                    $("#cboxBottomLeft").remove();
+                    $("#cboxBottomRight").remove();
+                    $("#cboxMiddleLeft").remove();
+                    $("#cboxMiddleRight").remove();
+                    $("#cboxTopCenter").remove();
+                    $("#cboxBottomCenter").remove();
                 }
             },
             onLoad: function () {
@@ -92,7 +93,6 @@
         }
 
         // Resize Colorbox when resizing window or changing mobile device orientation.
-        jQuery(window).resize(resizeColorBox);
         window.addEventListener("orientationchange", resizeColorBox, false);
     };
 })(jQuery, window, document);
