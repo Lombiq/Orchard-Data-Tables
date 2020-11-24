@@ -3,6 +3,7 @@ using Lombiq.DataTables.Models;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,7 +50,8 @@ namespace Lombiq.DataTables.Services
             string[] columns,
             JToken[][] results,
             IStringLocalizer<ExcelDataTableExportService> localizer,
-            string error = null)
+            string error = null,
+            Dictionary<string, string> customNumberFormat = null)
         {
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add(worksheetName);
@@ -64,6 +66,15 @@ namespace Lombiq.DataTables.Services
             for (var c = 0; c < columns.Length; c++) worksheet.Cell(1, c + 1).Value = columns[c];
             worksheet.Range(1, 1, 1, columns.Length).Style.Font.Bold = true;
             worksheet.SheetView.Freeze(1, 0);
+
+            if (customNumberFormat != null)
+            {
+                foreach (var numberFormat in customNumberFormat)
+                {
+                    // For example, key: "2", Value: "h:mm:ss AM/PM"
+                    worksheet.Column(numberFormat.Key).Style.NumberFormat.Format = numberFormat.Value;
+                }
+            }
 
             var dateFormat = localizer["mm/dd/yyyy"].Value;
 
