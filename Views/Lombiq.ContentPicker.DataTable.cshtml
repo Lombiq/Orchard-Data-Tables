@@ -136,7 +136,7 @@
             function createCheckboxElementHtml(contentItemId) {
                 var checked = contentPicker.selectedContentItemIds.indexOf(contentItemId) > -1;
 
-                return "<label class=\"@(dataTableCheckboxBlockName)__label\"><input type=\"checkbox\" class=\"checkbox @contentSelectorElementName js-@contentSelectorElementName @(dataTableCheckboxBlockName)__input\" " + (checked ? "checked" : "") + "/><span class=\"@(dataTableCheckboxBlockName)__indicator\"></span></label>";
+                return "<label class=\"@(dataTableCheckboxBlockName)__label\"><input type=\"checkbox\" class=\"checkbox @contentSelectorElementName js-@contentSelectorElementName @(dataTableCheckboxBlockName)__input\" " + (checked ? "checked" : "") + " /><span class=\"@(dataTableCheckboxBlockName)__indicator\"></span></label>";
             }
 
             $("#@dataTableId").lombiq_DataTables({
