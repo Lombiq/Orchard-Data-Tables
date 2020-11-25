@@ -51,7 +51,7 @@ namespace Lombiq.DataTables.Services
             JToken[][] results,
             IStringLocalizer<ExcelDataTableExportService> localizer,
             string error = null,
-            Dictionary<string, string> customNumberFormat = null)
+            Dictionary<int, string> customNumberFormat = null)
         {
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add(worksheetName);
@@ -69,10 +69,10 @@ namespace Lombiq.DataTables.Services
 
             if (customNumberFormat != null)
             {
-                foreach (var numberFormat in customNumberFormat)
+                foreach ((int columnNumber, string numberFormat) in customNumberFormat)
                 {
                     // For example, key: "2", Value: "h:mm:ss AM/PM"
-                    worksheet.Column(numberFormat.Key).Style.NumberFormat.Format = numberFormat.Value;
+                    worksheet.Column(columnNumber).Style.NumberFormat.Format = numberFormat;
                 }
             }
 
