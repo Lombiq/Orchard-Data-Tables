@@ -1,9 +1,10 @@
-﻿namespace Lombiq.DataTables.Constants
+namespace Lombiq.DataTables.Constants
 {
     public static class ResourceNames
     {
         // These are registered in OrchardCore.Resources.
         public const string JQuery = "jQuery";
+
         public const string Bootstrap = "bootstrap";
 
         public const string UriJs = nameof(UriJs);

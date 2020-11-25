@@ -1,4 +1,4 @@
-﻿using Lombiq.DataTables.Constants;
+using Lombiq.DataTables.Constants;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 

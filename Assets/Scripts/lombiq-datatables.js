@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @summary     Lombiq - Data Tables
  * @description Abstraction over the jQuery.DataTables plugin to display Query results in a data table.
  * @version     1.0
@@ -81,7 +81,7 @@
             var plugin = this;
             var stateJson = "{}";
 
-            plugin.customizeAjaxParameters = function(parameters) { return parameters };
+            plugin.customizeAjaxParameters = function (parameters) { return parameters };
             plugin.originalQueryStringParameters = new URI().search(true);
 
             var dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
@@ -124,7 +124,7 @@
                     }
 
                     switch (data.Type) {
-                        case "ExportLink" : return "<a href=\"" + data.Url + "\">" + data.Text + "</a>";
+                        case "ExportLink": return "<a href=\"" + data.Url + "\">" + data.Text + "</a>";
                     }
 
                     return data;
@@ -134,7 +134,7 @@
             // This is a workaround to properly adjust column widths.
             var originalInitCompleteHandler = dataTablesOptions.initComplete
                 ? dataTablesOptions.initComplete
-                : function() { };
+                : function () { };
             dataTablesOptions.initComplete = function () {
                 plugin.adjustColumns();
                 originalInitCompleteHandler.apply(this);
@@ -215,7 +215,7 @@
                 dataTablesOptions.buttons = getExportButtons();
             }
             else if (dataTablesOptions.buttons && dataTablesOptions.buttons.forEach) {
-                dataTablesOptions.buttons.forEach(function(button) {
+                dataTablesOptions.buttons.forEach(function (button) {
                     if (button.buttons === useDefaultButtons) button.buttons = getExportButtons();
                 })
             }
