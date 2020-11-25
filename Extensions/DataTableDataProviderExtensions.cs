@@ -84,7 +84,8 @@ namespace Lombiq.DataTables.Services
         /// <param name="authorizationService">Authorizes the user.</param>
         /// <param name="user">The user to check.</param>
         /// <returns>
-        /// True if the user has at least one of the <see cref="Permission"/>s given by the <paramref name="dataProvider"/>.
+        /// True if the user has at least one of the <see cref="Permission"/>s given by the <paramref
+        /// name="dataProvider"/>.
         /// </returns>
         public static async Task<bool> AuthorizeAsync(
             this IDataTableDataProvider dataProvider,

@@ -1,4 +1,4 @@
-﻿using Lombiq.DataTables.Controllers;
+using Lombiq.DataTables.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using OrchardCore.DisplayManagement;
 using OrchardCore.DisplayManagement.Layout;

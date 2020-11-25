@@ -1,4 +1,4 @@
-﻿using Lombiq.DataTables.Services;
+using Lombiq.DataTables.Services;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
