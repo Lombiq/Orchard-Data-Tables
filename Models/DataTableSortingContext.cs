@@ -1,4 +1,4 @@
-﻿using Lombiq.DataTables.Constants;
+using Lombiq.DataTables.Constants;
 using OrchardCore.Queries;
 
 namespace Lombiq.DataTables.Models

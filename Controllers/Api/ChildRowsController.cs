@@ -35,12 +35,9 @@ namespace Lombiq.DataTables.Controllers.Api
                 return BadRequest(DataTableChildRowResponse.ErrorResult(errorText));
             }
 
-            if (!await provider.AuthorizeAsync(_authorizationService, User))
-            {
-                return DataTableChildRowResponse.ErrorResult(T["Unauthorized!"]);
-            }
-
-            return await provider.GetChildRowAsync(contentItemId);
+            return !await provider.AuthorizeAsync(_authorizationService, User)
+                ? DataTableChildRowResponse.ErrorResult(T["Unauthorized!"])
+                : (ActionResult<DataTableChildRowResponse>)await provider.GetChildRowAsync(contentItemId);
         }
     }
 }

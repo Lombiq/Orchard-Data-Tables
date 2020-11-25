@@ -18,10 +18,10 @@ using System.Threading.Tasks;
 namespace Lombiq.DataTables.Services
 {
     /// <summary>
-    /// Classes which implement this class only have to provide the provider description, the dataset via
-    /// <see cref="GetResultsAsync"/> as <see cref="IList{T}"/> of either <see cref="object"/> or <see cref="JObject"/>
-    /// (the former is automatically converted to the latter) and the columns definition via
-    /// <see cref="GetColumnsDefinitionInner"/>.
+    /// Classes which implement this class only have to provide the provider description, the dataset via <see
+    /// cref="GetResultsAsync"/> as <see cref="IList{T}"/> of either <see cref="object"/> or <see cref="JObject"/> (the
+    /// former is automatically converted to the latter) and the columns definition via <see
+    /// cref="GetColumnsDefinitionInner"/>.
     /// </summary>
     public abstract class JsonResultDataTableDataProvider : IDataTableDataProvider
     {
@@ -80,7 +80,7 @@ namespace Lombiq.DataTables.Services
 
             var rows = json.Select((result, index) =>
                 new DataTableRow(index, columns
-                    .Select(column => new { column.Name, column.Regex, Token = result.SelectToken(column.Path, false) })
+                    .Select(column => (column.Name, column.Regex, Token: result.SelectToken(column.Path, false)))
                     .ToDictionary(
                         cell => cell.Name,
                         cell => cell.Regex is { } regex

@@ -14,8 +14,10 @@ namespace Lombiq.DataTables.Services
     /// The data source for a DataTable.
     /// </summary>
     /// <remarks>
-    /// <para>Unlike in O1, implementing services have to be registered manually using the extension method called
-    /// <see cref="ServiceCollectionExtensions.AddDataTableDataProvider{TDataProvider}"/>.</para>
+    /// <para>
+    /// Unlike in O1, implementing services have to be registered manually using the extension method called <see
+    /// cref="ServiceCollectionExtensions.AddDataTableDataProvider{TDataProvider}"/>.
+    /// </para>
     /// </remarks>
     public interface IDataTableDataProvider
     {

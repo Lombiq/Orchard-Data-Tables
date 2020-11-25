@@ -21,10 +21,7 @@ namespace Lombiq.DataTables.Models
         }
 
 
-        public DataTableRow()
-        {
-            ValuesDictionary = new Dictionary<string, JToken>();
-        }
+        public DataTableRow() => ValuesDictionary = new Dictionary<string, JToken>();
 
         public DataTableRow(int id, IDictionary<string, JToken> valuesDictionary)
         {

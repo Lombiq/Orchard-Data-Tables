@@ -1,4 +1,4 @@
-﻿using Lombiq.DataTables.LombiqTests.Services;
+using Lombiq.DataTables.LombiqTests.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Modules;
