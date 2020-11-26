@@ -7,7 +7,6 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Moq.AutoMock;
 using Shouldly;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -97,6 +96,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 new object[] { new ExportLink("http://example.com/", 2), "y", "bar" },
                 new object[] { 10, "x", "baz" },
             };
+
             var columns = new[]
             {
                 ("Num", "Numbers", true),
@@ -176,9 +176,9 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "Verify custom number formatting.",
                 new[]
                 {
-                    new object[] { 1, "23:42:01"},
-                    new object[] { 2, "13:42:01"},
-                    new object[] { 3, "1:42:01"},
+                    new object[] { 1, "23:42:01" },
+                    new object[] { 2, "13:42:01" },
+                    new object[] { 3, "1:42:01" },
                 },
                 new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
                 "1,11/26/2020 23:42:01;2,11/26/2020 13:42:01;3,11/26/2020 1:42:01".Split(';').Select(row => row.Split(',')).ToArray(),
