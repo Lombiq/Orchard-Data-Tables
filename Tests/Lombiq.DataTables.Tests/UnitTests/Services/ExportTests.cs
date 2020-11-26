@@ -176,9 +176,9 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "Verify custom number formatting.",
                 new[]
                 {
-                    new object[] { 1, new DateTime(2020, 11, 26, 23, 42, 10, DateTimeKind.Utc).ToLongTimeString() },
-                    new object[] { 2, new DateTime(2020, 11, 26, 12, 42, 10, DateTimeKind.Utc).ToLongTimeString() },
-                    new object[] { 3, new DateTime(2020, 11, 26, 1, 42, 10, DateTimeKind.Utc).ToLongTimeString() },
+                    new object[] { 1, new DateTime(2020, 11, 26, 23, 42, 10).ToLongTimeString() },
+                    new object[] { 2, new DateTime(2020, 11, 26, 12, 42, 10).ToLongTimeString() },
+                    new object[] { 3, new DateTime(2020, 11, 26, 1, 42, 10).ToLongTimeString() },
                 },
                 new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
                 "1,11/26/2020 11:42:10 PM;2,11/26/2020 12:42:10 PM;3,11/26/2020 1:42:10 AM".Split(';').Select(row => row.Split(',')).ToArray(),
