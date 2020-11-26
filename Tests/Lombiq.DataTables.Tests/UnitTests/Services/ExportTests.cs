@@ -9,6 +9,7 @@ using Moq.AutoMock;
 using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -49,7 +50,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 {
                     customNumberFormat = new Dictionary<int, string>
                     {
-                        [columnIndex + 1] = service.T["h:mm:ss AM/PM"].Value,
+                        [columnIndex + 1] = "h:mm:ss AM/PM",
                     };
                 }
 
@@ -71,7 +72,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             {
                 for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
                 {
-                    worksheet.Cell(2 + rowIndex, columnIndex).Style.NumberFormat.Format.ShouldBe(service.T["h:mm:ss AM/PM"].Value);
+                    worksheet.Cell(2 + rowIndex, columnIndex).Style.NumberFormat.Format.ShouldBe("h:mm:ss AM/PM");
                 }
             }
 
@@ -176,9 +177,9 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "Verify custom number formatting.",
                 new[]
                 {
-                    new object[] { 1, new DateTime(2020, 11, 26, 23, 42, 10).ToLongTimeString() },
-                    new object[] { 2, new DateTime(2020, 11, 26, 12, 42, 10).ToLongTimeString() },
-                    new object[] { 3, new DateTime(2020, 11, 26, 1, 42, 10).ToLongTimeString() },
+                    new object[] { 1, new DateTime(2020, 11, 26, 23, 42, 10).ToString(CultureInfo.InvariantCulture) },
+                    new object[] { 2, new DateTime(2020, 11, 26, 12, 42, 10).ToString(CultureInfo.InvariantCulture) },
+                    new object[] { 3, new DateTime(2020, 11, 26, 1, 42, 10).ToString(CultureInfo.InvariantCulture) },
                 },
                 new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
                 "1,11/26/2020 11:42:10 PM;2,11/26/2020 12:42:10 PM;3,11/26/2020 1:42:10 AM".Split(';').Select(row => row.Split(',')).ToArray(),
