@@ -43,6 +43,17 @@ namespace Lombiq.DataTables.Services
                 customNumberFormat);
         }
 
+        /// <summary>
+        /// Returns downloadable XML workbook.
+        /// </summary>
+        /// <param name="worksheetName">The desired name of the worksheet.</param>
+        /// <param name="columns">The name of the columns.</param>
+        /// <param name="results">The data provided for the table.</param>
+        /// <param name="localizer">IStringLocalizer instance.</param>
+        /// <param name="error">User-facing error message in case something went wrong.</param>
+        /// <param name="customNumberFormat">Custom formatting of columns. The key should be the number of the column
+        /// from left to right. The value should be the format. For example:  Key: 2 Value: "h:mm:ss AM/PM", meaning
+        /// second column ("B" column) and format like 4:42:15 PM</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "Blocker Code Smell",
             "S2368:Public methods should not have multidimensional array parameters",
@@ -73,7 +84,6 @@ namespace Lombiq.DataTables.Services
             {
                 foreach ((int columnNumber, string numberFormat) in customNumberFormat)
                 {
-                    // For example, key: "2", Value: "h:mm:ss AM/PM"
                     worksheet.Column(columnNumber).Style.NumberFormat.Format = numberFormat;
                 }
             }
