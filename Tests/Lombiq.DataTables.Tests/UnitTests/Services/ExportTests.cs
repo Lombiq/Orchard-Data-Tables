@@ -9,6 +9,7 @@ using Moq.AutoMock;
 using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -178,12 +179,14 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "Verify custom number formatting.",
                 new[]
                 {
-                    new object[] { 1, new DateTime(2020,11,26,23,42,01).ToString() },
-                    new object[] { 2, new DateTime(2020,11,26,13,42,01).ToString() },
-                    new object[] { 3, new DateTime(2020,11,26,1,42,01).ToString() },
+                    new object[] { 1, new DateTime(2020, 11, 26, 23, 42, 01).ToString(CultureInfo.InvariantCulture) },
+                    new object[] { 2, new DateTime(2020, 11, 26, 13, 42, 01).ToString(CultureInfo.InvariantCulture) },
+                    new object[] { 3, new DateTime(2020, 11, 26, 1, 42, 01).ToString(CultureInfo.InvariantCulture) },
                 },
                 new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
-                $"1,{ new DateTime(2020,11,26,23,42,01).ToString() };2,{ new DateTime(2020,11,26,13,42,01).ToString() };3,{ new DateTime(2020,11,26,1,42,01).ToString() }".Split(';').Select(row => row.Split(',')).ToArray(),
+                $"1,{new DateTime(2020, 11, 26, 23, 42, 01).ToString(CultureInfo.InvariantCulture)};2," +
+                    $"{new DateTime(2020, 11, 26, 13, 42, 01).ToString(CultureInfo.InvariantCulture)};3," +
+                    $"{new DateTime(2020, 11, 26, 1, 42, 01).ToString(CultureInfo.InvariantCulture)}".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
                 0,
