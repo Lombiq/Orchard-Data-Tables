@@ -7,6 +7,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Moq.AutoMock;
 using Shouldly;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -171,17 +172,18 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 0,
             };
 
+            // The date value should be the same, only the formatting changes.
             yield return new object[]
             {
                 "Verify custom number formatting.",
                 new[]
                 {
-                    new object[] { 1, "23:42:01" },
-                    new object[] { 2, "13:42:01" },
-                    new object[] { 3, "1:42:01" },
+                    new object[] { 1, new DateTime(2020,11,26,23,42,01).ToString() },
+                    new object[] { 2, new DateTime(2020,11,26,13,42,01).ToString() },
+                    new object[] { 3, new DateTime(2020,11,26,1,42,01).ToString() },
                 },
                 new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
-                "1,11/26/2020 23:42:01;2,11/26/2020 13:42:01;3,11/26/2020 1:42:01".Split(';').Select(row => row.Split(',')).ToArray(),
+                $"1,{new DateTime(2020,11,26,23,42,01).ToString()};2,{new DateTime(2020,11,26,13,42,01).ToString()};3,{new DateTime(2020,11,26,1,42,01).ToString()}".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
                 0,
