@@ -183,7 +183,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                     new object[] { 3, new DateTime(2020,11,26,1,42,01).ToString() },
                 },
                 new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
-                $"1,{new DateTime(2020,11,26,23,42,01).ToString()};2,{new DateTime(2020,11,26,13,42,01).ToString()};3,{new DateTime(2020,11,26,1,42,01).ToString()}".Split(';').Select(row => row.Split(',')).ToArray(),
+                $"1,{ new DateTime(2020,11,26,23,42,01).ToString() };2,{ new DateTime(2020,11,26,13,42,01).ToString() };3,{ new DateTime(2020,11,26,1,42,01).ToString() }".Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
                 0,
