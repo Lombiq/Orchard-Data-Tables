@@ -24,7 +24,8 @@ namespace Lombiq.DataTables.Services
         public async Task<Stream> ExportAsync(
             IDataTableDataProvider dataProvider,
             DataTableDataRequest request,
-            DataTableColumnsDefinition columnsDefinition = null)
+            DataTableColumnsDefinition columnsDefinition = null,
+            Dictionary<int, string> customNumberFormat = null)
         {
             columnsDefinition ??= await dataProvider.GetColumnsDefinitionAsync(request.QueryId);
             var columns = columnsDefinition.Columns.Where(column => column.Exportable).ToList();
@@ -38,7 +39,8 @@ namespace Lombiq.DataTables.Services
                 columns.Select(column => column.Text).ToArray(),
                 results,
                 T,
-                response.Error);
+                response.Error,
+                customNumberFormat);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(

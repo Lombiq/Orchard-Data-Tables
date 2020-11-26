@@ -1,4 +1,5 @@
 using Lombiq.DataTables.Models;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -36,6 +37,7 @@ namespace Lombiq.DataTables.Services
         /// <param name="dataProvider">Gets the dataset.</param>
         /// <param name="request">Configures the <paramref name="dataProvider"/>.</param>
         /// <param name="columnsDefinition">Contains the list of columns to export.</param>
+        /// <param name="customNumberFormat">Contains the column number and the corresponding styling format.</param>
         /// <returns>The file serialized into a stream.</returns>
         /// <remarks>
         /// <para>The <see cref="DataTableColumnDefinition.Exportable"/> is relevant here.</para>
@@ -43,6 +45,7 @@ namespace Lombiq.DataTables.Services
         Task<Stream> ExportAsync(
             IDataTableDataProvider dataProvider,
             DataTableDataRequest request,
-            DataTableColumnsDefinition columnsDefinition = null);
+            DataTableColumnsDefinition columnsDefinition = null,
+            Dictionary<int, string> customNumberFormat = null);
     }
 }
