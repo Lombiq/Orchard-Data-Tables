@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
+using OrchardCore.ContentManagement;
 using OrchardCore.DisplayManagement;
 using OrchardCore.Liquid;
 using OrchardCore.Mvc.Core.Utilities;
@@ -207,20 +208,29 @@ namespace Lombiq.DataTables.Services
         protected abstract DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId);
 
 
-        protected string GetActionsColumn()
+        protected string GetActionsColumn(string columnName = nameof(ContentItem.ContentItemId), bool fromJson = false)
         {
-            if (_hca?.HttpContext == null)
+            var beforePipe = string.Empty;
+            var source = "'$0'";
+            var call = "actions";
+
+            if (_hca?.HttpContext != null)
             {
-                // The httpContext would be required to generate the returnUrl parameter.
-                return "ContentItemId||^.*$||{{ '$0' | actions }}";
+                var returnUrl = _linkGenerator.GetPathByAction(
+                    _hca?.HttpContext,
+                    nameof(TableController.Get),
+                    typeof(TableController).ControllerName(),
+                    new { providerName = GetType().Name });
+                call = "actions: returnUrl: '" + returnUrl + "'";
             }
 
-            var returnUrl = _linkGenerator.GetPathByAction(
-                _hca?.HttpContext,
-                nameof(TableController.Get),
-                typeof(TableController).ControllerName(),
-                new { providerName = GetType().Name });
-            return "ContentItemId||^.*$||{{ '$0' | actions: returnUrl: '" + returnUrl + "' }}";
+            if (fromJson)
+            {
+                beforePipe = "{% capture jsonData %} $0 {% endcapture %} ";
+                source = "jsonData | jsonparse";
+            }
+
+            return columnName + "||^.*$||" + beforePipe + "{{ " + source + " | " + call + " }}";
         }
 
 

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
+using OrchardCore.ContentManagement;
 using OrchardCore.DisplayManagement;
 using OrchardCore.Liquid;
 using System;
@@ -15,6 +16,22 @@ using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Liquid
 {
+    /// <summary>
+    /// This filter accepts either a string of <see cref="ContentItem.ContentItemId"/>, an <see cref="ActionsModel"/>
+    /// object or a JToken that deserialized into an <see cref="ActionsModel"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Usage with ID:</para>
+    /// <code>
+    /// { variableWithContentIdString | actions: returnUrl: 'some/return/url', title: 'Of the Button Shape' }
+    /// </code>
+    ///
+    /// <para>Usage with raw JSON:</para>
+    /// <code>
+    /// {% capture jsonData %} {"Id": "contentitemid", "MenuItems": [],"WithDefaults": true} {% endcapture %}
+    /// { jsonData | actions: returnUrl: 'some/return/url', title: 'Of the Button Shape' }
+    /// </code>
+    /// </remarks>
     public class ActionsLiquidFilter : ILiquidFilter
     {
         private readonly IHttpContextAccessor _hca;
