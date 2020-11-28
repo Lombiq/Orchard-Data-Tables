@@ -3,6 +3,7 @@ using Lombiq.DataTables.Models;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,7 +24,8 @@ namespace Lombiq.DataTables.Services
         public async Task<Stream> ExportAsync(
             IDataTableDataProvider dataProvider,
             DataTableDataRequest request,
-            DataTableColumnsDefinition columnsDefinition = null)
+            DataTableColumnsDefinition columnsDefinition = null,
+            Dictionary<int, string> customNumberFormat = null)
         {
             columnsDefinition ??= await dataProvider.GetColumnsDefinitionAsync(request.QueryId);
             var columns = columnsDefinition.Columns.Where(column => column.Exportable).ToList();
@@ -37,9 +39,21 @@ namespace Lombiq.DataTables.Services
                 columns.Select(column => column.Text).ToArray(),
                 results,
                 T,
-                response.Error);
+                response.Error,
+                customNumberFormat);
         }
 
+        /// <summary>
+        /// Returns downloadable XML workbook.
+        /// </summary>
+        /// <param name="worksheetName">The desired name of the worksheet.</param>
+        /// <param name="columns">The name of the columns.</param>
+        /// <param name="results">The data provided for the table.</param>
+        /// <param name="localizer">IStringLocalizer instance.</param>
+        /// <param name="error">User-facing error message in case something went wrong.</param>
+        /// <param name="customNumberFormat">Custom formatting of columns. The key should be the number of the column
+        /// from left to right. The value should be the format. For example:  Key: 2 Value: "h:mm:ss AM/PM", meaning
+        /// second column ("B" column) and format like 4:42:15 PM.</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "Blocker Code Smell",
             "S2368:Public methods should not have multidimensional array parameters",
@@ -49,7 +63,8 @@ namespace Lombiq.DataTables.Services
             string[] columns,
             JToken[][] results,
             IStringLocalizer<ExcelDataTableExportService> localizer,
-            string error = null)
+            string error = null,
+            Dictionary<int, string> customNumberFormat = null)
         {
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add(worksheetName);
@@ -64,6 +79,14 @@ namespace Lombiq.DataTables.Services
             for (var c = 0; c < columns.Length; c++) worksheet.Cell(1, c + 1).Value = columns[c];
             worksheet.Range(1, 1, 1, columns.Length).Style.Font.Bold = true;
             worksheet.SheetView.Freeze(1, 0);
+
+            if (customNumberFormat != null)
+            {
+                foreach ((int columnNumber, string numberFormat) in customNumberFormat)
+                {
+                    worksheet.Column(columnNumber).Style.NumberFormat.Format = numberFormat;
+                }
+            }
 
             var dateFormat = localizer["mm/dd/yyyy"].Value;
 

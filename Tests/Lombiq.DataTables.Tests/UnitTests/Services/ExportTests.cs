@@ -7,7 +7,9 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Moq.AutoMock;
 using Shouldly;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -39,7 +41,24 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
 
             var service = MockHelper.CreateAutoMockerInstance<ExcelDataTableExportService>(
                 mocker => mocker.MockStringLocalizer<ExcelDataTableExportService>());
-            var stream = await service.ExportAsync(provider, request);
+
+            Dictionary<int, string> customNumberFormat = null;
+            int columnIndex = 0;
+            do
+            {
+                if (columns[columnIndex].Name == "Time")
+                {
+                    customNumberFormat = new Dictionary<int, string>
+                    {
+                        [columnIndex + 1] = "h:mm:ss AM/PM",
+                    };
+                }
+
+                columnIndex++;
+            }
+            while (columnIndex < columns.Length && columns[columnIndex - 1].Name != "Time");
+
+            var stream = await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat);
 
             using var workbook = new XLWorkbook(stream);
             var worksheet = workbook.Worksheets.Worksheet(1);
@@ -48,6 +67,14 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 .Select(index => worksheet.Cell(1, index).GetString())
                 .ToArray()
                 .ShouldBe(columns.Where(column => column.Exportable).Select(column => column.Text).ToArray());
+
+            if (columns[columnIndex - 1].Name == "Time")
+            {
+                for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
+                {
+                    worksheet.Cell(2 + rowIndex, columnIndex).Style.NumberFormat.Format.ShouldBe("h:mm:ss AM/PM");
+                }
+            }
 
             for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
             {
@@ -71,6 +98,7 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 new object[] { new ExportLink("http://example.com/", 2), "y", "bar" },
                 new object[] { 10, "x", "baz" },
             };
+
             var columns = new[]
             {
                 ("Num", "Numbers", true),
@@ -140,6 +168,24 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 new[] { new object[] { 1, true }, new object[] { 2, true }, new object[] { 3, false } },
                 new[] { ("Num", "Numbers", true), ("Bool", "Booleans", true) },
                 "1,Yes;2,Yes;3,No".Split(';').Select(row => row.Split(',')).ToArray(),
+                0,
+                10,
+                0,
+            };
+
+            // The date value should be the same, only the formatting changes.
+            yield return new object[]
+            {
+                "Verify custom number formatting.",
+                new[]
+                {
+                    new object[] { 1, new DateTime(2020, 11, 26, 23, 42, 01).ToString(CultureInfo.InvariantCulture) },
+                    new object[] { 2, new DateTime(2020, 11, 26, 13, 42, 01).ToString(CultureInfo.InvariantCulture) },
+                    new object[] { 3, new DateTime(2020, 11, 26, 1, 42, 01).ToString(CultureInfo.InvariantCulture) },
+                },
+                new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
+                ($"1,{new DateTime(2020, 11, 26, 23, 42, 01)};2,{new DateTime(2020, 11, 26, 13, 42, 01)};" +
+                $"3,{new DateTime(2020, 11, 26, 1, 42, 01)}").Split(';').Select(row => row.Split(',')).ToArray(),
                 0,
                 10,
                 0,
