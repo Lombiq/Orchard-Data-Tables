@@ -89,7 +89,7 @@ namespace Lombiq.DataTables.Services
             }
 
             // Permit it to be null if we don't plan to use it anyway.
-            var dateFormat = localizer == null ? string.Empty : localizer["mm/dd/yyyy"].Value;
+            var dateFormat = localizer == null ? string.Empty : localizer["mm\"/\"dd\"/\"yyyy"].Value;
 
             // Create table body.
             for (int i = 0; i < results.Length; i++)
