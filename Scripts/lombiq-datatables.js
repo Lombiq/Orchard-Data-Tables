@@ -144,8 +144,16 @@
                 };
             }
 
+            // Send the datatable state to /dev/null instead of the default local storage.
             dataTablesOptions.stateSaveCallback = function (settings, data) { }
-            dataTablesOptions.stateLoadCallback = function (settings, callback) { return ""; }
+
+            // Load the datatable state from the custom local storage.
+            dataTablesOptions.stateLoadCallback = function (settings, callback) {
+                var additionalQueryStringParameters = JSON.parse(localStorage.getItem(plugin.settings.queryStringParametersLocalStorageKey))
+                settings.oLoadedState = additionalQueryStringParameters;
+
+                return additionalQueryStringParameters;
+            }
 
             plugin.dataTableElement = $(plugin.element).dataTable(dataTablesOptions);
             plugin.dataTableApi = plugin.dataTableElement.api();
@@ -159,6 +167,7 @@
                 colReorderArray["ColReorder"] = plugin.dataTableApi.colReorder.order();
 
                 $.extend(true, additionalQueryStringParameters, colReorderArray);
+
                 localStorage.setItem(
                     queryStringParametersLocalStorageKey,
                     JSON.stringify(additionalQueryStringParameters));
