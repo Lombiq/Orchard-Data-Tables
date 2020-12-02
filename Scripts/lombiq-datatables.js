@@ -144,6 +144,9 @@
                 };
             }
 
+            dataTablesOptions.stateSaveCallback = function (settings, data) { }
+            dataTablesOptions.stateLoadCallback = function (settings, callback) { return ""; }
+
             plugin.dataTableElement = $(plugin.element).dataTable(dataTablesOptions);
             plugin.dataTableApi = plugin.dataTableElement.api();
 
