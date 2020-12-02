@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using NodaTime;
 using System;
 
@@ -27,9 +27,9 @@ namespace Lombiq.DataTables.Models
             };
 
         public static explicit operator LocalDate(ExportDate exportDate) =>
-            new (exportDate.Year, exportDate.Month, exportDate.Day);
+            new LocalDate(exportDate.Year, exportDate.Month, exportDate.Day);
 
         public static explicit operator DateTime(ExportDate exportDate) =>
-            new (exportDate.Year, exportDate.Month, exportDate.Day);
+            new DateTime(exportDate.Year, exportDate.Month, exportDate.Day);
     }
 }
