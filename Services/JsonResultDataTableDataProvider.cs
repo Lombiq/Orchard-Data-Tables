@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
+using NodaTime;
 using OrchardCore.ContentManagement;
 using OrchardCore.DisplayManagement;
 using OrchardCore.Liquid;
@@ -147,6 +148,7 @@ namespace Lombiq.DataTables.Services
                 token switch
                 {
                     JObject link when ExportLink.IsInstance(link) => ExportLink.GetText(link),
+                    JObject date when ExportDate.IsInstance(date) => ExportDate.GetText(date),
                     { } => token.ToString(),
                     null => null,
                 };
@@ -245,9 +247,16 @@ namespace Lombiq.DataTables.Services
             {
                 var jToken = x.SelectToken(orderColumnName);
 
-                if (jToken is JObject jObject && jObject.ContainsKey(nameof(ExportLink.Text)))
+                if (jToken is JObject jObject)
                 {
-                    jToken = jObject[nameof(ExportLink.Text)];
+                    if (jObject.ContainsKey(nameof(ExportLink.Text)))
+                    {
+                        jToken = jObject[nameof(ExportLink.Text)];
+                    }
+                    else if (ExportDate.IsInstance(jObject))
+                    {
+                        jToken = (DateTime)jToken.ToObject<ExportDate>();
+                    }
                 }
 
                 return jToken switch

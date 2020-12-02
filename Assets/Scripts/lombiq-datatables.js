@@ -94,6 +94,12 @@
                 }
             };
 
+            function convertDate(date) {
+                var locale = 'en-US';
+                if (plugin.settings.culture) locale = plugin.settings.culture;
+                return date.toLocaleDateString(locale);
+            }
+
             // Conditional renderer.
             dataTablesOptions.columnDefs = [{
                 targets: "_all",
@@ -109,9 +115,7 @@
 
                     // If data is ISO date.
                     if (isString && data.match(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.?\d*([+-][0-2]\d:[0-5]\d|Z)/)) {
-                        var locale = 'en-US';
-                        if (plugin.settings.culture) locale = plugin.settings.culture;
-                        return (new Date(data)).toLocaleDateString(locale);
+                        return convertDate(new Date(data));
                     }
 
                     // If data is a template.
@@ -125,6 +129,7 @@
 
                     switch (data.Type) {
                         case "ExportLink": return "<a href=\"" + data.Url + "\">" + data.Text + "</a>";
+                        case "ExportDate": return convertDate(new Date(data.Year, data.Month - 1, data.Day));
                     }
 
                     return data;
