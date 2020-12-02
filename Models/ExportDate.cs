@@ -30,6 +30,6 @@ namespace Lombiq.DataTables.Models
             new LocalDate(exportDate.Year, exportDate.Month, exportDate.Day);
 
         public static explicit operator DateTime(ExportDate exportDate) =>
-            new DateTime(exportDate.Year, exportDate.Month, exportDate.Day);
+            new LocalDate(exportDate.Year, exportDate.Month, exportDate.Day).ToDateTimeUnspecified();
     }
 }
