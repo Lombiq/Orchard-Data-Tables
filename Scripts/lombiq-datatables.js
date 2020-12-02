@@ -123,6 +123,12 @@
                         });
 
                         if (plugin.settings.queryStringParametersLocalStorageKey) {
+                            var additionalQueryStringParameters = localStorage.getItem(plugin.settings.queryStringParametersLocalStorageKey);
+                            additionalQueryStringParameters = !additionalQueryStringParameters ? {} : JSON.parse(additionalQueryStringParameters);
+                            var colReorderArray = {};
+                            colReorderArray["ColReorder"] = additionalQueryStringParameters.ColReorder;
+
+                            $.extend(true, extendedParameters, colReorderArray);
                             localStorage.setItem(
                                 plugin.settings.queryStringParametersLocalStorageKey,
                                 JSON.stringify(extendedParameters));
@@ -140,6 +146,20 @@
 
             plugin.dataTableElement = $(plugin.element).dataTable(dataTablesOptions);
             plugin.dataTableApi = plugin.dataTableElement.api();
+
+            plugin.dataTableElement.on("column-reorder.dt", function (e, settings, details) {
+                var queryStringParametersLocalStorageKey = plugin.settings.queryStringParametersLocalStorageKey;
+
+                var additionalQueryStringParameters = localStorage.getItem(queryStringParametersLocalStorageKey);
+                additionalQueryStringParameters = !additionalQueryStringParameters ? {} : JSON.parse(additionalQueryStringParameters);
+                var colReorderArray = {};
+                colReorderArray["ColReorder"] = plugin.dataTableApi.colReorder.order();
+
+                $.extend(true, additionalQueryStringParameters, colReorderArray);
+                localStorage.setItem(
+                    queryStringParametersLocalStorageKey,
+                    JSON.stringify(additionalQueryStringParameters));
+            });
 
             // Register toggle button click listeners if child rows are enabled.
             if (plugin.settings.childRowOptions.childRowsEnabled) {
