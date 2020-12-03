@@ -144,12 +144,19 @@
                 };
             }
 
-            // Send the datatable state to /dev/null instead of the default local storage.
+            // Send the datatable state to /dev/null instead of the default local storage. 
+            // We can't use this callback for ColReorder because it's called not just on save but on draw too.
             dataTablesOptions.stateSaveCallback = function (settings, data) { }
 
             // Load the datatable state from the custom local storage.
             dataTablesOptions.stateLoadCallback = function (settings, callback) {
-                var additionalQueryStringParameters = JSON.parse(localStorage.getItem(plugin.settings.queryStringParametersLocalStorageKey))
+                var queryStringParametersLocalStorageKey = plugin.settings.queryStringParametersLocalStorageKey;
+
+                if (!queryStringParametersLocalStorageKey) {
+                    queryStringParametersLocalStorageKey = "DataTables_" + window.location.pathname;
+                }
+
+                var additionalQueryStringParameters = JSON.parse(localStorage.getItem(queryStringParametersLocalStorageKey));
                 settings.oLoadedState = additionalQueryStringParameters;
 
                 return additionalQueryStringParameters;
@@ -160,6 +167,10 @@
 
             plugin.dataTableElement.on("column-reorder.dt", function (e, settings, details) {
                 var queryStringParametersLocalStorageKey = plugin.settings.queryStringParametersLocalStorageKey;
+
+                if (!queryStringParametersLocalStorageKey) {
+                    queryStringParametersLocalStorageKey = "DataTables_" + window.location.pathname;
+                }
 
                 var additionalQueryStringParameters = localStorage.getItem(queryStringParametersLocalStorageKey);
                 additionalQueryStringParameters = !additionalQueryStringParameters ? {} : JSON.parse(additionalQueryStringParameters);
