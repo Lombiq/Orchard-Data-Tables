@@ -88,7 +88,8 @@ namespace Lombiq.DataTables.Services
                 }
             }
 
-            var dateFormat = localizer["mm/dd/yyyy"].Value;
+            // Permit it to be null if we don't plan to use it anyway.
+            var dateFormat = localizer == null ? string.Empty : localizer["mm\"/\"dd\"/\"yyyy"].Value;
 
             // Create table body.
             for (int i = 0; i < results.Length; i++)
@@ -112,15 +113,21 @@ namespace Lombiq.DataTables.Services
 
         private static void CreateTableCell(IXLCell cell, JToken value, string dateFormat, IStringLocalizer localizer)
         {
-            if (value.Type == JTokenType.Date) cell.Style.DateFormat.Format = dateFormat;
-
-            if (value is JObject jObject && jObject["Type"]?.ToString() == nameof(ExportLink))
+            if (value is JObject linkJObject && ExportLink.IsInstance(linkJObject))
             {
-                var link = jObject.ToObject<ExportLink>();
+                var link = linkJObject.ToObject<ExportLink>();
                 if (link != null) cell.FormulaA1 = $"HYPERLINK(\"{link.Url}\",\"{link.Text}\")";
+            }
+            else if (value is JObject dateJObject && ExportDate.IsInstance(dateJObject))
+            {
+                var date = dateJObject.ToObject<ExportDate>();
+                cell.Value = (DateTime)date!;
+                cell.Style.DateFormat.Format = date.ExcelFormat ?? dateFormat;
             }
             else
             {
+                if (value.Type == JTokenType.Date) cell.Style.DateFormat.Format = dateFormat;
+
                 cell.Value = value.Type switch
                 {
                     JTokenType.Boolean => value.ToObject<bool>()
