@@ -36,7 +36,6 @@ namespace Lombiq.DataTables.Services
         public abstract LocalizedString Description { get; }
         public abstract IEnumerable<Permission> SupportedPermissions { get; }
 
-
         protected JsonResultDataTableDataProvider(
             IDataTableDataProviderServices services,
             IStringLocalizer implementationStringLocalizer)
@@ -48,7 +47,6 @@ namespace Lombiq.DataTables.Services
 
             _plainTextEncoder = new PlainTextEncoder();
         }
-
 
         public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
@@ -115,7 +113,6 @@ namespace Lombiq.DataTables.Services
                 RecordsTotal = recordsTotal,
             };
         }
-
 
         private async Task RenderLiquidAsync(IEnumerable<DataTableRow> rowList, IList<string> liquidColumns)
         {
@@ -192,7 +189,6 @@ namespace Lombiq.DataTables.Services
         public virtual Task<IEnumerable<dynamic>> GetShapesAfterTableAsync() =>
             Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
 
-
         /// <summary>
         /// When overridden in a derived class it gets the content which is then turned into <see cref="JToken"/> if
         /// necessary and then queried down using the column names into a dictionary.
@@ -207,7 +203,6 @@ namespace Lombiq.DataTables.Services
         /// <param name="queryId">May be used to dynamically generate the result.</param>
         /// <returns>The default columns definition of this provider.</returns>
         protected abstract DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId);
-
 
         protected string GetActionsColumn(string columnName = nameof(ContentItem.ContentItemId), bool fromJson = false)
         {
@@ -233,7 +228,6 @@ namespace Lombiq.DataTables.Services
 
             return columnName + "||^.*$||" + beforePipe + "{{ " + source + " | " + call + " }}";
         }
-
 
         private IEnumerable<JObject> OrderByColumn(IEnumerable<JObject> json, DataTableOrder order)
         {
@@ -269,7 +263,6 @@ namespace Lombiq.DataTables.Services
             return order.IsAscending ? json.OrderBy(Selector) : json.OrderByDescending(Selector);
         }
 
-
         [DebuggerDisplay("{ToString()}")]
         private class JsonResultColumn
         {
@@ -278,7 +271,6 @@ namespace Lombiq.DataTables.Services
             public (string From, string To)? Regex { get; set; }
             public bool Searchable { get; set; }
             public bool IsLiquid { get; set; }
-
 
             public override string ToString() => Name;
         }

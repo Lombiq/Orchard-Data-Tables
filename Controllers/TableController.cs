@@ -17,7 +17,6 @@ namespace Lombiq.DataTables.Controllers
         private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviders;
         private readonly IContentManager _contentManager;
 
-
         public TableController(
             IEnumerable<IDataTableDataProvider> dataTableDataProviders,
             IContentManager contentManager)
@@ -25,7 +24,6 @@ namespace Lombiq.DataTables.Controllers
             _dataTableDataProviders = dataTableDataProviders;
             _contentManager = contentManager;
         }
-
 
         public async Task<IActionResult> Query(string queryName, string contentId)
         {

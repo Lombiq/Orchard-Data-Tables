@@ -41,7 +41,6 @@ namespace Lombiq.DataTables.Liquid
         private readonly IStringLocalizer<ActionsLiquidFilter> T;
         private readonly IStringLocalizer<ActionsModel> _actionsModelT;
 
-
         public ActionsLiquidFilter(
             IHttpContextAccessor hca,
             LinkGenerator linkGenerator,
@@ -57,7 +56,6 @@ namespace Lombiq.DataTables.Liquid
             T = stringLocalizer;
             _actionsModelT = actionsModelStringLocalizer;
         }
-
 
         public ValueTask<FluidValue> ProcessAsync(FluidValue input, FilterArguments arguments, TemplateContext ctx)
         {

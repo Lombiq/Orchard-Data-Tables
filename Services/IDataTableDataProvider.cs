@@ -31,7 +31,6 @@ namespace Lombiq.DataTables.Services
         /// </summary>
         LocalizedString Description { get; }
 
-
         /// <summary>
         /// Gets an optional collection of permissions. If not null, the user must authorize against at least one.
         /// </summary>

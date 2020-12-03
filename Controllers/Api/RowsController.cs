@@ -17,7 +17,6 @@ namespace Lombiq.DataTables.Controllers.Api
         private readonly IAuthorizationService _authorizationService;
         private readonly IStringLocalizer T;
 
-
         public RowsController(
             IEnumerable<IDataTableDataProvider> dataTableDataProviderAccessor,
             IEnumerable<IDataTableExportService> exportServices,
@@ -29,7 +28,6 @@ namespace Lombiq.DataTables.Controllers.Api
             _authorizationService = authorizationService;
             T = stringLocalizer;
         }
-
 
         /// <summary>
         /// Gets the current table view's rows.

@@ -24,7 +24,6 @@ namespace Lombiq.DataTables.Services
         public string Name => nameof(QueryDataTableDataProvider);
         public LocalizedString Description => T["Query"];
 
-
         public QueryDataTableDataProvider(
             IQueryManager queryManager,
             IContentManager contentManager,
@@ -36,7 +35,6 @@ namespace Lombiq.DataTables.Services
             _logger = logger;
             T = stringLocalizer;
         }
-
 
         public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) => throw new NotSupportedException();
 

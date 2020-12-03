@@ -16,10 +16,8 @@ namespace Lombiq.DataTables.Services
         public string Name => nameof(ExcelDataTableExportService);
         public string DefaultFileName => "export.xlsx";
 
-
         public ExcelDataTableExportService(IStringLocalizer<ExcelDataTableExportService> stringLocalizer) =>
             T = stringLocalizer;
-
 
         public async Task<Stream> ExportAsync(
             IDataTableDataProvider dataProvider,
@@ -51,9 +49,11 @@ namespace Lombiq.DataTables.Services
         /// <param name="results">The data provided for the table.</param>
         /// <param name="localizer">IStringLocalizer instance.</param>
         /// <param name="error">User-facing error message in case something went wrong.</param>
-        /// <param name="customNumberFormat">Custom formatting of columns. The key should be the number of the column
-        /// from left to right. The value should be the format. For example:  Key: 2 Value: "h:mm:ss AM/PM", meaning
-        /// second column ("B" column) and format like 4:42:15 PM.</param>
+        /// <param name="customNumberFormat">
+        /// Custom formatting of columns. The key should be the number of the column from left to right. The value
+        /// should be the format. For example: Key: 2 Value: "h:mm:ss AM/PM", meaning second column ("B" column) and
+        /// format like 4:42:15 PM.
+        /// </param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "Blocker Code Smell",
             "S2368:Public methods should not have multidimensional array parameters",
@@ -109,7 +109,6 @@ namespace Lombiq.DataTables.Services
 
             return Save(workbook);
         }
-
 
         private static void CreateTableCell(IXLCell cell, JToken value, string dateFormat, IStringLocalizer localizer)
         {

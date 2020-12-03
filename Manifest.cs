@@ -9,7 +9,6 @@ using static Lombiq.DataTables.Constants.FeatureIds;
     Website = "https://lombiq.com"
 )]
 
-
 [assembly: Feature(
     Id = DataTables,
     Name = "Data Tables",
