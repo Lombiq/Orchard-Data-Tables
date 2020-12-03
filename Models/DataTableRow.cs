@@ -20,7 +20,6 @@ namespace Lombiq.DataTables.Models
             set => ValuesDictionary[name] = value;
         }
 
-
         public DataTableRow() => ValuesDictionary = new Dictionary<string, JToken>();
 
         public DataTableRow(int id, IDictionary<string, JToken> valuesDictionary)
@@ -28,7 +27,6 @@ namespace Lombiq.DataTables.Models
             Id = id;
             ValuesDictionary = valuesDictionary;
         }
-
 
         public IEnumerable<string> GetValues() =>
             ValuesDictionary.Values.Select(value => value.Value<string>());

@@ -15,7 +15,6 @@ namespace Lombiq.DataTables.Models
         [JsonProperty]
         public IDictionary<string, string> Attributes { get; internal set; } = new Dictionary<string, string>();
 
-
         public ExportLink(string url, JToken text, IDictionary<string, string>? attributes = null)
         {
             Url = url;
@@ -23,9 +22,7 @@ namespace Lombiq.DataTables.Models
             if (attributes != null) Attributes = attributes;
         }
 
-
         public override string ToString() => Text.ToString();
-
 
         public static bool IsInstance(JObject jObject) =>
             jObject[nameof(Type)]?.ToString() == nameof(ExportLink);

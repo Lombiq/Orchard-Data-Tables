@@ -117,7 +117,6 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 0,
             };
 
-
             yield return new object[]
             {
                 "Make last column not exportable.",

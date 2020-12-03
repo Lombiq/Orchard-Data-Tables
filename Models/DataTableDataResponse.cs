@@ -40,7 +40,6 @@ namespace Lombiq.DataTables.Models
         /// </summary>
         public string Error { get; set; }
 
-
         /// <summary>
         /// Creates a new response with only the <see cref="Error"/> filed set.
         /// </summary>

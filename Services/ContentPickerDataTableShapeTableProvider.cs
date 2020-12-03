@@ -9,9 +9,7 @@ namespace Lombiq.DataTables.Services
     {
         private readonly IHttpContextAccessor _hca;
 
-
         public ContentPickerDataTableShapeTableProvider(IHttpContextAccessor hca) => _hca = hca;
-
 
         public void Discover(ShapeTableBuilder builder) =>
             builder

@@ -11,9 +11,7 @@ namespace Lombiq.DataTables.TagHelpers
     {
         private readonly IResourceManager _resourceManager;
 
-
         public DataTableTagHelper(IResourceManager resourceManager) => _resourceManager = resourceManager;
-
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {

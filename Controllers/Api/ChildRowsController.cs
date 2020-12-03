@@ -14,7 +14,6 @@ namespace Lombiq.DataTables.Controllers.Api
         private readonly IAuthorizationService _authorizationService;
         private readonly IStringLocalizer T;
 
-
         public ChildRowsController(
             IEnumerable<IDataTableDataProvider> dataTableDataProviderAccessor,
             IAuthorizationService authorizationService,
@@ -24,7 +23,6 @@ namespace Lombiq.DataTables.Controllers.Api
             _authorizationService = authorizationService;
             T = stringLocalizer;
         }
-
 
         public async Task<ActionResult<DataTableChildRowResponse>> Get(int contentItemId, string dataProvider)
         {

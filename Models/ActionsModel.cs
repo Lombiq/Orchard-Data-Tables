@@ -14,7 +14,6 @@ namespace Lombiq.DataTables.Models
         public IEnumerable<ExportLink> MenuItems { get; set; }
         public bool WithDefaults { get; set; } = true;
 
-
         public IEnumerable<ExportLink> GetAllMenuItems(
             HttpContext context,
             LinkGenerator linkGenerator,

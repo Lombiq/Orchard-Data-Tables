@@ -9,10 +9,8 @@ namespace Lombiq.DataTables.Migrations
     {
         private readonly IContentDefinitionManager _contentDefinitionManager;
 
-
         public ColumnsDefinitionMigrations(IContentDefinitionManager contentDefinitionManager) =>
             _contentDefinitionManager = contentDefinitionManager;
-
 
         public int Create()
         {
