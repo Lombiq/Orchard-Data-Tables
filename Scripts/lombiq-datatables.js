@@ -81,6 +81,10 @@
 
             plugin.originalQueryStringParameters = new URI().search(true);
 
+            if (!plugin.settings.queryStringParametersLocalStorageKey) {
+                plugin.settings.queryStringParametersLocalStorageKey = "DataTables_" + window.location.pathname;
+            }
+
             var dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
 
             dataTablesOptions.rowCallback = function (row, data, index) {
@@ -129,9 +133,8 @@
                             colReorderArray["ColReorder"] = additionalQueryStringParameters.ColReorder;
 
                             $.extend(true, extendedParameters, colReorderArray);
-                            localStorage.setItem(
-                                plugin.settings.queryStringParametersLocalStorageKey,
-                                JSON.stringify(extendedParameters));
+
+                            plugin.setQueryStringParameters(extendedParameters);
                         }
 
                         return plugin.buildQueryStringParameters(extendedParameters);
@@ -150,13 +153,7 @@
 
             // Load the datatable state from the custom local storage.
             dataTablesOptions.stateLoadCallback = function (settings, callback) {
-                var queryStringParametersLocalStorageKey = plugin.settings.queryStringParametersLocalStorageKey;
-
-                if (!queryStringParametersLocalStorageKey) {
-                    queryStringParametersLocalStorageKey = "DataTables_" + window.location.pathname;
-                }
-
-                var additionalQueryStringParameters = JSON.parse(localStorage.getItem(queryStringParametersLocalStorageKey));
+                var additionalQueryStringParameters = plugin.getQueryStringParameters();
                 settings.oLoadedState = additionalQueryStringParameters;
 
                 return additionalQueryStringParameters;
@@ -166,22 +163,14 @@
             plugin.dataTableApi = plugin.dataTableElement.api();
 
             plugin.dataTableElement.on("column-reorder.dt", function (e, settings, details) {
-                var queryStringParametersLocalStorageKey = plugin.settings.queryStringParametersLocalStorageKey;
-
-                if (!queryStringParametersLocalStorageKey) {
-                    queryStringParametersLocalStorageKey = "DataTables_" + window.location.pathname;
-                }
-
-                var additionalQueryStringParameters = localStorage.getItem(queryStringParametersLocalStorageKey);
+                var additionalQueryStringParameters = localStorage.getItem(plugin.settings.queryStringParametersLocalStorageKey);
                 additionalQueryStringParameters = !additionalQueryStringParameters ? {} : JSON.parse(additionalQueryStringParameters);
                 var colReorderArray = {};
                 colReorderArray["ColReorder"] = plugin.dataTableApi.colReorder.order();
 
                 $.extend(true, additionalQueryStringParameters, colReorderArray);
 
-                localStorage.setItem(
-                    queryStringParametersLocalStorageKey,
-                    JSON.stringify(additionalQueryStringParameters));
+                plugin.setQueryStringParameters(additionalQueryStringParameters);
             });
 
             // Register toggle button click listeners if child rows are enabled.
@@ -223,6 +212,20 @@
                 plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
                 plugin.fetchRowsProgressively();
             }
+        },
+
+        /* Retrieves the additional query string parameters from local storage and deserializes if they are valid. */
+        getQueryStringParameters: function () {
+            var additionalQueryStringParameters = localStorage.getItem(this.settings.queryStringParametersLocalStorageKey);
+
+            additionalQueryStringParameters = !additionalQueryStringParameters ? {} : JSON.parse(additionalQueryStringParameters);
+
+            return additionalQueryStringParameters;
+        },
+
+        /* Stores the additional query string parameters in local storage. */
+        setQueryStringParameters: function (queryStringParameters) {
+            localStorage.setItem(this.settings.queryStringParametersLocalStorageKey, JSON.stringify(queryStringParameters));
         },
 
         /**
