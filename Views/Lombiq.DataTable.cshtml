@@ -90,7 +90,7 @@
     ; (function ($) {
         $(function () {
             var templates = {};
-            $(".@templatesElementName > div[data-id]").each(function(index, element) {
+            $('.@templatesElementName > div[data-id]').each(function(index, element) {
                 templates[element.getAttribute('data-id')] = element.innerHTML.replace(/%7B%7Bdata%7D%7D/g, '@templatePlaceholder');
                 element.parentElement.removeChild(element);
             });
@@ -114,16 +114,16 @@
                 </text>
             }
 
-            var plugin = $("#@dataTableId").lombiq_DataTables({
-                rowClassName: "@ElementNames.DataTableRowElementName",
+            var plugin = $('#@dataTableId').lombiq_DataTables({
+                rowClassName: '@ElementNames.DataTableRowElementName',
                 @if (!string.IsNullOrWhiteSpace(queryId))
                 {
                     <text>
                         queryId: @Json.Serialize(queryId),
                     </text>
                 }
-                dataProvider: "@dataProvider",
-                rowsApiUrl: "@rowApiUrl",
+                dataProvider: '@dataProvider',
+                rowsApiUrl: '@rowApiUrl',
                 export: @Json.Serialize(new
                     {
                         textAll = T["Export All"].Value,
@@ -135,10 +135,10 @@
                         yes = T["Yes"].Value,
                         no = T["No"].Value,
                     }),
-                errorsSelector: ".@errorsElementName",
+                errorsSelector: '.@errorsElementName',
                 dataTablesOptions: dataTablesOptions,
                 serverSidePagingEnabled: @(progressiveLoadingEnabled ? "false" : "true"),
-                queryStringParametersLocalStorageKey: "@queryStringParametersLocalStorageKey",
+                queryStringParametersLocalStorageKey: '@queryStringParametersLocalStorageKey',
                 progressiveLoadingOptions: {
                     progressiveLoadingEnabled: @(progressiveLoadingEnabled ? "true" : "false"),
                     @if (progressiveLoadingEnabled)
@@ -155,10 +155,10 @@
                     {
                         <text>
                             asyncLoading: true,
-                            apiUrl: "@childRowApiUrl",
-                            childRowClassName: "@childRowElementName",
-                            toggleChildRowButtonClassName: "@toggleChildRowButtonElementName",
-                            childRowVisibleClassName: "@rowElementWithChildRowVisibleModifier",
+                            apiUrl: '@childRowApiUrl',
+                            childRowClassName: '@childRowElementName',
+                            toggleChildRowButtonClassName: '@toggleChildRowButtonElementName',
+                            childRowVisibleClassName: '@rowElementWithChildRowVisibleModifier',
                         </text>
                     }
                 },
@@ -166,7 +166,7 @@
             });
 
             window.dataTableResources.created(
-                    $("#@dataTableId").parents(".@ElementNames.DataTableWrapperDefaultElementName"),
+                    $('#@dataTableId').parents('.@ElementNames.DataTableWrapperDefaultElementName'),
                     plugin);
         });
     })(jQuery);
