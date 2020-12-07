@@ -9,7 +9,7 @@ namespace Lombiq.DataTables.Tests.Helpers
 {
     public static class MockDataProviderHelper
     {
-        public static (IDataTableDataProvider, DataTableDataRequest) GetProviderAndRequest(
+        public static (IDataTableDataProvider Provider, DataTableDataRequest Request) GetProviderAndRequest(
             string note,
             object[][] dataSet,
             (string Name, string Text, bool Exportable)[] columns,
