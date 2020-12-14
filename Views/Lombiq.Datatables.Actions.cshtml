@@ -10,8 +10,8 @@
         @foreach (ExportLink menuItem in Model.ExportLinks)
         {
             var attributes = string.Join(
-                ' ',
-                menuItem.Attributes?.Select(attribute => $' {attribute.Key}="{attribute.Value}"') ?? Enumerable.Empty<string>());
+                " ",
+                menuItem.Attributes?.Select(attribute => $" {attribute.Key}=\"{attribute.Value}\"") ?? Enumerable.Empty<string>());
             <a class="dropdown-item btn-sm" href="@menuItem.Url" @Html.Raw(attributes)>
                 @menuItem.Text
             </a>
