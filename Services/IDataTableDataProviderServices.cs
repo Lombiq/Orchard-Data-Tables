@@ -6,6 +6,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Lombiq.DataTables.Services
 {
+    /// <summary>
+    /// Bundle of services that are always needed in <see cref="IDataTableDataProvider"/> implementations.
+    /// </summary>
     [SuppressMessage(
         "StyleCop.CSharp.DocumentationRules",
         "SA1600:Elements should be documented",
