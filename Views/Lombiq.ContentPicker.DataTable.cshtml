@@ -52,7 +52,7 @@
     }
 </div>
 
-<script>
+<script type="text/javascript">
     ; (function ($) {
         $(function () {
             var hasParent = parent != null;
@@ -71,23 +71,23 @@
             contentPicker = hasParent ? parent.contentPicker : window.contentPicker;
             contentPicker.finish = false;
 
-            var $selectedIdsElement = $('.js-@selectedContentIdsElementName');
+            var $selectedIdsElement = $(".js-@selectedContentIdsElementName");
 
-            $('.js-@defaultBlockName').on('change', '.js-@contentSelectorElementName', function () {
-                var contentItemId = parseInt($(this).closest('.@ElementNames.DataTableRowElementName').attr('data-contentItemId'));
+            $(".js-@defaultBlockName").on("change", ".js-@contentSelectorElementName", function () {
+                var contentItemId = parseInt($(this).closest(".@ElementNames.DataTableRowElementName").attr("data-contentItemId"));
 
                 @if (singleChoice)
                 {
                     <text>
-                        $('.js-@defaultBlockName .js-@contentSelectorElementName').not(this).each(function () {
+                        $(".js-@defaultBlockName .js-@contentSelectorElementName").not(this).each(function () {
                             if (this.checked) {
                                 var contentItemIdToRemove = parseInt(
-                                    $(this).closest('.@ElementNames.DataTableRowElementName').attr('data-contentItemId'));
+                                    $(this).closest(".@ElementNames.DataTableRowElementName").attr("data-contentItemId"));
                                 contentPicker.selectedContentItemIds = $.grep(contentPicker.selectedContentItemIds, function (value) {
                                     return value != contentItemIdToRemove;
                                 })
 
-                                $(this).prop('checked', false);
+                                $(this).prop("checked", false);
                             }
                         });
                     </text>
@@ -104,27 +104,27 @@
 
                 $selectedIdsElement.val(JSON.stringify(contentPicker.selectedContentItemIds));
 
-                $(document).trigger('@ContentPickerJavaScriptEvents.Change');
+                $(document).trigger("@ContentPickerJavaScriptEvents.Change");
             });
 
             @if (!hideActions)
             {
                 <text>
                     if (contentPicker.cancelButtonContent) {
-                        $('.js-@cancelActionElementName').html(parent.contentPicker.cancelButtonContent);
+                        $(".js-@cancelActionElementName").html(parent.contentPicker.cancelButtonContent);
                     }
 
                     if (contentPicker.finishButtonContent) {
-                        $('.js-@submitActionElementName').html(parent.contentPicker.finishButtonContent);
+                        $(".js-@submitActionElementName").html(parent.contentPicker.finishButtonContent);
                     }
 
-                    $('.js-@cancelActionElementName').on('click', function () {
+                    $(".js-@cancelActionElementName").on("click", function () {
                         if (hasParent) {
                             parent.jQuery.fn.colorbox.close();
                         }
                     });
 
-                    $('.js-@submitActionElementName').on('click', function () {
+                    $(".js-@submitActionElementName").on("click", function () {
                         if (hasParent) {
                             contentPicker.finish = true;
                             parent.jQuery.colorbox.close();
@@ -136,15 +136,14 @@
             function createCheckboxElementHtml(contentItemId) {
                 var checked = contentPicker.selectedContentItemIds.indexOf(contentItemId) > -1;
 
-                return '<label class="@(dataTableCheckboxBlockName)__label"><input type="checkbox" class="checkbox @contentSelectorElementName js-@contentSelectorElementName @(dataTableCheckboxBlockName)__input" ' + (checked ? "checked" : "") + ' /><span class="@(dataTableCheckboxBlockName)__indicator"></span></label>';
-
+                return "<label class=\"@(dataTableCheckboxBlockName)__label\"><input type=\"checkbox\" class=\"checkbox @contentSelectorElementName js-@contentSelectorElementName @(dataTableCheckboxBlockName)__input\" " + (checked ? "checked" : "") + " /><span class=\"@(dataTableCheckboxBlockName)__indicator\"></span></label>";
             }
 
-            $('#@dataTableId').lombiq_DataTables({
-                rowClassName: '@ElementNames.DataTableRowElementName',
+            $("#@dataTableId").lombiq_DataTables({
+                rowClassName: "@ElementNames.DataTableRowElementName",
                 queryId: @Html.Raw(JsonConvert.SerializeObject(queryId)),
-                dataProvider: '@dataProvider',
-                rowsApiUrl: '@rowApiUrl',
+                dataProvider: "@dataProvider",
+                rowsApiUrl: "@rowApiUrl",
                 dataTablesOptions: {
                     @if (pageSize > 0)
                     {
@@ -153,15 +152,15 @@
                         </text>
                     }
                     language: {
-                        processing: '<div class="@loadingIndicatorElementName">@T["Processing..."]</div>'
+                        processing: "<div class=\"@loadingIndicatorElementName\">@T["Processing..."]</div>"
                     },
-                    order: [[@(columns.Any(column => column.Orderable) ? columns.ToList().FindIndex(column => column.Orderable) : 1), 'asc']]
+                    order: [[@(columns.Any(column => column.Orderable) ? columns.ToList().FindIndex(column => column.Orderable) : 1), "asc"]]
                 },
                 serverSidePagingEnabled: true,
                 callbacks: {
                     ajaxDataLoadedCallback: function (response) {
                         $.each(response.data, function (index, value) {
-                            value['@pickerInputDataName'] = createCheckboxElementHtml(value.id);
+                            value["@pickerInputDataName"] = createCheckboxElementHtml(value.id);
                         });
                     }
                 }
