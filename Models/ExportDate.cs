@@ -1,12 +1,20 @@
 using Newtonsoft.Json.Linq;
 using NodaTime;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Lombiq.DataTables.Models
 {
     public class ExportDate
     {
-        public static string Type => nameof(ExportDate);
+        // While the warning doesn't show up in VS it does with dotnet build.
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+        [SuppressMessage(
+            "Performance",
+            "CA1822:Mark members as static",
+            Justification = "It's necessary to be instance-level for JSON serialization.")]
+#pragma warning restore IDE0079 // Remove unnecessary suppression
+        public string Type => nameof(ExportDate);
 
         public int Year { get; set; }
         public int Month { get; set; }
