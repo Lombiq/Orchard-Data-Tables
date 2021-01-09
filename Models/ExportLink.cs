@@ -8,7 +8,7 @@ namespace Lombiq.DataTables.Models
 {
     public class ExportLink
     {
-        public string Type => nameof(ExportLink);
+        public static string Type => nameof(ExportLink);
         public string Url { get; set; }
         public JToken Text { get; set; }
 

@@ -6,7 +6,7 @@ namespace Lombiq.DataTables.Models
 {
     public class ExportDate
     {
-        public string Type => nameof(ExportDate);
+        public static string Type => nameof(ExportDate);
 
         public int Year { get; set; }
         public int Month { get; set; }
