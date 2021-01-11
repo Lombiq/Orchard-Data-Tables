@@ -4,6 +4,21 @@ const distBasePath = './wwwroot/';
 module.exports = {
     vendorAssets: [
         {
+            name: 'datatables.net-bs4-css',
+            path: nodeModulesBasePath + 'datatables.net-bs4/css/*'
+        },
+        
+        {
+            name: 'datatables.net-bs4-css',
+            path: nodeModulesBasePath + 'datatables.net-buttons-bs4/css/*'
+        }
+    ],
+    vendorJsAssets: [
+        {
+            name: 'datatables.net-bs4-js',
+            path: nodeModulesBasePath + 'datatables.net-buttons-bs4/js/*'
+        },
+        {
             name: 'datatables.net',
             path: nodeModulesBasePath + 'datatables.net/js/*'
         },
@@ -16,22 +31,19 @@ module.exports = {
             path: nodeModulesBasePath + 'datatables.net-bs4/js/*'
         },
         {
-            name: 'datatables.net-bs4-css',
-            path: nodeModulesBasePath + 'datatables.net-bs4/css/*'
-        },
-        {
-            name: 'datatables.net-bs4-js',
-            path: nodeModulesBasePath + 'datatables.net-buttons-bs4/js/*'
-        },
-        {
-            name: 'datatables.net-bs4-css',
-            path: nodeModulesBasePath + 'datatables.net-buttons-bs4/css/*'
-        },
-        {
             name: 'urijs',
             path: nodeModulesBasePath + 'urijs/src/**'
         }
     ],
+    scriptsVendor: [
+        {
+            name: 'jsV',
+            path: nodeModulesBasePath + '**/**/*.js'
+        }
+    ],
+    scriptsLombiq: {
+        base: './Assets/Scripts/'
+    },
     lombiqAssets: [
         {
             name: 'jquery-datatables-autoinit',
