@@ -16,19 +16,19 @@ module.exports = {
     vendorJsAssets: [
         {
             name: 'datatables.net-bs4-js',
-            path: nodeModulesBasePath + 'datatables.net-buttons-bs4/js/*'
+            path: nodeModulesBasePath + 'datatables.net-buttons-bs4/js/'
         },
         {
             name: 'datatables.net',
-            path: nodeModulesBasePath + 'datatables.net/js/*'
+            path: nodeModulesBasePath + 'datatables.net/js/'
         },
         {
             name: 'datatables.net-buttons',
-            path: nodeModulesBasePath + 'datatables.net-buttons/js/*'
+            path: nodeModulesBasePath + 'datatables.net-buttons/js/'
         },
         {
             name: 'datatables.net-bs4-js',
-            path: nodeModulesBasePath + 'datatables.net-bs4/js/*'
+            path: nodeModulesBasePath + 'datatables.net-bs4/js/'
         },
         {
             name: 'urijs',
@@ -41,9 +41,6 @@ module.exports = {
             path: nodeModulesBasePath + '**/**/*.js'
         }
     ],
-    scriptsLombiq: {
-        base: './Assets/Scripts/'
-    },
     lombiqAssets: [
         {
             name: 'jquery-datatables-autoinit',
