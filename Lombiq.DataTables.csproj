@@ -29,7 +29,7 @@
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.95.3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.0.0" />
+    <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.0" />
     <PackageReference Include="OrchardCore.Contents" Version="1.0.0-rc2-13929" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="1.0.0-rc2-13929" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0-rc2-13929" />
