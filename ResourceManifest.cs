@@ -1,4 +1,5 @@
 using Lombiq.DataTables.Constants;
+using OrchardCore.ResourceManagement;
 
 namespace Lombiq.DataTables
 {
