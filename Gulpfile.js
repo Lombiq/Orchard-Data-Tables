@@ -6,21 +6,11 @@ const jsTargets = require('../../Utilities/Lombiq.Gulp.Extensions/Tasks/js-targe
 const copyAssets = require('./Gulp/tasks/copy-assets');
 
 gulp.task('copy:vendor-assets', () => copyAssets(paths.vendorAssets, paths.dist.vendors));
-gulp.task('copy:lombiq-assets', () => copyAssets(paths.lombiqAssets, paths.dist.lombiq));
-gulp.task('default', gulp.parallel('copy:vendor-assets', 'copy:lombiq-assets'));
-
-
-
-
-gulp.task('build:js-vendor-assets',
-    () => jsTargets.compileDir('./node_modules/**/**/', paths.dist.vendors));
-
-
-
 gulp.task('build:jquery',
-    () => jsTargets.compileOne('./Assets/Scripts/jquery-datatables-autoinit.js', './wwwroot/lombiq/jquery-datatables-autoinit'));
+    () => jsTargets.compileOne(paths.lombiqJquery.path, paths.lombiqJquery.dest));
 gulp.task('build:contentpicker',
-    () => jsTargets.compileOne('./Assets/Scripts/lombiq-contentpicker.js', './wwwroot/lombiq/lombiq-contentpicker'));
+    () => jsTargets.compileOne(paths.lombiqContentpicker.path, paths.lombiqContentpicker.dest));
 gulp.task('build:datatables',
-    () => jsTargets.compileOne('./Assets/Scripts/lombiq-datatables.js', './wwwroot/lombiq/lombiq-datatables'));
-gulp.task('build:js-lombiq', gulp.parallel('build:jquery', 'build:contentpicker', 'build:datatables'));
+    () => jsTargets.compileOne(paths.lombiqDatatables.path, paths.lombiqDatatables.dest));
+gulp.task('build:lombiq-js', gulp.parallel('build:jquery', 'build:contentpicker', 'build:datatables'));
+gulp.task('default', gulp.parallel('copy:vendor-assets', 'build:lombiq-js'));
