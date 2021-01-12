@@ -1,5 +1,4 @@
 using Lombiq.DataTables.Constants;
-using OrchardCore.ResourceManagement;
 
 namespace Lombiq.DataTables
 {
@@ -79,7 +78,7 @@ namespace Lombiq.DataTables
 
             manifest
                 .DefineScript(ResourceNames.LombiqContentPicker)
-                .SetUrl("~/Lombiq.DataTables/Scripts/lombiq-contentpicker.js")
+                .SetUrl("~/Lombiq.DataTables/Scripts/lombiq/lombiq-contentpicker.js")
                 .SetDependencies("jQueryColorBox");
 
             manifest
