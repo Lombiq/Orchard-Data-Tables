@@ -34,20 +34,9 @@ module.exports = {
             path: nodeModulesBasePath + 'urijs/src/**'
         }
     ],
-    lombiqJquery: {
-        name: 'jquery-datatables-autoinit',
-        path: lombiqBasePath + 'jquery-datatables-autoinit.js',
-        dest: lombiqDistPath + 'jquery-datatables-autoinit'
-    },
-    lombiqContentpicker: {
-        name: 'lombiq-contentpicker',
-        path: lombiqBasePath + 'lombiq-contentpicker.js',
-        dest: lombiqDistPath + 'lombiq-contentpicker'
-    },
-    lombiqDatatables: {
-        name: 'lombiq-datatables',
-        path: lombiqBasePath + 'lombiq-datatables.js',
-        dest: lombiqDistPath + 'lombiq-datatables'
+    lombiqAssets: {
+        base: lombiqBasePath,
+        all: lombiqBasePath + '**/*.js'
     },
     dist: {
         vendors: distBasePath + 'vendors/',
