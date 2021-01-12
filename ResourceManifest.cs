@@ -62,7 +62,7 @@ namespace Lombiq.DataTables
             manifest
                 .DefineScript(ResourceNames.DataTables.AutoInit)
                 .SetDependencies(ResourceNames.DataTables.Bootstrap4, ResourceNames.DataTables.Bootstrap4Buttons)
-                .SetUrl("~/Lombiq.DataTables/lombiq/jquery-datatables-autoinit/jquery-datatables-autoinit.js")
+                .SetUrl("~/Lombiq.DataTables/lombiq/jquery-datatables-autoinit.js")
                 .SetVersion("1.0");
 
             manifest
@@ -74,12 +74,12 @@ namespace Lombiq.DataTables
                     ResourceNames.DataTables.Bootstrap4,
                     ResourceNames.DataTables.Buttons,
                     ResourceNames.DataTables.Bootstrap4Buttons)
-                .SetUrl("~/Lombiq.DataTables/lombiq/lombiq-datatables/lombiq-datatables.js")
+                .SetUrl("~/Lombiq.DataTables/lombiq/lombiq-datatables.js")
                 .SetVersion("1.0");
 
             manifest
                 .DefineScript(ResourceNames.LombiqContentPicker)
-                .SetUrl("~/Lombiq.DataTables/Scripts/lombiq-contentpicker.js")
+                .SetUrl("~/Lombiq.DataTables/Scripts/lombiq/lombiq-contentpicker.js")
                 .SetDependencies("jQueryColorBox");
 
             manifest

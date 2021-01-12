@@ -7,10 +7,10 @@
  */
 
 ; (function ($, window, document, undefined) {
-    "use strict";
+    'use strict';
 
-    var pluginName = "lombiq_DataTables";
-    var useDefaultButtons = "useDefaultButtons";
+    var pluginName = 'lombiq_DataTables';
+    var useDefaultButtons = 'useDefaultButtons';
 
     var defaults = {
         dataTablesOptions: {
@@ -26,26 +26,26 @@
                 "<'row dataTables_footer'<'col-md-12'ip>>",
             buttons: useDefaultButtons
         },
-        rowClassName: "",
-        queryId: "",
-        dataProvider: "",
-        rowsApiUrl: "",
+        rowClassName: '',
+        queryId: '',
+        dataProvider: '',
+        rowsApiUrl: '',
         serverSidePagingEnabled: false,
-        queryStringParametersLocalStorageKey: "",
+        queryStringParametersLocalStorageKey: '',
         templates: {},
         errorsSelector: null,
         childRowOptions: {
             childRowsEnabled: false,
             asyncLoading: false,
-            apiUrl: "",
-            childRowDisplayType: "",
+            apiUrl: '',
+            childRowDisplayType: '',
             additionalDataTablesOptions: {
-                "columnDefs": [{ "orderable": false, targets: 0 }],
-                "order": [[1, 'asc']]
+                'columnDefs': [{ 'orderable': false, targets: 0 }],
+                'order': [[1, 'asc']]
             },
-            childRowClassName: "",
-            toggleChildRowButtonClassName: "",
-            childRowVisibleClassName: ""
+            childRowClassName: '',
+            toggleChildRowButtonClassName: '',
+            childRowVisibleClassName: ''
         },
         progressiveLoadingOptions: {
             progressiveLoadingEnabled: false,
@@ -72,14 +72,14 @@
     $.extend(Plugin.prototype, {
         dataTableElement: null,
         dataTableApi: null,
-        originalQueryStringParameters: "",
+        originalQueryStringParameters: '',
 
         /**
          * Initializes the Lombiq DataTable plugin where the jQuery DataTables plugin will be also initialized.
          */
         init: function () {
             var plugin = this;
-            var stateJson = "{}";
+            var stateJson = '{}';
 
             plugin.customizeAjaxParameters = function (parameters) { return parameters };
             plugin.originalQueryStringParameters = new URI().search(true);
@@ -90,7 +90,7 @@
                 if (data.id) {
                     $(row)
                         .addClass(plugin.settings.rowClassName)
-                        .attr("data-contentitemid", data.id);
+                        .attr('data-contentitemid', data.id);
                 }
             };
 
@@ -102,16 +102,16 @@
 
             // Conditional renderer.
             dataTablesOptions.columnDefs = [{
-                targets: "_all",
+                targets: '_all',
                 render: function (data) {
-                    if (data == null) return "";
+                    if (data == null) return '';
 
                     // If data is Boolean.
                     if (data === !!data) return data ? plugin.settings.texts.yes : plugin.settings.texts.no;
 
-                    if ($.isArray(data)) return data.join(", ")
+                    if ($.isArray(data)) return data.join(', ')
 
-                    var isString = typeof data === "string";
+                    var isString = typeof data === 'string';
 
                     // If data is ISO date.
                     if (isString && data.match(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.?\d*([+-][0-2]\d:[0-5]\d|Z)/)) {
@@ -128,8 +128,8 @@
                     }
 
                     switch (data.Type) {
-                        case "ExportLink": return "<a href=\"" + data.Url + "\">" + data.Text + "</a>";
-                        case "ExportDate": return convertDate(new Date(data.Year, data.Month - 1, data.Day));
+                        case 'ExportLink': return '<a href="' + data.Url + '">' + data.Text + '</a>';
+                        case 'ExportDate': return convertDate(new Date(data.Year, data.Month - 1, data.Day));
                     }
 
                     return data;
@@ -146,10 +146,10 @@
             };
 
             if (plugin.settings.childRowOptions.childRowsEnabled) {
-                dataTablesOptions.order = [[1, "asc"]];
+                dataTablesOptions.order = [[1, 'asc']];
                 dataTablesOptions.columnDefs.push({
                     orderable: false,
-                    defaultContent: "<div class=\"btn button " + plugin.settings.childRowOptions.toggleChildRowButtonClassName + "\"></div>",
+                    defaultContent: '<div class="btn button ' + plugin.settings.childRowOptions.toggleChildRowButtonClassName + '"></div>',
                     targets: 0
                 });
             }
@@ -159,7 +159,7 @@
                 !plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
                 dataTablesOptions.serverSide = true;
                 dataTablesOptions.ajax = {
-                    method: "GET",
+                    method: 'GET',
                     url: plugin.settings.rowsApiUrl,
                     data: function (params) {
                         var internalParameters = plugin.cleanUpDataTablesAjaxParameters(params);
@@ -181,11 +181,11 @@
                         if (plugin.settings.errorsSelector) $(plugin.settings.errorsSelector).hide();
 
                         if (!jsonParameters || !jsonParameters.match || jsonParameters.match(/^\s*$/)) {
-                            alert("jsonParameters is null or empty!\n" +
-                                "params:\n" + JSON.stringify(params) + "\n" +
-                                "internalParameters:\n" + JSON.stringify(internalParameters) + "\n" +
-                                "extendedParameters:\n" + JSON.stringify(extendedParameters) + "\n" +
-                                "jsonParameters:\n" + JSON.stringify(jsonParameters) + "\n"
+                            alert('jsonParameters is null or empty!\n' +
+                                'params:\n' + JSON.stringify(params) + '\n' +
+                                'internalParameters:\n' + JSON.stringify(internalParameters) + '\n' +
+                                'extendedParameters:\n' + JSON.stringify(extendedParameters) + '\n' +
+                                'jsonParameters:\n' + JSON.stringify(jsonParameters) + '\n'
                             );
                         }
                         return plugin.buildQueryStringParameters({ requestJson: jsonParameters });
@@ -237,14 +237,14 @@
 
             // Register toggle button click listeners if child rows are enabled.
             if (plugin.settings.childRowOptions.childRowsEnabled) {
-                plugin.dataTableElement.on("click", "." + plugin.settings.childRowOptions.toggleChildRowButtonClassName, function () {
-                    var parentRowElement = $(this).closest("tr");
+                plugin.dataTableElement.on('click', '.' + plugin.settings.childRowOptions.toggleChildRowButtonClassName, function () {
+                    var parentRowElement = $(this).closest('tr');
 
                     if (plugin.settings.childRowOptions.asyncLoading) {
-                        var contentItemId = parentRowElement.attr("data-contentitemid");
+                        var contentItemId = parentRowElement.attr('data-contentitemid');
 
                         $.ajax({
-                            type: "GET",
+                            type: 'GET',
                             url: plugin.settings.childRowOptions.apiUrl,
                             data: {
                                 contentItemId: contentItemId,
@@ -262,7 +262,7 @@
                         });
                     }
                     else {
-                        var childRowContent = $("[data-parent='" + parentRowElement.attr("id") + "']").html();
+                        var childRowContent = $('[data-parent="' + parentRowElement.attr('id') + '"]').html();
 
                         plugin.toggleChildRow(parentRowElement, childRowContent);
                     }
@@ -288,7 +288,7 @@
                 var orderData = parameters.order[i];
                 var columnIndex = orderData.column;
                 orderData.column = parameters.columns[columnIndex].name;
-                orderData.direction = orderData.dir === "asc" ? "ascending" : "descending";
+                orderData.direction = orderData.dir === 'asc' ? 'ascending' : 'descending';
                 delete orderData.dir;
             }
 
@@ -370,7 +370,7 @@
          * @returns {object} Merged query string parameters.
          */
         buildQueryStringParameters: function (data) {
-            var finalQueryString = "";
+            var finalQueryString = '';
 
             // This is necessary to preserve the original structure of the initial query string:
             // Traditional encoding ensures that if a key has multiple values (e.g. "?name=value1&name=value2"),
@@ -378,7 +378,7 @@
             var originalQueryStringEncoded = $.param(this.originalQueryStringParameters, true);
 
             if (originalQueryStringEncoded) {
-                finalQueryString += originalQueryStringEncoded + "&";
+                finalQueryString += originalQueryStringEncoded + '&';
             }
 
             finalQueryString += $.param(data);
@@ -396,7 +396,7 @@
             var plugin = this;
 
             $.ajax({
-                type: "GET",
+                type: 'GET',
                 url: options.apiUrl,
                 data: plugin.buildQueryStringParameters({
                     queryId: options.queryId,
@@ -488,14 +488,14 @@
         // "map" makes it possible to return the already existing or currently initialized plugin instances.
         return this.map(function () {
             // If "options" is defined, but the plugin is not instantiated on this element ...
-            if (options && !$.data(this, "plugin_" + pluginName)) {
+            if (options && !$.data(this, 'plugin_' + pluginName)) {
                 // ... then create a plugin instance ...
-                $.data(this, "plugin_" + pluginName, new Plugin($(this), options));
+                $.data(this, 'plugin_' + pluginName, new Plugin($(this), options));
             }
 
             // ... and then return the plugin instance, which might be null
-            // if the plugin is not instantiated on this element and "options" is undefined.
-            return $.data(this, "plugin_" + pluginName);
+            // if the plugin is not instantiated on this element and 'options' is undefined.
+            return $.data(this, 'plugin_' + pluginName);
         });
     };
 })(jQuery, window, document);

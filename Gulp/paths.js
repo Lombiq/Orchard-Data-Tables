@@ -1,5 +1,7 @@
 const nodeModulesBasePath = './node_modules/';
 const distBasePath = './wwwroot/';
+const lombiqBasePath = './Assets/Scripts/';
+const lombiqDistPath = distBasePath + 'lombiq/';
 
 module.exports = {
     vendorAssets: [
@@ -32,20 +34,10 @@ module.exports = {
             path: nodeModulesBasePath + 'urijs/src/**'
         }
     ],
-    lombiqAssets: [
-        {
-            name: 'jquery-datatables-autoinit',
-            path: './Assets/Scripts/jquery-datatables-autoinit.js'
-        },
-        {
-            name: 'lombiq-contentpicker',
-            path: './Assets/Scripts/lombiq-contentpicker.js'
-        },
-        {
-            name: 'lombiq-datatables',
-            path: './Assets/Scripts/lombiq-datatables.js'
-        }
-    ],
+    lombiqAssets: {
+        base: lombiqBasePath,
+        all: lombiqBasePath + '**/*.js'
+    },
     dist: {
         vendors: distBasePath + 'vendors/',
         lombiq: distBasePath + 'lombiq/'

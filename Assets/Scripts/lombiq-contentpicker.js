@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @summary     Lombiq - Content Picker
  * @description Initializes a content picker shape and uses the parent window as the container of the content picker settings.
  * @version     1.0
@@ -7,14 +7,14 @@
  */
 
 ; (function ($, window, document, undefined) {
-    "use strict";
+    'use strict';
 
-    var pluginName = "lombiq_ContentPicker";
+    var pluginName = 'lombiq_ContentPicker';
 
     var defaults = {
-        url: "",
-        finishButtonContent: "",
-        cancelButtonContent: "",
+        url: '',
+        finishButtonContent: '',
+        cancelButtonContent: '',
         displayColorboxBorder: true,
         finishCallback: function (contentPicker) { },
         cancelCallback: function (contentPicker) { },
@@ -24,10 +24,10 @@
         },
         colorboxSettings: {
             iframe: true,
-            width: "1000px",
-            height: "80%",
-            maxWidth: "95%",
-            maxHeight: "80%",
+            width: '1000px',
+            height: '80%',
+            maxWidth: '95%',
+            maxHeight: '80%',
             fixed: true,
             fastIframe: false,
             closeButton: false
@@ -55,19 +55,19 @@
             },
             onOpen: function () {
                 if (!plugin.settings.displayColorboxBorder) {
-                    $("#cboxTopLeft").hide();
-                    $("#cboxTopRight").hide();
-                    $("#cboxBottomLeft").hide();
-                    $("#cboxBottomRight").hide();
-                    $("#cboxMiddleLeft").hide();
-                    $("#cboxMiddleRight").hide();
-                    $("#cboxTopCenter").hide();
-                    $("#cboxBottomCenter").hide();
+                    $('#cboxTopLeft').hide();
+                    $('#cboxTopRight').hide();
+                    $('#cboxBottomLeft').hide();
+                    $('#cboxBottomRight').hide();
+                    $('#cboxMiddleLeft').hide();
+                    $('#cboxMiddleRight').hide();
+                    $('#cboxTopCenter').hide();
+                    $('#cboxBottomCenter').hide();
                 }
             },
             onLoad: function () {
                 if (!plugin.settings.displayColorboxBorder) {
-                    $("#cboxLoadedContent").css("margin-bottom", "0");
+                    $('#cboxLoadedContent').css('margin-bottom', '0');
                 }
             }
         });
@@ -78,7 +78,7 @@
         function resizeColorBox() {
             if (resizeTimer) clearTimeout(resizeTimer);
             resizeTimer = setTimeout(function () {
-                if (jQuery("#cboxOverlay").is(":visible")) {
+                if (jQuery('#cboxOverlay').is(':visible')) {
                     jQuery.colorbox.resize({
                         width: window.innerWidth > parseInt(plugin.settings.colorboxSettings.width)
                             ? plugin.settings.colorboxSettings.width
@@ -93,6 +93,6 @@
 
         // Resize Colorbox when resizing window or changing mobile device orientation.
         jQuery(window).resize(resizeColorBox);
-        window.addEventListener("orientationchange", resizeColorBox, false);
+        window.addEventListener('orientationchange', resizeColorBox, false);
     };
 })(jQuery, window, document);
