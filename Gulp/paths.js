@@ -36,19 +36,16 @@ module.exports = {
     ],
     lombiqJquery: {
         name: 'jquery-datatables-autoinit',
-        // path: './Assets/Scripts/jquery-datatables-autoinit.js'
         path: lombiqBasePath + 'jquery-datatables-autoinit.js',
         dest: lombiqDistPath + 'jquery-datatables-autoinit'
     },
     lombiqContentpicker: {
         name: 'lombiq-contentpicker',
-        // path: './Assets/Scripts/lombiq-contentpicker.js'
         path: lombiqBasePath + 'lombiq-contentpicker.js',
         dest: lombiqDistPath + 'lombiq-contentpicker'
     },
     lombiqDatatables: {
         name: 'lombiq-datatables',
-        // path: './Assets/Scripts/lombiq-datatables.js'
         path: lombiqBasePath + 'lombiq-datatables.js',
         dest: lombiqDistPath + 'lombiq-datatables'
     },
