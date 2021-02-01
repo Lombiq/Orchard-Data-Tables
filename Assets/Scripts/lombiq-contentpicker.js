@@ -1,6 +1,7 @@
 /**
  * @summary     Lombiq - Content Picker
- * @description Initializes a content picker shape and uses the parent window as the container of the content picker settings.
+ * @description Initializes a content picker shape and uses the parent window as the container of the content picker
+ * settings.
  * @version     1.0
  * @file        lombiq-contentpicker.js
  * @author      Lombiq Technologies Ltd.
