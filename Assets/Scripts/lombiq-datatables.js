@@ -220,14 +220,14 @@
                 dataTablesOptions.buttons = getExportButtons();
             }
             else if (dataTablesOptions.buttons && dataTablesOptions.buttons.forEach) {
-                dataTablesOptions.buttons.forEach(function (button) {
+                dataTablesOptions.buttons.forEach((button) => {
                     if (button.buttons === useDefaultButtons) button.buttons = getExportButtons();
                 })
             }
 
             if (plugin.settings.errorsSelector) {
                 $.fn.dataTable.ext.errMode = 'none';
-                $(plugin.element).on('error.dt', function (e, settings, techNote, message) {
+                $(plugin.element).on('error.dt', (e, settings, techNote, message) => {
                     $(plugin.settings.errorsSelector).text(message).show();
                 });
             }
@@ -427,7 +427,7 @@
             var plugin = this;
 
             // This is a workaround to properly adjust column widths.
-            setTimeout(function () {
+            setTimeout(() => {
                 plugin.dataTableApi.columns.adjust();
             }, 10);
         },
@@ -452,7 +452,7 @@
                     }
 
                     if (count > 0 && options.itemCallback) {
-                        $.each(response.data, function (index, value) {
+                        $.each(response.data, (index, value) => {
                             options.itemCallback(index, value, response);
                         });
                     }
