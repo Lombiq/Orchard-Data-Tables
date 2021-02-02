@@ -81,10 +81,10 @@
             resizeTimer = setTimeout(() => {
                 if (jQuery('#cboxOverlay').is(':visible')) {
                     jQuery.colorbox.resize({
-                        width: window.innerWidth > parseInt(plugin.settings.colorboxSettings.width)
+                        width: window.innerWidth > parseInt(plugin.settings.colorboxSettings.width, 10)
                             ? plugin.settings.colorboxSettings.width
                             : plugin.settings.colorboxSettings.maxWidth,
-                        height: window.innerHeight > parseInt(plugin.settings.colorboxSettings.maxHeight)
+                        height: window.innerHeight > parseInt(plugin.settings.colorboxSettings.maxHeight, 10)
                             ? plugin.settings.colorboxSettings.maxHeight
                             : plugin.settings.colorboxSettings.height
                     });
