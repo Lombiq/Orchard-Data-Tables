@@ -6,6 +6,8 @@
  * @author      Lombiq Technologies Ltd.
  */
 
+/* global URI */
+
 ; (function ($, window, document, undefined) {
     'use strict';
 
