@@ -464,10 +464,8 @@
 
                         plugin.loadRows(skip, options, callback);
                     }
-                    else {
-                        if (options.finishedCallback) {
-                            options.finishedCallback(true, total);
-                        }
+                    else if (options.finishedCallback) {
+                        options.finishedCallback(true, total);
                     }
                 }
                 else {
