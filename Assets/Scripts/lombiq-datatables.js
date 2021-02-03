@@ -42,8 +42,8 @@
             apiUrl: '',
             childRowDisplayType: '',
             additionalDataTablesOptions: {
-                'columnDefs': [{ 'orderable': false, targets: 0 }],
-                'order': [[1, 'asc']]
+                columnDefs: [{ orderable: false, targets: 0 }],
+                order: [[1, 'asc']]
             },
             childRowClassName: '',
             toggleChildRowButtonClassName: '',
