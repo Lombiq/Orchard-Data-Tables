@@ -8,7 +8,7 @@
 
 /* global URI */
 
-(function ($, window, document, undefined) {
+(function ($, window, document) {
     'use strict';
 
     var pluginName = 'lombiq_DataTables';
