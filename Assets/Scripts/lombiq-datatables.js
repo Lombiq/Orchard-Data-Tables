@@ -83,7 +83,7 @@
             var plugin = this;
             var stateJson = '{}';
 
-            plugin.customizeAjaxParameters = function (parameters) { return parameters };
+            plugin.customizeAjaxParameters = function (parameters) { return parameters; };
             plugin.originalQueryStringParameters = new URI().search(true);
 
             var dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
@@ -111,7 +111,7 @@
                     // If data is Boolean.
                     if (data === !!data) return data ? plugin.settings.texts.yes : plugin.settings.texts.no;
 
-                    if ($.isArray(data)) return data.join(', ')
+                    if ($.isArray(data)) return data.join(', ');
 
                     var isString = typeof data === 'string';
 
@@ -204,7 +204,7 @@
                 return function () {
                     location.href = URI(plugin.settings.export.api)
                         .search({ requestJson: stateJson, exportAll: exportAll });
-                }
+                };
             }
             function getExportButtons() {
                 return [
@@ -224,7 +224,7 @@
             else if (dataTablesOptions.buttons && dataTablesOptions.buttons.forEach) {
                 dataTablesOptions.buttons.forEach((button) => {
                     if (button.buttons === useDefaultButtons) button.buttons = getExportButtons();
-                })
+                });
             }
 
             if (plugin.settings.errorsSelector) {
