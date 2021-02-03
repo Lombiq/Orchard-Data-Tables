@@ -177,7 +177,8 @@
                         if (plugin.settings.queryStringParametersLocalStorageKey) {
                             localStorage.setItem(
                                 plugin.settings.queryStringParametersLocalStorageKey,
-                                jsonParameters);
+                                jsonParameters
+                            );
                         }
 
                         if (plugin.settings.errorsSelector) $(plugin.settings.errorsSelector).hide();
@@ -187,8 +188,7 @@
                                 'params:\n' + JSON.stringify(params) + '\n' +
                                 'internalParameters:\n' + JSON.stringify(internalParameters) + '\n' +
                                 'extendedParameters:\n' + JSON.stringify(extendedParameters) + '\n' +
-                                'jsonParameters:\n' + JSON.stringify(jsonParameters) + '\n'
-                            );
+                                'jsonParameters:\n' + JSON.stringify(jsonParameters) + '\n');
                         }
                         return plugin.buildQueryStringParameters({ requestJson: jsonParameters });
                     },
