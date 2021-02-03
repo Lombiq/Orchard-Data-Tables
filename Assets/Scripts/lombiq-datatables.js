@@ -129,7 +129,7 @@
                         return dataTablesOptions.templates[templateName].replace(/{{\s*data\s*}}/g, templateData);
                     }
 
-                    switch (data.Type) {
+                    switch (data.Type) { // eslint-disable-line default-case
                         case 'ExportLink': return '<a href="' + data.Url + '">' + data.Text + '</a>';
                         case 'ExportDate': return convertDate(new Date(data.Year, data.Month - 1, data.Day));
                     }
