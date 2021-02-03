@@ -7,7 +7,7 @@
  * @author      Lombiq Technologies Ltd.
  */
 
-; (function ($, window, document, undefined) {
+(function ($, window, document, undefined) {
     'use strict';
 
     var pluginName = 'lombiq_ContentPicker';
