@@ -8,13 +8,13 @@
 
 /* global URI */
 
-(function ($, window, document) {
+(function ($, window) {
     'use strict';
 
-    var pluginName = 'lombiq_DataTables';
-    var useDefaultButtons = 'useDefaultButtons';
+    const pluginName = 'lombiq_DataTables';
+    const useDefaultButtons = 'useDefaultButtons';
 
-    var defaults = {
+    const defaults = {
         dataTablesOptions: {
             searching: true,
             paging: true,
@@ -58,7 +58,7 @@
             itemCallback: function () { },
         },
         callbacks: {
-            ajaxDataLoadedCallback: (response) => { },
+            ajaxDataLoadedCallback: () => { },
         },
     };
 
@@ -80,15 +80,15 @@
          * Initializes the Lombiq DataTable plugin where the jQuery DataTables plugin will be also initialized.
          */
         init: function () {
-            var plugin = this;
-            var stateJson = '{}';
+            const plugin = this;
+            let stateJson = '{}';
 
             plugin.customizeAjaxParameters = function (parameters) { return parameters; };
             plugin.originalQueryStringParameters = new URI().search(true);
 
-            var dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
+            const dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
 
-            dataTablesOptions.rowCallback = function (row, data, index) {
+            dataTablesOptions.rowCallback = function (row, data) {
                 if (data.id) {
                     $(row)
                         .addClass(plugin.settings.rowClassName)
@@ -97,7 +97,7 @@
             };
 
             function convertDate(date) {
-                var locale = 'en-US';
+                let locale = 'en-US';
                 if (plugin.settings.culture) locale = plugin.settings.culture;
                 return date.toLocaleDateString(locale);
             }
@@ -113,7 +113,7 @@
 
                     if ($.isArray(data)) return data.join(', ');
 
-                    var isString = typeof data === 'string';
+                    const isString = typeof data === 'string';
 
                     // If data is ISO date.
                     if (isString && data.match(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.?\d*([+-][0-2]\d:[0-5]\d|Z)/)) {
@@ -121,11 +121,11 @@
                     }
 
                     // If data is a template.
-                    var template = isString ?
+                    const template = isString ?
                         data.match(/^\s*{{\s*([^:]+)\s*:\s*([^}]*[^ \t}])\s*}}\s*$/) : null;
                     if (template && template[1] && template[2]) {
-                        var templateName = template[1];
-                        var templateData = template[2];
+                        const templateName = template[1];
+                        const templateData = template[2];
                         return dataTablesOptions.templates[templateName].replace(/{{\s*data\s*}}/g, templateData);
                     }
 
@@ -139,7 +139,7 @@
             }];
 
             // This is a workaround to properly adjust column widths.
-            var originalInitCompleteHandler = dataTablesOptions.initComplete
+            const originalInitCompleteHandler = dataTablesOptions.initComplete
                 ? dataTablesOptions.initComplete
                 : function () { };
             dataTablesOptions.initComplete = function () {
@@ -164,14 +164,14 @@
                     method: 'GET',
                     url: plugin.settings.rowsApiUrl,
                     data: function (params) {
-                        var internalParameters = plugin.cleanUpDataTablesAjaxParameters(params);
+                        const internalParameters = plugin.cleanUpDataTablesAjaxParameters(params);
 
-                        var extendedParameters = plugin.customizeAjaxParameters($.extend({}, internalParameters, {
+                        const extendedParameters = plugin.customizeAjaxParameters($.extend({}, internalParameters, {
                             queryId: plugin.settings.queryId,
                             dataProvider: plugin.settings.dataProvider,
                             originalUrl: window.location.href,
                         }));
-                        var jsonParameters = JSON.stringify(extendedParameters);
+                        const jsonParameters = JSON.stringify(extendedParameters);
                         stateJson = jsonParameters;
 
                         if (plugin.settings.queryStringParametersLocalStorageKey) {
@@ -237,10 +237,10 @@
             // Register toggle button click listeners if child rows are enabled.
             if (plugin.settings.childRowOptions.childRowsEnabled) {
                 plugin.dataTableElement.on('click', '.' + plugin.settings.childRowOptions.toggleChildRowButtonClassName, function () {
-                    var parentRowElement = $(this).closest('tr');
+                    const parentRowElement = $(this).closest('tr');
 
                     if (plugin.settings.childRowOptions.asyncLoading) {
-                        var contentItemId = parentRowElement.attr('data-contentitemid');
+                        const contentItemId = parentRowElement.attr('data-contentitemid');
 
                         $.ajax({
                             type: 'GET',
@@ -261,7 +261,7 @@
                         });
                     }
                     else {
-                        var childRowContent = $('[data-parent="' + parentRowElement.attr('id') + '"]').html();
+                        const childRowContent = $('[data-parent="' + parentRowElement.attr('id') + '"]').html();
 
                         plugin.toggleChildRow(parentRowElement, childRowContent);
                     }
@@ -284,18 +284,18 @@
         cleanUpDataTablesAjaxParameters: function (parameters) {
             // Replacing column index to column name.
             // Also rename properties and values to match back-end data model.
-            for (var i = 0; i < parameters.order.length; i++) {
-                var orderData = parameters.order[i];
-                var columnIndex = orderData.column;
+            for (let i = 0; i < parameters.order.length; i++) {
+                const orderData = parameters.order[i];
+                const columnIndex = orderData.column;
                 orderData.column = parameters.columns[columnIndex].name;
                 orderData.direction = orderData.dir === 'asc' ? 'ascending' : 'descending';
                 delete orderData.dir;
             }
 
             // Send only filtered column data.
-            var columnFilters = [];
-            for (var j = 0; j < parameters.columns.length; j++) {
-                var column = parameters.columns[j];
+            const columnFilters = [];
+            for (let j = 0; j < parameters.columns.length; j++) {
+                const column = parameters.columns[j];
                 if (column.search.value) columnFilters.push(column);
             }
 
@@ -313,9 +313,9 @@
          * @param {object} childRowContent Content of the child row. A <tr> wrapper will be added automatically.
          */
         toggleChildRow: function (parentRowElement, childRowContent) {
-            var plugin = this;
+            const plugin = this;
 
-            var dataTableRow = plugin.dataTableApi.row(parentRowElement);
+            const dataTableRow = plugin.dataTableApi.row(parentRowElement);
 
             if (dataTableRow.child.isShown()) {
                 dataTableRow.child.hide();
@@ -333,13 +333,13 @@
          * Fetches the rows from the API using progressive loading.
          */
         fetchRowsProgressively: function () {
-            var plugin = this;
+            const plugin = this;
 
             if (!plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) return;
 
             plugin.dataTableApi.processing(true);
 
-            var options = {
+            const options = {
                 queryId: plugin.settings.queryId,
                 dataProvider: plugin.settings.dataProvider,
                 apiUrl: plugin.settings.rowsApiUrl,
@@ -371,12 +371,12 @@
          * @returns {object} Merged query string parameters.
          */
         buildQueryStringParameters: function (data) {
-            var finalQueryString = '';
+            let finalQueryString = '';
 
             // This is necessary to preserve the original structure of the initial query string:
             // Traditional encoding ensures that if a key has multiple values (e.g. "?name=value1&name=value2"),
             // then the key won't be changed to "name[]".
-            var originalQueryStringEncoded = $.param(this.originalQueryStringParameters, true);
+            const originalQueryStringEncoded = $.param(this.originalQueryStringParameters, true);
 
             if (originalQueryStringEncoded) {
                 finalQueryString += originalQueryStringEncoded + '&';
@@ -394,7 +394,7 @@
          * @param {callback} callback Callback for returning rows.
          */
         loadRows: function (skip, options, callback) {
-            var plugin = this;
+            const plugin = this;
 
             $.ajax({
                 type: 'GET',
@@ -423,7 +423,7 @@
          * Adjusts datatable columns.
          */
         adjustColumns: function () {
-            var plugin = this;
+            const plugin = this;
 
             // This is a workaround to properly adjust column widths.
             setTimeout(() => {
@@ -437,13 +437,13 @@
          * @param {Object} options Progressive loading options including API URL and callbacks.
          */
         progressiveLoad: function (options) {
-            var plugin = this;
-            var total = 0;
-            var skip = options.skip;
+            const plugin = this;
+            let total = 0;
+            let skip = options.skip;
 
-            var callback = function (success, response) {
+            const callback = function (success, response) {
                 if (success && response) {
-                    var count = response.data.length;
+                    const count = response.data.length;
                     total += count;
 
                     if (options.batchCallback) {

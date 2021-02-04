@@ -7,18 +7,18 @@
  * @author      Lombiq Technologies Ltd.
  */
 
-(function ($, window, document) {
+(function ($, window) {
     'use strict';
 
-    var pluginName = 'lombiq_ContentPicker';
+    const pluginName = 'lombiq_ContentPicker';
 
-    var defaults = {
+    const defaults = {
         url: '',
         finishButtonContent: '',
         cancelButtonContent: '',
         displayColorboxBorder: true,
-        finishCallback: function (contentPicker) { },
-        cancelCallback: function (contentPicker) { },
+        finishCallback: function () { },
+        cancelCallback: function () { },
         contentPicker: {
             selectedContentItemIds: [],
             finish: false,
@@ -36,7 +36,7 @@
     };
 
     $[pluginName] = function (options) {
-        var plugin = this;
+        const plugin = this;
 
         plugin.settings = $.extend(true, {}, defaults, options);
 
@@ -44,7 +44,7 @@
         window.contentPicker.finishButtonContent = plugin.settings.finishButtonContent;
         window.contentPicker.cancelButtonContent = plugin.settings.cancelButtonContent;
 
-        var colorboxSettings = $.extend(true, {}, plugin.settings.colorboxSettings, {
+        const colorboxSettings = $.extend(true, {}, plugin.settings.colorboxSettings, {
             href: plugin.settings.url,
             onCleanup: function () {
                 if (window.contentPicker.finish) {
@@ -75,7 +75,7 @@
 
         $.colorbox(colorboxSettings);
 
-        var resizeTimer;
+        let resizeTimer;
         function resizeColorBox() {
             if (resizeTimer) clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {
