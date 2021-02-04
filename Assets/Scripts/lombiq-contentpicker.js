@@ -21,7 +21,7 @@
         cancelCallback: function (contentPicker) { },
         contentPicker: {
             selectedContentItemIds: [],
-            finish: false
+            finish: false,
         },
         colorboxSettings: {
             iframe: true,
@@ -31,8 +31,8 @@
             maxHeight: '80%',
             fixed: true,
             fastIframe: false,
-            closeButton: false
-        }
+            closeButton: false,
+        },
     };
 
     $[pluginName] = function (options) {
@@ -70,7 +70,7 @@
                 if (!plugin.settings.displayColorboxBorder) {
                     $('#cboxLoadedContent').css('margin-bottom', '0');
                 }
-            }
+            },
         });
 
         $.colorbox(colorboxSettings);
@@ -86,7 +86,7 @@
                             : plugin.settings.colorboxSettings.maxWidth,
                         height: window.innerHeight > parseInt(plugin.settings.colorboxSettings.maxHeight, 10)
                             ? plugin.settings.colorboxSettings.maxHeight
-                            : plugin.settings.colorboxSettings.height
+                            : plugin.settings.colorboxSettings.height,
                     });
                 }
             }, 300);

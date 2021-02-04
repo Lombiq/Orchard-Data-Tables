@@ -26,7 +26,7 @@
                 "<'row dataTables_controls'<'col-md-6 dataTables_length'l><'col-md-6 dataTables_search'f>>" +
                 "<'row dataTables_content'<'col-md-12't>>" +
                 "<'row dataTables_footer'<'col-md-12'ip>>",
-            buttons: useDefaultButtons
+            buttons: useDefaultButtons,
         },
         rowClassName: '',
         queryId: '',
@@ -43,11 +43,11 @@
             childRowDisplayType: '',
             additionalDataTablesOptions: {
                 columnDefs: [{ orderable: false, targets: 0 }],
-                order: [[1, 'asc']]
+                order: [[1, 'asc']],
             },
             childRowClassName: '',
             toggleChildRowButtonClassName: '',
-            childRowVisibleClassName: ''
+            childRowVisibleClassName: '',
         },
         progressiveLoadingOptions: {
             progressiveLoadingEnabled: false,
@@ -55,11 +55,11 @@
             batchSize: 0,
             finishedCallback: function () { },
             batchCallback: function () { },
-            itemCallback: function () { }
+            itemCallback: function () { },
         },
         callbacks: {
-            ajaxDataLoadedCallback: (response) => { }
-        }
+            ajaxDataLoadedCallback: (response) => { },
+        },
     };
 
     function Plugin(element, options) {
@@ -135,7 +135,7 @@
                     }
 
                     return data;
-                }
+                },
             }];
 
             // This is a workaround to properly adjust column widths.
@@ -152,7 +152,7 @@
                 dataTablesOptions.columnDefs.push({
                     orderable: false,
                     defaultContent: '<div class="btn button ' + plugin.settings.childRowOptions.toggleChildRowButtonClassName + '"></div>',
-                    targets: 0
+                    targets: 0,
                 });
             }
 
@@ -169,16 +169,13 @@
                         var extendedParameters = plugin.customizeAjaxParameters($.extend({}, internalParameters, {
                             queryId: plugin.settings.queryId,
                             dataProvider: plugin.settings.dataProvider,
-                            originalUrl: window.location.href
+                            originalUrl: window.location.href,
                         }));
                         var jsonParameters = JSON.stringify(extendedParameters);
                         stateJson = jsonParameters;
 
                         if (plugin.settings.queryStringParametersLocalStorageKey) {
-                            localStorage.setItem(
-                                plugin.settings.queryStringParametersLocalStorageKey,
-                                jsonParameters
-                            );
+                            localStorage.setItem(plugin.settings.queryStringParametersLocalStorageKey, jsonParameters);
                         }
 
                         if (plugin.settings.errorsSelector) $(plugin.settings.errorsSelector).hide();
@@ -196,7 +193,7 @@
                         plugin.settings.callbacks.ajaxDataLoadedCallback(response);
 
                         return response.data;
-                    }
+                    },
                 };
             }
 
@@ -210,12 +207,12 @@
                 return [
                     {
                         text: plugin.settings.export.textAll,
-                        action: exportAction(true)
+                        action: exportAction(true),
                     },
                     {
                         text: plugin.settings.export.textVisible,
-                        action: exportAction(false)
-                    }
+                        action: exportAction(false),
+                    },
                 ];
             }
             if (dataTablesOptions.buttons === useDefaultButtons) {
@@ -251,7 +248,7 @@
                             data: {
                                 contentItemId: contentItemId,
                                 dataProvider: plugin.settings.dataProvider,
-                                originalUrl: window.location.href
+                                originalUrl: window.location.href,
                             },
                             success: function (data) {
                                 if (!data.error) {
@@ -260,7 +257,7 @@
                                 else {
                                     alert(data.error);
                                 }
-                            }
+                            },
                         });
                     }
                     else {
@@ -359,7 +356,7 @@
                     }
 
                     plugin.dataTableApi.processing(false);
-                }
+                },
             };
 
             plugin.progressiveLoad($.extend({}, plugin.settings.progressiveLoadingOptions, options));
@@ -407,7 +404,7 @@
                     start: skip,
                     length: options.batchSize,
                     dataProvider: options.dataProvider,
-                    originalUrl: window.location.href
+                    originalUrl: window.location.href,
                 }),
                 success: function (response) {
                     if (callback) {
@@ -418,7 +415,7 @@
                     if (callback) {
                         callback(false);
                     }
-                }
+                },
             });
         },
 
@@ -480,7 +477,7 @@
             };
 
             plugin.loadRows(skip, options, callback);
-        }
+        },
     });
 
     $.fn[pluginName] = function (options) {
