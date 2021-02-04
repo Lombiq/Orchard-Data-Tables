@@ -58,7 +58,7 @@
             itemCallback: function () { }
         },
         callbacks: {
-            ajaxDataLoadedCallback: function (response) { }
+            ajaxDataLoadedCallback: (response) => { }
         }
     };
 
