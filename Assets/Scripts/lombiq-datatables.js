@@ -8,7 +8,7 @@
 
 /* global URI */
 
-(function ($, window) {
+(function lombiqDatatables($, window) {
     'use strict';
 
     const pluginName = 'lombiq_DataTables';
@@ -83,12 +83,12 @@
             const plugin = this;
             let stateJson = '{}';
 
-            plugin.customizeAjaxParameters = function (parameters) { return parameters; };
+            plugin.customizeAjaxParameters = function customizeParameters(parameters) { return parameters; };
             plugin.originalQueryStringParameters = new URI().search(true);
 
             const dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
 
-            dataTablesOptions.rowCallback = function (row, data) {
+            dataTablesOptions.rowCallback = function dataTablesRowCallback(row, data) {
                 if (data.id) {
                     $(row)
                         .addClass(plugin.settings.rowClassName)
@@ -141,8 +141,8 @@
             // This is a workaround to properly adjust column widths.
             const originalInitCompleteHandler = dataTablesOptions.initComplete
                 ? dataTablesOptions.initComplete
-                : function () { };
-            dataTablesOptions.initComplete = function () {
+                : function emptyFunction() { };
+            dataTablesOptions.initComplete = function dataTablesInitComplete() {
                 plugin.adjustColumns();
                 originalInitCompleteHandler.apply(this);
             };
@@ -198,7 +198,7 @@
             }
 
             function exportAction(exportAll) {
-                return function () {
+                return function getExports() {
                     location.href = URI(plugin.settings.export.api)
                         .search({ requestJson: stateJson, exportAll: exportAll });
                 };
@@ -236,36 +236,37 @@
 
             // Register toggle button click listeners if child rows are enabled.
             if (plugin.settings.childRowOptions.childRowsEnabled) {
-                plugin.dataTableElement.on('click', '.' + plugin.settings.childRowOptions.toggleChildRowButtonClassName, function () {
-                    const parentRowElement = $(this).closest('tr');
+                plugin.dataTableElement.on('click', '.' + plugin.settings.childRowOptions.toggleChildRowButtonClassName,
+                    function dataTableElementOnClick() {
+                        const parentRowElement = $(this).closest('tr');
 
-                    if (plugin.settings.childRowOptions.asyncLoading) {
-                        const contentItemId = parentRowElement.attr('data-contentitemid');
+                        if (plugin.settings.childRowOptions.asyncLoading) {
+                            const contentItemId = parentRowElement.attr('data-contentitemid');
 
-                        $.ajax({
-                            type: 'GET',
-                            url: plugin.settings.childRowOptions.apiUrl,
-                            data: {
-                                contentItemId: contentItemId,
-                                dataProvider: plugin.settings.dataProvider,
-                                originalUrl: window.location.href,
-                            },
-                            success: function (data) {
-                                if (!data.error) {
-                                    plugin.toggleChildRow(parentRowElement, data.content);
-                                }
-                                else {
-                                    alert(data.error);
-                                }
-                            },
-                        });
-                    }
-                    else {
-                        const childRowContent = $('[data-parent="' + parentRowElement.attr('id') + '"]').html();
+                            $.ajax({
+                                type: 'GET',
+                                url: plugin.settings.childRowOptions.apiUrl,
+                                data: {
+                                    contentItemId: contentItemId,
+                                    dataProvider: plugin.settings.dataProvider,
+                                    originalUrl: window.location.href,
+                                },
+                                success: function (data) {
+                                    if (!data.error) {
+                                        plugin.toggleChildRow(parentRowElement, data.content);
+                                    }
+                                    else {
+                                        alert(data.error);
+                                    }
+                                },
+                            });
+                        }
+                        else {
+                            const childRowContent = $('[data-parent="' + parentRowElement.attr('id') + '"]').html();
 
-                        plugin.toggleChildRow(parentRowElement, childRowContent);
-                    }
-                });
+                            plugin.toggleChildRow(parentRowElement, childRowContent);
+                        }
+                    });
             }
 
             // Fetch items if progressive loading is enabled.
@@ -480,12 +481,12 @@
         },
     });
 
-    $.fn[pluginName] = function (options) {
+    $.fn[pluginName] = function pluginNameFunction(options) {
         // Return null if the element query is invalid.
         if (!this || this.length === 0) return null;
 
         // "map" makes it possible to return the already existing or currently initialized plugin instances.
-        return this.map(function () {
+        return this.map(function pluginMapFunction() {
             // If "options" is defined, but the plugin is not instantiated on this element ...
             if (options && !$.data(this, 'plugin_' + pluginName)) {
                 // ... then create a plugin instance ...

@@ -7,7 +7,7 @@
  * @author      Lombiq Technologies Ltd.
  */
 
-(function ($, window) {
+(function contentPicker($, window) {
     'use strict';
 
     const pluginName = 'lombiq_ContentPicker';
@@ -35,7 +35,7 @@
         },
     };
 
-    $[pluginName] = function (options) {
+    $[pluginName] = function contentPickerByPlugin(options) {
         const plugin = this;
 
         plugin.settings = $.extend(true, {}, defaults, options);
