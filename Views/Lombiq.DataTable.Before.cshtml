@@ -1,3 +1,4 @@
+@using Microsoft.AspNetCore.Mvc.Localization
 @{
     const string loadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
 }
@@ -5,9 +6,9 @@
 <script asp-name="@ResourceNames.LombiqDataTablesBefore" at="Head">
 window.dataTableResources = {
     options: {
-        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, @Json.Serialize(T["All"].Value)]],
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, @T["All"].Json()]],
         language: {
-            processing: "<div class=\"@loadingIndicatorElementName\">@T["Loading..."]</div>"
+            processing: '<div class="@loadingIndicatorElementName">' + @T["Loading..."].Json() + '</div>',
         },
     },
     created: function() {},

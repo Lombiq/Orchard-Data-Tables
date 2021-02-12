@@ -119,7 +119,7 @@
                 @if (!string.IsNullOrWhiteSpace(queryId))
                 {
                     <text>
-                        queryId: @Json.Serialize(queryId),
+                        queryId: @queryId.JsonHtmlContent(),
                     </text>
                 }
                 dataProvider: "@dataProvider",
@@ -162,7 +162,7 @@
                         </text>
                     }
                 },
-                culture: @Json.Serialize(CultureInfo.CurrentCulture.Name)
+                culture: @CultureInfo.CurrentCulture.Name.JsonHtmlContent(),
             });
 
             window.dataTableResources.created(
