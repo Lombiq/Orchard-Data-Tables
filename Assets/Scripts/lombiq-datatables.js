@@ -116,7 +116,8 @@
                     const isString = typeof data === 'string';
 
                     // If data is ISO date.
-                    if (isString && data.match(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.?\d*([+-][0-2]\d:[0-5]\d|Z)/)) {
+                    if (isString && data.match(
+                        /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.?\d*([+-][0-2]\d:[0-5]\d|Z)/)) {
                         return convertDate(new Date(data));
                     }
 
@@ -151,7 +152,8 @@
                 dataTablesOptions.order = [[1, 'asc']];
                 dataTablesOptions.columnDefs.push({
                     orderable: false,
-                    defaultContent: '<div class="btn button ' + plugin.settings.childRowOptions.toggleChildRowButtonClassName + '"></div>',
+                    defaultContent: '<div class="btn button ' +
+                        plugin.settings.childRowOptions.toggleChildRowButtonClassName + '"></div>',
                     targets: 0,
                 });
             }
@@ -236,7 +238,9 @@
 
             // Register toggle button click listeners if child rows are enabled.
             if (plugin.settings.childRowOptions.childRowsEnabled) {
-                plugin.dataTableElement.on('click', '.' + plugin.settings.childRowOptions.toggleChildRowButtonClassName,
+                plugin.dataTableElement.on(
+                    'click',
+                    '.' + plugin.settings.childRowOptions.toggleChildRowButtonClassName,
                     function dataTableElementOnClick() {
                         const parentRowElement = $(this).closest('tr');
 
