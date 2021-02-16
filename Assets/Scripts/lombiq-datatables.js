@@ -64,12 +64,7 @@
 
     function Plugin(element, options) {
         this.element = element;
-        this.settings = $.extend(
-            true,
-            {},
-            defaults,
-            options
-        );
+        this.settings = $.extend(true, {}, defaults, options);
         this._defaults = defaults;
         this._name = pluginName;
 
@@ -136,11 +131,7 @@
 
                     switch (data.Type) { // eslint-disable-line default-case
                         case 'ExportLink': return '<a href="' + data.Url + '">' + data.Text + '</a>';
-                        case 'ExportDate': return convertDate(new Date(
-                            data.Year,
-                            data.Month - 1,
-                            data.Day
-                        ));
+                        case 'ExportDate': return convertDate(new Date(data.Year, data.Month - 1, data.Day));
                     }
 
                     return data;
@@ -175,15 +166,11 @@
                     data: function (params) {
                         const internalParameters = plugin.cleanUpDataTablesAjaxParameters(params);
 
-                        const extendedParameters = plugin.customizeAjaxParameters($.extend(
-                            {},
-                            internalParameters,
-                            {
-                                queryId: plugin.settings.queryId,
-                                dataProvider: plugin.settings.dataProvider,
-                                originalUrl: window.location.href,
-                            }
-                        ));
+                        const extendedParameters = plugin.customizeAjaxParameters($.extend({}, internalParameters, {
+                            queryId: plugin.settings.queryId,
+                            dataProvider: plugin.settings.dataProvider,
+                            originalUrl: window.location.href,
+                        }));
                         const jsonParameters = JSON.stringify(extendedParameters);
                         stateJson = jsonParameters;
 
@@ -239,12 +226,7 @@
 
             if (plugin.settings.errorsSelector) {
                 $.fn.dataTable.ext.errMode = 'none';
-                $(plugin.element).on('error.dt', (
-                    e,
-                    settings,
-                    techNote,
-                    message
-                ) => {
+                $(plugin.element).on('error.dt', (e, settings, techNote, message) => {
                     $(plugin.settings.errorsSelector).text(message).show();
                 });
             }
@@ -254,9 +236,7 @@
 
             // Register toggle button click listeners if child rows are enabled.
             if (plugin.settings.childRowOptions.childRowsEnabled) {
-                plugin.dataTableElement.on(
-                    'click',
-                    '.' + plugin.settings.childRowOptions.toggleChildRowButtonClassName,
+                plugin.dataTableElement.on('click', '.' + plugin.settings.childRowOptions.toggleChildRowButtonClassName,
                     function dataTableElementOnClick() {
                         const parentRowElement = $(this).closest('tr');
 
@@ -286,8 +266,7 @@
 
                             plugin.toggleChildRow(parentRowElement, childRowContent);
                         }
-                    }
-                );
+                    });
             }
 
             // Fetch items if progressive loading is enabled.
@@ -365,17 +344,9 @@
                 queryId: plugin.settings.queryId,
                 dataProvider: plugin.settings.dataProvider,
                 apiUrl: plugin.settings.rowsApiUrl,
-                itemCallback: function (
-                    id,
-                    data,
-                    response
-                ) {
+                itemCallback: function (id, data, response) {
                     if (plugin.settings.progressiveLoadingOptions.itemCallback) {
-                        plugin.settings.progressiveLoadingOptions.itemCallback(
-                            id,
-                            data,
-                            response
-                        );
+                        plugin.settings.progressiveLoadingOptions.itemCallback(id, data, response);
                     }
 
                     plugin.dataTableApi.row.add(data).draw();
@@ -389,11 +360,7 @@
                 },
             };
 
-            plugin.progressiveLoad($.extend(
-                {},
-                plugin.settings.progressiveLoadingOptions,
-                options
-            ));
+            plugin.progressiveLoad($.extend({}, plugin.settings.progressiveLoadingOptions, options));
         },
 
         /**
@@ -427,11 +394,7 @@
          * @param {Object} options Options required for the API call (e.g. API URL, data provider).
          * @param {callback} callback Callback for returning rows.
          */
-        loadRows: function (
-            skip,
-            options,
-            callback
-        ) {
+        loadRows: function (skip, options, callback) {
             const plugin = this;
 
             $.ajax({
@@ -490,22 +453,14 @@
 
                     if (count > 0 && options.itemCallback) {
                         $.each(response.data, (index, value) => {
-                            options.itemCallback(
-                                index,
-                                value,
-                                response
-                            );
+                            options.itemCallback(index, value, response);
                         });
                     }
 
                     if (count > 0 && count >= options.batchSize) {
                         skip += count;
 
-                        plugin.loadRows(
-                            skip,
-                            options,
-                            callback
-                        );
+                        plugin.loadRows(skip, options, callback);
                     }
                     else if (options.finishedCallback) {
                         options.finishedCallback(true, total);
@@ -522,11 +477,7 @@
                 }
             };
 
-            plugin.loadRows(
-                skip,
-                options,
-                callback
-            );
+            plugin.loadRows(skip, options, callback);
         },
     });
 
@@ -539,11 +490,7 @@
             // If "options" is defined, but the plugin is not instantiated on this element ...
             if (options && !$.data(this, 'plugin_' + pluginName)) {
                 // ... then create a plugin instance ...
-                $.data(
-                    this,
-                    'plugin_' + pluginName,
-                    new Plugin($(this), options)
-                );
+                $.data(this, 'plugin_' + pluginName, new Plugin($(this), options));
             }
 
             // ... and then return the plugin instance, which might be null
@@ -551,8 +498,4 @@
             return $.data(this, 'plugin_' + pluginName);
         });
     };
-})(
-    jQuery,
-    window,
-    document
-);
+})(jQuery, window, document);
