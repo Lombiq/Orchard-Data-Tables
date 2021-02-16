@@ -38,40 +38,50 @@
     $[pluginName] = function contentPickerByPlugin(options) {
         const plugin = this;
 
-        plugin.settings = $.extend(true, {}, defaults, options);
+        plugin.settings = $.extend(
+            true,
+            {},
+            defaults,
+            options
+        );
 
         window.contentPicker = plugin.settings.contentPicker;
         window.contentPicker.finishButtonContent = plugin.settings.finishButtonContent;
         window.contentPicker.cancelButtonContent = plugin.settings.cancelButtonContent;
 
-        const colorboxSettings = $.extend(true, {}, plugin.settings.colorboxSettings, {
-            href: plugin.settings.url,
-            onCleanup: function () {
-                if (window.contentPicker.finish) {
-                    plugin.settings.finishCallback(window.contentPicker);
-                }
-                else {
-                    plugin.settings.cancelCallback();
-                }
-            },
-            onOpen: function () {
-                if (!plugin.settings.displayColorboxBorder) {
-                    $('#cboxTopLeft').hide();
-                    $('#cboxTopRight').hide();
-                    $('#cboxBottomLeft').hide();
-                    $('#cboxBottomRight').hide();
-                    $('#cboxMiddleLeft').hide();
-                    $('#cboxMiddleRight').hide();
-                    $('#cboxTopCenter').hide();
-                    $('#cboxBottomCenter').hide();
-                }
-            },
-            onLoad: function () {
-                if (!plugin.settings.displayColorboxBorder) {
-                    $('#cboxLoadedContent').css('margin-bottom', '0');
-                }
-            },
-        });
+        const colorboxSettings = $.extend(
+            true,
+            {},
+            plugin.settings.colorboxSettings,
+            {
+                href: plugin.settings.url,
+                onCleanup: function () {
+                    if (window.contentPicker.finish) {
+                        plugin.settings.finishCallback(window.contentPicker);
+                    }
+                    else {
+                        plugin.settings.cancelCallback();
+                    }
+                },
+                onOpen: function () {
+                    if (!plugin.settings.displayColorboxBorder) {
+                        $('#cboxTopLeft').hide();
+                        $('#cboxTopRight').hide();
+                        $('#cboxBottomLeft').hide();
+                        $('#cboxBottomRight').hide();
+                        $('#cboxMiddleLeft').hide();
+                        $('#cboxMiddleRight').hide();
+                        $('#cboxTopCenter').hide();
+                        $('#cboxBottomCenter').hide();
+                    }
+                },
+                onLoad: function () {
+                    if (!plugin.settings.displayColorboxBorder) {
+                        $('#cboxLoadedContent').css('margin-bottom', '0');
+                    }
+                },
+            }
+        );
 
         $.colorbox(colorboxSettings);
 
@@ -94,6 +104,14 @@
 
         // Resize Colorbox when resizing window or changing mobile device orientation.
         jQuery(window).resize(resizeColorBox);
-        window.addEventListener('orientationchange', resizeColorBox, false);
+        window.addEventListener(
+            'orientationchange',
+            resizeColorBox,
+            false
+        );
     };
-})(jQuery, window, document);
+})(
+    jQuery,
+    window,
+    document
+);
