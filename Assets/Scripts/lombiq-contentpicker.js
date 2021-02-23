@@ -8,7 +8,6 @@
  */
 
 (function contentPicker($, window) {
-
     const pluginName = 'lombiq_ContentPicker';
 
     const defaults = {
