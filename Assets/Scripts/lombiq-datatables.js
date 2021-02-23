@@ -199,7 +199,7 @@
 
             function exportAction(exportAll) {
                 return function getExports() {
-                    location.href = URI(plugin.settings.export.api)
+                    window.location.href = URI(plugin.settings.export.api)
                         .search({ requestJson: stateJson, exportAll: exportAll });
                 };
             }
