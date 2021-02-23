@@ -9,7 +9,6 @@
 'use strict';
 
 ; (function ($, window, document, undefined) {
-
     var pluginName = 'lombiq_DataTables';
     var useDefaultButtons = 'useDefaultButtons';
 
