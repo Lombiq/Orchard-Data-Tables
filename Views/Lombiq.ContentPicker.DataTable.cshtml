@@ -53,7 +53,7 @@
 </div>
 
 <script type="text/javascript">
-    ; (function ($) {
+    ; (function ($, parent) {
         $(function () {
             var hasParent = parent != null;
             var contentPicker = { selectedContentItemIds: [] };
@@ -166,5 +166,5 @@
                 }
             });
         });
-    })(jQuery);
+    })(jQuery, parent);
 </script>
