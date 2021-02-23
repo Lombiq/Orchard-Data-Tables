@@ -8,7 +8,7 @@
 
 'use strict';
 
-; (function ($, window, document, undefined) {
+; (function ($, window) {
     var pluginName = 'lombiq_ContentPicker';
 
     var defaults = {
