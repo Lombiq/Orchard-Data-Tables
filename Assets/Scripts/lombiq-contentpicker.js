@@ -77,8 +77,8 @@
         function resizeColorBox() {
             if (resizeTimer) clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {
-                if (jQuery('#cboxOverlay').is(':visible')) {
-                    jQuery.colorbox.resize({
+                if ($('#cboxOverlay').is(':visible')) {
+                    $.colorbox.resize({
                         width: window.innerWidth > parseInt(plugin.settings.colorboxSettings.width, 10)
                             ? plugin.settings.colorboxSettings.width
                             : plugin.settings.colorboxSettings.maxWidth,
@@ -91,7 +91,7 @@
         }
 
         // Resize Colorbox when resizing window or changing mobile device orientation.
-        jQuery(window).resize(resizeColorBox);
+        $(window).resize(resizeColorBox);
         window.addEventListener('orientationchange', resizeColorBox, false);
     };
 })(jQuery, window, document);

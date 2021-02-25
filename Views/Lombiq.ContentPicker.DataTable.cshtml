@@ -53,13 +53,13 @@
 </div>
 
 <script type="text/javascript">
-    ; (function ($) {
+    ; (function ($, parent$) {
         $(function () {
-            var hasParent = parent != null;
+            var hasParent = parent$ != null;
             var contentPicker = { selectedContentItemIds: [] };
             if (hasParent) {
-                if (!parent.contentPicker) {
-                    parent.contentPicker = contentPicker;
+                if (!parent$.contentPicker) {
+                    parent$.contentPicker = contentPicker;
                 }
             }
             else {
@@ -68,7 +68,7 @@
                 }
             }
 
-            contentPicker = hasParent ? parent.contentPicker : window.contentPicker;
+            contentPicker = hasParent ? parent$.contentPicker : window.contentPicker;
             contentPicker.finish = false;
 
             var $selectedIdsElement = $(".js-@selectedContentIdsElementName");
@@ -111,23 +111,23 @@
             {
                 <text>
                     if (contentPicker.cancelButtonContent) {
-                        $(".js-@cancelActionElementName").html(parent.contentPicker.cancelButtonContent);
+                        $(".js-@cancelActionElementName").html(parent$.contentPicker.cancelButtonContent);
                     }
 
                     if (contentPicker.finishButtonContent) {
-                        $(".js-@submitActionElementName").html(parent.contentPicker.finishButtonContent);
+                        $(".js-@submitActionElementName").html(parent$.contentPicker.finishButtonContent);
                     }
 
                     $(".js-@cancelActionElementName").on("click", function () {
                         if (hasParent) {
-                            parent.jQuery.fn.colorbox.close();
+                            parent$.fn.colorbox.close();
                         }
                     });
 
                     $(".js-@submitActionElementName").on("click", function () {
                         if (hasParent) {
                             contentPicker.finish = true;
-                            parent.jQuery.colorbox.close();
+                            parent$.colorbox.close();
                         }
                     });
                 </text>
@@ -166,5 +166,5 @@
                 }
             });
         });
-    })(jQuery);
+    })(jQuery, parent.jQuery);
 </script>
