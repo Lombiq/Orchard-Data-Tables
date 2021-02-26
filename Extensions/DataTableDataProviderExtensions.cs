@@ -1,8 +1,13 @@
 using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Localization;
+using Newtonsoft.Json;
 using OrchardCore.Security.Permissions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -100,6 +105,47 @@ namespace Lombiq.DataTables.Services
             }
 
             return false;
+        }
+
+        public static string GetCustomActions(
+            this IDataTableDataProvider dataProvider,
+            string contentItemId,
+            string returnUrl,
+            bool canDelete,
+            IHttpContextAccessor hca,
+            LinkGenerator linkGenerator,
+            IStringLocalizer<ActionsModel> actionsStringLocalizer,
+            IStringLocalizer T)
+        {
+            var menuItems = new List<ExportLink>
+            {
+                ActionsModel.GetEditLink(
+                    contentItemId,
+                    hca.HttpContext,
+                    linkGenerator,
+                    actionsStringLocalizer,
+                    returnUrl,
+                    T["Edit"]),
+            };
+
+            if (canDelete)
+            {
+                menuItems.Add(ActionsModel.GetRemoveLink(
+                    contentItemId,
+                    hca.HttpContext,
+                    linkGenerator,
+                    actionsStringLocalizer,
+                    returnUrl));
+            }
+
+            var actionsModel = new ActionsModel
+            {
+                Id = contentItemId,
+                MenuItems = menuItems,
+                WithDefaults = false,
+            };
+
+            return JsonConvert.SerializeObject(actionsModel);
         }
     }
 }
