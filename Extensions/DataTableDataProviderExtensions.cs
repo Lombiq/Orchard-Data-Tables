@@ -107,7 +107,6 @@ namespace Lombiq.DataTables.Services
             return false;
         }
 
-#pragma warning disable S107 // Methods should not have too many parameters
         public static string GetCustomActions(
             this IDataTableDataProvider dataProvider,
             string contentItemId,
@@ -115,9 +114,7 @@ namespace Lombiq.DataTables.Services
             bool canDelete,
             IHttpContextAccessor hca,
             LinkGenerator linkGenerator,
-            IStringLocalizer<ActionsModel> actionsStringLocalizer,
-            IStringLocalizer stringLocalizer)
-#pragma warning restore S107 // Methods should not have too many parameters
+            IStringLocalizer<ActionsModel> actionsStringLocalizer)
         {
             var menuItems = new List<ExportLink>
             {
@@ -126,8 +123,7 @@ namespace Lombiq.DataTables.Services
                     hca.HttpContext,
                     linkGenerator,
                     actionsStringLocalizer,
-                    returnUrl,
-                    stringLocalizer["Edit"]),
+                    returnUrl),
             };
 
             if (canDelete)
