@@ -1,10 +1,12 @@
 using Lombiq.DataTables.Constants;
+using Lombiq.DataTables.Controllers;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
+using OrchardCore.Mvc.Core.Utilities;
 using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
@@ -110,12 +112,17 @@ namespace Lombiq.DataTables.Services
         public static string GetCustomActions(
             this IDataTableDataProvider dataProvider,
             string contentItemId,
-            string returnUrl,
             bool canDelete,
             IHttpContextAccessor hca,
             LinkGenerator linkGenerator,
             IStringLocalizer<ActionsModel> actionsStringLocalizer)
         {
+            var returnUrl = linkGenerator.GetPathByAction(
+                hca.HttpContext,
+                nameof(TableController.Get),
+                typeof(TableController).ControllerName(),
+                new { providerName = dataProvider.GetType().Name });
+
             var menuItems = new List<ExportLink>
             {
                 ActionsModel.GetEditLink(
