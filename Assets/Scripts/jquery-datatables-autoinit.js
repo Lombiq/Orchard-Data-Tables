@@ -1,8 +1,8 @@
-(function ($) {
-    $(function () {
-        $('table.data-table').each(function () {
-            var options = this.getAttribute('data-options');
+(function autoInit($) {
+    $(() => {
+        $('table.data-table').each(function dataTableEach() {
+            const options = this.getAttribute('data-options');
             $(this).dataTable(options ? JSON.parse(options) : undefined);
-        })
+        });
     });
 }(jQuery));
