@@ -6,13 +6,13 @@
  * @author      Lombiq Technologies Ltd.
  */
 
-'use strict';
+/* global URI */
 
-; (function ($, window, document, undefined) {
-    var pluginName = 'lombiq_DataTables';
-    var useDefaultButtons = 'useDefaultButtons';
+(function lombiqDatatables($, window) {
+    const pluginName = 'lombiq_DataTables';
+    const useDefaultButtons = 'useDefaultButtons';
 
-    var defaults = {
+    const defaults = {
         dataTablesOptions: {
             searching: true,
             paging: true,
@@ -24,7 +24,7 @@
                 "<'row dataTables_controls'<'col-md-6 dataTables_length'l><'col-md-6 dataTables_search'f>>" +
                 "<'row dataTables_content'<'col-md-12't>>" +
                 "<'row dataTables_footer'<'col-md-12'ip>>",
-            buttons: useDefaultButtons
+            buttons: useDefaultButtons,
         },
         rowClassName: '',
         queryId: '',
@@ -40,12 +40,12 @@
             apiUrl: '',
             childRowDisplayType: '',
             additionalDataTablesOptions: {
-                'columnDefs': [{ 'orderable': false, targets: 0 }],
-                'order': [[1, 'asc']]
+                columnDefs: [{ orderable: false, targets: 0 }],
+                order: [[1, 'asc']],
             },
             childRowClassName: '',
             toggleChildRowButtonClassName: '',
-            childRowVisibleClassName: ''
+            childRowVisibleClassName: '',
         },
         progressiveLoadingOptions: {
             progressiveLoadingEnabled: false,
@@ -53,11 +53,11 @@
             batchSize: 0,
             finishedCallback: function () { },
             batchCallback: function () { },
-            itemCallback: function () { }
+            itemCallback: function () { },
         },
         callbacks: {
-            ajaxDataLoadedCallback: function (response) { }
-        }
+            ajaxDataLoadedCallback: () => { },
+        },
     };
 
     function Plugin(element, options) {
@@ -78,15 +78,15 @@
         * Initializes the Lombiq DataTable plugin where the jQuery DataTables plugin will be also initialized.
         */
         init: function () {
-            var plugin = this;
-            var stateJson = '{}';
+            const plugin = this;
+            let stateJson = '{}';
 
-            plugin.customizeAjaxParameters = function (parameters) { return parameters };
+            plugin.customizeAjaxParameters = function customizeParameters(parameters) { return parameters; };
             plugin.originalQueryStringParameters = new URI().search(true);
 
-            var dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
+            const dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
 
-            dataTablesOptions.rowCallback = function (row, data, index) {
+            dataTablesOptions.rowCallback = function dataTablesRowCallback(row, data) {
                 if (data.id) {
                     $(row)
                         .addClass(plugin.settings.rowClassName)
@@ -95,7 +95,7 @@
             };
 
             function convertDate(date) {
-                var locale = 'en-US';
+                let locale = 'en-US';
                 if (plugin.settings.culture) locale = plugin.settings.culture;
                 return date.toLocaleDateString(locale);
             }
@@ -109,38 +109,38 @@
                     // If data is Boolean.
                     if (data === !!data) return data ? plugin.settings.texts.yes : plugin.settings.texts.no;
 
-                    if ($.isArray(data)) return data.join(', ')
+                    if ($.isArray(data)) return data.join(', ');
 
-                    var isString = typeof data === 'string';
+                    const isString = typeof data === 'string';
 
                     // If data is ISO date.
-                    if (isString && data.match(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.?\d*([+-][0-2]\d:[0-5]\d|Z)/)) {
+                    if (isString &&
+                        data.match(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.?\d*([+-][0-2]\d:[0-5]\d|Z)/)) {
                         return convertDate(new Date(data));
                     }
 
                     // If data is a template.
-                    var template = isString ?
+                    const template = isString ?
                         data.match(/^\s*{{\s*([^:]+)\s*:\s*([^}]*[^ \t}])\s*}}\s*$/) : null;
                     if (template && template[1] && template[2]) {
-                        var templateName = template[1];
-                        var templateData = template[2];
+                        const templateName = template[1];
+                        const templateData = template[2];
                         return dataTablesOptions.templates[templateName].replace(/{{\s*data\s*}}/g, templateData);
                     }
 
                     switch (data.Type) {
                         case 'ExportLink': return '<a href="' + data.Url + '">' + data.Text + '</a>';
                         case 'ExportDate': return convertDate(new Date(data.Year, data.Month - 1, data.Day));
+                        default: return data;
                     }
-
-                    return data;
-                }
+                },
             }];
 
             // This is a workaround to properly adjust column widths.
-            var originalInitCompleteHandler = dataTablesOptions.initComplete
+            const originalInitCompleteHandler = dataTablesOptions.initComplete
                 ? dataTablesOptions.initComplete
-                : function () { };
-            dataTablesOptions.initComplete = function () {
+                : function emptyFunction() { };
+            dataTablesOptions.initComplete = function dataTablesInitComplete() {
                 plugin.adjustColumns();
                 originalInitCompleteHandler.apply(this);
             };
@@ -149,8 +149,9 @@
                 dataTablesOptions.order = [[1, 'asc']];
                 dataTablesOptions.columnDefs.push({
                     orderable: false,
-                    defaultContent: '<div class="btn button ' + plugin.settings.childRowOptions.toggleChildRowButtonClassName + '"></div>',
-                    targets: 0
+                    defaultContent: '<div class="btn button ' +
+                        plugin.settings.childRowOptions.toggleChildRowButtonClassName + '"></div>',
+                    targets: 0,
                 });
             }
 
@@ -162,20 +163,18 @@
                     method: 'GET',
                     url: plugin.settings.rowsApiUrl,
                     data: function (params) {
-                        var internalParameters = plugin.cleanUpDataTablesAjaxParameters(params);
+                        const internalParameters = plugin.cleanUpDataTablesAjaxParameters(params);
 
-                        var extendedParameters = plugin.customizeAjaxParameters($.extend({}, internalParameters, {
+                        const extendedParameters = plugin.customizeAjaxParameters($.extend({}, internalParameters, {
                             queryId: plugin.settings.queryId,
                             dataProvider: plugin.settings.dataProvider,
-                            originalUrl: window.location.href
+                            originalUrl: window.location.href,
                         }));
-                        var jsonParameters = JSON.stringify(extendedParameters);
+                        const jsonParameters = JSON.stringify(extendedParameters);
                         stateJson = jsonParameters;
 
                         if (plugin.settings.queryStringParametersLocalStorageKey) {
-                            localStorage.setItem(
-                                plugin.settings.queryStringParametersLocalStorageKey,
-                                jsonParameters);
+                            localStorage.setItem(plugin.settings.queryStringParametersLocalStorageKey, jsonParameters);
                         }
 
                         if (plugin.settings.errorsSelector) $(plugin.settings.errorsSelector).hide();
@@ -185,8 +184,7 @@
                                 'params:\n' + JSON.stringify(params) + '\n' +
                                 'internalParameters:\n' + JSON.stringify(internalParameters) + '\n' +
                                 'extendedParameters:\n' + JSON.stringify(extendedParameters) + '\n' +
-                                'jsonParameters:\n' + JSON.stringify(jsonParameters) + '\n'
-                            );
+                                'jsonParameters:\n' + JSON.stringify(jsonParameters) + '\n');
                         }
                         return plugin.buildQueryStringParameters({ requestJson: jsonParameters });
                     },
@@ -194,40 +192,40 @@
                         plugin.settings.callbacks.ajaxDataLoadedCallback(response);
 
                         return response.data;
-                    }
+                    },
                 };
             }
 
             function exportAction(exportAll) {
-                return function () {
-                    location.href = URI(plugin.settings.export.api)
+                return function getExports() {
+                    window.location.href = URI(plugin.settings.export.api)
                         .search({ requestJson: stateJson, exportAll: exportAll });
-                }
+                };
             }
             function getExportButtons() {
                 return [
                     {
                         text: plugin.settings.export.textAll,
-                        action: exportAction(true)
+                        action: exportAction(true),
                     },
                     {
                         text: plugin.settings.export.textVisible,
-                        action: exportAction(false)
-                    }
+                        action: exportAction(false),
+                    },
                 ];
             }
             if (dataTablesOptions.buttons === useDefaultButtons) {
                 dataTablesOptions.buttons = getExportButtons();
             }
             else if (dataTablesOptions.buttons && dataTablesOptions.buttons.forEach) {
-                dataTablesOptions.buttons.forEach(function (button) {
+                dataTablesOptions.buttons.forEach((button) => {
                     if (button.buttons === useDefaultButtons) button.buttons = getExportButtons();
-                })
+                });
             }
 
             if (plugin.settings.errorsSelector) {
                 $.fn.dataTable.ext.errMode = 'none';
-                $(plugin.element).on('error.dt', function (e, settings, techNote, message) {
+                $(plugin.element).on('error.dt', (e, settings, techNote, message) => {
                     $(plugin.settings.errorsSelector).text(message).show();
                 });
             }
@@ -237,36 +235,39 @@
 
             // Register toggle button click listeners if child rows are enabled.
             if (plugin.settings.childRowOptions.childRowsEnabled) {
-                plugin.dataTableElement.on('click', '.' + plugin.settings.childRowOptions.toggleChildRowButtonClassName, function () {
-                    var parentRowElement = $(this).closest('tr');
+                plugin.dataTableElement.on(
+                    'click',
+                    '.' + plugin.settings.childRowOptions.toggleChildRowButtonClassName,
+                    function dataTableElementOnClick() {
+                        const parentRowElement = $(this).closest('tr');
 
-                    if (plugin.settings.childRowOptions.asyncLoading) {
-                        var contentItemId = parentRowElement.attr('data-contentitemid');
+                        if (plugin.settings.childRowOptions.asyncLoading) {
+                            const contentItemId = parentRowElement.attr('data-contentitemid');
 
-                        $.ajax({
-                            type: 'GET',
-                            url: plugin.settings.childRowOptions.apiUrl,
-                            data: {
-                                contentItemId: contentItemId,
-                                dataProvider: plugin.settings.dataProvider,
-                                originalUrl: window.location.href
-                            },
-                            success: function (data) {
-                                if (!data.error) {
-                                    plugin.toggleChildRow(parentRowElement, data.content);
-                                }
-                                else {
-                                    alert(data.error);
-                                }
-                            }
-                        });
-                    }
-                    else {
-                        var childRowContent = $('[data-parent="' + parentRowElement.attr('id') + '"]').html();
+                            $.ajax({
+                                type: 'GET',
+                                url: plugin.settings.childRowOptions.apiUrl,
+                                data: {
+                                    contentItemId: contentItemId,
+                                    dataProvider: plugin.settings.dataProvider,
+                                    originalUrl: window.location.href,
+                                },
+                                success: function (data) {
+                                    if (!data.error) {
+                                        plugin.toggleChildRow(parentRowElement, data.content);
+                                    }
+                                    else {
+                                        alert(data.error);
+                                    }
+                                },
+                            });
+                        }
+                        else {
+                            const childRowContent = $('[data-parent="' + parentRowElement.attr('id') + '"]').html();
 
-                        plugin.toggleChildRow(parentRowElement, childRowContent);
-                    }
-                });
+                            plugin.toggleChildRow(parentRowElement, childRowContent);
+                        }
+                    });
             }
 
             // Fetch items if progressive loading is enabled.
@@ -277,25 +278,26 @@
         },
 
         /**
-        * Removes unnecessary DataTables ajax parameters and updates property names and values to match server data model.
+        * Removes unnecessary DataTables ajax parameters and updates property names and values to match server data
+        * model.
         * @param {object} parameters Parameters generated by the DataTables plugin to be sent to the server.
         * @returns {object} Cleaned-up query string parameters.
         */
         cleanUpDataTablesAjaxParameters: function (parameters) {
             // Replacing column index to column name.
             // Also rename properties and values to match back-end data model.
-            for (var i = 0; i < parameters.order.length; i++) {
-                var orderData = parameters.order[i];
-                var columnIndex = orderData.column;
+            for (let i = 0; i < parameters.order.length; i++) {
+                const orderData = parameters.order[i];
+                const columnIndex = orderData.column;
                 orderData.column = parameters.columns[columnIndex].name;
                 orderData.direction = orderData.dir === 'asc' ? 'ascending' : 'descending';
                 delete orderData.dir;
             }
 
             // Send only filtered column data.
-            var columnFilters = [];
-            for (var j = 0; j < parameters.columns.length; j++) {
-                var column = parameters.columns[j];
+            const columnFilters = [];
+            for (let j = 0; j < parameters.columns.length; j++) {
+                const column = parameters.columns[j];
                 if (column.search.value) columnFilters.push(column);
             }
 
@@ -313,9 +315,9 @@
         * @param {object} childRowContent Content of the child row. A <tr> wrapper will be added automatically.
         */
         toggleChildRow: function (parentRowElement, childRowContent) {
-            var plugin = this;
+            const plugin = this;
 
-            var dataTableRow = plugin.dataTableApi.row(parentRowElement);
+            const dataTableRow = plugin.dataTableApi.row(parentRowElement);
 
             if (dataTableRow.child.isShown()) {
                 dataTableRow.child.hide();
@@ -333,13 +335,13 @@
         * Fetches the rows from the API using progressive loading.
         */
         fetchRowsProgressively: function () {
-            var plugin = this;
+            const plugin = this;
 
             if (!plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) return;
 
             plugin.dataTableApi.processing(true);
 
-            var options = {
+            const options = {
                 queryId: plugin.settings.queryId,
                 dataProvider: plugin.settings.dataProvider,
                 apiUrl: plugin.settings.rowsApiUrl,
@@ -356,26 +358,27 @@
                     }
 
                     plugin.dataTableApi.processing(false);
-                }
+                },
             };
 
             plugin.progressiveLoad($.extend({}, plugin.settings.progressiveLoadingOptions, options));
         },
 
         /**
-        * Builds query string parameters that includes the given parameters and the current URL's query string parameters.
+        * Builds query string parameters that includes the given parameters and the current URL's query string
+        * parameters.
         * The original query string parameters are traditionally encoded to preserve their query string keys,
         * while the ones used by DataTables aren't.
         * @param {object} data Data that needs to be merged with the current URL query string parameters.
         * @returns {object} Merged query string parameters.
         */
         buildQueryStringParameters: function (data) {
-            var finalQueryString = '';
+            let finalQueryString = '';
 
             // This is necessary to preserve the original structure of the initial query string:
             // Traditional encoding ensures that if a key has multiple values (e.g. "?name=value1&name=value2"),
             // then the key won't be changed to "name[]".
-            var originalQueryStringEncoded = $.param(this.originalQueryStringParameters, true);
+            const originalQueryStringEncoded = $.param(this.originalQueryStringParameters, true);
 
             if (originalQueryStringEncoded) {
                 finalQueryString += originalQueryStringEncoded + '&';
@@ -393,7 +396,7 @@
         * @param {callback} callback Callback for returning rows.
         */
         loadRows: function (skip, options, callback) {
-            var plugin = this;
+            const plugin = this;
 
             $.ajax({
                 type: 'GET',
@@ -403,7 +406,7 @@
                     start: skip,
                     length: options.batchSize,
                     dataProvider: options.dataProvider,
-                    originalUrl: window.location.href
+                    originalUrl: window.location.href,
                 }),
                 success: function (response) {
                     if (callback) {
@@ -414,7 +417,7 @@
                     if (callback) {
                         callback(false);
                     }
-                }
+                },
             });
         },
 
@@ -422,10 +425,10 @@
         * Adjusts datatable columns.
         */
         adjustColumns: function () {
-            var plugin = this;
+            const plugin = this;
 
             // This is a workaround to properly adjust column widths.
-            setTimeout(function () {
+            setTimeout(() => {
                 plugin.dataTableApi.columns.adjust();
             }, 10);
         },
@@ -436,13 +439,13 @@
         * @param {Object} options Progressive loading options including API URL and callbacks.
         */
         progressiveLoad: function (options) {
-            var plugin = this;
-            var total = 0;
-            var skip = options.skip;
+            const plugin = this;
+            let total = 0;
+            let skip = options.skip;
 
-            var callback = function (success, response) {
+            const callback = function (success, response) {
                 if (success && response) {
-                    var count = response.data.length;
+                    const count = response.data.length;
                     total += count;
 
                     if (options.batchCallback) {
@@ -450,7 +453,7 @@
                     }
 
                     if (count > 0 && options.itemCallback) {
-                        $.each(response.data, function (index, value) {
+                        $.each(response.data, (index, value) => {
                             options.itemCallback(index, value, response);
                         });
                     }
@@ -460,10 +463,8 @@
 
                         plugin.loadRows(skip, options, callback);
                     }
-                    else {
-                        if (options.finishedCallback) {
-                            options.finishedCallback(true, total);
-                        }
+                    else if (options.finishedCallback) {
+                        options.finishedCallback(true, total);
                     }
                 }
                 else {
@@ -478,15 +479,15 @@
             };
 
             plugin.loadRows(skip, options, callback);
-        }
+        },
     });
 
-    $.fn[pluginName] = function (options) {
+    $.fn[pluginName] = function pluginNameFunction(options) {
         // Return null if the element query is invalid.
         if (!this || this.length === 0) return null;
 
         // "map" makes it possible to return the already existing or currently initialized plugin instances.
-        return this.map(function () {
+        return this.map(function pluginMapFunction() {
             // If "options" is defined, but the plugin is not instantiated on this element ...
             if (options && !$.data(this, 'plugin_' + pluginName)) {
                 // ... then create a plugin instance ...
