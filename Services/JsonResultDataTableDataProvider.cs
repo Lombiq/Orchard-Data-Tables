@@ -68,8 +68,8 @@ namespace Lombiq.DataTables.Services
                 Direction = columnsDefinition.DefaultSortingDirection,
             };
 
-            var enumerableResults = await GetResultsAsync(request);
-            var results = enumerableResults is IList<object> listResults ? listResults : enumerableResults.ToList();
+            var meta = await GetResultsAsync(request);
+            var results = meta.Results.AsList();
             if (results.Count == 0) return DataTableDataResponse.Empty();
             var recordsFiltered = results.Count;
             var recordsTotal = results.Count;
@@ -92,7 +92,7 @@ namespace Lombiq.DataTables.Services
             }
 
             var searchValue = request.Search?.Value;
-            var hasSearch = !string.IsNullOrWhiteSpace(searchValue);
+            var hasSearch = request.HasSearch;
             var columnFilters = request.GetColumnSearches();
             if (hasSearch || columnFilters?.Count > 0)
             {
@@ -195,7 +195,7 @@ namespace Lombiq.DataTables.Services
         /// </summary>
         /// <param name="request">The input of <see cref="GetRowsAsync"/>.</param>
         /// <returns>A list of results or <see cref="JObject"/>s.</returns>
-        protected abstract Task<IEnumerable<object>> GetResultsAsync(DataTableDataRequest request);
+        protected abstract Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request);
 
         /// <summary>
         /// When overridden in a derived class it gets the columns definition.

@@ -17,6 +17,8 @@ namespace Lombiq.DataTables.Models
         public DataTableSearchParameters Search { get; set; }
         public IEnumerable<DataTableOrder> Order { get; set; }
 
+        public bool HasSearch => !string.IsNullOrWhiteSpace(Search?.Value);
+
         public IReadOnlyCollection<DataTableColumn> GetColumnSearches() =>
             ColumnFilters?
                 .Where(filter => !string.IsNullOrWhiteSpace(filter.Search?.Value))
