@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const nodeModulesBasePath = './node_modules/';
 const distBasePath = './wwwroot/';
 const lombiqBasePath = './Assets/Scripts/';
