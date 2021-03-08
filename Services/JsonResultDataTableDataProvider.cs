@@ -94,13 +94,17 @@ namespace Lombiq.DataTables.Services
             var searchValue = request.Search?.Value;
             var hasSearch = request.HasSearch;
             var columnFilters = request.GetColumnSearches();
-            if (hasSearch || columnFilters?.Count > 0)
+            if (!meta.IsFiltered && (hasSearch || columnFilters?.Count > 0))
             {
                 (rows, recordsFiltered) = Search(rows, columns, hasSearch, searchValue, columnFilters);
             }
 
-            if (request.Start > 0) rows = rows.Skip(request.Start);
-            if (request.Length > 0) rows = rows.Take(request.Length);
+            if (!meta.IsPaginated)
+            {
+                if (request.Start > 0) rows = rows.Skip(request.Start);
+                if (request.Length > 0) rows = rows.Take(request.Length);
+            }
+
             var rowList = rows.ToList();
 
             var liquidColumns = columns.Where(column => column.IsLiquid).Select(column => column.Name).ToList();

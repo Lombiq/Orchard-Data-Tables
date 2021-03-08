@@ -10,6 +10,7 @@ namespace Lombiq.DataTables.Models
         public IEnumerable<object> Results { get; set; }
 
         public bool IsPaginated { get; set; }
+        public bool IsFiltered { get; set; }
 
         public JsonResultDataTableDataProviderResult(IEnumerable<object> results = null) => Results = results;
     }
