@@ -34,6 +34,14 @@ namespace Lombiq.DataTables.Models
                 Day = localDate.Day,
             };
 
+        public static implicit operator ExportDate(DateTime dateTime) =>
+            new ExportDate
+            {
+                Year = dateTime.Year,
+                Month = dateTime.Month,
+                Day = dateTime.Day,
+            };
+
         public static explicit operator LocalDate(ExportDate exportDate) =>
             new LocalDate(exportDate.Year, exportDate.Month, exportDate.Day);
 
