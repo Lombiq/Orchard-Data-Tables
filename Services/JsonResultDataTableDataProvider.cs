@@ -68,10 +68,10 @@ namespace Lombiq.DataTables.Services
                 Direction = columnsDefinition.DefaultSortingDirection,
             };
 
-            var meta = await GetResultsAsync(request);
-            var results = meta.Results.AsList();
+            var metaData = await GetResultsAsync(request);
+            var results = metaData.Results.AsList();
             if (results.Count == 0) return DataTableDataResponse.Empty();
-            var recordsFiltered = meta.Count >= 0 && !meta.IsFiltered ? meta.Count : results.Count;
+            var recordsFiltered = metaData.Count >= 0 && !metaData.IsFiltered ? metaData.Count : results.Count;
             var recordsTotal = results.Count;
 
             var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
@@ -91,9 +91,9 @@ namespace Lombiq.DataTables.Services
                 return DataTableDataResponse.ErrorResult(T["Regex search is not supported at this time."]);
             }
 
-            if (!meta.IsFiltered || !meta.IsPaginated)
+            if (!metaData.IsFiltered || !metaData.IsPaginated)
             {
-                (rows, recordsFiltered) = FilterAndPaginate(request, meta, rows, columns, recordsFiltered);
+                (rows, recordsFiltered) = FilterAndPaginate(request, metaData, rows, columns, recordsFiltered);
             }
 
             var rowList = rows.ToList();
@@ -105,7 +105,7 @@ namespace Lombiq.DataTables.Services
             {
                 Data = rowList,
                 RecordsFiltered = recordsFiltered,
-                RecordsTotal = (meta.IsPaginated || meta.IsFiltered) && meta.Count >= 0 ? meta.Count : recordsTotal,
+                RecordsTotal = (metaData.IsPaginated || metaData.IsFiltered) && metaData.Count >= 0 ? metaData.Count : recordsTotal,
             };
         }
 
