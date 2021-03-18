@@ -34,14 +34,14 @@ namespace Lombiq.DataTables.Tests
             SupportedPermissions = null;
         }
 
-        protected override async Task<IEnumerable<object>> GetResultsAsync(DataTableDataRequest request)
+        protected override async Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request)
         {
             var columns = (await GetColumnsDefinitionAsync(null))
                 .Columns
                 .Select((item, index) => new { item.Name, Index = index });
 
-            return _dataSet.Select(row =>
-                JObject.FromObject(columns.ToDictionary(column => column.Name, column => row[column.Index])));
+            return new(_dataSet.Select(row =>
+                JObject.FromObject(columns.ToDictionary(column => column.Name, column => row[column.Index]))));
         }
 
         protected override DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) => Definition;

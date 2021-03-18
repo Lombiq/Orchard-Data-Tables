@@ -68,10 +68,10 @@ namespace Lombiq.DataTables.Services
                 Direction = columnsDefinition.DefaultSortingDirection,
             };
 
-            var enumerableResults = await GetResultsAsync(request);
-            var results = enumerableResults is IList<object> listResults ? listResults : enumerableResults.ToList();
+            var metaData = await GetResultsAsync(request);
+            var results = metaData.Results.AsList();
             if (results.Count == 0) return DataTableDataResponse.Empty();
-            var recordsFiltered = results.Count;
+            var recordsFiltered = metaData.Count >= 0 && !metaData.IsFiltered ? metaData.Count : results.Count;
             var recordsTotal = results.Count;
 
             var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
@@ -91,16 +91,11 @@ namespace Lombiq.DataTables.Services
                 return DataTableDataResponse.ErrorResult(T["Regex search is not supported at this time."]);
             }
 
-            var searchValue = request.Search?.Value;
-            var hasSearch = !string.IsNullOrWhiteSpace(searchValue);
-            var columnFilters = request.GetColumnSearches();
-            if (hasSearch || columnFilters?.Count > 0)
+            if (!metaData.IsFiltered || !metaData.IsPaginated)
             {
-                (rows, recordsFiltered) = Search(rows, columns, hasSearch, searchValue, columnFilters);
+                (rows, recordsFiltered) = FilterAndPaginate(request, metaData, rows, columns, recordsFiltered);
             }
 
-            if (request.Start > 0) rows = rows.Skip(request.Start);
-            if (request.Length > 0) rows = rows.Take(request.Length);
             var rowList = rows.ToList();
 
             var liquidColumns = columns.Where(column => column.IsLiquid).Select(column => column.Name).ToList();
@@ -110,7 +105,7 @@ namespace Lombiq.DataTables.Services
             {
                 Data = rowList,
                 RecordsFiltered = recordsFiltered,
-                RecordsTotal = recordsTotal,
+                RecordsTotal = (metaData.IsPaginated || metaData.IsFiltered) && metaData.Count >= 0 ? metaData.Count : recordsTotal,
             };
         }
 
@@ -127,10 +122,34 @@ namespace Lombiq.DataTables.Services
                             template,
                             _plainTextEncoder,
                             row,
-                            scope => { });
+                            _ => { });
                     }
                 }
             }
+        }
+
+        private static (IEnumerable<DataTableRow> Rows, int RecordsFiltered) FilterAndPaginate(
+            DataTableDataRequest request,
+            JsonResultDataTableDataProviderResult meta,
+            IEnumerable<DataTableRow> rows,
+            List<JsonResultColumn> columns,
+            int recordsFiltered)
+        {
+            var searchValue = request.Search?.Value;
+            var columnFilters = request.GetColumnSearches();
+
+            if (!meta.IsFiltered && (request.HasSearch || columnFilters?.Count > 0))
+            {
+                (rows, recordsFiltered) = Search(rows, columns, request.HasSearch, searchValue, columnFilters);
+            }
+
+            if (!meta.IsPaginated)
+            {
+                if (request.Start > 0) rows = rows.Skip(request.Start);
+                if (request.Length > 0) rows = rows.Take(request.Length);
+            }
+
+            return (rows, recordsFiltered);
         }
 
         private static (IEnumerable<DataTableRow> Results, int Count) Search(
@@ -195,7 +214,7 @@ namespace Lombiq.DataTables.Services
         /// </summary>
         /// <param name="request">The input of <see cref="GetRowsAsync"/>.</param>
         /// <returns>A list of results or <see cref="JObject"/>s.</returns>
-        protected abstract Task<IEnumerable<object>> GetResultsAsync(DataTableDataRequest request);
+        protected abstract Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request);
 
         /// <summary>
         /// When overridden in a derived class it gets the columns definition.
