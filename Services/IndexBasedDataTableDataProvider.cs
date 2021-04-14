@@ -28,7 +28,7 @@ namespace Lombiq.DataTables.Services
         {
             var query = new SqlBuilder(_session.Store.Configuration.TablePrefix, _session.Store.Dialect);
             query.Select();
-            query.Table(typeof(TIndex).Name)
+            query.Table(typeof(TIndex).Name);
 
             if (request.HasSearch)
             {
@@ -44,7 +44,7 @@ namespace Lombiq.DataTables.Services
             query.Take(request.Length.ToTechnicalString());
             var sql = query.ToSqlString();
 
-            _session.E
+            throw new NotImplementedException();
         }
 
         protected abstract Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync();
@@ -52,7 +52,8 @@ namespace Lombiq.DataTables.Services
         public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) =>
             GetColumnsDefinitionAsync();
 
-        public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) => throw new System.NotImplementedException();
+        public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) =>
+            Task.FromResult(new DataTableChildRowResponse());
 
         protected virtual async Task GlobalSearchAsync(ISqlBuilder sqlBuilder, DataTableSearchParameters parameters)
         {
