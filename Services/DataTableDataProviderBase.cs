@@ -34,16 +34,7 @@ namespace Lombiq.DataTables.Services
         public virtual Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) =>
             Task.FromResult(GetColumnsDefinitionInner(queryId));
 
-        /// <summary>
-        /// When overridden in a derived class it gets the columns definition.
-        /// </summary>
-        /// <param name="queryId">May be used to dynamically generate the result.</param>
-        /// <returns>The default columns definition of this provider.</returns>
-        protected virtual DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) =>
-            throw new InvalidOperationException(
-                $"You must override {nameof(GetColumnsDefinitionAsync)} or {nameof(GetColumnsDefinitionInner)}.");
-
-        protected string GetActionsColumn(string columnName = nameof(ContentItem.ContentItemId), bool fromJson = false)
+        public string GetActionsColumn(string columnName = nameof(ContentItem.ContentItemId), bool fromJson = false)
         {
             var beforePipe = string.Empty;
             var source = "'$0'";
@@ -67,5 +58,14 @@ namespace Lombiq.DataTables.Services
 
             return columnName + "||^.*$||" + beforePipe + "{{ " + source + " | " + call + " }}";
         }
+
+        /// <summary>
+        /// When overridden in a derived class it gets the columns definition.
+        /// </summary>
+        /// <param name="queryId">May be used to dynamically generate the result.</param>
+        /// <returns>The default columns definition of this provider.</returns>
+        protected virtual DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) =>
+            throw new InvalidOperationException(
+                $"You must override {nameof(GetColumnsDefinitionAsync)} or {nameof(GetColumnsDefinitionInner)}.");
     }
 }

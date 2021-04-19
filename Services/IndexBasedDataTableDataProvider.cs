@@ -40,9 +40,8 @@ namespace Lombiq.DataTables.Services
             var sql = query.ToSqlString();
 
             var transaction = await _session.DemandAsync();
-            var rows = (await _session.RawQueryAsync<TIndex>(sql, transaction: transaction))
-                .Select(Transform)
-                .Select((item, index) => new DataTableRow(index, item))
+            var rows = (await TransformAsync(await _session.RawQueryAsync<TIndex>(sql, transaction: transaction)))
+                .Select((item, index) => new DataTableRow(index, JObject.FromObject(item)))
                 .ToList();
 
             return DataTableDataResponse.FromRows(
@@ -50,7 +49,7 @@ namespace Lombiq.DataTables.Services
                 request.HasSearch ? await _session.QueryIndex<TIndex>().CountAsync() : rows.Count);
         }
 
-        protected virtual JObject Transform(TIndex row, int index) => JObject.FromObject(row);
+        protected virtual ValueTask<IEnumerable<object>> TransformAsync(IEnumerable<TIndex> rows) => new(rows);
 
         protected virtual async Task GlobalSearchAsync(ISqlBuilder sqlBuilder, DataTableSearchParameters parameters)
         {
