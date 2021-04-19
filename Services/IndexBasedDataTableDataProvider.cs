@@ -1,6 +1,7 @@
 ﻿using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Microsoft.Extensions.Localization;
+using Newtonsoft.Json.Linq;
 using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
@@ -12,15 +13,13 @@ using YesSql.Sql;
 
 namespace Lombiq.DataTables.Services
 {
-    public abstract class IndexBasedDataTableDataProvider<TIndex> : IDataTableDataProvider
+    public abstract class IndexBasedDataTableDataProvider<TIndex> : DataTableDataProviderBase
         where TIndex : MapIndex
     {
         protected readonly ISession _session;
 
-        public IndexBasedDataTableDataProvider(ISession session)
-        {
-            _session = session;
-        }
+        protected IndexBasedDataTableDataProvider(IDataTableDataProviderServices services, ISession session)
+            : base(services) => _session = session;
 
         public abstract LocalizedString Description { get; }
         public abstract IEnumerable<Permission> SupportedPermissions { get; }
@@ -44,16 +43,23 @@ namespace Lombiq.DataTables.Services
             query.Take(request.Length.ToTechnicalString());
             var sql = query.ToSqlString();
 
-            throw new NotImplementedException();
+            var transaction = await _session.DemandAsync();
+            var rows = (await _session.RawQueryAsync<TIndex>(sql, transaction: transaction))
+                .Select(Transform)
+                .Select((item, index) => new DataTableRow(index, item))
+                .ToList();
+
+            return DataTableDataResponse.FromRows(
+                rows,
+                request.HasSearch ? await _session.QueryIndex<TIndex>().CountAsync() : rows.Count);
         }
+
+        protected virtual JObject Transform(TIndex row, int index) => JObject.FromObject(row);
 
         protected abstract Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync();
 
         public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) =>
             GetColumnsDefinitionAsync();
-
-        public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) =>
-            Task.FromResult(new DataTableChildRowResponse());
 
         protected virtual async Task GlobalSearchAsync(ISqlBuilder sqlBuilder, DataTableSearchParameters parameters)
         {
