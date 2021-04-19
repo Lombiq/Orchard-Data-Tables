@@ -1,13 +1,8 @@
-using Lombiq.DataTables.Controllers;
 using Lombiq.DataTables.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
-using OrchardCore.ContentManagement;
 using OrchardCore.DisplayManagement;
 using OrchardCore.Liquid;
-using OrchardCore.Mvc.Core.Utilities;
 using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
@@ -21,34 +16,28 @@ namespace Lombiq.DataTables.Services
     /// <summary>
     /// Classes which implement this class only have to provide the provider description, the dataset via <see
     /// cref="GetResultsAsync"/> as <see cref="IList{T}"/> of either <see cref="object"/> or <see cref="JObject"/> (the
-    /// former is automatically converted to the latter) and the columns definition via <see
-    /// cref="GetColumnsDefinitionInner"/>.
+    /// former is automatically converted to the latter).
     /// </summary>
-    public abstract class JsonResultDataTableDataProvider : IDataTableDataProvider
+    public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBase
     {
         private readonly IStringLocalizer T;
         private readonly ILiquidTemplateManager _liquidTemplateManager;
         private readonly PlainTextEncoder _plainTextEncoder;
 
-        protected readonly LinkGenerator _linkGenerator;
-        protected readonly IHttpContextAccessor _hca;
-
-        public abstract LocalizedString Description { get; }
         public abstract IEnumerable<Permission> SupportedPermissions { get; }
 
         protected JsonResultDataTableDataProvider(
             IDataTableDataProviderServices services,
             IStringLocalizer implementationStringLocalizer)
+            : base(services)
         {
             T = implementationStringLocalizer;
             _liquidTemplateManager = services?.LiquidTemplateManager;
-            _linkGenerator = services?.LinkGenerator;
-            _hca = services?.HttpContextAccessor;
 
             _plainTextEncoder = new PlainTextEncoder();
         }
 
-        public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
+        public override async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
             var columnsDefinition = GetColumnsDefinitionInner(request.QueryId);
             var columns = columnsDefinition.Columns
@@ -196,11 +185,8 @@ namespace Lombiq.DataTables.Services
             return (list, list.Count);
         }
 
-        public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) =>
+        public override Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) =>
             Task.FromResult(GetColumnsDefinitionInner(queryId));
-
-        public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) =>
-            Task.FromResult(new DataTableChildRowResponse());
 
         public virtual Task<IEnumerable<dynamic>> GetShapesBeforeTableAsync() =>
             Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
@@ -215,38 +201,6 @@ namespace Lombiq.DataTables.Services
         /// <param name="request">The input of <see cref="GetRowsAsync"/>.</param>
         /// <returns>A list of results or <see cref="JObject"/>s.</returns>
         protected abstract Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request);
-
-        /// <summary>
-        /// When overridden in a derived class it gets the columns definition.
-        /// </summary>
-        /// <param name="queryId">May be used to dynamically generate the result.</param>
-        /// <returns>The default columns definition of this provider.</returns>
-        protected abstract DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId);
-
-        protected string GetActionsColumn(string columnName = nameof(ContentItem.ContentItemId), bool fromJson = false)
-        {
-            var beforePipe = string.Empty;
-            var source = "'$0'";
-            var call = "actions";
-
-            if (_hca?.HttpContext != null)
-            {
-                var returnUrl = _linkGenerator.GetPathByAction(
-                    _hca?.HttpContext,
-                    nameof(TableController.Get),
-                    typeof(TableController).ControllerName(),
-                    new { providerName = GetType().Name });
-                call = "actions: returnUrl: '" + returnUrl + "'";
-            }
-
-            if (fromJson)
-            {
-                beforePipe = "{% capture jsonData %} $0 {% endcapture %} ";
-                source = "jsonData | jsonparse";
-            }
-
-            return columnName + "||^.*$||" + beforePipe + "{{ " + source + " | " + call + " }}";
-        }
 
         private IEnumerable<JObject> OrderByColumn(IEnumerable<JObject> json, DataTableOrder order)
         {
