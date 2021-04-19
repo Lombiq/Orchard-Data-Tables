@@ -109,7 +109,7 @@ namespace Lombiq.DataTables.Services
             return false;
         }
 
-        public static string GetCustomActions(
+        public static ActionsModel GetCustomActions(
             this IDataTableDataProvider dataProvider,
             string contentItemId,
             bool canDelete,
@@ -143,14 +143,27 @@ namespace Lombiq.DataTables.Services
                     returnUrl));
             }
 
-            var actionsModel = new ActionsModel
+            return new ActionsModel
             {
                 Id = contentItemId,
                 MenuItems = menuItems,
                 WithDefaults = false,
             };
-
-            return JsonConvert.SerializeObject(actionsModel);
         }
+
+        public static string GetCustomActionsJson(
+            this IDataTableDataProvider dataProvider,
+            string contentItemId,
+            bool canDelete,
+            IHttpContextAccessor hca,
+            LinkGenerator linkGenerator,
+            IStringLocalizer<ActionsModel> actionsStringLocalizer) =>
+            JsonConvert.SerializeObject(GetCustomActions(
+                dataProvider,
+                contentItemId,
+                canDelete,
+                hca,
+                linkGenerator,
+                actionsStringLocalizer));
     }
 }
