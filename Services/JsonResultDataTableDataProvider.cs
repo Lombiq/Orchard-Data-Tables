@@ -3,7 +3,6 @@ using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using OrchardCore.DisplayManagement;
 using OrchardCore.Liquid;
-using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,8 +22,6 @@ namespace Lombiq.DataTables.Services
         private readonly IStringLocalizer T;
         private readonly ILiquidTemplateManager _liquidTemplateManager;
         private readonly PlainTextEncoder _plainTextEncoder;
-
-        public abstract IEnumerable<Permission> SupportedPermissions { get; }
 
         protected JsonResultDataTableDataProvider(
             IDataTableDataProviderServices services,
@@ -184,9 +181,6 @@ namespace Lombiq.DataTables.Services
             var list = filteredRows.ToList();
             return (list, list.Count);
         }
-
-        public override Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) =>
-            Task.FromResult(GetColumnsDefinitionInner(queryId));
 
         public virtual Task<IEnumerable<dynamic>> GetShapesBeforeTableAsync() =>
             Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());

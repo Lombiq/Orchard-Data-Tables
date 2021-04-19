@@ -1,8 +1,6 @@
 ﻿using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
-using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
-using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +19,7 @@ namespace Lombiq.DataTables.Services
         protected IndexBasedDataTableDataProvider(IDataTableDataProviderServices services, ISession session)
             : base(services) => _session = session;
 
-        public abstract LocalizedString Description { get; }
-        public abstract IEnumerable<Permission> SupportedPermissions { get; }
-        public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
+        public override async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
             var query = new SqlBuilder(_session.Store.Configuration.TablePrefix, _session.Store.Dialect);
             query.Select();
@@ -55,11 +51,6 @@ namespace Lombiq.DataTables.Services
         }
 
         protected virtual JObject Transform(TIndex row, int index) => JObject.FromObject(row);
-
-        protected abstract Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync();
-
-        public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) =>
-            GetColumnsDefinitionAsync();
 
         protected virtual async Task GlobalSearchAsync(ISqlBuilder sqlBuilder, DataTableSearchParameters parameters)
         {

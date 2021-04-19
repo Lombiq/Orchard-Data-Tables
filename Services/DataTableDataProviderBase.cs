@@ -5,7 +5,10 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using OrchardCore.ContentManagement;
 using OrchardCore.Mvc.Core.Utilities;
+using OrchardCore.Security.Permissions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services
@@ -16,6 +19,7 @@ namespace Lombiq.DataTables.Services
         protected readonly LinkGenerator _linkGenerator;
 
         public abstract LocalizedString Description { get; }
+        public virtual IEnumerable<Permission> SupportedPermissions => Enumerable.Empty<Permission>();
 
         protected DataTableDataProviderBase(IDataTableDataProviderServices services)
         {
@@ -25,10 +29,10 @@ namespace Lombiq.DataTables.Services
 
         public abstract Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request);
 
+        public virtual Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) => throw new NotSupportedException();
+
         public virtual Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) =>
             Task.FromResult(GetColumnsDefinitionInner(queryId));
-
-        public virtual Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) => throw new NotSupportedException();
 
         /// <summary>
         /// When overridden in a derived class it gets the columns definition.
