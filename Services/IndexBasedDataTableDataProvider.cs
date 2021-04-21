@@ -1,4 +1,5 @@
-﻿using Lombiq.DataTables.Constants;
+﻿using Dapper;
+using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Newtonsoft.Json.Linq;
 using System;
@@ -15,6 +16,7 @@ namespace Lombiq.DataTables.Services
         where TIndex : MapIndex
     {
         protected readonly ISession _session;
+        protected readonly IDictionary<string, string> _columnMapping = new Dictionary<string, string>();
 
         protected IndexBasedDataTableDataProvider(IDataTableDataProviderServices services, ISession session)
             : base(services) => _session = session;
@@ -24,23 +26,39 @@ namespace Lombiq.DataTables.Services
             var query = new SqlBuilder(_session.Store.Configuration.TablePrefix, _session.Store.Dialect);
             query.Select();
             query.Table(typeof(TIndex).Name);
+            query.Selector("*");
 
             if (request.HasSearch)
             {
                 await GlobalSearchAsync(query, request.Search);
             }
 
-            if (request.Order.Any())
+            var columnsDefinition = await GetColumnsDefinitionAsync(request.QueryId);
+            if (request.Order?.Any() != true)
             {
-                await SortAsync(query, request.Order);
+                var defaultOrderableColumnName = columnsDefinition
+                    .Columns
+                    .First(column => column.Orderable)
+                    .Name;
+                request.Order = new[] { new DataTableOrder { Column = defaultOrderableColumnName } };
             }
+
+            var sqlOrder = request
+                .Order
+                .Select(order => new DataTableOrder
+                {
+                    Column = _columnMapping.GetMaybe(order.Column) ?? order.Column,
+                    Direction = order.Direction,
+                });
+            await SortAsync(query, sqlOrder, columnsDefinition);
 
             query.Skip(request.Start.ToTechnicalString());
             query.Take(request.Length.ToTechnicalString());
             var sql = query.ToSqlString();
 
             var transaction = await _session.DemandAsync();
-            var rows = (await TransformAsync(await _session.RawQueryAsync<TIndex>(sql, transaction: transaction)))
+            var results = await transaction.Connection.QueryAsync<TIndex>(sql, query.Parameters, transaction);
+            var rows = (await TransformAsync(results))
                 .Select((item, index) => new DataTableRow(index, JObject.FromObject(item)))
                 .ToList();
 
@@ -60,36 +78,36 @@ namespace Lombiq.DataTables.Services
             }
         }
 
-        protected virtual async Task SortAsync(ISqlBuilder sqlBuilder, IEnumerable<DataTableOrder> orders)
+        protected virtual Task SortAsync(
+            ISqlBuilder sqlBuilder,
+            IEnumerable<DataTableOrder> orders,
+            DataTableColumnsDefinition columnsDefinition)
         {
-            var columnsDefinition = await GetColumnsDefinitionAsync(null);
             var wasOrderedOnce = false;
+            var columns = typeof(TIndex).GetProperties().Select(property => property.Name).ToHashSet();
+
             foreach (var dataTableOrder in orders)
             {
-                var columnDefinition = columnsDefinition.Columns.FirstOrDefault(definition => definition.Name == dataTableOrder.Column);
-                if (columnDefinition != null)
-                {
-                    OrderByColumn(sqlBuilder, dataTableOrder, columnDefinition, wasOrderedOnce);
-                    wasOrderedOnce = true;
-                }
+                if (!columns.Contains(dataTableOrder.Column)) continue;
+
+                OrderByColumn(sqlBuilder, dataTableOrder, wasOrderedOnce);
+                wasOrderedOnce = true;
             }
+
+            return Task.CompletedTask;
         }
 
-        protected virtual void OrderByColumn(
-            ISqlBuilder sqlBuilder,
-            DataTableOrder order,
-            DataTableColumnDefinition columnDefinition,
-            bool wasOrderedOnce)
+        private static void OrderByColumn(ISqlBuilder sqlBuilder, DataTableOrder order, bool wasOrderedOnce)
         {
             if (!wasOrderedOnce)
             {
-                if (order.Direction == SortingDirection.Ascending) sqlBuilder.OrderBy(columnDefinition.Name);
-                else sqlBuilder.OrderByDescending(columnDefinition.Name);
+                if (order.Direction == SortingDirection.Ascending) sqlBuilder.OrderBy(order.Column);
+                else sqlBuilder.OrderByDescending(order.Column);
             }
             else
             {
-                if (order.Direction == SortingDirection.Ascending) sqlBuilder.ThenOrderBy(columnDefinition.Name);
-                else sqlBuilder.ThenOrderByDescending(columnDefinition.Name);
+                if (order.Direction == SortingDirection.Ascending) sqlBuilder.ThenOrderBy(order.Column);
+                else sqlBuilder.ThenOrderByDescending(order.Column);
             }
         }
     }
