@@ -47,5 +47,11 @@ namespace Lombiq.DataTables.Models
 
         public static explicit operator DateTime(ExportDate exportDate) =>
             new LocalDate(exportDate.Year, exportDate.Month, exportDate.Day).ToDateTimeUnspecified();
+
+        public static implicit operator ExportDate(LocalDate? localDateNullable) =>
+            localDateNullable is { } localDate ? localDate : (ExportDate)null;
+
+        public static implicit operator ExportDate(DateTime? dateTimeNullable) =>
+            dateTimeNullable is { } dateTime ? dateTime : (ExportDate)null;
     }
 }
