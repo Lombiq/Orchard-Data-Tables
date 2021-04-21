@@ -37,17 +37,7 @@ namespace Lombiq.DataTables.Services
         public override async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
             var columnsDefinition = GetColumnsDefinitionInner(request.QueryId);
-            var columns = columnsDefinition.Columns
-                .Select(column =>
-                    new JsonResultColumn
-                    {
-                        Path = column.Name.Replace('_', '.'),
-                        Name = column.Name,
-                        Regex = column.Regex,
-                        Searchable = column.Searchable,
-                        IsLiquid = column.IsLiquid,
-                    })
-                .ToList();
+            var columns = columnsDefinition.Columns.ToList();
             var order = request.Order.FirstOrDefault() ?? new DataTableOrder
             {
                 Column = columnsDefinition.DefaultSortingColumnName,
@@ -65,7 +55,7 @@ namespace Lombiq.DataTables.Services
 
             var rows = json.Select((result, index) =>
                 new DataTableRow(index, columns
-                    .Select(column => (column.Name, column.Regex, Token: result.SelectToken(column.Path, false)))
+                    .Select(column => (column.Name, column.Regex, Token: result.SelectToken(column.Name, false)))
                     .ToDictionary(
                         cell => cell.Name,
                         cell => cell.Regex is { } regex
@@ -118,7 +108,7 @@ namespace Lombiq.DataTables.Services
             DataTableDataRequest request,
             JsonResultDataTableDataProviderResult meta,
             IEnumerable<DataTableRow> rows,
-            List<JsonResultColumn> columns,
+            List<DataTableColumnDefinition> columns,
             int recordsFiltered)
         {
             var searchValue = request.Search?.Value;
@@ -140,7 +130,7 @@ namespace Lombiq.DataTables.Services
 
         private static (IEnumerable<DataTableRow> Results, int Count) Search(
                 IEnumerable<DataTableRow> rows,
-                IEnumerable<JsonResultColumn> columns,
+                IEnumerable<DataTableColumnDefinition> columns,
                 bool hasSearch,
                 string searchValue,
                 IReadOnlyCollection<DataTableColumn> columnFilters)
@@ -228,18 +218,6 @@ namespace Lombiq.DataTables.Services
             }
 
             return order.IsAscending ? json.OrderBy(Selector) : json.OrderByDescending(Selector);
-        }
-
-        [DebuggerDisplay("{ToString()}")]
-        private class JsonResultColumn
-        {
-            public string Path { get; set; }
-            public string Name { get; set; }
-            public (string From, string To)? Regex { get; set; }
-            public bool Searchable { get; set; }
-            public bool IsLiquid { get; set; }
-
-            public override string ToString() => Name;
         }
     }
 }
