@@ -23,6 +23,7 @@ namespace Lombiq.DataTables.Services
 
         public override async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
+            DataTableColumnsDefinition columnsDefinition = null;
             var query = new SqlBuilder(_session.Store.Configuration.TablePrefix, _session.Store.Dialect);
             query.Select();
             query.Table(typeof(TIndex).Name);
@@ -30,12 +31,13 @@ namespace Lombiq.DataTables.Services
 
             if (request.HasSearch)
             {
-                await GlobalSearchAsync(query, request.Search);
+                columnsDefinition = await GetColumnsDefinitionAsync(request.QueryId);
+                await GlobalSearchAsync(query, request.Search, columnsDefinition);
             }
 
-            var columnsDefinition = await GetColumnsDefinitionAsync(request.QueryId);
             if (request.Order?.Any() != true)
             {
+                columnsDefinition ??= await GetColumnsDefinitionAsync(request.QueryId);
                 var defaultOrderableColumnName = columnsDefinition
                     .Columns
                     .First(column => column.Orderable)
@@ -43,14 +45,7 @@ namespace Lombiq.DataTables.Services
                 request.Order = new[] { new DataTableOrder { Column = defaultOrderableColumnName } };
             }
 
-            var sqlOrder = request
-                .Order
-                .Select(order => new DataTableOrder
-                {
-                    Column = _columnMapping.GetMaybe(order.Column) ?? order.Column,
-                    Direction = order.Direction,
-                });
-            await SortAsync(query, sqlOrder, columnsDefinition);
+            Sort(query, request.Order);
 
             query.Skip(request.Start.ToTechnicalString());
             query.Take(request.Length.ToTechnicalString());
@@ -69,22 +64,29 @@ namespace Lombiq.DataTables.Services
 
         protected virtual ValueTask<IEnumerable<object>> TransformAsync(IEnumerable<TIndex> rows) => new(rows);
 
-        protected virtual async Task GlobalSearchAsync(ISqlBuilder sqlBuilder, DataTableSearchParameters parameters)
+        protected virtual Task GlobalSearchAsync(
+            ISqlBuilder sqlBuilder,
+            DataTableSearchParameters parameters,
+            DataTableColumnsDefinition columnsDefinition)
         {
-            var columnsDefinition = await GetColumnsDefinitionAsync(null);
             foreach (var columnDefinition in columnsDefinition.Columns.Where(definition => definition.Searchable))
             {
                 sqlBuilder.WhereAlso($"{columnDefinition.Name} like '%{parameters.Value}%'");
             }
+
+            return Task.CompletedTask;
         }
 
-        protected virtual Task SortAsync(
-            ISqlBuilder sqlBuilder,
-            IEnumerable<DataTableOrder> orders,
-            DataTableColumnsDefinition columnsDefinition)
+        protected void Sort(ISqlBuilder sqlBuilder, IEnumerable<DataTableOrder> orders)
         {
             var wasOrderedOnce = false;
             var columns = typeof(TIndex).GetProperties().Select(property => property.Name).ToHashSet();
+
+            orders = orders.Select(order => new DataTableOrder
+            {
+                Column = _columnMapping.GetMaybe(order.Column) ?? order.Column,
+                Direction = order.Direction,
+            });
 
             foreach (var dataTableOrder in orders)
             {
@@ -93,8 +95,6 @@ namespace Lombiq.DataTables.Services
                 OrderByColumn(sqlBuilder, dataTableOrder, wasOrderedOnce);
                 wasOrderedOnce = true;
             }
-
-            return Task.CompletedTask;
         }
 
         private static void OrderByColumn(ISqlBuilder sqlBuilder, DataTableOrder order, bool wasOrderedOnce)
