@@ -23,21 +23,24 @@ namespace Lombiq.DataTables.Services
 
         public override async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
-            DataTableColumnsDefinition columnsDefinition = null;
             var query = new SqlBuilder(_session.Store.Configuration.TablePrefix, _session.Store.Dialect);
             query.Select();
             query.Table(typeof(TIndex).Name);
             query.Selector("*");
 
+            var columnsDefinition = await GetColumnsDefinitionAsync(request.QueryId);
+            var liquidColumns = columnsDefinition
+                .Columns
+                .Where(column => column.IsLiquid)
+                .Select(column => column.Name).ToList();
+
             if (request.HasSearch)
             {
-                columnsDefinition = await GetColumnsDefinitionAsync(request.QueryId);
                 await GlobalSearchAsync(query, request.Search, columnsDefinition);
             }
 
             if (request.Order?.Any() != true)
             {
-                columnsDefinition ??= await GetColumnsDefinitionAsync(request.QueryId);
                 var defaultOrderableColumnName = columnsDefinition
                     .Columns
                     .First(column => column.Orderable)
@@ -52,14 +55,18 @@ namespace Lombiq.DataTables.Services
             var sql = query.ToSqlString();
 
             var transaction = await _session.DemandAsync();
-            var results = await transaction.Connection.QueryAsync<TIndex>(sql, query.Parameters, transaction);
-            var rows = (await TransformAsync(results))
+            var queryResults = await transaction.Connection.QueryAsync<TIndex>(sql, query.Parameters, transaction);
+
+            var rowList = SubstituteByColumn(
+                    (await TransformAsync(queryResults)).Select(JObject.FromObject),
+                    columnsDefinition.Columns.ToList())
                 .Select((item, index) => new DataTableRow(index, JObject.FromObject(item)))
                 .ToList();
+            if (liquidColumns.Count > 0) await RenderLiquidAsync(rowList, liquidColumns);
 
             return DataTableDataResponse.FromRows(
-                rows,
-                request.HasSearch ? await _session.QueryIndex<TIndex>().CountAsync() : rows.Count);
+                rowList,
+                request.HasSearch ? await _session.QueryIndex<TIndex>().CountAsync() : rowList.Count);
         }
 
         protected virtual ValueTask<IEnumerable<object>> TransformAsync(IEnumerable<TIndex> rows) => new(rows);

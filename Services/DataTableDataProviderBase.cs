@@ -3,12 +3,15 @@ using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
+using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
+using OrchardCore.Liquid;
 using OrchardCore.Mvc.Core.Utilities;
 using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services
@@ -17,14 +20,19 @@ namespace Lombiq.DataTables.Services
     {
         protected readonly IHttpContextAccessor _hca;
         protected readonly LinkGenerator _linkGenerator;
+        protected readonly ILiquidTemplateManager _liquidTemplateManager;
+        protected readonly PlainTextEncoder _plainTextEncoder;
 
         public abstract LocalizedString Description { get; }
         public virtual IEnumerable<Permission> SupportedPermissions => Enumerable.Empty<Permission>();
 
         protected DataTableDataProviderBase(IDataTableDataProviderServices services)
         {
-            _linkGenerator = services?.LinkGenerator;
-            _hca = services?.HttpContextAccessor;
+            _linkGenerator = services.LinkGenerator;
+            _hca = services.HttpContextAccessor;
+            _liquidTemplateManager = services.LiquidTemplateManager;
+
+            _plainTextEncoder = new PlainTextEncoder();
         }
 
         public abstract Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request);
@@ -67,5 +75,36 @@ namespace Lombiq.DataTables.Services
         protected virtual DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) =>
             throw new InvalidOperationException(
                 $"You must override {nameof(GetColumnsDefinitionAsync)} or {nameof(GetColumnsDefinitionInner)}.");
+
+        protected static IEnumerable<DataTableRow> SubstituteByColumn(
+            IEnumerable<JObject> json,
+            IList<DataTableColumnDefinition> columns) =>
+            json.Select((result, index) =>
+                new DataTableRow(index, columns
+                    .Select(column => (column.Name, column.Regex, Token: result.SelectToken(column.Name, false)))
+                    .ToDictionary(
+                        cell => cell.Name,
+                        cell => cell.Regex is { } regex
+                            ? new JValue(Regex.Replace(cell.Token?.ToString() ?? string.Empty, regex.From, regex.To))
+                            : cell.Token)));
+
+        protected async Task RenderLiquidAsync(IEnumerable<DataTableRow> rowList, IList<string> liquidColumns)
+        {
+            foreach (var row in rowList)
+            {
+                foreach (var liquidColumn in liquidColumns)
+                {
+                    if (row.ValuesDictionary.TryGetValue(liquidColumn, out var token) &&
+                        token?.ToString() is { } template)
+                    {
+                        row[liquidColumn] = await _liquidTemplateManager.RenderAsync(
+                            template,
+                            _plainTextEncoder,
+                            row,
+                            _ => { });
+                    }
+                }
+            }
+        }
     }
 }

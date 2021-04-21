@@ -2,12 +2,9 @@ using Lombiq.DataTables.Models;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using OrchardCore.DisplayManagement;
-using OrchardCore.Liquid;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services
@@ -20,19 +17,12 @@ namespace Lombiq.DataTables.Services
     public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBase
     {
         private readonly IStringLocalizer T;
-        private readonly ILiquidTemplateManager _liquidTemplateManager;
-        private readonly PlainTextEncoder _plainTextEncoder;
 
         protected JsonResultDataTableDataProvider(
             IDataTableDataProviderServices services,
             IStringLocalizer implementationStringLocalizer)
-            : base(services)
-        {
+            : base(services) =>
             T = implementationStringLocalizer;
-            _liquidTemplateManager = services?.LiquidTemplateManager;
-
-            _plainTextEncoder = new PlainTextEncoder();
-        }
 
         public override async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
@@ -53,19 +43,12 @@ namespace Lombiq.DataTables.Services
             var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
             if (!string.IsNullOrEmpty(order.Column)) json = OrderByColumn(json, order);
 
-            var rows = json.Select((result, index) =>
-                new DataTableRow(index, columns
-                    .Select(column => (column.Name, column.Regex, Token: result.SelectToken(column.Name, false)))
-                    .ToDictionary(
-                        cell => cell.Name,
-                        cell => cell.Regex is { } regex
-                            ? new JValue(Regex.Replace(cell.Token?.ToString() ?? string.Empty, regex.From, regex.To))
-                            : cell.Token)));
-
             if (request.Search?.IsRegex == true)
             {
                 return DataTableDataResponse.ErrorResult(T["Regex search is not supported at this time."]);
             }
+
+            var rows = SubstituteByColumn(json, columns);
 
             if (!metaData.IsFiltered || !metaData.IsPaginated)
             {
@@ -83,25 +66,6 @@ namespace Lombiq.DataTables.Services
                 RecordsFiltered = recordsFiltered,
                 RecordsTotal = (metaData.IsPaginated || metaData.IsFiltered) && metaData.Count >= 0 ? metaData.Count : recordsTotal,
             };
-        }
-
-        private async Task RenderLiquidAsync(IEnumerable<DataTableRow> rowList, IList<string> liquidColumns)
-        {
-            foreach (var row in rowList)
-            {
-                foreach (var liquidColumn in liquidColumns)
-                {
-                    if (row.ValuesDictionary.TryGetValue(liquidColumn, out var token) &&
-                        token?.ToString() is { } template)
-                    {
-                        row[liquidColumn] = await _liquidTemplateManager.RenderAsync(
-                            template,
-                            _plainTextEncoder,
-                            row,
-                            _ => { });
-                    }
-                }
-            }
         }
 
         private static (IEnumerable<DataTableRow> Rows, int RecordsFiltered) FilterAndPaginate(
