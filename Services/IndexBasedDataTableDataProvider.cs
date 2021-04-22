@@ -2,6 +2,7 @@
 using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Newtonsoft.Json.Linq;
+using OrchardCore.ContentManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,6 +104,13 @@ namespace Lombiq.DataTables.Services
                 wasOrderedOnce = true;
             }
         }
+
+        protected ExportLink CreateLink(string id, string text, string tab = null) =>
+            id == null
+                ? null
+                : new ExportLink(
+                    DataTableContentItemExtensions.CreateEditLink(id, _linkGenerator, _hca.HttpContext, tab),
+                    text);
 
         private static void OrderByColumn(ISqlBuilder sqlBuilder, DataTableOrder order, bool wasOrderedOnce)
         {
