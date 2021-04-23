@@ -1,7 +1,6 @@
 using Lombiq.DataTables.Models;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
-using OrchardCore.DisplayManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
