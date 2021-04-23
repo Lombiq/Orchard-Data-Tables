@@ -27,18 +27,17 @@ namespace Lombiq.DataTables.Services
             var query = new SqlBuilder(_session.Store.Configuration.TablePrefix, _session.Store.Dialect);
             query.Select();
             query.Table(typeof(TIndex).Name);
-            query.Selector("*");
 
             var columnsDefinition = await GetColumnsDefinitionAsync(request.QueryId);
-            var liquidColumns = columnsDefinition
-                .Columns
-                .Where(column => column.IsLiquid)
-                .Select(column => column.Name).ToList();
 
             if (request.HasSearch)
             {
                 await GlobalSearchAsync(query, request.Search, columnsDefinition);
             }
+
+            query.Selector("COUNT(*) as Count");
+            var countSql = query.ToSqlString();
+            query.Selector("*");
 
             if (request.Order?.Any() != true)
             {
@@ -63,11 +62,22 @@ namespace Lombiq.DataTables.Services
                     columnsDefinition.Columns.ToList())
                 .Select((item, index) => new DataTableRow(index, JObject.FromObject(item)))
                 .ToList();
+
+            var liquidColumns = columnsDefinition
+                .Columns
+                .Where(column => column.IsLiquid)
+                .Select(column => column.Name).ToList();
             if (liquidColumns.Count > 0) await RenderLiquidAsync(rowList, liquidColumns);
 
-            return DataTableDataResponse.FromRows(
-                rowList,
-                request.HasSearch ? await _session.QueryIndex<TIndex>().CountAsync() : rowList.Count);
+            var total = await _session.QueryIndex<TIndex>().CountAsync();
+            return new DataTableDataResponse
+            {
+                Data = rowList,
+                RecordsFiltered = request.HasSearch
+                    ? await transaction.Connection.QueryFirstAsync<int>(countSql, query.Parameters, transaction)
+                    : total,
+                RecordsTotal = total,
+            };
         }
 
         protected virtual ValueTask<IEnumerable<object>> TransformAsync(IEnumerable<TIndex> rows) => new(rows);

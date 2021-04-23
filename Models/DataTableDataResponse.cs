@@ -45,7 +45,7 @@ namespace Lombiq.DataTables.Models
         /// </summary>
         /// <param name="errorText">The text to display.</param>
         public static DataTableDataResponse ErrorResult(string errorText) =>
-            new()
+            new DataTableDataResponse
             {
                 Error = errorText,
                 Data = Array.Empty<DataTableRow>(),
@@ -53,18 +53,9 @@ namespace Lombiq.DataTables.Models
                 RecordsTotal = 0,
             };
 
-        public static DataTableDataResponse FromRows(IList<DataTableRow> rows, int total = -1) =>
-            new()
-            {
-                Error = null,
-                Data = rows,
-                RecordsFiltered = rows.Count,
-                RecordsTotal = total >= 0 ? total : rows.Count,
-            };
-
         /// <summary>
         /// Creates a new response with empty <see cref="Data"/>.
         /// </summary>
-        public static DataTableDataResponse Empty() => FromRows(Array.Empty<DataTableRow>());
+        public static DataTableDataResponse Empty() => ErrorResult(null);
     }
 }
