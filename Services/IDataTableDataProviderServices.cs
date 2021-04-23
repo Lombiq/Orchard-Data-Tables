@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Caching.Memory;
+using OrchardCore.DisplayManagement;
 using OrchardCore.Liquid;
 using System.Diagnostics.CodeAnalysis;
 
@@ -19,5 +20,6 @@ namespace Lombiq.DataTables.Services
         LinkGenerator LinkGenerator { get; }
         ILiquidTemplateManager LiquidTemplateManager { get; }
         IMemoryCache MemoryCache { get; }
+        IShapeFactory ShapeFactory { get; }
     }
 }

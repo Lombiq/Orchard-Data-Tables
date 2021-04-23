@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
+using OrchardCore.DisplayManagement;
 using OrchardCore.Liquid;
 using OrchardCore.Mvc.Core.Utilities;
 using OrchardCore.Security.Permissions;
@@ -21,6 +22,8 @@ namespace Lombiq.DataTables.Services
         protected readonly IHttpContextAccessor _hca;
         protected readonly LinkGenerator _linkGenerator;
         protected readonly ILiquidTemplateManager _liquidTemplateManager;
+        protected readonly IShapeFactory _shapeFactory;
+
         protected readonly PlainTextEncoder _plainTextEncoder;
 
         public abstract LocalizedString Description { get; }
@@ -31,9 +34,16 @@ namespace Lombiq.DataTables.Services
             _linkGenerator = services.LinkGenerator;
             _hca = services.HttpContextAccessor;
             _liquidTemplateManager = services.LiquidTemplateManager;
+            _shapeFactory = services.ShapeFactory;
 
             _plainTextEncoder = new PlainTextEncoder();
         }
+
+        public virtual Task<IEnumerable<dynamic>> GetShapesBeforeTableAsync() =>
+            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
+
+        public virtual Task<IEnumerable<dynamic>> GetShapesAfterTableAsync() =>
+            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
 
         public abstract Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request);
 

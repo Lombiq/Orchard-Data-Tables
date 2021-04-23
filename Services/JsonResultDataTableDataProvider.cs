@@ -136,12 +136,6 @@ namespace Lombiq.DataTables.Services
             return (list, list.Count);
         }
 
-        public virtual Task<IEnumerable<dynamic>> GetShapesBeforeTableAsync() =>
-            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
-
-        public virtual Task<IEnumerable<dynamic>> GetShapesAfterTableAsync() =>
-            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
-
         /// <summary>
         /// When overridden in a derived class it gets the content which is then turned into <see cref="JToken"/> if
         /// necessary and then queried down using the column names into a dictionary.
