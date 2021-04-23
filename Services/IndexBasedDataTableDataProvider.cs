@@ -17,7 +17,7 @@ namespace Lombiq.DataTables.Services
         where TIndex : MapIndex
     {
         protected readonly ISession _session;
-        protected readonly IDictionary<string, string> _columnMapping = new Dictionary<string, string>();
+        private readonly IDictionary<string, string> _columnMapping = new Dictionary<string, string>();
 
         protected IndexBasedDataTableDataProvider(IDataTableDataProviderServices services, ISession session)
             : base(services) => _session = session;
@@ -77,11 +77,13 @@ namespace Lombiq.DataTables.Services
             DataTableSearchParameters parameters,
             DataTableColumnsDefinition columnsDefinition)
         {
-            foreach (var columnDefinition in columnsDefinition.Columns.Where(definition => definition.Searchable))
-            {
-                sqlBuilder.WhereAlso($"{columnDefinition.Name} like '%{parameters.Value}%'");
-            }
+            var search = parameters.Value.Replace("'", "''", StringComparison.Ordinal);
+            var conditions = columnsDefinition
+                .Columns
+                .Where(definition => definition.Searchable)
+                .Select(definition => $"{GetIndexColumnName(definition)} like '%{search}%'");
 
+            sqlBuilder.WhereAlso($"({string.Join(" OR ", conditions)})");
             return Task.CompletedTask;
         }
 
@@ -92,7 +94,7 @@ namespace Lombiq.DataTables.Services
 
             orders = orders.Select(order => new DataTableOrder
             {
-                Column = _columnMapping.GetMaybe(order.Column) ?? order.Column,
+                Column = GetIndexColumnName(order.Column),
                 Direction = order.Direction,
             });
 
@@ -111,6 +113,14 @@ namespace Lombiq.DataTables.Services
                 : new ExportLink(
                     DataTableContentItemExtensions.CreateEditLink(id, _linkGenerator, _hca.HttpContext, tab),
                     text);
+
+        protected void AddColumnMapping(string tableResultColumnName, string indexColumnName) =>
+            _columnMapping[tableResultColumnName] = indexColumnName;
+
+        protected string GetIndexColumnName(string tableResultColumnName) =>
+            _columnMapping.GetMaybe(tableResultColumnName) ?? tableResultColumnName;
+        protected string GetIndexColumnName(DataTableColumnDefinition definition) =>
+            _columnMapping.GetMaybe(definition.Name) ?? definition.Name;
 
         private static void OrderByColumn(ISqlBuilder sqlBuilder, DataTableOrder order, bool wasOrderedOnce)
         {
