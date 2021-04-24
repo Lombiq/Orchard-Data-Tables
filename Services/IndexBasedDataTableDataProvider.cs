@@ -50,8 +50,12 @@ namespace Lombiq.DataTables.Services
 
             Sort(query, request.Order);
 
-            query.Skip(request.Start.ToTechnicalString());
-            query.Take(request.Length.ToTechnicalString());
+            if (request.Length > 0 && request.Length != int.MinValue)
+            {
+                query.Skip(request.Start.ToTechnicalString());
+                query.Take(request.Length.ToTechnicalString());
+            }
+
             var sql = query.ToSqlString();
 
             var transaction = await _session.DemandAsync();
