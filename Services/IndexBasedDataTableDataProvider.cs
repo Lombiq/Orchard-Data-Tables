@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Newtonsoft.Json.Linq;
@@ -30,10 +30,8 @@ namespace Lombiq.DataTables.Services
 
             var columnsDefinition = await GetColumnsDefinitionAsync(request.QueryId);
 
-            if (request.HasSearch)
-            {
-                await GlobalSearchAsync(query, request.Search, columnsDefinition);
-            }
+            if (request.HasSearch) await GlobalSearchAsync(query, request.Search, columnsDefinition);
+            foreach (var filter in request.ColumnFilters) await ColumnSearchAsync(query, filter, columnsDefinition);
 
             query.Selector("COUNT(*) as Count");
             var countSql = query.ToSqlString();
@@ -50,7 +48,7 @@ namespace Lombiq.DataTables.Services
 
             Sort(query, request.Order);
 
-            if (request.Length > 0 && request.Length != int.MinValue)
+            if (request.Length is > 0 and not int.MinValue)
             {
                 query.Skip(request.Start.ToTechnicalString());
                 query.Take(request.Length.ToTechnicalString());
@@ -98,6 +96,21 @@ namespace Lombiq.DataTables.Services
                 .Select(definition => $"{GetIndexColumnName(definition)} like '%{search}%'");
 
             sqlBuilder.WhereAlso($"({string.Join(" OR ", conditions)})");
+            return Task.CompletedTask;
+        }
+
+        protected virtual Task ColumnSearchAsync(
+            ISqlBuilder sqlBuilder,
+            DataTableColumn columnFilter,
+            DataTableColumnsDefinition columnsDefinition)
+        {
+            var definition = columnsDefinition.Columns.SingleOrDefault(item => item.Name == columnFilter.Name);
+            if (definition?.Searchable == true)
+            {
+                var search = columnFilter.Search.Value.Replace("'", "''", StringComparison.Ordinal);
+                sqlBuilder.WhereAlso($"{GetIndexColumnName(definition)} like '%{search}%'");
+            }
+
             return Task.CompletedTask;
         }
 
