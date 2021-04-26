@@ -27,7 +27,9 @@ namespace Lombiq.DataTables.Tests
                     linkGenerator: null,
                     new LiquidTemplateManager(memoryCache),
                     memoryCache,
-                    shapeFactory: null),
+                    shapeFactory: null,
+                    session: null,
+                    authorizationService: null),
                 new StringLocalizer<MockDataProvider>(new NullStringLocalizerFactory()))
         {
             _dataSet = dataSet;

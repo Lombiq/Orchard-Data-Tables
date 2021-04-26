@@ -1,6 +1,7 @@
 using Dapper;
 using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
+using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
 using System;
@@ -16,11 +17,16 @@ namespace Lombiq.DataTables.Services
     public abstract class IndexBasedDataTableDataProvider<TIndex> : DataTableDataProviderBase
         where TIndex : MapIndex
     {
+        protected readonly IAuthorizationService _authorizationService;
         protected readonly ISession _session;
         private readonly IDictionary<string, string> _columnMapping = new Dictionary<string, string>();
 
-        protected IndexBasedDataTableDataProvider(IDataTableDataProviderServices services, ISession session)
-            : base(services) => _session = session;
+        protected IndexBasedDataTableDataProvider(IDataTableDataProviderServices services)
+            : base(services)
+        {
+            _session = services.Session;
+            _authorizationService = services.AuthorizationService;
+        }
 
         public override async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
