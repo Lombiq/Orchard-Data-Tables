@@ -11,6 +11,12 @@
 
     var pluginName = "lombiq_DataTables";
 
+    var staticVariables = {
+        eventNames: {
+            OnInitComplete: pluginName + "_OnInitComplete",
+        }
+    };
+
     var defaults = {
         dataTablesOptions: {
             searching: false,
@@ -99,6 +105,7 @@
             dataTablesOptions.initComplete = function () {
                 plugin.adjustColumns();
                 plugin.settings.callbacks.onInitComplete();
+                $(plugin.element).trigger(staticVariables.eventNames.OnInitComplete, [plugin]);
             };
 
             if (plugin.settings.childRowOptions.childRowsEnabled) {
@@ -450,4 +457,6 @@
             return $.data(this, "plugin_" + pluginName);
         });
     };
+
+    $[pluginName] = staticVariables;
 })(jQuery, window, document);
