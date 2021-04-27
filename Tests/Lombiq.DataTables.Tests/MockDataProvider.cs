@@ -29,7 +29,8 @@ namespace Lombiq.DataTables.Tests
                     memoryCache,
                     shapeFactory: null,
                     session: null,
-                    authorizationService: null),
+                    authorizationService: null,
+                    contentManager: null),
                 new StringLocalizer<MockDataProvider>(new NullStringLocalizerFactory()))
         {
             _dataSet = dataSet;
