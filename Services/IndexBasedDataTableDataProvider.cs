@@ -74,7 +74,8 @@ namespace Lombiq.DataTables.Services
             var liquidColumns = columnsDefinition
                 .Columns
                 .Where(column => column.IsLiquid)
-                .Select(column => column.Name).ToList();
+                .Select(column => column.Name)
+                .ToList();
             if (liquidColumns.Count > 0) await RenderLiquidAsync(rowList, liquidColumns);
 
             var total = await _session.QueryIndex<TIndex>().CountAsync();
@@ -95,13 +96,14 @@ namespace Lombiq.DataTables.Services
             DataTableSearchParameters parameters,
             DataTableColumnsDefinition columnsDefinition)
         {
-            var search = parameters.Value.Replace("'", "''", StringComparison.Ordinal);
             var conditions = columnsDefinition
                 .Columns
                 .Where(definition => definition.Searchable)
-                .Select(definition => $"{GetIndexColumnName(definition)} like '%{search}%'");
+                .Select(definition => $"{GetIndexColumnName(definition)} LIKE @{nameof(GlobalSearchAsync)}");
 
             sqlBuilder.WhereAlso($"({string.Join(" OR ", conditions)})");
+            sqlBuilder.Parameters[nameof(GlobalSearchAsync)] = parameters.Value;
+
             return Task.CompletedTask;
         }
 
