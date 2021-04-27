@@ -83,7 +83,7 @@ namespace Lombiq.DataTables.Services
         /// <param name="queryId">May be used to dynamically generate the result.</param>
         /// <returns>The default columns definition of this provider.</returns>
         protected virtual DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) =>
-            throw new InvalidOperationException(
+            throw new NotSupportedException(
                 $"You must override {nameof(GetColumnsDefinitionAsync)} or {nameof(GetColumnsDefinitionInner)}.");
 
         protected static IEnumerable<DataTableRow> SubstituteByColumn(
