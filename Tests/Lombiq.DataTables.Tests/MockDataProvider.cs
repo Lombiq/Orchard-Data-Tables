@@ -18,7 +18,7 @@ namespace Lombiq.DataTables.Tests
         private readonly object[][] _dataSet;
 
         public override LocalizedString Description { get; } = new LocalizedString("Test", "Test");
-        public override IEnumerable<Permission> SupportedPermissions { get; }
+        public override IEnumerable<Permission> AllowedPermissions { get; }
 
         public MockDataProvider(object[][] dataSet, IMemoryCache memoryCache, DataTableColumnsDefinition definition = null)
             : base(
@@ -34,7 +34,7 @@ namespace Lombiq.DataTables.Tests
         {
             _dataSet = dataSet;
             Definition = definition;
-            SupportedPermissions = null;
+            AllowedPermissions = null;
         }
 
         protected override async Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request)

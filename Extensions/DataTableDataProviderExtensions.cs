@@ -99,9 +99,9 @@ namespace Lombiq.DataTables.Services
             IAuthorizationService authorizationService,
             ClaimsPrincipal user)
         {
-            if (dataProvider.SupportedPermissions == null) return false;
+            if (dataProvider.AllowedPermissions == null) return false;
 
-            foreach (var permission in dataProvider.SupportedPermissions)
+            foreach (var permission in dataProvider.AllowedPermissions)
             {
                 if (await authorizationService.AuthorizeAsync(user, permission)) return true;
             }

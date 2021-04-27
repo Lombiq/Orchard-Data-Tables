@@ -32,7 +32,7 @@ namespace Lombiq.DataTables.Services
         /// <summary>
         /// Gets an optional collection of permissions. If not null, the user must authorize against at least one.
         /// </summary>
-        IEnumerable<Permission> SupportedPermissions => Enumerable.Empty<Permission>();
+        IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
 
         /// <summary>
         /// Returns the table body created based on the provided request.

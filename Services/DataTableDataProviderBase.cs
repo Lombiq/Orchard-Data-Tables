@@ -27,7 +27,7 @@ namespace Lombiq.DataTables.Services
         protected readonly PlainTextEncoder _plainTextEncoder;
 
         public abstract LocalizedString Description { get; }
-        public virtual IEnumerable<Permission> SupportedPermissions => Enumerable.Empty<Permission>();
+        public virtual IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
 
         protected DataTableDataProviderBase(IDataTableDataProviderServices services)
         {
