@@ -11,12 +11,14 @@ using System.Threading.Tasks;
 using YesSql;
 using YesSql.Indexes;
 using YesSql.Sql;
+using static OrchardCore.Contents.CommonPermissions;
 
 namespace Lombiq.DataTables.Services
 {
     public abstract class IndexBasedDataTableDataProvider<TIndex> : DataTableDataProviderBase
         where TIndex : MapIndex
     {
+        private readonly IContentManager _contentManager;
         protected readonly IAuthorizationService _authorizationService;
         protected readonly ISession _session;
         private readonly IDictionary<string, string> _columnMapping = new Dictionary<string, string>();
@@ -24,6 +26,7 @@ namespace Lombiq.DataTables.Services
         protected IndexBasedDataTableDataProvider(IDataTableDataProviderServices services)
             : base(services)
         {
+            _contentManager = services.ContentManager;
             _session = services.Session;
             _authorizationService = services.AuthorizationService;
         }
@@ -113,11 +116,12 @@ namespace Lombiq.DataTables.Services
             DataTableColumnsDefinition columnsDefinition)
         {
             var definition = columnsDefinition.Columns.SingleOrDefault(item => item.Name == columnFilter.Name);
-            if (definition?.Searchable == true)
-            {
-                var search = columnFilter.Search.Value.Replace("'", "''", StringComparison.Ordinal);
-                sqlBuilder.WhereAlso($"{GetIndexColumnName(definition)} like '%{search}%'");
-            }
+            if (definition?.Searchable != true) return Task.CompletedTask;
+
+            var parameterName = $"{nameof(ColumnSearchAsync)}_{definition.Name}";
+
+            sqlBuilder.WhereAlso($"{GetIndexColumnName(definition)} LIKE @{parameterName}");
+            sqlBuilder.Parameters[parameterName] = columnFilter.Search.Value;
 
             return Task.CompletedTask;
         }
@@ -156,6 +160,10 @@ namespace Lombiq.DataTables.Services
             _columnMapping.GetMaybe(tableResultColumnName) ?? tableResultColumnName;
         protected string GetIndexColumnName(DataTableColumnDefinition definition) =>
             _columnMapping.GetMaybe(definition.Name) ?? definition.Name;
+
+        protected async Task<bool> CanDeleteAsync(string contentType) =>
+            _hca?.HttpContext.User is { } user &&
+            await _authorizationService.AuthorizeAsync(user, DeleteContent, await _contentManager.NewAsync(contentType));
 
         private static void OrderByColumn(ISqlBuilder sqlBuilder, DataTableOrder order, bool wasOrderedOnce)
         {

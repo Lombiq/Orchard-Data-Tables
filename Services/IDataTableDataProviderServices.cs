@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Caching.Memory;
+using OrchardCore.ContentManagement;
 using OrchardCore.DisplayManagement;
 using OrchardCore.Liquid;
 using System.Diagnostics.CodeAnalysis;
@@ -25,5 +26,6 @@ namespace Lombiq.DataTables.Services
         IShapeFactory ShapeFactory { get; }
         ISession Session { get; }
         IAuthorizationService AuthorizationService { get; }
+        IContentManager ContentManager { get; }
     }
 }
