@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Lombiq.DataTables.Models
 {
-    public class ActionsModel
+    public class ActionsDescriptor
     {
         private const string OrchardCoreContents = "OrchardCore.Contents";
 
@@ -17,7 +17,7 @@ namespace Lombiq.DataTables.Models
         public IEnumerable<ExportLink> GetAllMenuItems(
             HttpContext context,
             LinkGenerator linkGenerator,
-            IStringLocalizer<ActionsModel> stringLocalizer,
+            IStringLocalizer<ActionsDescriptor> stringLocalizer,
             string returnUrl)
         {
             if (string.IsNullOrEmpty(Id)) WithDefaults = false;
@@ -37,7 +37,7 @@ namespace Lombiq.DataTables.Models
             string contentItemId,
             HttpContext context,
             LinkGenerator linkGenerator,
-            IStringLocalizer<ActionsModel> stringLocalizer,
+            IStringLocalizer<ActionsDescriptor> stringLocalizer,
             string returnUrl,
             LocalizedString text = null)
         {
@@ -52,7 +52,7 @@ namespace Lombiq.DataTables.Models
             string contentItemId,
             HttpContext context,
             LinkGenerator linkGenerator,
-            IStringLocalizer<ActionsModel> stringLocalizer,
+            IStringLocalizer<ActionsDescriptor> stringLocalizer,
             string returnUrl,
             LocalizedString text = null)
         {

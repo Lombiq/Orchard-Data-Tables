@@ -109,13 +109,13 @@ namespace Lombiq.DataTables.Services
             return false;
         }
 
-        public static ActionsModel GetCustomActions(
+        public static ActionsDescriptor GetCustomActions(
             this IDataTableDataProvider dataProvider,
             string contentItemId,
             bool canDelete,
             IHttpContextAccessor hca,
             LinkGenerator linkGenerator,
-            IStringLocalizer<ActionsModel> actionsStringLocalizer)
+            IStringLocalizer<ActionsDescriptor> actionsStringLocalizer)
         {
             var returnUrl = linkGenerator.GetPathByAction(
                 hca.HttpContext,
@@ -125,7 +125,7 @@ namespace Lombiq.DataTables.Services
 
             var menuItems = new List<ExportLink>
             {
-                ActionsModel.GetEditLink(
+                ActionsDescriptor.GetEditLink(
                     contentItemId,
                     hca.HttpContext,
                     linkGenerator,
@@ -135,7 +135,7 @@ namespace Lombiq.DataTables.Services
 
             if (canDelete)
             {
-                menuItems.Add(ActionsModel.GetRemoveLink(
+                menuItems.Add(ActionsDescriptor.GetRemoveLink(
                     contentItemId,
                     hca.HttpContext,
                     linkGenerator,
@@ -143,7 +143,7 @@ namespace Lombiq.DataTables.Services
                     returnUrl));
             }
 
-            return new ActionsModel
+            return new ActionsDescriptor
             {
                 Id = contentItemId,
                 MenuItems = menuItems,
@@ -157,7 +157,7 @@ namespace Lombiq.DataTables.Services
             bool canDelete,
             IHttpContextAccessor hca,
             LinkGenerator linkGenerator,
-            IStringLocalizer<ActionsModel> actionsStringLocalizer) =>
+            IStringLocalizer<ActionsDescriptor> actionsStringLocalizer) =>
             JsonConvert.SerializeObject(GetCustomActions(
                 dataProvider,
                 contentItemId,
