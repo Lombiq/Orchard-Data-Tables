@@ -1,4 +1,10 @@
+using Finitive.CommercialEntities.Handlers;
+using Lombiq.DataTables.Handlers;
 using Lombiq.DataTables.Services;
+using Lombiq.HelpfulLibraries.Libraries.Database;
+using OrchardCore.ContentManagement.Handlers;
+using OrchardCore.Data.Migration;
+using YesSql.Indexes;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -17,5 +23,22 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddDataTableExportService<TService>(this IServiceCollection services)
             where TService : class, IDataTableExportService =>
             services.AddScoped<IDataTableExportService, TService>();
+
+        public static IServiceCollection AddIndexBasedDataTableProvider<TIndex, TGenerator, TMigration, TProvider>(
+            this IServiceCollection services)
+            where TIndex : MapIndex
+            where TGenerator : class, IDataTableIndexGenerator<TIndex>
+            where TMigration : IndexDataMigration<TIndex>
+            where TProvider : IndexBasedDataTableDataProvider<TIndex>
+        {
+            services.AddSingleton<IManualConnectingIndexService<TIndex>, ManualConnectingIndexService<TIndex>>();
+            services.AddScoped<TGenerator, TGenerator>();
+            services.AddScoped<IContentHandler, DataTableIndexGeneratorContentHandler<TGenerator, TIndex>>();
+            services.AddScoped<IManualDataTableIndexGenerator, DataTableIndexGeneratorContentHandler<TGenerator, TIndex>>();
+            services.AddScoped<IDataMigration, TMigration>();
+            services.AddDataTableDataProvider<TProvider>();
+
+            return services;
+        }
     }
 }
