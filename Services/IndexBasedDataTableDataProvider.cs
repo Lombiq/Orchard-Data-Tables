@@ -105,7 +105,7 @@ namespace Lombiq.DataTables.Services
                 .Select(definition => $"{GetIndexColumnName(definition)} LIKE @{nameof(GlobalSearchAsync)}");
 
             sqlBuilder.WhereAlso($"({string.Join(" OR ", conditions)})");
-            sqlBuilder.Parameters[nameof(GlobalSearchAsync)] = parameters.Value;
+            sqlBuilder.Parameters[nameof(GlobalSearchAsync)] = $"%{parameters.Value}%";
 
             return Task.CompletedTask;
         }
@@ -121,7 +121,7 @@ namespace Lombiq.DataTables.Services
             var parameterName = $"{nameof(ColumnSearchAsync)}_{definition.Name}";
 
             sqlBuilder.WhereAlso($"{GetIndexColumnName(definition)} LIKE @{parameterName}");
-            sqlBuilder.Parameters[parameterName] = columnFilter.Search.Value;
+            sqlBuilder.Parameters[parameterName] = $"%{columnFilter.Search.Value}%";
 
             return Task.CompletedTask;
         }
