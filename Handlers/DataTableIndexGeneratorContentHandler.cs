@@ -52,9 +52,7 @@ namespace Lombiq.DataTables.Handlers
         {
             var generator = _indexGeneratorLazy.Value;
             var contentItem = context.ContentItem;
-            var isRemove =
-                generator.ManagedContentType.Contains(contentItem.ContentType) &&
-                (context is RemoveContentContext || !contentItem.Latest);
+            var isRemove = generator.ManagedContentType.Contains(contentItem.ContentType) && context.IsRemove();
 
             if (await generator.NeedsUpdatingAsync(context))
             {
