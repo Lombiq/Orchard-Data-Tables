@@ -24,7 +24,7 @@ namespace Lombiq.DataTables.Services
             string sortingColumn,
             SortingDirection sortingDirection,
             params (string Name, string Text)[] columns) =>
-            new DataTableColumnsDefinition
+            new()
             {
                 DefaultSortingColumnName = sortingColumn,
                 DefaultSortingDirection = sortingDirection,
@@ -57,7 +57,7 @@ namespace Lombiq.DataTables.Services
                             DataSource = dataProvider.Name,
                             Name = nameParts[0],
                             Text = text,
-                            Regex = nameParts.Length == 3 ? (nameParts[1], nameParts[2]) as (string, string)? : null,
+                            Regex = nameParts.Length == 3 ? (nameParts[1], nameParts[2]) : null,
                             Searchable = searchable,
                             Exportable = exportable,
                             IsLiquid = isLiquid,
