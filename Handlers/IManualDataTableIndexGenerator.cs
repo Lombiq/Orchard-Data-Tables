@@ -16,7 +16,7 @@ namespace Finitive.CommercialEntities.Handlers
         /// </summary>
         /// <param name="contentItem"> The item for which the index is generated.</param>
         /// <param name="managedTypeOnly">
-        /// If <see langword="true"/>, the <paramref name="contentItem"/> is only handled if its type in in
+        /// If <see langword="true"/>, the <paramref name="contentItem"/> is only handled if its type is in
         /// <see cref="IDataTableIndexGenerator{TIndex}.ManagedContentType"/>, otherwise it gets skipped. Ideal for
         /// running a content item through all supported <see cref="IManualDataTableIndexGenerator"/> implementations.
         /// </param>
