@@ -1,3 +1,4 @@
+using Dapper;
 using Finitive.CommercialEntities.Handlers;
 using Lombiq.DataTables.Services;
 using Lombiq.HelpfulLibraries.Libraries.Database;
@@ -54,11 +55,9 @@ namespace Lombiq.DataTables.Handlers
             var contentItem = context.ContentItem;
             var isRemove = generator.ManagedContentType.Contains(contentItem.ContentType) && context.IsRemove();
 
-            if (await generator.NeedsUpdatingAsync(context))
-            {
-                await _sessionLazy.Value.FlushAsync(); // This was only necessary during setup.
-                await generator.GenerateIndexAsync(contentItem, isRemove);
-            }
+            if (!await generator.NeedsUpdatingAsync(context)) return;
+            await _sessionLazy.Value.FlushAsync(); // This was only necessary during setup.
+            await generator.GenerateIndexAsync(contentItem, isRemove);
 
             // OrchardCore.AuditTrail compatibility check. As it just uses the regular Orchard Core facilities there is
             // no need to make it a dependency.
@@ -69,13 +68,44 @@ namespace Lombiq.DataTables.Handlers
                 (contentItemObject as ContentItem)?.ContentItemId == context.ContentItem.ContentItemId;
             if (isRestored) return;
 
-            // Clear out any deleted items.
+            // Clear out any deleted items. We use raw queries for quick communication between SQL and ASP.Net servers.
+            await RemoveInvalidAsync();
+        }
+
+        private async Task RemoveInvalidAsync()
+        {
+            // Using very raw query because it's too complex for the parser.
             var session = _sessionLazy.Value;
-            var invalidIndexes = await session
-                .Query<ContentItem, TIndex>()
-                .With<ContentItemIndex>(index => !index.Latest)
-                .ListAsync();
-            foreach (var invalid in invalidIndexes) await _indexServiceLazy.Value.RemoveByContentAsync(invalid, session);
+            var transaction = await session.DemandAsync();
+            var dialect = TransactionSqlDialectFactory.For(transaction);
+            var prefix = session.Store.Configuration.TablePrefix;
+
+            var contentItemIndex = dialect.QuoteForTableName(prefix + nameof(ContentItemIndex));
+            var dataTableIndex = dialect.QuoteForTableName(prefix + typeof(TIndex).Name);
+
+            const string documentId = "DocumentId";
+            const string contentItemId = nameof(ContentItemIndex.ContentItemId);
+            const string latest = nameof(ContentItemIndex.Latest);
+            const string published = nameof(ContentItemIndex.Published);
+
+            var deletedSql = @$"
+            SELECT old.{documentId}
+                FROM (
+                    SELECT {documentId}, {contentItemId}
+                        FROM {contentItemIndex}
+                        WHERE {latest} = 0 AND {published} = 0) old
+                LEFT JOIN (
+                    SELECT {contentItemId}
+                        FROM {contentItemIndex}
+                        WHERE {latest} = 1
+                        GROUP BY {contentItemId}) new
+                    ON old.{contentItemId} = new.{contentItemId}
+                INNER JOIN {dataTableIndex} dataTable
+                    ON old.{documentId} = dataTable.{documentId}
+                WHERE new.{contentItemId} IS NULL";
+            var invalidIds = await transaction.Connection.QueryAsync<int>(deletedSql, transaction: transaction);
+
+            foreach (var invalidId in invalidIds) await _indexServiceLazy.Value.RemoveByIndexAsync(invalidId, session);
         }
     }
 }
