@@ -46,16 +46,7 @@ namespace Lombiq.DataTables.Services
             var countSql = query.ToSqlString();
             query.Selector("*");
 
-            if (request.Order?.Any() != true)
-            {
-                var defaultOrderableColumnName = columnsDefinition
-                    .Columns
-                    .First(column => column.Orderable)
-                    .Name;
-                request.Order = new[] { new DataTableOrder { Column = defaultOrderableColumnName } };
-            }
-
-            Sort(query, request.Order);
+            Sort(query, request.Order, columnsDefinition);
 
             if (request.Length is > 0 and not int.MinValue)
             {
@@ -126,21 +117,40 @@ namespace Lombiq.DataTables.Services
             return Task.CompletedTask;
         }
 
-        protected void Sort(ISqlBuilder sqlBuilder, IEnumerable<DataTableOrder> orders)
+        protected void Sort(
+            ISqlBuilder sqlBuilder,
+            IEnumerable<DataTableOrder> orders,
+            DataTableColumnsDefinition columnsDefinition)
         {
             var wasOrderedOnce = false;
             var columns = typeof(TIndex).GetProperties().Select(property => property.Name).ToHashSet();
 
-            orders = orders.Select(order => new DataTableOrder
-            {
-                Column = GetIndexColumnName(order.Column),
-                Direction = order.Direction,
-            });
+            orders = orders?
+                .SelectWhere(
+                    order => new DataTableOrder
+                    {
+                        Column = GetIndexColumnName(order.Column),
+                        Direction = order.Direction,
+                    },
+                    order => columns.Contains(order.Column)
+                );
+            var ordersList = orders?.ToList() ?? new List<DataTableOrder>();
 
-            foreach (var dataTableOrder in orders)
+            if (!ordersList.Any())
             {
-                if (!columns.Contains(dataTableOrder.Column)) continue;
+                var defaultOrderableColumnName = columnsDefinition
+                    .Columns
+                    .First(column => column.Orderable)
+                    .Name;
+                ordersList.Add(new DataTableOrder
+                {
+                    Column = defaultOrderableColumnName,
+                    Direction = SortingDirection.Ascending,
+                });
+            }
 
+            foreach (var dataTableOrder in ordersList)
+            {
                 OrderByColumn(sqlBuilder, dataTableOrder, wasOrderedOnce);
                 wasOrderedOnce = true;
             }
