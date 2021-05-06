@@ -93,7 +93,6 @@ namespace Lombiq.DataTables.Liquid
         }
 
         private static InvalidOperationException GetException(object input) =>
-            new InvalidOperationException(
-                $"String ContentItemId, ActionsModel or JObject of ActionsModel expected. Got '{input}' instead.");
+            new($"String ContentItemId, ActionsModel or JObject of ActionsModel expected. Got '{input}' instead.");
     }
 }

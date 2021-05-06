@@ -45,7 +45,7 @@ namespace Lombiq.DataTables.Models
         /// </summary>
         /// <param name="errorText">The text to display.</param>
         public static DataTableDataResponse ErrorResult(string errorText) =>
-            new DataTableDataResponse
+            new()
             {
                 Error = errorText,
                 Data = Array.Empty<DataTableRow>(),
