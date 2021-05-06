@@ -27,7 +27,7 @@ namespace Lombiq.DataTables.Models
         public static string GetText(JObject jObject) => ((LocalDate)jObject.ToObject<ExportDate>()).ToShortDateString();
 
         public static implicit operator ExportDate(LocalDate localDate) =>
-            new ExportDate
+            new()
             {
                 Year = localDate.Year,
                 Month = localDate.Month,
@@ -35,7 +35,7 @@ namespace Lombiq.DataTables.Models
             };
 
         public static implicit operator ExportDate(DateTime dateTime) =>
-            new ExportDate
+            new()
             {
                 Year = dateTime.Year,
                 Month = dateTime.Month,
@@ -43,7 +43,7 @@ namespace Lombiq.DataTables.Models
             };
 
         public static explicit operator LocalDate(ExportDate exportDate) =>
-            new LocalDate(exportDate.Year, exportDate.Month, exportDate.Day);
+            new(exportDate.Year, exportDate.Month, exportDate.Day);
 
         public static explicit operator DateTime(ExportDate exportDate) =>
             new LocalDate(exportDate.Year, exportDate.Month, exportDate.Day).ToDateTimeUnspecified();

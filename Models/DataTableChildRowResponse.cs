@@ -9,7 +9,6 @@ namespace Lombiq.DataTables.Models
         public string Error { get; set; }
         public string Content { get; set; }
 
-        public static DataTableChildRowResponse ErrorResult(string errorText) =>
-            new DataTableChildRowResponse { Error = errorText };
+        public static DataTableChildRowResponse ErrorResult(string errorText) => new() { Error = errorText };
     }
 }
