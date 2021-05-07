@@ -18,7 +18,7 @@ namespace Lombiq.DataTables.Tests
         private readonly object[][] _dataSet;
 
         public override LocalizedString Description { get; } = new LocalizedString("Test", "Test");
-        public override IEnumerable<Permission> SupportedPermissions { get; }
+        public override IEnumerable<Permission> AllowedPermissions { get; }
 
         public MockDataProvider(object[][] dataSet, IMemoryCache memoryCache, DataTableColumnsDefinition definition = null)
             : base(
@@ -26,12 +26,16 @@ namespace Lombiq.DataTables.Tests
                     httpContextAccessor: null,
                     linkGenerator: null,
                     new LiquidTemplateManager(memoryCache),
-                    memoryCache),
+                    memoryCache,
+                    shapeFactory: null,
+                    session: null,
+                    authorizationService: null,
+                    contentManager: null),
                 new StringLocalizer<MockDataProvider>(new NullStringLocalizerFactory()))
         {
             _dataSet = dataSet;
             Definition = definition;
-            SupportedPermissions = null;
+            AllowedPermissions = null;
         }
 
         protected override async Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request)

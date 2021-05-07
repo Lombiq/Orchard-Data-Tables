@@ -1,9 +1,7 @@
 using Lombiq.DataTables.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
-using OrchardCore.DisplayManagement;
 using OrchardCore.Security.Permissions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,7 +32,7 @@ namespace Lombiq.DataTables.Services
         /// <summary>
         /// Gets an optional collection of permissions. If not null, the user must authorize against at least one.
         /// </summary>
-        IEnumerable<Permission> SupportedPermissions => Enumerable.Empty<Permission>();
+        IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
 
         /// <summary>
         /// Returns the table body created based on the provided request.
@@ -58,13 +56,11 @@ namespace Lombiq.DataTables.Services
         /// <summary>
         /// Optional shapes to be displayed before the table.
         /// </summary>
-        Task<IEnumerable<dynamic>> GetShapesBeforeTableAsync() =>
-            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
+        Task<IEnumerable<dynamic>> GetShapesBeforeTableAsync();
 
         /// <summary>
         /// Optional shapes to be displayed after the table.
         /// </summary>
-        Task<IEnumerable<dynamic>> GetShapesAfterTableAsync() =>
-            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
+        Task<IEnumerable<dynamic>> GetShapesAfterTableAsync();
     }
 }

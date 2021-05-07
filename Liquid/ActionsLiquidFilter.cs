@@ -17,8 +17,8 @@ using System.Threading.Tasks;
 namespace Lombiq.DataTables.Liquid
 {
     /// <summary>
-    /// This filter accepts either a string of <see cref="ContentItem.ContentItemId"/>, an <see cref="ActionsModel"/>
-    /// object or a JToken that deserialized into an <see cref="ActionsModel"/>.
+    /// This filter accepts either a string of <see cref="ContentItem.ContentItemId"/>, an <see cref="ActionsDescriptor"/>
+    /// object or a JToken that deserialized into an <see cref="ActionsDescriptor"/>.
     /// </summary>
     /// <remarks>
     /// <para>Usage with ID:</para>
@@ -39,7 +39,7 @@ namespace Lombiq.DataTables.Liquid
         private readonly IShapeFactory _shapeFactory;
         private readonly IDisplayHelper _displayHelper;
         private readonly IStringLocalizer<ActionsLiquidFilter> T;
-        private readonly IStringLocalizer<ActionsModel> _actionsModelT;
+        private readonly IStringLocalizer<ActionsDescriptor> _actionsDescriptorStringLocalizer;
 
         public ActionsLiquidFilter(
             IHttpContextAccessor hca,
@@ -47,14 +47,14 @@ namespace Lombiq.DataTables.Liquid
             IShapeFactory shapeFactory,
             IDisplayHelper displayHelper,
             IStringLocalizer<ActionsLiquidFilter> stringLocalizer,
-            IStringLocalizer<ActionsModel> actionsModelStringLocalizer)
+            IStringLocalizer<ActionsDescriptor> actionsDescriptorStringLocalizer)
         {
             _hca = hca;
             _linkGenerator = linkGenerator;
             _shapeFactory = shapeFactory;
             _displayHelper = displayHelper;
             T = stringLocalizer;
-            _actionsModelT = actionsModelStringLocalizer;
+            _actionsDescriptorStringLocalizer = actionsDescriptorStringLocalizer;
         }
 
         public ValueTask<FluidValue> ProcessAsync(FluidValue input, FilterArguments arguments, TemplateContext ctx)
@@ -67,11 +67,11 @@ namespace Lombiq.DataTables.Liquid
 
             return input?.Type switch
             {
-                FluidValues.String => FromObjectAsync(new ActionsModel { Id = input!.ToStringValue() }, title, returnUrl),
+                FluidValues.String => FromObjectAsync(new ActionsDescriptor { Id = input!.ToStringValue() }, title, returnUrl),
                 FluidValues.Object => input!.ToObjectValue() switch
                 {
-                    ActionsModel model => FromObjectAsync(model, title, returnUrl),
-                    JToken jToken => FromObjectAsync(jToken.ToObject<ActionsModel>(), title, returnUrl),
+                    ActionsDescriptor model => FromObjectAsync(model, title, returnUrl),
+                    JToken jToken => FromObjectAsync(jToken.ToObject<ActionsDescriptor>(), title, returnUrl),
                     { } unknown => throw GetException(unknown),
                     _ => throw new ArgumentNullException(nameof(input)),
                 },
@@ -79,11 +79,11 @@ namespace Lombiq.DataTables.Liquid
             };
         }
 
-        private async ValueTask<FluidValue> FromObjectAsync(ActionsModel model, string title, string returnUrl)
+        private async ValueTask<FluidValue> FromObjectAsync(ActionsDescriptor descriptor, string title, string returnUrl)
         {
             IShape shape = await _shapeFactory.New.Lombiq_Datatables_Actions(
                 ButtonTitle: title,
-                ExportLinks: model.GetAllMenuItems(_hca.HttpContext, _linkGenerator, _actionsModelT, returnUrl));
+                ExportLinks: descriptor.GetAllMenuItems(_hca.HttpContext, _linkGenerator, _actionsDescriptorStringLocalizer, returnUrl));
             var content = await _displayHelper.ShapeExecuteAsync(shape);
 
             await using var stringWriter = new StringWriter();
@@ -93,6 +93,7 @@ namespace Lombiq.DataTables.Liquid
         }
 
         private static InvalidOperationException GetException(object input) =>
-            new($"String ContentItemId, ActionsModel or JObject of ActionsModel expected. Got '{input}' instead.");
+            new($"String {nameof(ContentItem.ContentItemId)}, {nameof(ActionsDescriptor)} or {nameof(JObject)} of " +
+                $"{nameof(ActionsDescriptor)} expected. Got '{input}' instead.");
     }
 }

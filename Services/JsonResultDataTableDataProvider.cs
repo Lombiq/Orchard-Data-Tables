@@ -1,19 +1,9 @@
-using Lombiq.DataTables.Controllers;
 using Lombiq.DataTables.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
-using OrchardCore.ContentManagement;
-using OrchardCore.DisplayManagement;
-using OrchardCore.Liquid;
-using OrchardCore.Mvc.Core.Utilities;
-using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services
@@ -21,47 +11,22 @@ namespace Lombiq.DataTables.Services
     /// <summary>
     /// Classes which implement this class only have to provide the provider description, the dataset via <see
     /// cref="GetResultsAsync"/> as <see cref="IList{T}"/> of either <see cref="object"/> or <see cref="JObject"/> (the
-    /// former is automatically converted to the latter) and the columns definition via <see
-    /// cref="GetColumnsDefinitionInner"/>.
+    /// former is automatically converted to the latter).
     /// </summary>
-    public abstract class JsonResultDataTableDataProvider : IDataTableDataProvider
+    public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBase
     {
         private readonly IStringLocalizer T;
-        private readonly ILiquidTemplateManager _liquidTemplateManager;
-        private readonly PlainTextEncoder _plainTextEncoder;
-
-        protected readonly LinkGenerator _linkGenerator;
-        protected readonly IHttpContextAccessor _hca;
-
-        public abstract LocalizedString Description { get; }
-        public abstract IEnumerable<Permission> SupportedPermissions { get; }
 
         protected JsonResultDataTableDataProvider(
             IDataTableDataProviderServices services,
             IStringLocalizer implementationStringLocalizer)
-        {
+            : base(services) =>
             T = implementationStringLocalizer;
-            _liquidTemplateManager = services?.LiquidTemplateManager;
-            _linkGenerator = services?.LinkGenerator;
-            _hca = services?.HttpContextAccessor;
 
-            _plainTextEncoder = new PlainTextEncoder();
-        }
-
-        public async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
+        public override async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
             var columnsDefinition = GetColumnsDefinitionInner(request.QueryId);
-            var columns = columnsDefinition.Columns
-                .Select(column =>
-                    new JsonResultColumn
-                    {
-                        Path = column.Name.Replace('_', '.'),
-                        Name = column.Name,
-                        Regex = column.Regex,
-                        Searchable = column.Searchable,
-                        IsLiquid = column.IsLiquid,
-                    })
-                .ToList();
+            var columns = columnsDefinition.Columns.ToList();
             var order = request.Order.FirstOrDefault() ?? new DataTableOrder
             {
                 Column = columnsDefinition.DefaultSortingColumnName,
@@ -77,19 +42,12 @@ namespace Lombiq.DataTables.Services
             var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
             if (!string.IsNullOrEmpty(order.Column)) json = OrderByColumn(json, order);
 
-            var rows = json.Select((result, index) =>
-                new DataTableRow(index, columns
-                    .Select(column => (column.Name, column.Regex, Token: result.SelectToken(column.Path, false)))
-                    .ToDictionary(
-                        cell => cell.Name,
-                        cell => cell.Regex is { } regex
-                            ? new JValue(Regex.Replace(cell.Token?.ToString() ?? string.Empty, regex.From, regex.To))
-                            : cell.Token)));
-
             if (request.Search?.IsRegex == true)
             {
                 return DataTableDataResponse.ErrorResult(T["Regex search is not supported at this time."]);
             }
+
+            var rows = SubstituteByColumn(json, columns);
 
             if (!metaData.IsFiltered || !metaData.IsPaginated)
             {
@@ -109,30 +67,11 @@ namespace Lombiq.DataTables.Services
             };
         }
 
-        private async Task RenderLiquidAsync(IEnumerable<DataTableRow> rowList, IList<string> liquidColumns)
-        {
-            foreach (var row in rowList)
-            {
-                foreach (var liquidColumn in liquidColumns)
-                {
-                    if (row.ValuesDictionary.TryGetValue(liquidColumn, out var token) &&
-                        token?.ToString() is { } template)
-                    {
-                        row[liquidColumn] = await _liquidTemplateManager.RenderAsync(
-                            template,
-                            _plainTextEncoder,
-                            row,
-                            _ => { });
-                    }
-                }
-            }
-        }
-
         private static (IEnumerable<DataTableRow> Rows, int RecordsFiltered) FilterAndPaginate(
             DataTableDataRequest request,
             JsonResultDataTableDataProviderResult meta,
             IEnumerable<DataTableRow> rows,
-            List<JsonResultColumn> columns,
+            List<DataTableColumnDefinition> columns,
             int recordsFiltered)
         {
             var searchValue = request.Search?.Value;
@@ -154,7 +93,7 @@ namespace Lombiq.DataTables.Services
 
         private static (IEnumerable<DataTableRow> Results, int Count) Search(
                 IEnumerable<DataTableRow> rows,
-                IEnumerable<JsonResultColumn> columns,
+                IEnumerable<DataTableColumnDefinition> columns,
                 bool hasSearch,
                 string searchValue,
                 IReadOnlyCollection<DataTableColumn> columnFilters)
@@ -196,18 +135,6 @@ namespace Lombiq.DataTables.Services
             return (list, list.Count);
         }
 
-        public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) =>
-            Task.FromResult(GetColumnsDefinitionInner(queryId));
-
-        public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) =>
-            Task.FromResult(new DataTableChildRowResponse());
-
-        public virtual Task<IEnumerable<dynamic>> GetShapesBeforeTableAsync() =>
-            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
-
-        public virtual Task<IEnumerable<dynamic>> GetShapesAfterTableAsync() =>
-            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
-
         /// <summary>
         /// When overridden in a derived class it gets the content which is then turned into <see cref="JToken"/> if
         /// necessary and then queried down using the column names into a dictionary.
@@ -215,38 +142,6 @@ namespace Lombiq.DataTables.Services
         /// <param name="request">The input of <see cref="GetRowsAsync"/>.</param>
         /// <returns>A list of results or <see cref="JObject"/>s.</returns>
         protected abstract Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request);
-
-        /// <summary>
-        /// When overridden in a derived class it gets the columns definition.
-        /// </summary>
-        /// <param name="queryId">May be used to dynamically generate the result.</param>
-        /// <returns>The default columns definition of this provider.</returns>
-        protected abstract DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId);
-
-        protected string GetActionsColumn(string columnName = nameof(ContentItem.ContentItemId), bool fromJson = false)
-        {
-            var beforePipe = string.Empty;
-            var source = "'$0'";
-            var call = "actions";
-
-            if (_hca?.HttpContext != null)
-            {
-                var returnUrl = _linkGenerator.GetPathByAction(
-                    _hca?.HttpContext,
-                    nameof(TableController.Get),
-                    typeof(TableController).ControllerName(),
-                    new { providerName = GetType().Name });
-                call = "actions: returnUrl: '" + returnUrl + "'";
-            }
-
-            if (fromJson)
-            {
-                beforePipe = "{% capture jsonData %} $0 {% endcapture %} ";
-                source = "jsonData | jsonparse";
-            }
-
-            return columnName + "||^.*$||" + beforePipe + "{{ " + source + " | " + call + " }}";
-        }
 
         private IEnumerable<JObject> OrderByColumn(IEnumerable<JObject> json, DataTableOrder order)
         {
@@ -280,18 +175,6 @@ namespace Lombiq.DataTables.Services
             }
 
             return order.IsAscending ? json.OrderBy(Selector) : json.OrderByDescending(Selector);
-        }
-
-        [DebuggerDisplay("{ToString()}")]
-        private class JsonResultColumn
-        {
-            public string Path { get; set; }
-            public string Name { get; set; }
-            public (string From, string To)? Regex { get; set; }
-            public bool Searchable { get; set; }
-            public bool IsLiquid { get; set; }
-
-            public override string ToString() => Name;
         }
     }
 }

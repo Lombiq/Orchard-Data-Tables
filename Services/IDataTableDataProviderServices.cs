@@ -1,8 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Caching.Memory;
+using OrchardCore.ContentManagement;
+using OrchardCore.DisplayManagement;
 using OrchardCore.Liquid;
 using System.Diagnostics.CodeAnalysis;
+using ISession = YesSql.ISession;
 
 namespace Lombiq.DataTables.Services
 {
@@ -19,5 +23,9 @@ namespace Lombiq.DataTables.Services
         LinkGenerator LinkGenerator { get; }
         ILiquidTemplateManager LiquidTemplateManager { get; }
         IMemoryCache MemoryCache { get; }
+        IShapeFactory ShapeFactory { get; }
+        ISession Session { get; }
+        IAuthorizationService AuthorizationService { get; }
+        IContentManager ContentManager { get; }
     }
 }

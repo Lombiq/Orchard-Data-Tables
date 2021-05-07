@@ -99,9 +99,9 @@ namespace Lombiq.DataTables.Services
             IAuthorizationService authorizationService,
             ClaimsPrincipal user)
         {
-            if (dataProvider.SupportedPermissions == null) return false;
+            if (dataProvider.AllowedPermissions == null) return false;
 
-            foreach (var permission in dataProvider.SupportedPermissions)
+            foreach (var permission in dataProvider.AllowedPermissions)
             {
                 if (await authorizationService.AuthorizeAsync(user, permission)) return true;
             }
@@ -109,13 +109,13 @@ namespace Lombiq.DataTables.Services
             return false;
         }
 
-        public static string GetCustomActions(
+        public static ActionsDescriptor GetCustomActions(
             this IDataTableDataProvider dataProvider,
             string contentItemId,
             bool canDelete,
             IHttpContextAccessor hca,
             LinkGenerator linkGenerator,
-            IStringLocalizer<ActionsModel> actionsStringLocalizer)
+            IStringLocalizer<ActionsDescriptor> actionsStringLocalizer)
         {
             var returnUrl = linkGenerator.GetPathByAction(
                 hca.HttpContext,
@@ -125,7 +125,7 @@ namespace Lombiq.DataTables.Services
 
             var menuItems = new List<ExportLink>
             {
-                ActionsModel.GetEditLink(
+                ActionsDescriptor.GetEditLink(
                     contentItemId,
                     hca.HttpContext,
                     linkGenerator,
@@ -135,7 +135,7 @@ namespace Lombiq.DataTables.Services
 
             if (canDelete)
             {
-                menuItems.Add(ActionsModel.GetRemoveLink(
+                menuItems.Add(ActionsDescriptor.GetRemoveLink(
                     contentItemId,
                     hca.HttpContext,
                     linkGenerator,
@@ -143,14 +143,27 @@ namespace Lombiq.DataTables.Services
                     returnUrl));
             }
 
-            var actionsModel = new ActionsModel
+            return new ActionsDescriptor
             {
                 Id = contentItemId,
                 MenuItems = menuItems,
                 WithDefaults = false,
             };
-
-            return JsonConvert.SerializeObject(actionsModel);
         }
+
+        public static string GetCustomActionsJson(
+            this IDataTableDataProvider dataProvider,
+            string contentItemId,
+            bool canDelete,
+            IHttpContextAccessor hca,
+            LinkGenerator linkGenerator,
+            IStringLocalizer<ActionsDescriptor> actionsStringLocalizer) =>
+            JsonConvert.SerializeObject(GetCustomActions(
+                dataProvider,
+                contentItemId,
+                canDelete,
+                hca,
+                linkGenerator,
+                actionsStringLocalizer));
     }
 }
