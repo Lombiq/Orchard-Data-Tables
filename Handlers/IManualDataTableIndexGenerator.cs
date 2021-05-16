@@ -1,5 +1,6 @@
 using Lombiq.DataTables.Services;
 using OrchardCore.ContentManagement;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Finitive.CommercialEntities.Handlers
@@ -21,5 +22,31 @@ namespace Finitive.CommercialEntities.Handlers
         /// running a content item through all supported <see cref="IManualDataTableIndexGenerator"/> implementations.
         /// </param>
         Task GenerateIndicesAsync(ContentItem contentItem, bool managedTypeOnly);
+    }
+
+    public static class ManualDataTableIndexGeneratorExtensions
+    {
+        public static async Task GenerateIndicesAsync(
+            this IEnumerable<IManualDataTableIndexGenerator> indexGenerators,
+            ICollection<ContentItem> contentItems,
+            bool managedTypeOnly)
+        {
+            foreach (var indexGenerator in indexGenerators)
+            {
+                foreach (var contentItem in contentItems)
+                {
+                    if (contentItem != null)
+                    {
+                        await indexGenerator.GenerateIndicesAsync(contentItem, managedTypeOnly);
+                    }
+                }
+            }
+        }
+
+        public static Task GenerateManagedIndicesAsync(
+            this IEnumerable<IManualDataTableIndexGenerator> indexGenerators,
+            params ContentItem[] contentItems) =>
+            GenerateIndicesAsync(indexGenerators, contentItems, managedTypeOnly: true);
+
     }
 }
