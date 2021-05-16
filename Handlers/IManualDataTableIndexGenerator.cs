@@ -1,9 +1,10 @@
 using Lombiq.DataTables.Services;
 using OrchardCore.ContentManagement;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace Finitive.CommercialEntities.Handlers
+namespace Lombiq.DataTables.Handlers
 {
     /// <summary>
     /// Service for manually calling index generation for a specified <see cref="ContentItem"/>.
@@ -11,9 +12,9 @@ namespace Finitive.CommercialEntities.Handlers
     public interface IManualDataTableIndexGenerator
     {
         /// <summary>
-        /// Calls index generation the same way as if it was an update event from a content handler. This way you don't
-        /// have to prepare for unforeseen consequences from other content handlers if you just want to update the
-        /// index.
+        /// Calls to place an order for index generation the same way as if it was an update event from a content
+        /// handler. This way you don't have to prepare for unforeseen consequences from other content handlers if you
+        /// just want to update the index.
         /// </summary>
         /// <param name="contentItem"> The item for which the index is generated.</param>
         /// <param name="managedTypeOnly">
@@ -21,12 +22,18 @@ namespace Finitive.CommercialEntities.Handlers
         /// <see cref="IDataTableIndexGenerator{TIndex}.ManagedContentType"/>, otherwise it gets skipped. Ideal for
         /// running a content item through all supported <see cref="IManualDataTableIndexGenerator"/> implementations.
         /// </param>
-        Task GenerateIndicesAsync(ContentItem contentItem, bool managedTypeOnly);
+        Task OrderIndexGenerationAsync(ContentItem contentItem, bool managedTypeOnly);
+
+        /// <summary>
+        /// Asks every <see cref="IDataTableIndexGenerator{TIndex}"/> to start generating indexes for the content items
+        /// that received an order for it.
+        /// </summary>
+        Task GenerateReservedIndicesAsync();
     }
 
     public static class ManualDataTableIndexGeneratorExtensions
     {
-        public static async Task GenerateIndicesAsync(
+        public static async Task OrderIndexGenerationAsync(
             this IEnumerable<IManualDataTableIndexGenerator> indexGenerators,
             ICollection<ContentItem> contentItems,
             bool managedTypeOnly)
@@ -37,16 +44,13 @@ namespace Finitive.CommercialEntities.Handlers
                 {
                     if (contentItem != null)
                     {
-                        await indexGenerator.GenerateIndicesAsync(contentItem, managedTypeOnly);
+                        await indexGenerator.OrderIndexGenerationAsync(contentItem, managedTypeOnly);
                     }
                 }
             }
         }
 
-        public static Task GenerateManagedIndicesAsync(
-            this IEnumerable<IManualDataTableIndexGenerator> indexGenerators,
-            params ContentItem[] contentItems) =>
-            GenerateIndicesAsync(indexGenerators, contentItems, managedTypeOnly: true);
-
+        public static Task GenerateReservedIndicesAsync(this IEnumerable<IManualDataTableIndexGenerator> indexGenerators) =>
+            indexGenerators.FirstOrDefault()?.GenerateReservedIndicesAsync() ?? Task.CompletedTask;
     }
 }

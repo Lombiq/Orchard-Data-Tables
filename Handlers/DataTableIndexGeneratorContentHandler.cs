@@ -1,5 +1,4 @@
 using Dapper;
-using Finitive.CommercialEntities.Handlers;
 using Lombiq.DataTables.Services;
 using Lombiq.HelpfulLibraries.Libraries.Database;
 using Microsoft.AspNetCore.Http;
@@ -37,19 +36,24 @@ namespace Lombiq.DataTables.Handlers
             _indexGeneratorLazy = indexGeneratorLazy;
         }
 
-        public override Task CreatedAsync(CreateContentContext context) => GenerateIndicesAsync(context);
-        public override Task UpdatedAsync(UpdateContentContext context) => GenerateIndicesAsync(context);
-        public override Task ImportedAsync(ImportContentContext context) => GenerateIndicesAsync(context);
-        public override Task PublishedAsync(PublishContentContext context) => GenerateIndicesAsync(context);
-        public override Task UnpublishedAsync(PublishContentContext context) => GenerateIndicesAsync(context);
-        public override Task RemovedAsync(RemoveContentContext context) => GenerateIndicesAsync(context);
+        public override Task CreatedAsync(CreateContentContext context) => ReserveIndexGenerationAsync(context);
+        public override Task UpdatedAsync(UpdateContentContext context) => ReserveIndexGenerationAsync(context);
+        public override Task ImportedAsync(ImportContentContext context) => ReserveIndexGenerationAsync(context);
+        public override Task PublishedAsync(PublishContentContext context) => ReserveIndexGenerationAsync(context);
+        public override Task UnpublishedAsync(PublishContentContext context) => ReserveIndexGenerationAsync(context);
+        public override Task RemovedAsync(RemoveContentContext context) => ReserveIndexGenerationAsync(context);
 
-        public Task GenerateIndicesAsync(ContentItem contentItem, bool managedTypeOnly) =>
+        public async Task GenerateReservedIndicesAsync()
+        {
+
+        }
+
+        public Task OrderIndexGenerationAsync(ContentItem contentItem, bool managedTypeOnly) =>
             _indexGeneratorLazy.Value.ManagedContentType.Contains(contentItem.ContentType)
-                ? GenerateIndicesAsync(new UpdateContentContext(contentItem))
+                ? ReserveIndexGenerationAsync(new UpdateContentContext(contentItem))
                 : Task.CompletedTask;
 
-        private async Task GenerateIndicesAsync(ContentContextBase context)
+        private async Task ReserveIndexGenerationAsync(ContentContextBase context)
         {
             var generator = _indexGeneratorLazy.Value;
             var contentItem = context.ContentItem;
