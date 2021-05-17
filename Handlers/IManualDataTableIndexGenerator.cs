@@ -1,7 +1,6 @@
 using Lombiq.DataTables.Services;
 using OrchardCore.ContentManagement;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Handlers
@@ -28,7 +27,7 @@ namespace Lombiq.DataTables.Handlers
         /// Asks every <see cref="IDataTableIndexGenerator{TIndex}"/> to start generating indexes for the content items
         /// that received an order for it.
         /// </summary>
-        Task GenerateReservedIndicesAsync();
+        Task GenerateOrderedIndicesAsync();
     }
 
     public static class ManualDataTableIndexGeneratorExtensions
@@ -50,7 +49,12 @@ namespace Lombiq.DataTables.Handlers
             }
         }
 
-        public static Task GenerateReservedIndicesAsync(this IEnumerable<IManualDataTableIndexGenerator> indexGenerators) =>
-            indexGenerators.FirstOrDefault()?.GenerateReservedIndicesAsync() ?? Task.CompletedTask;
+        public static async Task GenerateOrderedIndicesAsync(this IEnumerable<IManualDataTableIndexGenerator> indexGenerators)
+        {
+            foreach (var indexGenerator in indexGenerators)
+            {
+                await indexGenerator.GenerateOrderedIndicesAsync();
+            }
+        }
     }
 }
