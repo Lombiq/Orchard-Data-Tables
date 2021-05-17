@@ -6,6 +6,7 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Handlers;
 using OrchardCore.ContentManagement.Records;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YesSql;
@@ -46,6 +47,8 @@ namespace Lombiq.DataTables.Handlers
         public async Task GenerateReservedIndicesAsync()
         {
 
+            // Clear out any deleted items. We use raw queries for quick communication between SQL and ASP.Net servers.
+            await RemoveInvalidAsync();
         }
 
         public Task OrderIndexGenerationAsync(ContentItem contentItem, bool managedTypeOnly) =>
@@ -61,19 +64,7 @@ namespace Lombiq.DataTables.Handlers
 
             if (!await generator.NeedsUpdatingAsync(context)) return;
             await _sessionLazy.Value.FlushAsync(); // This was only necessary during setup.
-            await generator.GenerateIndexAsync(contentItem, isRemove);
-
-            // OrchardCore.AuditTrail compatibility check. As it just uses the regular Orchard Core facilities there is
-            // no need to make it a dependency.
-            var httpContext = _hcaLazy.Value.HttpContext;
-            var isRestored =
-                httpContext != null &&
-                httpContext.Items.TryGetValue("OrchardCore.AuditTrail.Restored", out var contentItemObject) &&
-                (contentItemObject as ContentItem)?.ContentItemId == context.ContentItem.ContentItemId;
-            if (isRestored) return;
-
-            // Clear out any deleted items. We use raw queries for quick communication between SQL and ASP.Net servers.
-            await RemoveInvalidAsync();
+            await generator.OrderIndexGenerationAsync(contentItem, isRemove);
         }
 
         private async Task RemoveInvalidAsync()
@@ -108,6 +99,14 @@ namespace Lombiq.DataTables.Handlers
                     ON old.{documentId} = dataTable.{documentId}
                 WHERE new.{contentItemId} IS NULL";
             var invalidIds = await transaction.Connection.QueryAsync<int>(deletedSql, transaction: transaction);
+
+            // OrchardCore.AuditTrail compatibility check. As it just uses the regular Orchard Core facilities there is
+            // no need to make it a dependency.
+            var restored = _hcaLazy.Value.HttpContext?.Items.GetMaybe("OrchardCore.AuditTrail.Restored");
+            if (restored is ContentItem { ContentItemId: { } } restoredContentItem)
+            {
+                invalidIds = invalidIds.Where(id => id != restoredContentItem.Id);
+            }
 
             foreach (var invalidId in invalidIds) await _indexServiceLazy.Value.RemoveByIndexAsync(invalidId, session);
         }
