@@ -46,6 +46,7 @@ namespace Lombiq.DataTables.Handlers
 
         public async Task GenerateReservedIndicesAsync()
         {
+            await _indexGeneratorLazy.Value.GenerateIndexAsync();
 
             // Clear out any deleted items. We use raw queries for quick communication between SQL and ASP.Net servers.
             await RemoveInvalidAsync();
