@@ -65,10 +65,18 @@ namespace Lombiq.DataTables.Handlers
             var generator = _indexGeneratorLazy.Value;
             var contentItem = context.ContentItem;
             var isRemove = generator.ManagedContentType.Contains(contentItem.ContentType) && context.IsRemove();
+            var isSetup = string.IsNullOrEmpty(_hcaLazy.Value?.HttpContext?.Request?.PathBase);
 
             if (!await generator.NeedsUpdatingAsync(context)) return;
-            await _sessionLazy.Value.FlushAsync(); // This was only necessary during setup.
+            if (isSetup) await _sessionLazy.Value.FlushAsync();
             await generator.OrderIndexGenerationAsync(contentItem, isRemove);
+
+            // The middlewares don't execute during setup so we have to update here.
+            if (isSetup && generator.IndexGenerationIsRemovalByType.Any())
+            {
+                await GenerateOrderedIndicesAsync();
+                generator.IndexGenerationIsRemovalByType.Clear();
+            }
         }
 
         private async Task RemoveInvalidAsync()
