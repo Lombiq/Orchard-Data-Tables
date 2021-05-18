@@ -65,7 +65,9 @@ namespace Lombiq.DataTables.Handlers
             var generator = _indexGeneratorLazy.Value;
             var contentItem = context.ContentItem;
             var isRemove = generator.ManagedContentType.Contains(contentItem.ContentType) && context.IsRemove();
-            var isSetup = _hcaLazy.Value?.HttpContext?.Request?.Path == "/api/tenants/setup";
+
+            var requestForm = _hcaLazy.Value?.HttpContext?.Request?.Form;
+            var isSetup = requestForm?.ContainsKey("RecipeName") != false;
 
             if (!await generator.NeedsUpdatingAsync(context)) return;
             if (isSetup) await _sessionLazy.Value.FlushAsync();
