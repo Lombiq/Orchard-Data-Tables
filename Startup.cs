@@ -1,9 +1,9 @@
 using Lombiq.DataTables.Liquid;
-using Lombiq.DataTables.Middlewares;
 using Lombiq.DataTables.Migrations;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.TagHelpers;
 using Lombiq.HelpfulLibraries.Libraries.DependencyInjection;
+using Lombiq.HelpfulLibraries.Libraries.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,9 +35,14 @@ namespace Lombiq.DataTables
 
             services.AddScoped<IDataTableDataProviderServices, DataTableDataProviderServices>();
             services.AddOrchardServices();
+
+            services.AddScoped<IDeferredTask, IndexGeneratorDeferredTask>();
         }
 
-        public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes, IServiceProvider serviceProvider) =>
-            app.UseMiddleware<IndexGeneratorMiddleware>();
+        public override void Configure(
+            IApplicationBuilder app,
+            IEndpointRouteBuilder routes,
+            IServiceProvider serviceProvider) =>
+            app.UseDeferredTasks();
     }
 }
