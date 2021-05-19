@@ -76,7 +76,6 @@ namespace Lombiq.DataTables.Handlers
             if (!IsInMiddlewarePipeline && generator.IndexGenerationIsRemovalByType.Any())
             {
                 await GenerateOrderedIndicesAsync();
-                generator.IndexGenerationIsRemovalByType.Clear();
             }
         }
 
