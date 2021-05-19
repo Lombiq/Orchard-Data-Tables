@@ -11,9 +11,9 @@ namespace Lombiq.DataTables.Handlers
     public interface IManualDataTableIndexGenerator
     {
         /// <summary>
-        /// Calls to place an order for index generation the same way as if it was an update event from a content
-        /// handler. This way you don't have to prepare for unforeseen consequences from other content handlers if you
-        /// just want to update the index.
+        /// Schedules deferred index generation the same way as if it was an update event from a content handler. This
+        /// way you don't have to prepare for unforeseen consequences from other content handlers if you just want to
+        /// update the index.
         /// </summary>
         /// <param name="contentItem"> The item for which the index is generated.</param>
         /// <param name="managedTypeOnly">
