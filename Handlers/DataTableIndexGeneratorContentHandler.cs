@@ -25,6 +25,8 @@ namespace Lombiq.DataTables.Handlers
         private readonly Lazy<ISession> _sessionLazy;
         private readonly Lazy<TIndexGenerator> _indexGeneratorLazy;
 
+        public bool IsInMiddlewarePipeline { get; set; }
+
         public DataTableIndexGeneratorContentHandler(
             Lazy<IHttpContextAccessor> hcaLazy,
             Lazy<IManualConnectingIndexService<TIndex>> indexServiceLazy,
@@ -66,16 +68,12 @@ namespace Lombiq.DataTables.Handlers
             var contentItem = context.ContentItem;
             var isRemove = generator.ManagedContentType.Contains(contentItem.ContentType) && context.IsRemove();
 
-            var httpRequest = _hcaLazy.Value?.HttpContext?.Request;
-            // We use HasFormContentType because if Content-Type is null, reading Form throws an exception.
-            bool isSetup = httpRequest?.HasFormContentType == true && httpRequest.Form.ContainsKey("RecipeName");
-
             if (!await generator.NeedsUpdatingAsync(context)) return;
-            if (isSetup) await _sessionLazy.Value.FlushAsync();
+            if (!IsInMiddlewarePipeline) await _sessionLazy.Value.FlushAsync();
             await generator.OrderIndexGenerationAsync(contentItem, isRemove);
 
             // The middlewares don't execute during setup so we have to update here.
-            if (isSetup && generator.IndexGenerationIsRemovalByType.Any())
+            if (!IsInMiddlewarePipeline && generator.IndexGenerationIsRemovalByType.Any())
             {
                 await GenerateOrderedIndicesAsync();
                 generator.IndexGenerationIsRemovalByType.Clear();

@@ -15,6 +15,8 @@ namespace Lombiq.DataTables.Middlewares
             HttpContext context,
             IEnumerable<IManualDataTableIndexGenerator> manualDataTableIndexGenerators)
         {
+            foreach (var generator in manualDataTableIndexGenerators) generator.IsInMiddlewarePipeline = true;
+
             await _next(context);
 
             // Code is after _next(context) so it is executed on the return trip to ensure it's one of the very last

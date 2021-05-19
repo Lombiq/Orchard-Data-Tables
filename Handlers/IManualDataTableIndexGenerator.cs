@@ -11,6 +11,13 @@ namespace Lombiq.DataTables.Handlers
     public interface IManualDataTableIndexGenerator
     {
         /// <summary>
+        /// Gets or sets a value indicating whether the index generation start should be deferred to a middleware, or
+        /// executed immediately by calling <see cref="OrderIndexGenerationAsync"/> from inside
+        /// <see cref="OrderIndexGenerationAsync"/>.
+        /// </summary>
+        bool IsInMiddlewarePipeline { get; set; }
+
+        /// <summary>
         /// Schedules deferred index generation the same way as if it was an update event from a content handler. This
         /// way you don't have to prepare for unforeseen consequences from other content handlers if you just want to
         /// update the index.
