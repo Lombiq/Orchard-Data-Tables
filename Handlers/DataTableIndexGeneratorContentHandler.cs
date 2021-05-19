@@ -51,7 +51,7 @@ namespace Lombiq.DataTables.Handlers
             if (!indexGenerator.IndexGenerationIsRemovalByType.Any()) return;
             await indexGenerator.GenerateIndexAsync();
 
-            // Clear out any deleted items. We use raw queries for quick communication between SQL and ASP.Net servers.
+            // Clear out any deleted items. We use raw queries for quick communication between SQL and ASP.NET servers.
             await RemoveInvalidAsync();
         }
 
