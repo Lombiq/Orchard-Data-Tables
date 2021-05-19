@@ -66,8 +66,9 @@ namespace Lombiq.DataTables.Handlers
             var contentItem = context.ContentItem;
             var isRemove = generator.ManagedContentType.Contains(contentItem.ContentType) && context.IsRemove();
 
-            var requestForm = _hcaLazy.Value?.HttpContext?.Request?.Form;
-            var isSetup = requestForm?.ContainsKey("RecipeName") != false;
+            var httpRequest = _hcaLazy.Value?.HttpContext?.Request;
+            // We use HasFormContentType because if Content-Type is null, reading Form throws an exception.
+            bool isSetup = httpRequest?.HasFormContentType == true && httpRequest.Form.ContainsKey("RecipeName");
 
             if (!await generator.NeedsUpdatingAsync(context)) return;
             if (isSetup) await _sessionLazy.Value.FlushAsync();
