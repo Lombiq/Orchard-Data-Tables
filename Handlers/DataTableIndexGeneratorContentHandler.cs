@@ -57,7 +57,7 @@ namespace Lombiq.DataTables.Handlers
             await RemoveInvalidAsync();
         }
 
-        public Task OrderIndexGenerationAsync(ContentItem contentItem, bool managedTypeOnly) =>
+        public Task ScheduleDeferredIndexGenerationAsync(ContentItem contentItem, bool managedTypeOnly) =>
             _indexGeneratorLazy.Value.ManagedContentType.Contains(contentItem.ContentType)
                 ? ReserveIndexGenerationAsync(new UpdateContentContext(contentItem))
                 : Task.CompletedTask;
@@ -70,7 +70,7 @@ namespace Lombiq.DataTables.Handlers
 
             if (!await generator.NeedsUpdatingAsync(context)) return;
             if (!IsInMiddlewarePipeline) await _sessionLazy.Value.FlushAsync();
-            await generator.OrderIndexGenerationAsync(contentItem, isRemove);
+            await generator.ScheduleDeferredIndexGenerationAsync(contentItem, isRemove);
 
             // The middlewares don't execute during setup so we have to update here.
             if (!IsInMiddlewarePipeline && generator.IndexGenerationIsRemovalByType.Any())

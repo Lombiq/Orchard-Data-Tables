@@ -36,7 +36,7 @@ namespace Lombiq.DataTables.Services
         /// Places an index generation order for <paramref name="contentItem"/> or any related content items that fit
         /// the operation of this index generator.
         /// </summary>
-        Task OrderIndexGenerationAsync(ContentItem contentItem, bool remove);
+        Task ScheduleDeferredIndexGenerationAsync(ContentItem contentItem, bool remove);
 
         /// <summary>
         /// Generates new indexes for the content items stored in <see cref="IndexGenerationIsRemovalByType"/>.

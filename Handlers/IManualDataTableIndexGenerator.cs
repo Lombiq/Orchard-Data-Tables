@@ -12,8 +12,8 @@ namespace Lombiq.DataTables.Handlers
     {
         /// <summary>
         /// Gets or sets a value indicating whether the index generation start should be deferred to a middleware, or
-        /// executed immediately by calling <see cref="OrderIndexGenerationAsync"/> from inside
-        /// <see cref="OrderIndexGenerationAsync"/>.
+        /// executed immediately by calling <see cref="ScheduleDeferredIndexGenerationAsync"/> from inside
+        /// <see cref="ScheduleDeferredIndexGenerationAsync"/>.
         /// </summary>
         bool IsInMiddlewarePipeline { get; set; }
 
@@ -28,7 +28,7 @@ namespace Lombiq.DataTables.Handlers
         /// <see cref="IDataTableIndexGenerator{TIndex}.ManagedContentType"/>, otherwise it gets skipped. Ideal for
         /// running a content item through all supported <see cref="IManualDataTableIndexGenerator"/> implementations.
         /// </param>
-        Task OrderIndexGenerationAsync(ContentItem contentItem, bool managedTypeOnly);
+        Task ScheduleDeferredIndexGenerationAsync(ContentItem contentItem, bool managedTypeOnly);
 
         /// <summary>
         /// Asks every <see cref="IDataTableIndexGenerator{TIndex}"/> to start generating indexes for the content items
@@ -39,7 +39,7 @@ namespace Lombiq.DataTables.Handlers
 
     public static class ManualDataTableIndexGeneratorExtensions
     {
-        public static async Task OrderIndexGenerationAsync(
+        public static async Task ScheduleDeferredIndexGenerationAsync(
             this IEnumerable<IManualDataTableIndexGenerator> indexGenerators,
             ICollection<ContentItem> contentItems,
             bool managedTypeOnly)
@@ -50,7 +50,7 @@ namespace Lombiq.DataTables.Handlers
                 {
                     if (contentItem != null)
                     {
-                        await indexGenerator.OrderIndexGenerationAsync(contentItem, managedTypeOnly);
+                        await indexGenerator.ScheduleDeferredIndexGenerationAsync(contentItem, managedTypeOnly);
                     }
                 }
             }
