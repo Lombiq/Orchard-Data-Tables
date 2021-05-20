@@ -76,7 +76,7 @@ namespace Lombiq.DataTables.Services
             return new DataTableDataResponse
             {
                 Data = rowList,
-                RecordsFiltered = request.HasSearch
+                RecordsFiltered = request.HasSearch || request.ColumnFilters.Any()
                     ? await transaction.Connection.QueryFirstAsync<int>(countSql, query.Parameters, transaction)
                     : total,
                 RecordsTotal = total,
