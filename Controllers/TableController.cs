@@ -1,3 +1,4 @@
+using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.ViewModels;
@@ -47,6 +48,7 @@ namespace Lombiq.DataTables.Controllers
             });
         }
 
+        [Route(DataTableRoutes.GetDataTableData)]
         public async Task<IActionResult> Get(string providerName, string queryId = null, bool paging = true, bool viewAction = false)
         {
             var provider = _dataTableDataProviders.Single(provider => provider.Name == providerName);
