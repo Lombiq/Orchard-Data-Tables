@@ -158,41 +158,67 @@
             // Initialize server-side paging unless progressive loading is enabled.
             if (plugin.settings.serverSidePagingEnabled &&
                 !plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
+                const $element = $(plugin.element);
+                const providerName = URI(location.href).search(true).providerName;
+
                 dataTablesOptions.serverSide = true;
-                dataTablesOptions.ajax = {
-                    method: 'GET',
-                    url: plugin.settings.rowsApiUrl,
-                    data: function (params) {
-                        const internalParameters = plugin.cleanUpDataTablesAjaxParameters(params);
+                plugin.isHistory = false;
 
-                        const extendedParameters = plugin.customizeAjaxParameters($.extend({}, internalParameters, {
-                            queryId: plugin.settings.queryId,
-                            dataProvider: plugin.settings.dataProvider,
-                            originalUrl: window.location.href,
-                        }));
-                        const jsonParameters = JSON.stringify(extendedParameters);
-                        stateJson = jsonParameters;
+                const getData = function (params) {
+                    const internalParameters = plugin.cleanUpDataTablesAjaxParameters(params);
 
-                        if (plugin.settings.queryStringParametersLocalStorageKey) {
-                            localStorage.setItem(plugin.settings.queryStringParametersLocalStorageKey, jsonParameters);
-                        }
+                    const extendedParameters = plugin.customizeAjaxParameters($.extend({}, internalParameters, {
+                        queryId: plugin.settings.queryId,
+                        dataProvider: plugin.settings.dataProvider,
+                        originalUrl: window.location.href,
+                    }));
+                    const jsonParameters = JSON.stringify(extendedParameters);
+                    stateJson = jsonParameters;
 
-                        if (plugin.settings.errorsSelector) $(plugin.settings.errorsSelector).hide();
+                    if (plugin.settings.queryStringParametersLocalStorageKey) {
+                        localStorage.setItem(plugin.settings.queryStringParametersLocalStorageKey, jsonParameters);
+                    }
 
-                        if (!jsonParameters || !jsonParameters.match || jsonParameters.match(/^\s*$/)) {
-                            alert('jsonParameters is null or empty!\n' +
-                                'params:\n' + JSON.stringify(params) + '\n' +
-                                'internalParameters:\n' + JSON.stringify(internalParameters) + '\n' +
-                                'extendedParameters:\n' + JSON.stringify(extendedParameters) + '\n' +
-                                'jsonParameters:\n' + JSON.stringify(jsonParameters) + '\n');
-                        }
-                        return plugin.buildQueryStringParameters({ requestJson: jsonParameters });
-                    },
-                    dataSrc: function (response) {
-                        plugin.settings.callbacks.ajaxDataLoadedCallback(response);
+                    if (plugin.settings.errorsSelector) $(plugin.settings.errorsSelector).hide();
 
-                        return response.data;
-                    },
+                    if (!jsonParameters || !jsonParameters.match || jsonParameters.match(/^\s*$/)) {
+                        alert('jsonParameters is null or empty!\n' +
+                            'params:\n' + JSON.stringify(params) + '\n' +
+                            'internalParameters:\n' + JSON.stringify(internalParameters) + '\n' +
+                            'extendedParameters:\n' + JSON.stringify(extendedParameters) + '\n' +
+                            'jsonParameters:\n' + JSON.stringify(jsonParameters) + '\n');
+                    }
+                    return plugin.buildQueryStringParameters({ requestJson: jsonParameters });
+                };
+
+                $element.on('preXhr.dt', function () {
+                    if (plugin.isHistory || history.state === null) return;
+                    history.pushState({ providerName }, document.title);
+                });
+
+                $(window).on('popstate', function (event) {
+                    if (!event.state || !event.state.providerName || event.state.providerName !== providerName) return;
+
+                    plugin.isHistory = true;
+                    $element.DataTable().ajax.reload();
+                    plugin.isHistory = false;
+                });
+
+                dataTablesOptions.ajax = function dataTablesOptionsAjax(params, callback, settings) {
+                    if (typeof history.state !== 'object' || !history.state?.data) {
+                        history.replaceState({ data: getData(params), providerName }, document.title);
+                    }
+
+                    $.ajax({
+                        method: 'GET',
+                        url: plugin.settings.rowsApiUrl,
+                        data: history.state.data,
+                        success: function (response) {
+                            plugin.settings.callbacks.ajaxDataLoadedCallback(response);
+
+                            callback(response);
+                        },
+                    });
                 };
             }
 
