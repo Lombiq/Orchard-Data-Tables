@@ -8,7 +8,7 @@
 
 /* global URI */
 
-(function lombiqDatatables($, window) {
+(function lombiqDatatables($, window, document, history) {
     const pluginName = 'lombiq_DataTables';
     const useDefaultButtons = 'useDefaultButtons';
 
@@ -159,8 +159,7 @@
             if (plugin.settings.serverSidePagingEnabled &&
                 !plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
                 const $element = $(plugin.element);
-                window.$element = $element; console.log(JSON.stringify(history.state, true, 2));
-                const providerName = URI(location.href).search(true).providerName;
+                const providerName = URI(window.location.href).search(true).providerName;
 
                 let latestDraw = 0;
 
@@ -203,8 +202,8 @@
                     order: $element.DataTable().order(),
                 });
 
-                $element.on('preXhr.dt', function () {
-                    if (plugin.history.isFirst || plugin.history.isHistory || history.state === null) {
+                $element.on('preXhr.dt', () => {
+                    if (plugin.history.isFirst || plugin.history.isHistory || window.history.state === null) {
                         plugin.history.isFirst = false;
                         return;
                     }
@@ -212,7 +211,7 @@
                     history.pushState(createHistoryState(), document.title);
                 });
 
-                $(window).on('popstate', function (event) {
+                $(window).on('popstate', (event) => {
                     const state = event.originalEvent.state;
                     if (!state || !state.providerName || state.providerName !== providerName) return;
 
@@ -221,9 +220,8 @@
                     plugin.history.isHistory = false;
                 });
 
-                dataTablesOptions.ajax = function dataTablesOptionsAjax(params, callback, settings) {
+                dataTablesOptions.ajax = function dataTablesOptionsAjax(params, callback) {
                     const isNewRequest = typeof history.state !== 'object' || !history.state?.data;
-                    console.log(isNewRequest, history.state);
                     if (isNewRequest) {
                         const data = JSON.parse(getJsonParameters(params));
                         history.replaceState(createHistoryState(data), document.title);
@@ -239,7 +237,7 @@
                         .val(requestData.search?.value ?? '');
                     $wrapper
                         .find('.dataTables_length select[aria-controls="dataTable"]')
-                        .val(requestData.length)
+                        .val(requestData.length);
                     instance.order(history.state.order);
 
                     $.ajax({
@@ -249,13 +247,12 @@
                         success: function (response) {
                             plugin.settings.callbacks.ajaxDataLoadedCallback(response);
 
-                            latestDraw = response.draw
+                            latestDraw = response.draw;
 
                             callback(response);
 
                             const page = history.state.data.start / history.state.data.length;
                             if (instance.page() !== page) instance.page(page).draw('page');
-                            console.log('page', instance.page());
                         },
                     });
                 };
@@ -556,4 +553,4 @@
             return $.data(this, 'plugin_' + pluginName);
         });
     };
-})(jQuery, window, document);
+})(jQuery, window, document, window.history);
