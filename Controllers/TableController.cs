@@ -47,6 +47,7 @@ namespace Lombiq.DataTables.Controllers
             });
         }
 
+        [Route("/Admin/DataTable/{providerName}/{queryId?}")]
         public async Task<IActionResult> Get(string providerName, string queryId = null, bool paging = true, bool viewAction = false)
         {
             var provider = _dataTableDataProviders.Single(provider => provider.Name == providerName);
