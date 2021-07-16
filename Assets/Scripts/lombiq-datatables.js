@@ -217,6 +217,11 @@
                     const data = $.extend({}, history.state.data);
                     if (!isNewRequest) data.draw = (latestDraw ?? 0) + 1;
 
+                    const $wrapper = $element.closest('.dataTables_wrapper');
+                    $wrapper
+                        .find('.dataTables_filter input[type="search"][aria-controls="dataTable"]')
+                        .val(data.search?.value ?? '');
+
                     $.ajax({
                         method: 'GET',
                         url: plugin.settings.rowsApiUrl,
