@@ -159,6 +159,7 @@
             if (plugin.settings.serverSidePagingEnabled &&
                 !plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
                 const $element = $(plugin.element);
+                window.$element = $element;
                 const providerName = URI(location.href).search(true).providerName;
 
                 let latestDraw = 0;
@@ -193,9 +194,15 @@
                     return jsonParameters;
                 };
 
+                const createHistoryState = (data) => ({
+                    data: data,
+                    providerName: providerName,
+                    order: $element.DataTable().order(),
+                });
+
                 $element.on('preXhr.dt', function () {
                     if (plugin.isHistory || history.state === null) return;
-                    history.pushState({ providerName }, document.title);
+                    history.pushState(createHistoryState(), document.title);
                 });
 
                 $(window).on('popstate', function (event) {
@@ -211,21 +218,25 @@
                     const isNewRequest = typeof history.state !== 'object' || !history.state?.data;
                     if (isNewRequest) {
                         const data = JSON.parse(getJsonParameters(params));
-                        history.replaceState({ data , providerName }, document.title);
+                        history.replaceState(createHistoryState(data), document.title);
                     }
 
-                    const data = $.extend({}, history.state.data);
-                    if (!isNewRequest) data.draw = (latestDraw ?? 0) + 1;
+                    const requestData = $.extend({}, history.state.data);
+                    if (!isNewRequest) requestData.draw = (latestDraw ?? 0) + 1;
 
                     const $wrapper = $element.closest('.dataTables_wrapper');
                     $wrapper
                         .find('.dataTables_filter input[type="search"][aria-controls="dataTable"]')
-                        .val(data.search?.value ?? '');
+                        .val(requestData.search?.value ?? '');
+                    $wrapper
+                        .find('.dataTables_length select[aria-controls="dataTable"]')
+                        .val(requestData.length)
+                    $element.DataTable().order(history.state.order);
 
                     $.ajax({
                         method: 'GET',
                         url: plugin.settings.rowsApiUrl,
-                        data: plugin.buildQueryStringParameters({ requestJson: JSON.stringify(data) }),
+                        data: plugin.buildQueryStringParameters({ requestJson: JSON.stringify(requestData) }),
                         success: function (response) {
                             plugin.settings.callbacks.ajaxDataLoadedCallback(response);
 
