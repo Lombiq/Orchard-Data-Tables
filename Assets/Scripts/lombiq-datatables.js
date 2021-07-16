@@ -159,13 +159,16 @@
             if (plugin.settings.serverSidePagingEnabled &&
                 !plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
                 const $element = $(plugin.element);
-                window.$element = $element;
+                window.$element = $element; console.log(JSON.stringify(history.state, true, 2));
                 const providerName = URI(location.href).search(true).providerName;
 
                 let latestDraw = 0;
 
                 dataTablesOptions.serverSide = true;
-                plugin.isHistory = false;
+                plugin.history = {
+                    isHistory: false,
+                    isFirst: true,
+                };
 
                 const getJsonParameters = function (params) {
                     const internalParameters = plugin.cleanUpDataTablesAjaxParameters(params);
@@ -201,7 +204,11 @@
                 });
 
                 $element.on('preXhr.dt', function () {
-                    if (plugin.isHistory || history.state === null) return;
+                    if (plugin.history.isFirst || plugin.history.isHistory || history.state === null) {
+                        plugin.history.isFirst = false;
+                        return;
+                    }
+
                     history.pushState(createHistoryState(), document.title);
                 });
 
@@ -209,29 +216,31 @@
                     const state = event.originalEvent.state;
                     if (!state || !state.providerName || state.providerName !== providerName) return;
 
-                    plugin.isHistory = true;
+                    plugin.history.isHistory = true;
                     $element.DataTable().ajax.reload();
-                    plugin.isHistory = false;
+                    plugin.history.isHistory = false;
                 });
 
                 dataTablesOptions.ajax = function dataTablesOptionsAjax(params, callback, settings) {
                     const isNewRequest = typeof history.state !== 'object' || !history.state?.data;
+                    console.log(isNewRequest, history.state);
                     if (isNewRequest) {
                         const data = JSON.parse(getJsonParameters(params));
                         history.replaceState(createHistoryState(data), document.title);
                     }
 
                     const requestData = $.extend({}, history.state.data);
-                    if (!isNewRequest) requestData.draw = (latestDraw ?? 0) + 1;
+                    if (!isNewRequest) requestData.draw = (latestDraw ?? 0) + 3;
 
                     const $wrapper = $element.closest('.dataTables_wrapper');
+                    const instance = $element.DataTable();
                     $wrapper
                         .find('.dataTables_filter input[type="search"][aria-controls="dataTable"]')
                         .val(requestData.search?.value ?? '');
                     $wrapper
                         .find('.dataTables_length select[aria-controls="dataTable"]')
                         .val(requestData.length)
-                    $element.DataTable().order(history.state.order);
+                    instance.order(history.state.order);
 
                     $.ajax({
                         method: 'GET',
@@ -243,6 +252,10 @@
                             latestDraw = response.draw
 
                             callback(response);
+
+                            const page = history.state.data.start / history.state.data.length;
+                            if (instance.page() !== page) instance.page(page).draw('page');
+                            console.log('page', instance.page());
                         },
                     });
                 };
