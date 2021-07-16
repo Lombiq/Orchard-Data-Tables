@@ -161,10 +161,12 @@
                 const $element = $(plugin.element);
                 const providerName = URI(location.href).search(true).providerName;
 
+                let latestDraw = 0;
+
                 dataTablesOptions.serverSide = true;
                 plugin.isHistory = false;
 
-                const getData = function (params) {
+                const getJsonParameters = function (params) {
                     const internalParameters = plugin.cleanUpDataTablesAjaxParameters(params);
 
                     const extendedParameters = plugin.customizeAjaxParameters($.extend({}, internalParameters, {
@@ -188,7 +190,7 @@
                             'extendedParameters:\n' + JSON.stringify(extendedParameters) + '\n' +
                             'jsonParameters:\n' + JSON.stringify(jsonParameters) + '\n');
                     }
-                    return plugin.buildQueryStringParameters({ requestJson: jsonParameters });
+                    return jsonParameters;
                 };
 
                 $element.on('preXhr.dt', function () {
@@ -197,7 +199,8 @@
                 });
 
                 $(window).on('popstate', function (event) {
-                    if (!event.state || !event.state.providerName || event.state.providerName !== providerName) return;
+                    const state = event.originalEvent.state;
+                    if (!state || !state.providerName || state.providerName !== providerName) return;
 
                     plugin.isHistory = true;
                     $element.DataTable().ajax.reload();
@@ -205,16 +208,23 @@
                 });
 
                 dataTablesOptions.ajax = function dataTablesOptionsAjax(params, callback, settings) {
-                    if (typeof history.state !== 'object' || !history.state?.data) {
-                        history.replaceState({ data: getData(params), providerName }, document.title);
+                    const isNewRequest = typeof history.state !== 'object' || !history.state?.data;
+                    if (isNewRequest) {
+                        const data = JSON.parse(getJsonParameters(params));
+                        history.replaceState({ data , providerName }, document.title);
                     }
+
+                    const data = $.extend({}, history.state.data);
+                    if (!isNewRequest) data.draw = (latestDraw ?? 0) + 1;
 
                     $.ajax({
                         method: 'GET',
                         url: plugin.settings.rowsApiUrl,
-                        data: history.state.data,
+                        data: plugin.buildQueryStringParameters({ requestJson: JSON.stringify(data) }),
                         success: function (response) {
                             plugin.settings.callbacks.ajaxDataLoadedCallback(response);
+
+                            latestDraw = response.draw
 
                             callback(response);
                         },
@@ -399,20 +409,12 @@
         * @returns {object} Merged query string parameters.
         */
         buildQueryStringParameters: function (data) {
-            let finalQueryString = '';
-
             // This is necessary to preserve the original structure of the initial query string:
             // Traditional encoding ensures that if a key has multiple values (e.g. "?name=value1&name=value2"),
             // then the key won't be changed to "name[]".
             const originalQueryStringEncoded = $.param(this.originalQueryStringParameters, true);
 
-            if (originalQueryStringEncoded) {
-                finalQueryString += originalQueryStringEncoded + '&';
-            }
-
-            finalQueryString += $.param(data);
-
-            return finalQueryString;
+            return (originalQueryStringEncoded ? (originalQueryStringEncoded + '&') : '') + $.param(data);
         },
 
         /**
