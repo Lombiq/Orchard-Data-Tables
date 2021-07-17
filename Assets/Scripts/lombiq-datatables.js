@@ -196,11 +196,18 @@
                     return jsonParameters;
                 };
 
-                const createHistoryState = (data) => ({
-                    data: data,
-                    providerName: providerName,
-                    order: $element.DataTable().order(),
-                });
+                const createHistoryState = (data) => {
+                    const state = {
+                        data: data,
+                        providerName: providerName,
+                        order: $element.DataTable().order(),
+                    };
+
+                    const userEvent = { plugin, state };
+                    $element.trigger('createstate.lombiqdt', userEvent);
+
+                    return userEvent.state;
+                };
 
                 $element.on('preXhr.dt', () => {
                     if (plugin.history.isFirst || plugin.history.isHistory || window.history.state === null) {
@@ -216,7 +223,9 @@
                     if (!state || !state.providerName || state.providerName !== providerName) return;
 
                     plugin.history.isHistory = true;
-                    $element.DataTable().ajax.reload();
+                    const userEvent = { plugin: plugin, state: state, cancel: false };
+                    $element.trigger('popstate.lombiqdt', userEvent);
+                    if (!userEvent.cancel) $element.DataTable().ajax.reload();
                     plugin.history.isHistory = false;
                 });
 
@@ -240,10 +249,13 @@
                         .val(requestData.length);
                     instance.order(history.state.order);
 
+                    const userEvent = { plugin: plugin, requestData: requestData, isHistory: plugin.history.isHistory };
+                    $element.trigger('preXhr.lombiqdt', userEvent);
+
                     $.ajax({
                         method: 'GET',
                         url: plugin.settings.rowsApiUrl,
-                        data: plugin.buildQueryStringParameters({ requestJson: JSON.stringify(requestData) }),
+                        data: plugin.buildQueryStringParameters({ requestJson: JSON.stringify(userEvent.requestData) }),
                         success: function (response) {
                             plugin.settings.callbacks.ajaxDataLoadedCallback(response);
 
