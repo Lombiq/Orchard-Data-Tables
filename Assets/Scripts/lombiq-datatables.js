@@ -159,7 +159,9 @@
             if (plugin.settings.serverSidePagingEnabled &&
                 !plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
                 const $element = $(plugin.element);
-                const providerName = URI(window.location.href).search(true).providerName;
+                const providerName = window.location.href.includes('/Admin/DataTable/')
+                    ? window.location.href.replace(/.*\/Admin\/DataTable\/[^/?]+[/?].*/, '$1')
+                    : URI(window.location.href).search(true).providerName;
 
                 let latestDraw = 0;
 
