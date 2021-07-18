@@ -10,7 +10,6 @@
     "datatables.net-buttons": "1.6.3",
     "datatables.net-buttons-bs4": "1.6.3",
     "gulp-babel": "^8.0.0",
-    "localforage": "1.9.0",
     "urijs": "1.19.2"
   }
 }
