@@ -12,6 +12,7 @@ namespace Lombiq.DataTables.Models
         public bool IsPaginated { get; set; }
         public bool IsFiltered { get; set; }
         public int Count { get; set; } = -1;
+        public int CountFiltered { get; set; } = -1;
 
         public JsonResultDataTableDataProviderResult(IEnumerable<object> results = null) => Results = results;
     }

@@ -39,6 +39,8 @@ namespace Lombiq.DataTables.Services
             var recordsFiltered = metaData.Count >= 0 && !metaData.IsFiltered ? metaData.Count : results.Count;
             var recordsTotal = results.Count;
 
+            if (metaData.CountFiltered >= 0) recordsFiltered = metaData.CountFiltered;
+
             var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
             if (!string.IsNullOrEmpty(order.Column)) json = OrderByColumn(json, order);
 
