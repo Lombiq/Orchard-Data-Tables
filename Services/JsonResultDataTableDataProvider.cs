@@ -145,10 +145,7 @@ namespace Lombiq.DataTables.Services
 
         private IEnumerable<JObject> OrderByColumn(IEnumerable<JObject> json, DataTableOrder order)
         {
-            // Known issue: https://github.com/SonarSource/sonar-dotnet/issues/3126
-#pragma warning disable S1854 // Unused assignments should be removed
             var orderColumnName = order.Column.Replace('_', '.');
-#pragma warning restore S1854 // Unused assignments should be removed
 
             JToken Selector(JObject x)
             {
