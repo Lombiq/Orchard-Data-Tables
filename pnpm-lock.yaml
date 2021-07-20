@@ -1,0 +1,53 @@
+lockfileVersion: 5.3
+
+specifiers:
+  datatables.net: 1.10.20
+  datatables.net-bs4: 1.10.20
+  datatables.net-buttons: 1.6.3
+  datatables.net-buttons-bs4: 1.6.3
+  urijs: 1.19.2
+
+dependencies:
+  datatables.net: 1.10.20
+  datatables.net-bs4: 1.10.20
+  datatables.net-buttons: 1.6.3
+  datatables.net-buttons-bs4: 1.6.3
+  urijs: 1.19.2
+
+packages:
+
+  /datatables.net-bs4/1.10.20:
+    resolution: {integrity: sha512-kQmMUMsHMOlAW96ztdoFqjSbLnlGZQ63iIM82kHbmldsfYdzuyhbb4hTx6YNBi481WCO3iPSvI6YodNec46ZAw==}
+    dependencies:
+      datatables.net: 1.10.20
+      jquery: 3.6.0
+    dev: false
+
+  /datatables.net-buttons-bs4/1.6.3:
+    resolution: {integrity: sha512-PV8Ghm/qO+YDOF++r9Ky8IZLJCy0rvq+3Nft8sG3Lsoyx8NPeOzERASaYbasTTyGbw4PajD9uimZXJuCcmaSkg==}
+    dependencies:
+      datatables.net-bs4: 1.10.20
+      datatables.net-buttons: 1.6.3
+      jquery: 3.6.0
+    dev: false
+
+  /datatables.net-buttons/1.6.3:
+    resolution: {integrity: sha512-wZBt/zkW1EUL1S+CFkmMVuN+wKkVTt4Vy5BfxsCuTFGRcbkko9WdcEYID2YLSnE/jaIcqBaolCzGSbH057V68Q==}
+    dependencies:
+      datatables.net: 1.10.20
+      jquery: 3.6.0
+    dev: false
+
+  /datatables.net/1.10.20:
+    resolution: {integrity: sha512-4E4S7tTU607N3h0fZPkGmAtr9mwy462u+VJ6gxYZ8MxcRIjZqHy3Dv1GNry7i3zQCktTdWbULVKBbkAJkuHEnQ==}
+    dependencies:
+      jquery: 3.6.0
+    dev: false
+
+  /jquery/3.6.0:
+    resolution: {integrity: sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw==}
+    dev: false
+
+  /urijs/1.19.2:
+    resolution: {integrity: sha512-s/UIq9ap4JPZ7H1EB5ULo/aOUbWqfDi7FKzMC2Nz+0Si8GiT1rIEaprt8hy3Vy2Ex2aJPpOQv4P4DuOZ+K1c6w==}
+    dev: false
