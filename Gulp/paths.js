@@ -29,10 +29,6 @@ module.exports = {
             path: nodeModulesBasePath + 'datatables.net-buttons-bs4/css/*',
         },
         {
-            name: 'localforage',
-            path: nodeModulesBasePath + 'localforage/dist/**',
-        },
-        {
             name: 'urijs',
             path: nodeModulesBasePath + 'urijs/src/**',
         },

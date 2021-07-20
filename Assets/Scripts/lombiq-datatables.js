@@ -182,8 +182,22 @@
                     const jsonParameters = JSON.stringify(extendedParameters);
                     stateJson = jsonParameters;
 
-                    if (plugin.settings.queryStringParametersLocalStorageKey) {
-                        localStorage.setItem(plugin.settings.queryStringParametersLocalStorageKey, jsonParameters);
+                    if (plugin.settings.queryStringParametersLocalStorageKey && 'localStorage' in window) {
+                        const key = plugin.settings.queryStringParametersLocalStorageKey;
+
+                        try {
+                            localStorage.setItem(key, jsonParameters);
+                        }
+                        catch (exception) {
+                            try {
+                                localStorage[key] = jsonParameters;
+                            }
+                            catch (innerException) {
+                                /* eslint-disable no-console */
+                                console.log(innerException);
+                                /* eslint-enable no-console */
+                            }
+                        }
                     }
 
                     if (plugin.settings.errorsSelector) $(plugin.settings.errorsSelector).hide();
