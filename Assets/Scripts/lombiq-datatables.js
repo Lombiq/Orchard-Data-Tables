@@ -160,7 +160,7 @@
                 !plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
                 const $element = $(plugin.element);
                 const providerName = window.location.href.includes('/Admin/DataTable/')
-                    ? window.location.href.replace(/.*\/Admin\/DataTable\/[^/?]+[/?].*/, '$1')
+                    ? window.location.href.replace(/.*\/Admin\/DataTable\/([^/?]+)[/?].*/, '$1')
                     : URI(window.location.href).search(true).providerName;
 
                 let latestDraw = 0;
@@ -168,6 +168,7 @@
                 dataTablesOptions.serverSide = true;
                 plugin.history = {
                     isHistory: false,
+                    isRedraw: false,
                     isFirst: true,
                 };
 
@@ -226,7 +227,10 @@
                 };
 
                 $element.on('preXhr.dt', () => {
-                    if (plugin.history.isFirst || plugin.history.isHistory || window.history.state === null) {
+                    if (plugin.history.isFirst ||
+                        plugin.history.isHistory ||
+                        plugin.history.isRedraw ||
+                        window.history.state === null) {
                         plugin.history.isFirst = false;
                         return;
                     }
@@ -280,7 +284,9 @@
                             callback(response);
 
                             const page = history.state.data.start / history.state.data.length;
+                            plugin.history.isRedraw = true;
                             if (instance.page() !== page) instance.page(page).draw('page');
+                            plugin.history.isRedraw = false;
                         },
                     });
                 };
