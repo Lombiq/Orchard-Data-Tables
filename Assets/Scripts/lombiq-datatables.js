@@ -286,6 +286,9 @@
                             const page = history.state.data.start / history.state.data.length;
                             plugin.history.isRedraw = true;
                             if (instance.page() !== page) instance.page(page).draw('page');
+                            if (instance.page.len() !== history.state.data.length) {
+                                instance.page.len(history.state.data.length).draw('page');
+                            }
                             plugin.history.isRedraw = false;
                         },
                     });
