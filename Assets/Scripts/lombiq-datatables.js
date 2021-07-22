@@ -194,9 +194,7 @@
                                 localStorage[key] = jsonParameters;
                             }
                             catch (innerException) {
-                                /* eslint-disable no-console */
-                                console.log(innerException);
-                                /* eslint-enable no-console */
+                                // If localStorage won't work there is nothing to do.
                             }
                         }
                     }
