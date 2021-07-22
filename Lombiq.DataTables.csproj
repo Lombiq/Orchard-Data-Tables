@@ -18,12 +18,6 @@
   <Import Project="..\..\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.targets" />
 
   <ItemGroup>
-    <None Remove="node_modules\**" />
-    <None Remove="Tests\**" />
-    <None Include="Readme.md" />
-  </ItemGroup>
-
-  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
