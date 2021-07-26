@@ -17,7 +17,7 @@ namespace Lombiq.DataTables
             manifest.DefineScript(JQuery_DataTables_Extensions_ColReorder).SetUrl("../Content/DataTables/Extensions/ColReorder/js/dataTables.colReorder.min.js").SetDependencies(JQuery_DataTables);
 
             manifest.DefineStyle(JQuery_DataTables).SetUrl("../Content/DataTables/dataTables.min.css", "../Content/DataTables/dataTables.css");
-            manifest.DefineStyle(JQuery_DataTables_Extensions_Responsive).SetUrl("../Content/DataTables/Extensions/Responsive/css/dataTables.responsive.min.css").SetDependencies(JQuery_DataTables);
+            manifest.DefineStyle(JQuery_DataTables_Extensions_Responsive).SetUrl("../Content/DataTables/Extensions/Responsive/css/responsive.dataTables.min.css").SetDependencies(JQuery_DataTables);
             manifest.DefineStyle(JQuery_DataTables_Extensions_ColReorder).SetUrl("../Content/DataTables/Extensions/ColReorder/css/colReorder.dataTables.min.css").SetDependencies(JQuery_DataTables);
 
             // Custom resources.
