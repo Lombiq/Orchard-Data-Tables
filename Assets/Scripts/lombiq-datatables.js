@@ -8,7 +8,7 @@
 
 /* global URI */
 
-(function lombiqDatatables($, window) {
+(function lombiqDatatables($, window, document, history) {
     const pluginName = 'lombiq_DataTables';
     const useDefaultButtons = 'useDefaultButtons';
 
@@ -158,41 +158,138 @@
             // Initialize server-side paging unless progressive loading is enabled.
             if (plugin.settings.serverSidePagingEnabled &&
                 !plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
+                const $element = $(plugin.element);
+                const providerName = window.location.href.includes('/Admin/DataTable/')
+                    ? window.location.href.replace(/.*\/Admin\/DataTable\/([^/?]+)[/?].*/, '$1')
+                    : URI(window.location.href).search(true).providerName;
+
+                let latestDraw = 0;
+
                 dataTablesOptions.serverSide = true;
-                dataTablesOptions.ajax = {
-                    method: 'GET',
-                    url: plugin.settings.rowsApiUrl,
-                    data: function (params) {
-                        const internalParameters = plugin.cleanUpDataTablesAjaxParameters(params);
+                plugin.history = {
+                    isHistory: false,
+                    isRedraw: false,
+                    isFirst: true,
+                };
 
-                        const extendedParameters = plugin.customizeAjaxParameters($.extend({}, internalParameters, {
-                            queryId: plugin.settings.queryId,
-                            dataProvider: plugin.settings.dataProvider,
-                            originalUrl: window.location.href,
-                        }));
-                        const jsonParameters = JSON.stringify(extendedParameters);
-                        stateJson = jsonParameters;
+                const getJsonParameters = function (params) {
+                    const internalParameters = plugin.cleanUpDataTablesAjaxParameters(params);
 
-                        if (plugin.settings.queryStringParametersLocalStorageKey) {
-                            localStorage.setItem(plugin.settings.queryStringParametersLocalStorageKey, jsonParameters);
+                    const extendedParameters = plugin.customizeAjaxParameters($.extend({}, internalParameters, {
+                        queryId: plugin.settings.queryId,
+                        dataProvider: plugin.settings.dataProvider,
+                        originalUrl: window.location.href,
+                    }));
+                    const jsonParameters = JSON.stringify(extendedParameters);
+                    stateJson = jsonParameters;
+
+                    if (plugin.settings.queryStringParametersLocalStorageKey && 'localStorage' in window) {
+                        const key = plugin.settings.queryStringParametersLocalStorageKey;
+
+                        try {
+                            localStorage.setItem(key, jsonParameters);
                         }
-
-                        if (plugin.settings.errorsSelector) $(plugin.settings.errorsSelector).hide();
-
-                        if (!jsonParameters || !jsonParameters.match || jsonParameters.match(/^\s*$/)) {
-                            alert('jsonParameters is null or empty!\n' +
-                                'params:\n' + JSON.stringify(params) + '\n' +
-                                'internalParameters:\n' + JSON.stringify(internalParameters) + '\n' +
-                                'extendedParameters:\n' + JSON.stringify(extendedParameters) + '\n' +
-                                'jsonParameters:\n' + JSON.stringify(jsonParameters) + '\n');
+                        catch (exception) {
+                            try {
+                                localStorage[key] = jsonParameters;
+                            }
+                            catch (innerException) {
+                                // If localStorage won't work there is nothing to do.
+                            }
                         }
-                        return plugin.buildQueryStringParameters({ requestJson: jsonParameters });
-                    },
-                    dataSrc: function (response) {
-                        plugin.settings.callbacks.ajaxDataLoadedCallback(response);
+                    }
 
-                        return response.data;
-                    },
+                    if (plugin.settings.errorsSelector) $(plugin.settings.errorsSelector).hide();
+
+                    if (!jsonParameters || !jsonParameters.match || jsonParameters.match(/^\s*$/)) {
+                        alert('jsonParameters is null or empty!\n' +
+                            'params:\n' + JSON.stringify(params) + '\n' +
+                            'internalParameters:\n' + JSON.stringify(internalParameters) + '\n' +
+                            'extendedParameters:\n' + JSON.stringify(extendedParameters) + '\n' +
+                            'jsonParameters:\n' + JSON.stringify(jsonParameters) + '\n');
+                    }
+                    return jsonParameters;
+                };
+
+                const createHistoryState = (data) => {
+                    const state = {
+                        data: data,
+                        providerName: providerName,
+                        order: $element.DataTable().order(),
+                    };
+
+                    const userEvent = { plugin, state };
+                    $element.trigger('createstate.lombiqdt', userEvent);
+
+                    return userEvent.state;
+                };
+
+                $element.on('preXhr.dt', () => {
+                    if (plugin.history.isFirst ||
+                        plugin.history.isHistory ||
+                        plugin.history.isRedraw ||
+                        window.history.state === null) {
+                        plugin.history.isFirst = false;
+                        return;
+                    }
+
+                    history.pushState(createHistoryState(), document.title);
+                });
+
+                $(window).on('popstate', (event) => {
+                    const state = event.originalEvent.state;
+                    if (!state || !state.providerName || state.providerName !== providerName) return;
+
+                    plugin.history.isHistory = true;
+                    const userEvent = { plugin: plugin, state: state, cancel: false };
+                    $element.trigger('popstate.lombiqdt', userEvent);
+                    if (!userEvent.cancel) $element.DataTable().ajax.reload();
+                    plugin.history.isHistory = false;
+                });
+
+                dataTablesOptions.ajax = function dataTablesOptionsAjax(params, callback) {
+                    const isNewRequest = typeof history.state !== 'object' || !history.state?.data;
+                    if (isNewRequest) {
+                        const data = JSON.parse(getJsonParameters(params));
+                        history.replaceState(createHistoryState(data), document.title);
+                    }
+
+                    const requestData = $.extend({}, history.state.data);
+                    if (!isNewRequest) requestData.draw = (latestDraw ?? 0) + 3;
+
+                    const $wrapper = $element.closest('.dataTables_wrapper');
+                    const instance = $element.DataTable();
+                    $wrapper
+                        .find('.dataTables_filter input[type="search"][aria-controls="dataTable"]')
+                        .val(requestData.search?.value ?? '');
+                    $wrapper
+                        .find('.dataTables_length select[aria-controls="dataTable"]')
+                        .val(requestData.length);
+                    instance.order(history.state.order);
+
+                    const userEvent = { plugin: plugin, requestData: requestData, isHistory: plugin.history.isHistory };
+                    $element.trigger('preXhr.lombiqdt', userEvent);
+
+                    $.ajax({
+                        method: 'GET',
+                        url: plugin.settings.rowsApiUrl,
+                        data: plugin.buildQueryStringParameters({ requestJson: JSON.stringify(userEvent.requestData) }),
+                        success: function (response) {
+                            plugin.settings.callbacks.ajaxDataLoadedCallback(response);
+
+                            latestDraw = response.draw;
+
+                            callback(response);
+
+                            const page = history.state.data.start / history.state.data.length;
+                            plugin.history.isRedraw = true;
+                            if (instance.page() !== page) instance.page(page).draw('page');
+                            if (instance.page.len() !== history.state.data.length) {
+                                instance.page.len(history.state.data.length).draw('page');
+                            }
+                            plugin.history.isRedraw = false;
+                        },
+                    });
                 };
             }
 
@@ -373,20 +470,12 @@
         * @returns {object} Merged query string parameters.
         */
         buildQueryStringParameters: function (data) {
-            let finalQueryString = '';
-
             // This is necessary to preserve the original structure of the initial query string:
             // Traditional encoding ensures that if a key has multiple values (e.g. "?name=value1&name=value2"),
             // then the key won't be changed to "name[]".
             const originalQueryStringEncoded = $.param(this.originalQueryStringParameters, true);
 
-            if (originalQueryStringEncoded) {
-                finalQueryString += originalQueryStringEncoded + '&';
-            }
-
-            finalQueryString += $.param(data);
-
-            return finalQueryString;
+            return (originalQueryStringEncoded ? (originalQueryStringEncoded + '&') : '') + $.param(data);
         },
 
         /**
@@ -499,4 +588,4 @@
             return $.data(this, 'plugin_' + pluginName);
         });
     };
-})(jQuery, window, document);
+})(jQuery, window, document, window.history);
