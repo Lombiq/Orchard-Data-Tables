@@ -4,12 +4,12 @@
     "dotnet-prebuild": "gulp"
   },
   "dependencies": {
-    "@babel/preset-env": "^7.10.2",
-    "datatables.net": "1.10.20",
-    "datatables.net-bs4": "1.10.20",
-    "datatables.net-buttons": "1.6.3",
-    "datatables.net-buttons-bs4": "1.6.3",
+    "@babel/preset-env": "^7.14.8",
+    "datatables.net": "1.10.25",
+    "datatables.net-bs4": "3.2.2",
+    "datatables.net-buttons": "1.7.1",
+    "datatables.net-buttons-bs4": "1.7.1",
     "gulp-babel": "^8.0.0",
-    "urijs": "1.19.2"
+    "urijs": "1.19.7"
   }
 }
