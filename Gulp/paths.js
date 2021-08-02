@@ -4,22 +4,25 @@ const lombiqBasePath = './Assets/Scripts/';
 
 module.exports = {
     vendorAssets: [
-        {
-            name: 'datatables.net',
-            path: nodeModulesBasePath + 'datatables.net/js/*',
-        },
+        // We are using Nightly until the Chrome issue here is resolved:
+        // https://datatables.net/forums/discussion/68506/latest-google-chrome-91-0-4472-77-breaks-fixed-columns-with-complex-headings
+        //{
+        //    name: 'datatables.net',
+        //    path: nodeModulesBasePath + 'datatables.net/js/*',
+        //},
         {
             name: 'datatables.net-buttons',
             path: nodeModulesBasePath + 'datatables.net-buttons/js/*',
         },
-        {
-            name: 'datatables.net-bs4-js',
-            path: nodeModulesBasePath + 'datatables.net-bs4/js/*',
-        },
-        {
-            name: 'datatables.net-bs4-css',
-            path: nodeModulesBasePath + 'datatables.net-bs4/css/*',
-        },
+        // Same as above.
+        //{
+        //    name: 'datatables.net-bs4-js',
+        //    path: nodeModulesBasePath + 'datatables.net-bs4/js/*',
+        //},
+        //{
+        //    name: 'datatables.net-bs4-css',
+        //    path: nodeModulesBasePath + 'datatables.net-bs4/css/*',
+        //},
         {
             name: 'datatables.net-bs4-js',
             path: nodeModulesBasePath + 'datatables.net-buttons-bs4/js/*',
