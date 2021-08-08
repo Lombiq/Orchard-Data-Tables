@@ -4,9 +4,11 @@ using Lombiq.DataTables.Services;
 using Lombiq.DataTables.TagHelpers;
 using Lombiq.HelpfulLibraries.Libraries.DependencyInjection;
 using Lombiq.HelpfulLibraries.Libraries.Middleware;
+using Lombiq.HelpfulLibraries.Libraries.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using OrchardCore.Data.Migration;
 using OrchardCore.DisplayManagement.Descriptors;
 using OrchardCore.Liquid;
@@ -28,7 +30,7 @@ namespace Lombiq.DataTables
 
             services.AddTagHelpers<DataTableTagHelper>();
 
-            services.AddScoped<IResourceManifestProvider, ResourceManifest>();
+            services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
             services.AddScoped<IDataMigration, ColumnsDefinitionMigrations>();
 
             services.AddLiquidFilter<ActionsLiquidFilter>("actions");
