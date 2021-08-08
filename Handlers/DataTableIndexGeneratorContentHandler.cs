@@ -83,7 +83,7 @@ namespace Lombiq.DataTables.Handlers
         {
             // Using very raw query because it's too complex for the parser.
             var session = _sessionLazy.Value;
-            var transaction = await session.DemandAsync();
+            var transaction = await session.BeginTransactionAsync();
             var dialect = TransactionSqlDialectFactory.For(transaction);
             var prefix = session.Store.Configuration.TablePrefix;
 

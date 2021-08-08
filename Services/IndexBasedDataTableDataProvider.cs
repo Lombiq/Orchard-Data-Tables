@@ -56,7 +56,7 @@ namespace Lombiq.DataTables.Services
 
             var sql = query.ToSqlString();
 
-            var transaction = await _session.DemandAsync();
+            var transaction = await _session.BeginTransactionAsync();
             var queryResults = await transaction.Connection.QueryAsync<TIndex>(sql, query.Parameters, transaction);
 
             var rowList = SubstituteByColumn(
