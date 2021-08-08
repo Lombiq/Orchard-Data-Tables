@@ -33,7 +33,7 @@ namespace Lombiq.DataTables.Services
 
         public override async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
         {
-            var query = new SqlBuilder(_session.Store.Configuration.TablePrefix, _session.Store.Dialect);
+            var query = new SqlBuilder(_session.Store.Configuration.TablePrefix, _session.Store.Configuration.SqlDialect);
             query.Select();
             query.Table(typeof(TIndex).Name);
 
@@ -95,7 +95,7 @@ namespace Lombiq.DataTables.Services
                 .Where(definition => definition.Searchable)
                 .Select(definition => $"{GetIndexColumnName(definition)} LIKE @{nameof(GlobalSearchAsync)}");
 
-            sqlBuilder.WhereAlso($"({string.Join(" OR ", conditions)})");
+            sqlBuilder.WhereAnd($"({string.Join(" OR ", conditions)})");
             sqlBuilder.Parameters[nameof(GlobalSearchAsync)] = $"%{parameters.Value}%";
 
             return Task.CompletedTask;
@@ -111,7 +111,7 @@ namespace Lombiq.DataTables.Services
 
             var parameterName = $"{nameof(ColumnSearchAsync)}_{definition.Name}";
 
-            sqlBuilder.WhereAlso($"{GetIndexColumnName(definition)} LIKE @{parameterName}");
+            sqlBuilder.WhereAnd($"{GetIndexColumnName(definition)} LIKE @{parameterName}");
             sqlBuilder.Parameters[parameterName] = $"%{columnFilter.Search.Value}%";
 
             return Task.CompletedTask;

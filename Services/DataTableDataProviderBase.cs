@@ -1,3 +1,4 @@
+using Fluid.Values;
 using Lombiq.DataTables.Controllers;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,9 @@ using OrchardCore.Mvc.Core.Utilities;
 using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -107,11 +110,15 @@ namespace Lombiq.DataTables.Services
                     if (row.ValuesDictionary.TryGetValue(liquidColumn, out var token) &&
                         token?.ToString() is { } template)
                     {
-                        row[liquidColumn] = await _liquidTemplateManager.RenderAsync(
+                        var stringBuilder = new StringBuilder();
+                        using var stringWriter = new StringWriter(stringBuilder);
+
+                        await _liquidTemplateManager.RenderAsync(
                             template,
+                            stringWriter,
                             _plainTextEncoder,
                             row,
-                            _ => { });
+                            Array.Empty<KeyValuePair<string, FluidValue>>());
                     }
                 }
             }
