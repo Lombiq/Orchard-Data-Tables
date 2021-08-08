@@ -8,9 +8,9 @@ using Microsoft.Extensions.Options;
 using Moq;
 using OrchardCore.DisplayManagement;
 using OrchardCore.DisplayManagement.Layout;
+using OrchardCore.DisplayManagement.Liquid;
 using OrchardCore.Environment.Shell.Builders;
 using OrchardCore.Environment.Shell.Scope;
-using OrchardCore.Liquid;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -40,14 +40,14 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             using var shellContext = new ShellContext
             {
                 ServiceProvider = new ServiceCollection()
-                    .AddScoped<IOptions<LiquidOptions>>(provider =>
-                        new OptionsWrapper<LiquidOptions>(new LiquidOptions()))
-                    .AddScoped(provider => new ViewContextAccessor { ViewContext = new ViewContext() })
-                    .AddScoped(provider => new Mock<IDisplayHelper>().Object)
-                    .AddScoped(provider => new Mock<IUrlHelperFactory>().Object)
-                    .AddScoped(provider => new Mock<IShapeFactory>().Object)
-                    .AddScoped(provider => new Mock<ILayoutAccessor>().Object)
-                    .AddScoped(provider => new Mock<IViewLocalizer>().Object)
+                    .AddScoped<IOptions<LiquidViewOptions>>(_ =>
+                        new OptionsWrapper<LiquidViewOptions>(new LiquidViewOptions()))
+                    .AddScoped(_ => new ViewContextAccessor { ViewContext = new ViewContext() })
+                    .AddScoped(_ => new Mock<IDisplayHelper>().Object)
+                    .AddScoped(_ => new Mock<IUrlHelperFactory>().Object)
+                    .AddScoped(_ => new Mock<IShapeFactory>().Object)
+                    .AddScoped(_ => new Mock<ILayoutAccessor>().Object)
+                    .AddScoped(_ => new Mock<IViewLocalizer>().Object)
                     .BuildServiceProvider(),
             };
 

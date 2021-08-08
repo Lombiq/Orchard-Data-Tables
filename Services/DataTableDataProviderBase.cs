@@ -119,6 +119,8 @@ namespace Lombiq.DataTables.Services
                             _plainTextEncoder,
                             row,
                             Array.Empty<KeyValuePair<string, FluidValue>>());
+
+                        row[liquidColumn] = stringBuilder.ToString();
                     }
                 }
             }

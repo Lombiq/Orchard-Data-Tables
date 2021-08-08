@@ -1,13 +1,19 @@
+using Fluid.Values;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
+using Moq;
 using Newtonsoft.Json.Linq;
+using OrchardCore.DisplayManagement.Liquid;
+using OrchardCore.Liquid;
 using OrchardCore.Liquid.Services;
 using OrchardCore.Localization;
 using OrchardCore.Security.Permissions;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Tests
@@ -25,7 +31,7 @@ namespace Lombiq.DataTables.Tests
                 new DataTableDataProviderServices(
                     httpContextAccessor: null,
                     linkGenerator: null,
-                    new LiquidTemplateManager(memoryCache),
+                    MockLiquidTemplateManager(),
                     memoryCache,
                     shapeFactory: null,
                     session: null,
@@ -49,5 +55,19 @@ namespace Lombiq.DataTables.Tests
         }
 
         protected override DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) => Definition;
+
+        private static ILiquidTemplateManager MockLiquidTemplateManager()
+        {
+            var mock = new Mock<ILiquidTemplateManager>();
+            mock
+                .Setup(x => x.RenderAsync(
+                    It.IsAny<string>(),
+                    It.IsAny<TextWriter>(),
+                    It.IsAny<TextEncoder>(),
+                    It.IsAny<object>(),
+                    It.IsAny<IEnumerable<KeyValuePair<string, FluidValue>>>()))
+                .Returns(Task.CompletedTask);
+            return mock.Object;
+        }
     }
 }
