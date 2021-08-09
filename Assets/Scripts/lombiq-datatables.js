@@ -256,6 +256,7 @@
 
                     const requestData = $.extend({}, history.state.data);
                     if (!isNewRequest) requestData.draw = (latestDraw ?? 0) + 3;
+                    if (requestData.draw === 3) requestData.search.value = "";
 
                     const $wrapper = $element.closest('.dataTables_wrapper');
                     const instance = $element.DataTable();
