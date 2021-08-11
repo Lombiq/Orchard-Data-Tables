@@ -5,13 +5,10 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using Moq;
 using Newtonsoft.Json.Linq;
-using OrchardCore.DisplayManagement.Liquid;
 using OrchardCore.Liquid;
-using OrchardCore.Liquid.Services;
 using OrchardCore.Localization;
 using OrchardCore.Security.Permissions;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -23,7 +20,7 @@ namespace Lombiq.DataTables.Tests
         public DataTableColumnsDefinition Definition { get; set; }
         private readonly object[][] _dataSet;
 
-        public override LocalizedString Description { get; } = new LocalizedString("Test", "Test");
+        public override LocalizedString Description { get; } = new("Test", "Test");
         public override IEnumerable<Permission> AllowedPermissions { get; }
 
         public MockDataProvider(object[][] dataSet, IMemoryCache memoryCache, DataTableColumnsDefinition definition = null)
@@ -60,13 +57,12 @@ namespace Lombiq.DataTables.Tests
         {
             var mock = new Mock<ILiquidTemplateManager>();
             mock
-                .Setup(x => x.RenderAsync(
+                .Setup(x => x.RenderStringAsync(
                     It.IsAny<string>(),
-                    It.IsAny<TextWriter>(),
                     It.IsAny<TextEncoder>(),
                     It.IsAny<object>(),
                     It.IsAny<IEnumerable<KeyValuePair<string, FluidValue>>>()))
-                .Returns(Task.CompletedTask);
+                .ReturnsAsync((string template, TextEncoder _, object _, IEnumerable<KeyValuePair<string, FluidValue>> _) => template);
             return mock.Object;
         }
     }
