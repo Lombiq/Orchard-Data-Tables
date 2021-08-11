@@ -1,13 +1,20 @@
+using Fluid;
 using Fluid.Values;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using Moq;
+using Moq.AutoMock;
 using Newtonsoft.Json.Linq;
+using OrchardCore.DisplayManagement.Liquid;
 using OrchardCore.Liquid;
+using OrchardCore.Liquid.Services;
 using OrchardCore.Localization;
 using OrchardCore.Security.Permissions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Encodings.Web;
@@ -23,12 +30,16 @@ namespace Lombiq.DataTables.Tests
         public override LocalizedString Description { get; } = new("Test", "Test");
         public override IEnumerable<Permission> AllowedPermissions { get; }
 
-        public MockDataProvider(object[][] dataSet, IMemoryCache memoryCache, DataTableColumnsDefinition definition = null)
+        public MockDataProvider(
+            object[][] dataSet,
+            IMemoryCache memoryCache,
+            IServiceProvider serviceProvider,
+            DataTableColumnsDefinition definition = null)
             : base(
                 new DataTableDataProviderServices(
                     httpContextAccessor: null,
                     linkGenerator: null,
-                    MockLiquidTemplateManager(),
+                    CreateLiquidTemplateManager(memoryCache, serviceProvider),
                     memoryCache,
                     shapeFactory: null,
                     session: null,
@@ -53,17 +64,17 @@ namespace Lombiq.DataTables.Tests
 
         protected override DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) => Definition;
 
-        private static ILiquidTemplateManager MockLiquidTemplateManager()
+        private static ILiquidTemplateManager CreateLiquidTemplateManager(IMemoryCache memoryCache, IServiceProvider serviceProvider)
         {
-            var mock = new Mock<ILiquidTemplateManager>();
-            mock
-                .Setup(x => x.RenderStringAsync(
-                    It.IsAny<string>(),
-                    It.IsAny<TextEncoder>(),
-                    It.IsAny<object>(),
-                    It.IsAny<IEnumerable<KeyValuePair<string, FluidValue>>>()))
-                .ReturnsAsync((string template, TextEncoder _, object _, IEnumerable<KeyValuePair<string, FluidValue>> _) => template);
-            return mock.Object;
+            var optionsFactory = new OptionsFactory<TemplateOptions>(
+                    Array.Empty<IConfigureOptions<TemplateOptions>>(),
+                    Array.Empty<IPostConfigureOptions<TemplateOptions>>());
+
+            return new LiquidTemplateManager(
+                memoryCache,
+                new LiquidViewParser(Options.Create(new LiquidViewOptions())),
+                new OptionsManager<TemplateOptions>(optionsFactory),
+                serviceProvider);
         }
     }
 }
