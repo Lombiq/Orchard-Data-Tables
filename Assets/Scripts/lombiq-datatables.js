@@ -254,9 +254,14 @@
                         history.replaceState(createHistoryState(data), document.title);
                     }
 
-                    const requestData = $.extend({}, history.state.data);
+                    var requestData = $.extend({}, history.state.data);
                     if (!isNewRequest) requestData.draw = (latestDraw ?? 0) + 3;
-                    if (requestData.draw === 3) requestData.search.value = "";
+                    if (requestData.draw === 1) {
+                        localStorage.setItem("defaultRequest", JSON.stringify(requestData));
+                    }
+                    if (!isNewRequest && requestData.draw === 3) {
+                        requestData = $.extend({}, JSON.parse(localStorage.getItem("defaultRequest")));
+                    }
 
                     const $wrapper = $element.closest('.dataTables_wrapper');
                     const instance = $element.DataTable();
