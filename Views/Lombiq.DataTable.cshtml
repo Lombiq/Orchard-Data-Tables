@@ -1,8 +1,6 @@
 @using OrchardCore.ResourceManagement
 @using System.Globalization
 @using Newtonsoft.Json.Linq
-@using Newtonsoft.Json;
-@using Newtonsoft.Json.Converters
 @inject IResourceManager ResourceManager
 
 @{
@@ -172,9 +170,9 @@
                     plugin);
 
         });
-        $(window).bind('beforeunload', function () {
-            $("th[data-name='@columnsDefinition?.DefaultSortingColumnName']")
-                .not('[aria-sort=' + @Json.Serialize(JsonConvert.SerializeObject(defaultSortingDirection, new StringEnumConverter()))) + ']')
+        $(window).load(function() {
+            $('th[data-name="@columnsDefinition?.DefaultSortingColumnName"]')
+                .not('[aria-sort="@defaultSortingDirection.ToString().ToLower()"]')
                 .trigger('click');
         });
     })(jQuery);

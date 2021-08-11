@@ -254,7 +254,7 @@
                         history.replaceState(createHistoryState(data), document.title);
                     }
 
-                    var requestData = $.extend({}, history.state.data);
+                    let requestData = $.extend({}, history.state.data);
                     if (!isNewRequest) requestData.draw = (latestDraw ?? 0) + 3;
                     if (requestData.draw === 1) {
                         localStorage.setItem("defaultRequest", JSON.stringify(requestData));
