@@ -170,10 +170,5 @@
                     plugin);
 
         });
-        $(window).load(function() {
-            $('th[data-name="@columnsDefinition?.DefaultSortingColumnName"]')
-                .not('[aria-sort="@defaultSortingDirection.ToString().ToLower()"]')
-                .trigger('click');
-        });
     })(jQuery);
 </script>
