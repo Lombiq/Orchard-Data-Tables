@@ -408,7 +408,7 @@
 
         /**
         * Shows or hides child row filled with the given content.
-        * @param {JQuery} parentRowElement Parent row element where the child row will be displayed.
+        * @param {jQuery} parentRowElement Parent row element where the child row will be displayed.
         * @param {object} childRowContent Content of the child row. A <tr> wrapper will be added automatically.
         */
         toggleChildRow: function (parentRowElement, childRowContent) {
