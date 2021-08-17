@@ -268,6 +268,7 @@
                         .find('.dataTables_length select[aria-controls="dataTable"]')
                         .val(requestData.length);
                     instance.order(history.state.order);
+                    instance.search(history.state?.data?.search?.value ?? '');
 
                     const userEvent = { plugin: plugin, requestData: requestData, isHistory: plugin.history.isHistory };
                     $element.trigger('preXhr.lombiqdt', userEvent);
