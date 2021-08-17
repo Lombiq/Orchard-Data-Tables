@@ -249,8 +249,18 @@
                     plugin.history.isHistory = false;
                 });
 
+                // See: https://stackoverflow.com/questions/5004978/check-if-page-gets-reloaded-or-refreshed-in-javascript/53307588#53307588
+                const pageAccessedByReload = window.performance.navigation?.type === 1 ||
+                    window
+                        .performance
+                        .getEntriesByType('navigation')
+                        .map((nav) => nav.type)
+                        .includes('reload');
+
                 dataTablesOptions.ajax = function dataTablesOptionsAjax(params, callback) {
-                    const isNewRequest = typeof history.state !== 'object' || !history.state?.data;
+                    const isNewRequest = pageAccessedByReload ||
+                        typeof history.state !== 'object' ||
+                        !history.state?.data;
                     if (isNewRequest) {
                         const data = JSON.parse(getJsonParameters(params));
                         history.replaceState(createHistoryState(data), document.title);
