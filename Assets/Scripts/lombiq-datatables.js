@@ -155,13 +155,15 @@
                 });
             }
 
+            const providerName = window.location.href.includes('/Admin/DataTable/')
+                ? window.location.href.replace(/.*\/Admin\/DataTable\/([^/?]+)[/?].*/, '$1')
+                : URI(window.location.href).search(true).providerName;
+            plugin.providerName = providerName;
+
             // Initialize server-side paging unless progressive loading is enabled.
             if (plugin.settings.serverSidePagingEnabled &&
                 !plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
                 const $element = $(plugin.element);
-                const providerName = window.location.href.includes('/Admin/DataTable/')
-                    ? window.location.href.replace(/.*\/Admin\/DataTable\/([^/?]+)[/?].*/, '$1')
-                    : URI(window.location.href).search(true).providerName;
 
                 let latestDraw = 0;
 
