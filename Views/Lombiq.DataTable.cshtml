@@ -1,6 +1,7 @@
 @using OrchardCore.ResourceManagement
 @using System.Globalization
 @using Newtonsoft.Json.Linq
+
 @inject IResourceManager ResourceManager
 
 @{
@@ -42,7 +43,7 @@
     ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4);
     ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4Buttons);
 
-    dynamic additionalOptions = viewModel.AdditionalDatatableOptions;
+    dynamic additionalOptions = viewModel?.AdditionalDatatableOptions;
     var hasViewAction = (bool)(additionalOptions?.viewAction == true);
 }
 
