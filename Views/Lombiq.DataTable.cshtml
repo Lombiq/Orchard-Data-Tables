@@ -47,7 +47,7 @@
     var hasViewAction = (bool)(additionalOptions?.viewAction == true);
 }
 
-@await DisplayAsync(await New.Lombiq_DataTable_Resources())
+@await DisplayAsync(await New.Lombiq_DataTable_Resources(ViewModel: viewModel))
 
 <div class="@ElementNames.DataTableWrapperDefaultElementName @dataTableCssClasses">
     @await DisplayAsync(await New.Lombiq_DataTable_Table(
