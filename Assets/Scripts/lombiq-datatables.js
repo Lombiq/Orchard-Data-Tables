@@ -155,13 +155,15 @@
                 });
             }
 
+            const providerName = window.location.href.includes('/Admin/DataTable/')
+                ? window.location.href.replace(/.*\/Admin\/DataTable\/([^/?]+)[/?].*/, '$1')
+                : URI(window.location.href).search(true).providerName;
+            plugin.providerName = providerName;
+
             // Initialize server-side paging unless progressive loading is enabled.
             if (plugin.settings.serverSidePagingEnabled &&
                 !plugin.settings.progressiveLoadingOptions.progressiveLoadingEnabled) {
                 const $element = $(plugin.element);
-                const providerName = window.location.href.includes('/Admin/DataTable/')
-                    ? window.location.href.replace(/.*\/Admin\/DataTable\/([^/?]+)[/?].*/, '$1')
-                    : URI(window.location.href).search(true).providerName;
 
                 let latestDraw = 0;
 
@@ -247,8 +249,18 @@
                     plugin.history.isHistory = false;
                 });
 
+                // See: https://stackoverflow.com/questions/5004978/check-if-page-gets-reloaded-or-refreshed-in-javascript/53307588#53307588
+                const pageAccessedByReload = window.performance.navigation?.type === 1 ||
+                    window
+                        .performance
+                        .getEntriesByType('navigation')
+                        .map((nav) => nav.type)
+                        .includes('reload');
+
                 dataTablesOptions.ajax = function dataTablesOptionsAjax(params, callback) {
-                    const isNewRequest = typeof history.state !== 'object' || !history.state?.data;
+                    const isNewRequest = pageAccessedByReload ||
+                        typeof history.state !== 'object' ||
+                        !history.state?.data;
                     if (isNewRequest) {
                         const data = JSON.parse(getJsonParameters(params));
                         history.replaceState(createHistoryState(data), document.title);
@@ -266,6 +278,7 @@
                         .find('.dataTables_length select[aria-controls="dataTable"]')
                         .val(requestData.length);
                     instance.order(history.state.order);
+                    instance.search(history.state?.data?.search?.value ?? '');
 
                     const userEvent = { plugin: plugin, requestData: requestData, isHistory: plugin.history.isHistory };
                     $element.trigger('preXhr.lombiqdt', userEvent);
@@ -408,7 +421,7 @@
 
         /**
         * Shows or hides child row filled with the given content.
-        * @param {JQuery} parentRowElement Parent row element where the child row will be displayed.
+        * @param {jQuery} parentRowElement Parent row element where the child row will be displayed.
         * @param {object} childRowContent Content of the child row. A <tr> wrapper will be added automatically.
         */
         toggleChildRow: function (parentRowElement, childRowContent) {
