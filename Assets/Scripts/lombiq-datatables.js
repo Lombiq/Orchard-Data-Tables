@@ -250,7 +250,9 @@
                 });
 
                 // See: https://stackoverflow.com/questions/5004978/check-if-page-gets-reloaded-or-refreshed-in-javascript/53307588#53307588
-                const pageAccessedByReload = window.performance.navigation?.type === 1 ||
+                // We use "let" because it should be dismissed after the first request and setting this to false is the
+                // quickest way to achieve that goal.
+                let pageAccessedByReload = window.performance.navigation?.type === 1 ||
                     window
                         .performance
                         .getEntriesByType('navigation')
@@ -288,6 +290,7 @@
                         url: plugin.settings.rowsApiUrl,
                         data: plugin.buildQueryStringParameters({ requestJson: JSON.stringify(userEvent.requestData) }),
                         success: function (response) {
+                            pageAccessedByReload = false; // It doesn't matter after the first load.
                             plugin.settings.callbacks.ajaxDataLoadedCallback(response);
 
                             latestDraw = response.draw;
