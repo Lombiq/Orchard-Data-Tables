@@ -1,6 +1,7 @@
 @using OrchardCore.ResourceManagement
 @using System.Globalization
 @using Newtonsoft.Json.Linq
+
 @inject IResourceManager ResourceManager
 
 @{
@@ -42,11 +43,11 @@
     ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4);
     ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4Buttons);
 
-    dynamic additionalOptions = viewModel.AdditionalDatatableOptions;
+    dynamic additionalOptions = viewModel?.AdditionalDatatableOptions;
     var hasViewAction = (bool)(additionalOptions?.viewAction == true);
 }
 
-@await DisplayAsync(await New.Lombiq_DataTable_Resources())
+@await DisplayAsync(await New.Lombiq_DataTable_Resources(ViewModel: viewModel))
 
 <div class="@ElementNames.DataTableWrapperDefaultElementName @dataTableCssClasses">
     @await DisplayAsync(await New.Lombiq_DataTable_Table(
@@ -167,7 +168,8 @@
 
             window.dataTableResources.created(
                     $("#@dataTableId").parents(".@ElementNames.DataTableWrapperDefaultElementName"),
-                    plugin);
+                    plugin,
+                    dataTablesOptions);
         });
     })(jQuery);
 </script>
