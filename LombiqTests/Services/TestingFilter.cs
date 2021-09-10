@@ -27,7 +27,7 @@ namespace Lombiq.DataTables.LombiqTests.Services
 
             dynamic layout = await _layoutAccessor.GetLayoutAsync();
             var zone = layout.Zones["Header"];
-            zone.Add(await _shapeFactory.New.Lombiq_Datatable_Testing_Header());
+            await zone.AddAsync(await _shapeFactory.New.Lombiq_Datatable_Testing_Header());
 
             await next();
         }
