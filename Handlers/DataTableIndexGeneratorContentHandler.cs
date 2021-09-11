@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YesSql;
 using YesSql.Indexes;
 using ISession = YesSql.ISession;
 
@@ -23,7 +22,6 @@ namespace Lombiq.DataTables.Handlers
         private readonly Lazy<IHttpContextAccessor> _hcaLazy;
         private readonly Lazy<IManualConnectingIndexService<TIndex>> _indexServiceLazy;
         private readonly Lazy<ISession> _sessionLazy;
-        private readonly Lazy<ISqlDialect> _dialectLazy;
         private readonly Lazy<TIndexGenerator> _indexGeneratorLazy;
 
         public bool IsInMiddlewarePipeline { get; set; }
@@ -32,13 +30,11 @@ namespace Lombiq.DataTables.Handlers
             Lazy<IHttpContextAccessor> hcaLazy,
             Lazy<IManualConnectingIndexService<TIndex>> indexServiceLazy,
             Lazy<ISession> sessionLazy,
-            Lazy<ISqlDialect> dialectLazy,
             Lazy<TIndexGenerator> indexGeneratorLazy)
         {
             _hcaLazy = hcaLazy;
             _indexServiceLazy = indexServiceLazy;
             _sessionLazy = sessionLazy;
-            _dialectLazy = dialectLazy;
             _indexGeneratorLazy = indexGeneratorLazy;
         }
 
@@ -87,8 +83,8 @@ namespace Lombiq.DataTables.Handlers
             // Using very raw query because it's too complex for the parser.
             var session = _sessionLazy.Value;
             var transaction = await session.BeginTransactionAsync();
+            var dialect = session.Store.Configuration.SqlDialect;
             var prefix = session.Store.Configuration.TablePrefix;
-            var dialect = _dialectLazy.Value;
 
             var contentItemIndex = dialect.QuoteForTableName(prefix + nameof(ContentItemIndex));
             var dataTableIndex = dialect.QuoteForTableName(prefix + typeof(TIndex).Name);
