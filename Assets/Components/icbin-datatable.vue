@@ -20,13 +20,13 @@
                             class="dataTable__headerCell dataTable__cell sorting"
                             scope="col"
                             data-class-name="dataTable__cell"
-                            :data-orderable="column.orderable.toString()"
+                            :data-orderable="(!!column.orderable).toString()"
                             :data-name="column.name"
                             :data-data="column.name">
                             <div class="dataTables_sizing">
                                 {{ column.text }}
                             </div>
-                            <div class="icbin-datatable-sorter">
+                            <div v-if="column.orderable" class="icbin-datatable-sorter">
                                 <span class="(sort.name === column.name &&  self.sort.ascending) ? 'icbin-datatable-sorter-enabled' : ''">↑</span>
                                 <span class="(sort.name === column.name && !self.sort.ascending) ? 'icbin-datatable-sorter-enabled' : ''">↓</span>
                             </div>
@@ -103,23 +103,6 @@ export default {
         event: 'update'
     },
     props: {
-        text: {
-            // Expected properties: lengthPicker, displayCount, previous, next.
-            type: Object,
-            required: true
-        },
-        length: {
-            type: Number,
-            default: 10,
-        },
-        lengths: {
-            type: Array,
-            default: () => [ 10, 25, 50, 100 ],
-        },
-        columns: {
-            type: Array,
-            required: true,
-        },
         data: {
             // [
             //   {
@@ -128,9 +111,9 @@ export default {
             //       // These can come from the server:
             //       text: String,
             //       html: String?,
-            //       sort: Object?,
+            //       sort: Any?,
             //       href: String?,
-            //       special: String?,
+            //       special: Any?,
             //       // These can be set in JS code (e.g. with the "special" event):
             //       component: { name: String?, props: Object }?
             //       hiddenInput: { name: String, value: String }?
@@ -140,18 +123,32 @@ export default {
             type: Array,
             required: true,
         },
-        total: {
-            type: Number,
+        columns: {
+            type: Array,
             required: true,
+        },
+        text: {
+            // Expected properties: lengthPicker, displayCount, previous, next.
+            type: Object,
+            required: true
         },
         defaultSort: {
             // { name: "columnName", ascending: true }
             default: null,
+        },
+        defaultLength: {
+            type: Number,
+            default: 10,
+        },
+        lengths: {
+            type: Array,
+            default: () => [ 10, 25, 50, 100 ],
         }
     },
     data: function() {
         return {
             pageIndex: 0,
+            length: 10,
             sort: {
                 name: null,
                 ascending: true,
@@ -200,7 +197,7 @@ export default {
 
             const page = sorted.slice(self.pageIndex * self.length, self.length);
 
-            return page.map((row, rowPageOffset) => Object.fromEntries(
+            return page.map((row) => Object.fromEntries(
                 Object
                     .entries(row)
                     .map(function (cellPair) {
@@ -235,6 +232,8 @@ export default {
         else {
             self.sort.name = self.columns[0].name;
         }
+
+        if (self.defaultLength) self.length = defaultLength;
     },
 }
 </script>
