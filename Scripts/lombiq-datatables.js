@@ -168,8 +168,13 @@
                 var colReorderArray = {};
                 var rowSortArray = {};
                 colReorderArray["ColReorder"] = plugin.dataTableApi.colReorder.order();
-                rowSortArray["SortColumnIndex"] = plugin.dataTableApi.order()[0][0];
                 rowSortArray["SortDirection"] = plugin.dataTableApi.order()[0][1];
+               
+                if (plugin.dataTableApi.column(0).header().innerHTML.trim() == "Actions") {
+                    rowSortArray["SortColumnIndex"] = plugin.dataTableApi.order()[0][0] - 1;
+                } else {
+                    rowSortArray["SortColumnIndex"] = plugin.dataTableApi.order()[0][0];
+                }
 
                 $.extend(true, additionalQueryStringParameters, colReorderArray);
                 $.extend(true, additionalQueryStringParameters, rowSortArray);
@@ -181,8 +186,13 @@
                 var additionalQueryStringParameters = localStorage.getItem(plugin.settings.queryStringParametersLocalStorageKey);
                 additionalQueryStringParameters = !additionalQueryStringParameters ? {} : JSON.parse(additionalQueryStringParameters);
                 var rowSortArray = {};
-                rowSortArray["SortColumnIndex"] = plugin.dataTableApi.order()[0][0];
                 rowSortArray["SortDirection"] = plugin.dataTableApi.order()[0][1];
+
+                if (plugin.dataTableApi.column(0).header().innerHTML.trim() == "Actions") {
+                    rowSortArray["SortColumnIndex"] = plugin.dataTableApi.order()[0][0] - 1;
+                } else {
+                    rowSortArray["SortColumnIndex"] = plugin.dataTableApi.order()[0][0];
+                }
 
                 $.extend(true, additionalQueryStringParameters, rowSortArray);
 
