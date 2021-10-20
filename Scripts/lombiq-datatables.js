@@ -162,7 +162,7 @@
             plugin.dataTableElement = $(plugin.element).dataTable(dataTablesOptions);
             plugin.dataTableApi = plugin.dataTableElement.api();
 
-            plugin.dataTableElement.on("column-reorder.dt", function (e, settings, details) {
+            plugin.dataTableElement.on("column-reorder.dt order.dt", function (e, settings, details) {
                 var additionalQueryStringParameters = localStorage.getItem(plugin.settings.queryStringParametersLocalStorageKey);
                 additionalQueryStringParameters = !additionalQueryStringParameters ? {} : JSON.parse(additionalQueryStringParameters);
                 var colReorderArray = {};
@@ -172,28 +172,16 @@
                
                 if (plugin.dataTableApi.column(0).header().innerHTML.trim() == "Actions") {
                     rowSortArray["SortColumnIndex"] = plugin.dataTableApi.order()[0][0] - 1;
+
+                    for (var i = 1; i < colReorderArray["ColReorder"].length; i++) {
+                        colReorderArray["ColReorder"][i] -= 1;
+                    }
+                    colReorderArray["ColReorder"].shift();
                 } else {
                     rowSortArray["SortColumnIndex"] = plugin.dataTableApi.order()[0][0];
                 }
 
                 $.extend(true, additionalQueryStringParameters, colReorderArray);
-                $.extend(true, additionalQueryStringParameters, rowSortArray);
-
-                plugin.setQueryStringParameters(additionalQueryStringParameters);
-            });
-
-            plugin.dataTableElement.on("order.dt", function (e, settings, details) {
-                var additionalQueryStringParameters = localStorage.getItem(plugin.settings.queryStringParametersLocalStorageKey);
-                additionalQueryStringParameters = !additionalQueryStringParameters ? {} : JSON.parse(additionalQueryStringParameters);
-                var rowSortArray = {};
-                rowSortArray["SortDirection"] = plugin.dataTableApi.order()[0][1];
-
-                if (plugin.dataTableApi.column(0).header().innerHTML.trim() == "Actions") {
-                    rowSortArray["SortColumnIndex"] = plugin.dataTableApi.order()[0][0] - 1;
-                } else {
-                    rowSortArray["SortColumnIndex"] = plugin.dataTableApi.order()[0][0];
-                }
-
                 $.extend(true, additionalQueryStringParameters, rowSortArray);
 
                 plugin.setQueryStringParameters(additionalQueryStringParameters);
