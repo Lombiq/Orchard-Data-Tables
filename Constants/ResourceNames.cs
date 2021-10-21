@@ -11,6 +11,7 @@ namespace Lombiq.DataTables.Constants
         public const string LombiqDataTables = nameof(LombiqDataTables);
         public const string LombiqDataTablesBefore = nameof(LombiqDataTablesBefore);
         public const string LombiqContentPicker = nameof(LombiqContentPicker);
+        public const string ICantBelieveItsNotDataTable = nameof(ICantBelieveItsNotDataTable);
 
         public static class DataTables
         {
