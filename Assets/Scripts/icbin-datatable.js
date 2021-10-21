@@ -1,5 +1,5 @@
 // events emitted:
-// - special(specialValue, cell): If the cell has a property called "special" (value is not null or
+// - special(cell): If the cell has a property called "special" (value is not null or
 //   undefined) this event is called inside the sortedData. This gives an opportunity for the
 //   client code to update the cell data (e.g. by setting the "component" and "hiddenInput"
 //   properties) with domain-specific behavior without having to edit this component.
@@ -13,21 +13,11 @@
 //   really want to remove the row.
 // - update(data): Same as above. The component may have a "data" property for this purpose.
 
-function ifNull() {
-    for(let i = 0; i < arguments.length; i++) {
-        if (arguments[i] !== null && arguments[i] !== undefined) {
-            return arguments[i];
-        }
-    }
-
-    return null;
-}
-
 window.icbinDataTable = {
     name: 'icbin-datatable',
     model: {
         prop: 'data',
-        event: 'update'
+        event: 'update',
     },
     props: {
         data: {
@@ -57,7 +47,7 @@ window.icbinDataTable = {
         text: {
             // Expected properties: lengthPicker, displayCount, previous, next.
             type: Object,
-            required: true
+            required: true,
         },
         defaultSort: {
             // { name: "columnName", ascending: true }
@@ -70,7 +60,7 @@ window.icbinDataTable = {
         lengths: {
             type: Array,
             default: () => [10, 25, 50, 100],
-        }
+        },
     },
     data: function () {
         return {
@@ -103,7 +93,7 @@ window.icbinDataTable = {
         pagination(self) {
             let range = [...Array(self.total).keys()];
             if (self.pageIndex > 3) {
-                range = [0, '...'].concat(range.slice(self.pageIndex - 1))
+                range = [0, '...'].concat(range.slice(self.pageIndex - 1));
             }
             if (self.total - self.pageIndex > 3) {
                 range = range.slice(0, 5).concat(['...', self.total - 1]);
@@ -113,9 +103,10 @@ window.icbinDataTable = {
         },
         sortedData(self) {
             const sorted = self.data
-                .sort(function (row1, row2) {
-                    const sortable1 = ifNull(row1[self.sort.name].sort, row1[self.sort.name].value);
-                    const sortable2 = ifNull(row2[self.sort.name].sort, row2[self.sort.name].value);
+                .concat() // Prevents the sort altering the original.
+                .sort((row1, row2) => {
+                    const sortable1 = row1[self.sort.name].sort ?? row1[self.sort.name].value;
+                    const sortable2 = row2[self.sort.name].sort ?? row2[self.sort.name].value;
 
                     if (sortable1 < sortable2) return -1;
                     if (sortable1 > sortable2) return 1;
@@ -128,8 +119,8 @@ window.icbinDataTable = {
             return page.map((row) => Object.fromEntries(
                 Object
                     .entries(row)
-                    .map(function (cellPair) {
-                        let [name, cell] = cellPair;
+                    .map((cellPair) => {
+                        const [name, cell] = cellPair;
 
                         if (cell.special !== null && cell.special !== undefined) {
                             // This lets the client code alter the cell.
@@ -138,7 +129,7 @@ window.icbinDataTable = {
 
                         return [name, cell];
                     })));
-        }
+        },
     },
     methods: {
         changePage(page) {
@@ -146,10 +137,10 @@ window.icbinDataTable = {
         },
         deleteRow(rowIndex, promptText) {
             if (!prompt(promptText)) return;
-            this.updateData(this.data.filter(row => row.$rowIndex !== rowIndex));
+            this.updateData(this.data.filter((row) => row.$rowIndex !== rowIndex));
         },
         updateData(newData) {
-            $this.$emit('update', newData);
+            this.$emit('update', newData);
         },
     },
     mounted: function () {
@@ -163,7 +154,7 @@ window.icbinDataTable = {
             self.sort.name = self.columns[0].name;
         }
 
-        if (self.defaultLength) self.length = defaultLength;
+        if (self.defaultLength) self.length = self.defaultLength;
     },
     template: `
     <div class="icbin-datatable">
