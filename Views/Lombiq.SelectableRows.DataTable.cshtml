@@ -9,16 +9,16 @@
 
     var pageSize = viewModel?.PageSize ?? projectionPart?.Record.Items ?? WorkContext.CurrentSite.PageSize;
     var recordsTotalIds = viewModel?.RecordsTotalIds;
+    
+    const string DefaultBlockName = ElementNames.SelectableRowsDatatableBlockName;
 
-    const string BlockName = "files";
-    const string DataTableElementName = BlockName + "__table";
-
-    const string DefaultBlockName = ElementNames.ContentPickerBlockName;
-    const string DefaultDataTableId = DefaultBlockName + "__dataTable";
-    const string SelectedContentIdsElementName = ElementNames.ContentPickerSelectedContentIdsElementName;
+    var BlockName = Model.BlockName as string ?? DefaultBlockName;
+    var DataTableElementName = BlockName + "__table";
+    var DefaultDataTableId = BlockName + "__dataTable";
+    const string SelectedContentIdsElementName = ElementNames.SelectableRowsDatatableSelectedContentIdsElementName;
     //const string ContentSelectorElementName = DefaultBlockName + "__contentSelector";
     const string LoadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
-    //const string PickerInputDataName = "ContentPicker";
+    //const string ContentSelector = "ContentSelector";
     //const string DataTableCheckboxBlockName = "dataTableCheckbox";
 
     var queryId = viewModel?.QueryId ?? 0;
@@ -32,15 +32,15 @@
     var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
 
     //columns = (new DataTableColumnDefinition[] {
-    //    new DataTableColumnDefinition { Name = "ContentPicker", Orderable = false, Text = T("Select").Text } })
+    //    new DataTableColumnDefinition { Name = "ContentSelector", Orderable = false, Text = T("Select").Text } })
     //    .Concat(columns);
 }
 
 @Display.Lombiq_TargetBlank()
 @Display.Lombiq_DataTable_Resources()
-@Display.Lombiq_ContentPicker_DataTable_Resources()
+@Display.Lombiq_SelectableRows_DataTable_Resources()
 
-<div class="@wrapperClassNames @DefaultBlockName js-@DefaultBlockName">
+<div class="@wrapperClassNames @BlockName js-@BlockName ">
     <input type="hidden" name="@SelectedContentIdsElementName" class="@SelectedContentIdsElementName js-@SelectedContentIdsElementName" value="[]" />
 
     @Display.Lombiq_DataTable_Table(
@@ -52,7 +52,7 @@
 <script type="text/javascript">
     ; (function ($) {
         $(function () {
-            $("#@DataTableElementName").lombiq_DataTables({
+            $("#@dataTableId").lombiq_DataTables({
                 queryId: 0,
                 dataProvider: "@dataProvider",
                 rowsApiUrl: "@rowApiUrl",
@@ -69,10 +69,10 @@
                 callbacks: {
                     ajaxDataLoadedCallback: function (response) {
                         $.each(response.data, function (index, value) {
-                            value["@PickerInputDataName"] = createCheckboxElementHtml(value.id);
+                            value["@ContentSelector"] = createCheckboxElementHtml(value.id);
                         });
 
-                        $(".dataTables_scrollHead [data-name='ContentPicker']").html("<label class=\"@(DataTableCheckboxBlockName)__label\"><input type=\"checkbox\" class=\"checkbox selectAll @(DataTableCheckboxBlockName)__input\"/><span class=\"@(DataTableCheckboxBlockName)__indicator\">Select</span></label>");
+                        $(".dataTables_scrollHead [data-name='ContentSelector']").html("<label class=\"@(DataTableCheckboxBlockName)__label\"><input type=\"checkbox\" class=\"checkbox selectAll @(DataTableCheckboxBlockName)__input\"/><span class=\"@(DataTableCheckboxBlockName)__indicator\">Select</span></label>");
                     }
                 }*@
             });
