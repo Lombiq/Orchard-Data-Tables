@@ -130,6 +130,17 @@ window.icbinDataTable = {
                         return [name, cell];
                     })));
         },
+        hiddenInputs(self) {
+            const inputs = [];
+
+            self.data.forEach((row) => {
+                Object.values(row)
+                    .filter((cell) => 'hiddenInput' in cell)
+                    .forEach((cell) => inputs.push(cell.hiddenInput));
+            });
+
+            return inputs;
+        },
     },
     methods: {
         changePage(page) {
@@ -168,14 +179,15 @@ window.icbinDataTable = {
             {{ lengthPickerAfter }}
         </div>
         <div>
-            <div><slot name="aboveHeader"></slot></div>
+            <slot></slot>
             <table class="icbin-datatable-table dataTable row-border stripe table data-table no-footer" role="grid">
                 <thead class="dataTable__header">
                 <tr class="dataTable__headerRow" role="row">
-                    <th v-for="column in columns"
+                    <th v-for="(column, columnIndex) in columns"
                         class="dataTable__headerCell dataTable__cell sorting"
                         scope="col"
                         data-class-name="dataTable__cell"
+                        :key="'icbin-datatable-column-' + columnIndex"
                         :data-orderable="(!!column.orderable).toString()"
                         :data-name="column.name"
                         :data-data="column.name">
@@ -192,18 +204,22 @@ window.icbinDataTable = {
                 <tbody class="dataTable__body">
                 <tr v-for="(row, rowIndex) in sortedData"
                     role="row"
+                    :key="'icbin-datatable-row-' + rowIndex"
                     :class="'dataTable__row ' + (rowIndex % 2 ? 'even' : 'odd')">
-                    <td v-for="(cell, name) in row"
-                        :class="{ dataTable__cell: true, sorting_1: sort.name === name }">
-                        <component v-if="cell.component"
-                                   :is="cell.component.name"
-                                   :data="data"
-                                   v-bind="cell.component.value"
-                                   @delete="deleteRow(row.$rowIndex, $event)"
-                                   @update="updateData($event)" />
-                        <a v-else-if="cell.href">{{ cell.text }}</a>
-                        <template v-else-if="cell.html" v-html="cell.html"></template>
-                        <span v-else>{{ cell.text }}</span>
+                    <td v-for="(column, columnIndex) in columns"
+                        :key="'icbin-datatable-cell-' + rowIndex + '-' + columnIndex"
+                        :class="{ dataTable__cell: true, sorting_1: sort.name === column.name }">
+                        <template v-for="cell in [column.name in row ? row[column.name] : { text : '' }]">
+                            <component v-if="cell.component"
+                                       :is="cell.component.name"
+                                       :data="data"
+                                       v-bind="cell.component.value"
+                                       @delete="deleteRow(row.$rowIndex, $event)"
+                                       @update="updateData($event)" />
+                            <a v-else-if="cell.href">{{ cell.text }}</a>
+                            <template v-else-if="cell.html" v-html="cell.html"></template>
+                            <span v-else>{{ cell.text }}</span>
+                        </template>
                     </td>
                 </tr>
                 </tbody>
@@ -233,6 +249,13 @@ window.icbinDataTable = {
                     </div>
                 </div>
             </div>
+        </div>
+        <div hidden>
+            <input v-for="hiddenInput in hiddenInputs"
+                   :key="hiddenInput.name"
+                   :name="hiddenInput.name"
+                   :value="hiddenInput.value"
+                   type="hidden">
         </div>
     </div>`,
 };

@@ -24,12 +24,21 @@ namespace Lombiq.DataTables.Models
         [JsonProperty("special", NullValueHandling = NullValueHandling.Ignore)]
         public object Special { get; set; }
 
+        [JsonProperty("hiddenInput", NullValueHandling = NullValueHandling.Ignore)]
+        public HiddenInputValue HiddenInput { get; set; }
+
         public VueModel() { }
 
         public VueModel(string text, string href = null)
         {
             Text = text;
             Href = href;
+        }
+
+        public VueModel SetHiddenInput(string name, string value)
+        {
+            HiddenInput = new HiddenInputValue { Name = name, Value = value };
+            return this;
         }
 
         public static async Task<JArray> TableToJsonAsync<T>(
@@ -45,6 +54,15 @@ namespace Lombiq.DataTables.Models
                 });
 
             return JArray.FromObject(rows);
+        }
+
+        public class HiddenInputValue
+        {
+            [JsonProperty("name")]
+            public string Name { get; set; }
+
+            [JsonProperty("value")]
+            public string Value { get; set; }
         }
     }
 }
