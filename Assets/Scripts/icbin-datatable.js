@@ -81,7 +81,7 @@ window.icbinDataTable = {
         },
         lengthPickerAfter(self) {
             const parts = self.text.lengthPicker.split('{{ count }}');
-            return parts.length > 1 ? parts.length[1] : '';
+            return parts.length > 1 ? parts[1] : '';
         },
         displayCountText(self) {
             const itemIndex = self.pageIndex * self.length;
@@ -91,25 +91,27 @@ window.icbinDataTable = {
                 .replace(/{{\s*total\s*}}/, self.total);
         },
         pagination(self) {
-            let range = [...Array(self.total).keys()];
+            const pageCount = Math.ceil(self.total / self.length);
+            let range = [...Array(pageCount).keys()];
             if (self.pageIndex > 3) {
                 range = [0, '...'].concat(range.slice(self.pageIndex - 1));
             }
-            if (self.total - self.pageIndex > 3) {
-                range = range.slice(0, 5).concat(['...', self.total - 1]);
+            if (pageCount - self.pageIndex > 3) {
+                range = range.slice(0, 5).concat(['...', pageCount - 1]);
             }
 
             return range;
         },
         sortedData(self) {
+            const lower = self.sort.ascending ? -1 : 1;
             const sorted = self.data
                 .concat() // Prevents the sort altering the original.
                 .sort((row1, row2) => {
-                    const sortable1 = row1[self.sort.name].sort ?? row1[self.sort.name].value;
-                    const sortable2 = row2[self.sort.name].sort ?? row2[self.sort.name].value;
+                    const sortable1 = row1[self.sort.name]?.sort ?? row1[self.sort.name]?.text;
+                    const sortable2 = row2[self.sort.name]?.sort ?? row2[self.sort.name]?.text;
 
-                    if (sortable1 < sortable2) return -1;
-                    if (sortable1 > sortable2) return 1;
+                    if (sortable1 < sortable2) return lower;
+                    if (sortable1 > sortable2) return -lower;
 
                     return 0;
                 });
@@ -153,6 +155,16 @@ window.icbinDataTable = {
         updateData(newData) {
             this.$emit('update', newData);
         },
+        updateSort(column) {
+            if (!column.orderable) return;
+            const sort = this.sort;
+
+            // It only goes to descending on the second click of the same column header.
+            const toAscending = !(sort.name === column.name && sort.ascending);
+
+            sort.name = column.name;
+            sort.ascending = toAscending;
+        },
     },
     mounted: function () {
         const self = this;
@@ -187,16 +199,14 @@ window.icbinDataTable = {
                         class="dataTable__headerCell dataTable__cell sorting"
                         scope="col"
                         data-class-name="dataTable__cell"
+                        :class="sort.name === column.name ? (sort.ascending ? 'sorting_asc' : 'sorting_desc') : ''"
                         :key="'icbin-datatable-column-' + columnIndex"
                         :data-orderable="(!!column.orderable).toString()"
                         :data-name="column.name"
-                        :data-data="column.name">
+                        :data-data="column.name"
+                        @click="updateSort(column)">
                         <div class="dataTables_sizing">
                             {{ column.text }}
-                        </div>
-                        <div v-if="column.orderable" class="icbin-datatable-sorter">
-                            <span class="(sort.name === column.name &&  self.sort.ascending) ? 'icbin-datatable-sorter-enabled' : ''">↑</span>
-                            <span class="(sort.name === column.name && !self.sort.ascending) ? 'icbin-datatable-sorter-enabled' : ''">↓</span>
                         </div>
                     </th>
                 </tr>
@@ -216,7 +226,7 @@ window.icbinDataTable = {
                                        v-bind="cell.component.value"
                                        @delete="deleteRow(row.$rowIndex, $event)"
                                        @update="updateData($event)" />
-                            <a v-else-if="cell.href">{{ cell.text }}</a>
+                            <a v-else-if="cell.href" :href="cell.href">{{ cell.text }}</a>
                             <template v-else-if="cell.html" v-html="cell.html"></template>
                             <span v-else>{{ cell.text }}</span>
                         </template>
