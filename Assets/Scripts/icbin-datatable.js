@@ -135,7 +135,7 @@ window.icbinDataTable = {
 
             self.data.forEach((row) => {
                 Object.values(row)
-                    .filter((cell) => 'hiddenInput' in cell)
+                    .filter((cell) => typeof cell === 'object' && 'hiddenInput' in cell)
                     .forEach((cell) => inputs.push(cell.hiddenInput));
             });
 
