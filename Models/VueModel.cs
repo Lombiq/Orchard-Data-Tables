@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,6 +33,12 @@ namespace Lombiq.DataTables.Models
         public VueModel(string text, string href = null)
         {
             Text = text;
+            Href = href;
+        }
+
+        public VueModel(int number, string href = null)
+        {
+            Text = number.ToString(CultureInfo.InvariantCulture);
             Href = href;
         }
 
