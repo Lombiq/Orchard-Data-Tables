@@ -43,7 +43,7 @@ namespace Lombiq.DataTables.Models
 
         public static async Task<JArray> TableToJsonAsync<T>(
             IEnumerable<T> collection,
-            Func<T, Task<Dictionary<string, VueModel>>> select)
+            Func<T, int, Task<Dictionary<string, VueModel>>> select)
         {
             var rows = (await collection.AwaitEachAsync(select))
                 .Select((row, rowIndex) =>
