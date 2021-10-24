@@ -30,16 +30,16 @@ namespace Lombiq.DataTables.Models
 
         public VueModel() { }
 
-        public VueModel(string text, string href = null)
+        public VueModel(string text, string href = null, object sort = null)
         {
             Text = text;
             Href = href;
+            Sort = sort;
         }
 
         public VueModel(int number, string href = null)
+            : this(number.ToString(CultureInfo.InvariantCulture), href, number)
         {
-            Text = number.ToString(CultureInfo.InvariantCulture);
-            Href = href;
         }
 
         public VueModel SetHiddenInput(string name, string value)
