@@ -276,8 +276,12 @@ window.icbinDataTable.remove = {
     name: 'icbin-datatable-remove',
     props: {
         text: { type: Object, required: true },
+        disabled: { type: Boolean, default: false },
     },
-    template: `<a href="javascript:void(0)" @click="$emit('delete', text.prompt)">
+    template: `
+    <a href="javascript:void(0)"
+       :class="{ disabled: disabled }"
+       @click="!disabled && $emit('delete', text.prompt)">
         <i class="fas fa-trash-alt"></i>
         {{ text.remove }}
     </a>`,
