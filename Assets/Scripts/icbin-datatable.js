@@ -280,7 +280,7 @@ window.icbinDataTable.remove = {
     },
     template: `
     <a href="javascript:void(0)"
-       :class="{ disabled: disabled }"
+       :class="{ 'icbin-datatable-remove': true, disabled: disabled }"
        @click="!disabled && $emit('delete', text.prompt)">
         <i class="fas fa-trash-alt"></i>
         {{ text.remove }}
