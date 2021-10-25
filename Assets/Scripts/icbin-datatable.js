@@ -39,6 +39,8 @@ window.icbinDataTable.table = {
             //     }
             //   }
             // ]
+            // note: The name and value in the hiddenInput properties may contain the {{ index }} expression which is
+            //       substituted with a zero-based index when generating the hiddenInputs computed property.
             type: Array,
             required: true,
         },
@@ -142,6 +144,16 @@ window.icbinDataTable.table = {
                     .filter((cell) => typeof cell === 'object' && 'hiddenInput' in cell)
                     .forEach((cell) => inputs.push(cell.hiddenInput));
             });
+
+            // Calculate index
+            const regex = /{{\s*index\s*}}/;
+            for (let index = 0; index < inputs.length; index++) {
+                const input = inputs[index];
+                inputs[index] = {
+                    name: input.name.replace(regex, index),
+                    value: (typeof input.value === 'string') ? input.value.replace(regex, index) : input.value,
+                };
+            }
 
             return inputs;
         },
