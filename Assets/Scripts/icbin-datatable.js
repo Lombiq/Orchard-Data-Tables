@@ -151,7 +151,7 @@ window.icbinDataTable.table = {
             if (page >= 0 && page < this.total) this.pageIndex = page;
         },
         deleteRow(rowIndex, promptText) {
-            if (!confirm(promptText)) return;
+            if (!window.confirm(promptText)) return;
             this.updateData(this.data.filter((row) => row.$rowIndex !== rowIndex));
         },
         updateData(newData) {
