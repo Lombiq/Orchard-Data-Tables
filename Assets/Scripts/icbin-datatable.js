@@ -1,3 +1,5 @@
+window.icbinDataTable = {};
+
 // events emitted:
 // - special(cell): If the cell has a property called "special" (value is not null or
 //   undefined) this event is called inside the sortedData. This gives an opportunity for the
@@ -13,7 +15,7 @@
 //   really want to remove the row.
 // - update(data): Same as above. The component may have a "data" property for this purpose.
 
-window.icbinDataTable = {
+window.icbinDataTable.table = {
     name: 'icbin-datatable',
     model: {
         prop: 'data',
@@ -149,7 +151,7 @@ window.icbinDataTable = {
             if (page >= 0 && page < this.total) this.pageIndex = page;
         },
         deleteRow(rowIndex, promptText) {
-            if (!prompt(promptText)) return;
+            if (!confirm(promptText)) return;
             this.updateData(this.data.filter((row) => row.$rowIndex !== rowIndex));
         },
         updateData(newData) {
@@ -268,4 +270,15 @@ window.icbinDataTable = {
                    type="hidden">
         </div>
     </div>`,
+};
+
+window.icbinDataTable.remove = {
+    name: 'icbin-datatable-remove',
+    props: {
+        text: { type: Object, required: true },
+    },
+    template: `<a href="javascript:void(0)" @click="$emit('delete', text.prompt)">
+        <i class="fas fa-trash-alt"></i>
+        {{ text.remove }}
+    </a>`,
 };
