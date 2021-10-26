@@ -169,17 +169,7 @@
                 var rowSortArray = {};
                 colReorderArray["ColReorder"] = plugin.dataTableApi.colReorder.order();
                 rowSortArray["SortDirection"] = plugin.dataTableApi.order()[0][1];
-               
-                if (plugin.dataTableApi.column(0).header().innerHTML.trim() == "Actions") {
-                    rowSortArray["SortColumnIndex"] = plugin.dataTableApi.order()[0][0] - 1;
-
-                    for (var i = 1; i < colReorderArray["ColReorder"].length; i++) {
-                        colReorderArray["ColReorder"][i] -= 1;
-                    }
-                    colReorderArray["ColReorder"].shift();
-                } else {
-                    rowSortArray["SortColumnIndex"] = plugin.dataTableApi.order()[0][0];
-                }
+                rowSortArray["SortColumnIndex"] = plugin.dataTableApi.order()[0][0];
 
                 $.extend(true, additionalQueryStringParameters, colReorderArray);
                 $.extend(true, additionalQueryStringParameters, rowSortArray);
