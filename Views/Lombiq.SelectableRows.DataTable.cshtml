@@ -9,17 +9,17 @@
 
     var pageSize = viewModel?.PageSize ?? projectionPart?.Record.Items ?? WorkContext.CurrentSite.PageSize;
     var recordsTotalIds = viewModel?.RecordsTotalIds;
-    
+
     const string DefaultBlockName = ElementNames.SelectableRowsDatatableBlockName;
 
     var BlockName = Model.BlockName as string ?? DefaultBlockName;
     var DataTableElementName = BlockName + "__table";
     var DefaultDataTableId = BlockName + "__dataTable";
     const string SelectedContentIdsElementName = ElementNames.SelectableRowsDatatableSelectedContentIdsElementName;
-    //const string ContentSelectorElementName = DefaultBlockName + "__contentSelector";
+    const string ContentSelectorElementName = DefaultBlockName + "__contentSelector";
     const string LoadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
-    //const string ContentSelector = "ContentSelector";
-    //const string DataTableCheckboxBlockName = "dataTableCheckbox";
+    const string ContentSelector = "ContentSelector";
+    const string DataTableCheckboxBlockName = "dataTableCheckbox";
 
     var queryId = viewModel?.QueryId ?? 0;
     var columnsDefinition = viewModel?.ColumnsDefinition as DataTableColumnsDefinition;
@@ -31,9 +31,9 @@
 
     var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
 
-    //columns = (new DataTableColumnDefinition[] {
-    //    new DataTableColumnDefinition { Name = "ContentSelector", Orderable = false, Text = T("Select").Text } })
-    //    .Concat(columns);
+    columns = (new DataTableColumnDefinition[] {
+        new DataTableColumnDefinition { Name = "ContentSelector", Orderable = false, Text = T("Select").Text } })
+        .Concat(columns);
 }
 
 @Display.Lombiq_TargetBlank()
@@ -65,7 +65,7 @@
                     order: [["@columnsDefinition.GetDefaultSortingColumnIndex()", "@columnsDefinition.GetDefaultSortingDirectionTechnicalValue()"]]
                 },
                 serverSidePagingEnabled: true,
-                @*
+                
                 callbacks: {
                     ajaxDataLoadedCallback: function (response) {
                         $.each(response.data, function (index, value) {
@@ -74,10 +74,10 @@
 
                         $(".dataTables_scrollHead [data-name='ContentSelector']").html("<label class=\"@(DataTableCheckboxBlockName)__label\"><input type=\"checkbox\" class=\"checkbox selectAll @(DataTableCheckboxBlockName)__input\"/><span class=\"@(DataTableCheckboxBlockName)__indicator\">Select</span></label>");
                     }
-                }*@
+                }
             });
 
-            @*var $selectedIdsElement = $(".js-@SelectedContentIdsElementName");
+            var $selectedIdsElement = $(".js-@SelectedContentIdsElementName");
             var selectedContentItemIds = [];
 
             $(".js-@BlockName").on("change", ".js-@ContentSelectorElementName", function (e) {
@@ -93,7 +93,7 @@
                         return value != contentItemId;
                     });
                 }
-
+            
                 $selectedIdsElement.val(JSON.stringify(selectedContentItemIds));
             });
 
@@ -120,7 +120,7 @@
                 var checked = selectedContentItemIds.indexOf(contentItemId) > -1;
 
                 return "<label class=\"@(DataTableCheckboxBlockName)__label\"><input type=\"checkbox\" class=\"checkbox @ContentSelectorElementName js-@ContentSelectorElementName @(DataTableCheckboxBlockName)__input\" " + (checked ? "checked" : "") + "/><span class=\"@(DataTableCheckboxBlockName)__indicator\"></span></label>";
-            }*@
+            }
         });
     })(jQuery);
 </script>
