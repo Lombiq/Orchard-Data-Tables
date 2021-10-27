@@ -232,7 +232,8 @@ window.icbinDataTable.table = {
                     :class="'dataTable__row ' + (rowIndex % 2 ? 'even' : 'odd')">
                     <td v-for="(column, columnIndex) in columns"
                         :key="'icbin-datatable-cell-' + rowIndex + '-' + columnIndex"
-                        :class="{ dataTable__cell: true, sorting_1: sort.name === column.name }">
+                        class="dataTable__cell"
+                        :class="{ sorting_1: sort.name === column.name }">
                         <template v-for="cell in [column.name in row ? row[column.name] : { text : '' }]">
                             <component v-if="cell.component"
                                        :is="cell.component.name"
