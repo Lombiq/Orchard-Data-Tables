@@ -162,13 +162,17 @@
             plugin.dataTableElement = $(plugin.element).dataTable(dataTablesOptions);
             plugin.dataTableApi = plugin.dataTableElement.api();
 
-            plugin.dataTableElement.on("column-reorder.dt", function (e, settings, details) {
+            plugin.dataTableElement.on("column-reorder.dt order.dt", function (e, settings, details) {
                 var additionalQueryStringParameters = localStorage.getItem(plugin.settings.queryStringParametersLocalStorageKey);
                 additionalQueryStringParameters = !additionalQueryStringParameters ? {} : JSON.parse(additionalQueryStringParameters);
                 var colReorderArray = {};
+                var rowSortArray = {};
                 colReorderArray["ColReorder"] = plugin.dataTableApi.colReorder.order();
+                rowSortArray["SortDirection"] = plugin.dataTableApi.order()[0][1];
+                rowSortArray["SortColumnIndex"] = plugin.dataTableApi.order()[0][0];
 
                 $.extend(true, additionalQueryStringParameters, colReorderArray);
+                $.extend(true, additionalQueryStringParameters, rowSortArray);
 
                 plugin.setQueryStringParameters(additionalQueryStringParameters);
             });
