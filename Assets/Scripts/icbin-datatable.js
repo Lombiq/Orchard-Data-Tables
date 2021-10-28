@@ -65,6 +65,9 @@ window.icbinDataTable.table = {
             type: Array,
             default: () => [10, 25, 50, 100],
         },
+        paging: {
+            default: true,
+        }
     },
     data: function () {
         return {
@@ -120,7 +123,7 @@ window.icbinDataTable.table = {
                     return 0;
                 });
 
-            const page = sorted.slice(self.pageIndex * self.length, self.length);
+            const page = self.paging ? sorted.slice(self.pageIndex * self.length, self.length) : sorted;
 
             return page.map((row) => Object.fromEntries(
                 Object
@@ -195,7 +198,7 @@ window.icbinDataTable.table = {
     },
     template: `
     <div class="icbin-datatable">
-        <div class="icbin-datatable-length-picker">
+        <div class="icbin-datatable-length-picker" v-if="paging">
             {{ lengthPickerBefore }}
             <select v-model="length">
                 <option v-for="lengthOption in lengths" :value="lengthOption">
@@ -253,7 +256,7 @@ window.icbinDataTable.table = {
                 <div class="icbin-datatable-display-count">
                     {{ displayCountText }}
                 </div>
-                <div class="icbin-datatable-display-pager">
+                <div class="icbin-datatable-display-pager" v-if="paging">
                     <div class="dataTables_paginate paging_simple_numbers">
                         <ul class="pagination">
                             <li class="paginate_button page-item previous" :class="{ disabled: pageIndex < 1 }">
