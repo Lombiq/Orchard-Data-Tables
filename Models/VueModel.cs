@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using OrchardCore.ContentManagement;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -29,6 +33,15 @@ namespace Lombiq.DataTables.Models
         public HiddenInputValue HiddenInput { get; set; }
 
         public VueModel() { }
+
+        public VueModel(IContent content, IUrlHelper urlHelper)
+        {
+            if (content != null)
+            {
+                Text = content.ContentItem.DisplayText;
+                Href = urlHelper.DisplayContentItem(content);
+            }
+        }
 
         public VueModel(string text, string href = null, object sort = null)
         {
@@ -62,6 +75,15 @@ namespace Lombiq.DataTables.Models
 
             return JArray.FromObject(rows);
         }
+
+        public static Dictionary<string, string> CreateTextForIcbinDataTable(IHtmlLocalizer localizer) =>
+            new()
+            {
+                ["lengthPicker"] = localizer["Show {{ count }} Entries"].Value,
+                ["displayCount"] = localizer["Showing {{ from }} to {{ to }} of {{ total }} entries"].Value,
+                ["previous"] = localizer["Previous"].Value,
+                ["next"] = localizer["Next"].Value,
+            };
 
         public class HiddenInputValue
         {
