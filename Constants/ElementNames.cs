@@ -9,5 +9,8 @@
 
         public const string ContentPickerBlockName = "contentPicker";
         public const string ContentPickerSelectedContentIdsElementName = ContentPickerBlockName + "__selectedContentIds";
+
+        public const string SelectableRowsDatatableBlockName = "selectableRowsDatatable";
+        public const string SelectableRowsDatatableSelectedContentIdsElementName = SelectableRowsDatatableBlockName + "__selectedContentIds";
     }
 }

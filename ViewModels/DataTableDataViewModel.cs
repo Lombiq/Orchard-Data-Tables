@@ -8,6 +8,7 @@ namespace Lombiq.DataTables.ViewModels
         public string DataTableId { get; set; }
         public DataTableColumnsDefinition ColumnsDefinition { get; set; }
         public IEnumerable<IEnumerable<string>> Rows { get; set; }
+        public IEnumerable<int> RecordsTotalIds { get; set; }
         public bool ChildRowsEnabled { get; set; }
     }
 }

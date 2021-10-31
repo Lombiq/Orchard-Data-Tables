@@ -11,6 +11,9 @@ namespace Lombiq.DataTables.Models
         [JsonProperty(PropertyName = "recordsTotal")]
         public int RecordsTotal { get; set; }
 
+        [JsonProperty(PropertyName = "recordsTotalIds")]
+        public IEnumerable<int> RecordsTotalIds { get; set; }
+
         [JsonProperty(PropertyName = "recordsFiltered")]
         public int RecordsFiltered { get; set; }
 
