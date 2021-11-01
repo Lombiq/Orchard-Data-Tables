@@ -28,15 +28,5 @@ namespace Lombiq.DataTables.Models
             Text = text;
             Orderable = orderable;
         }
-
-        /// <summary>
-        /// Adds a "special" entry to the <see cref="AdditionalSettings"/> for use in &lt;icbin-datatable&gt; which is
-        /// handled by the same event that handles <see cref="VueModel.Special"/>.
-        /// </summary>
-        public DataTableColumnDefinition WithSpecial(object special)
-        {
-            AdditionalSettings[nameof(special)] = special;
-            return this;
-        }
     }
 }

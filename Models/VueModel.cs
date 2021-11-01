@@ -66,7 +66,7 @@ namespace Lombiq.DataTables.Models
             }
         }
 
-        public VueModel(string text, string href = null, object sort = null)
+        public VueModel(string text = null, string href = null, object sort = null)
         {
             Text = text;
             Href = href;

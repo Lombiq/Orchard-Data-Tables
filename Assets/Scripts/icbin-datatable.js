@@ -7,6 +7,7 @@ window.icbinDataTable = {};
 //   properties) with domain-specific behavior without having to edit this component.
 // - update(data): Sends the new desired value of the "data" property to the parent. Alternatively
 //   v-model can also be used.
+// - column(columns): Sends an updated columns array to the parent so it can replace the columns parameter with it.
 //
 // events received:
 // - delete(promptText): cell components may emit this event to signal a request to delete the row
@@ -185,6 +186,11 @@ window.icbinDataTable.table = {
             sort.name = column.name;
             sort.ascending = toAscending;
         },
+        updateColumn(columnIndex, column) {
+            var newColumns = this.columns.concat();
+            newColumns.splice(columnIndex, 1, column);
+            this.$emit('column', newColumns);
+        },
     },
     mounted: function () {
         const self = this;
@@ -225,6 +231,12 @@ window.icbinDataTable.table = {
                         :data-name="column.name"
                         :data-data="column.name"
                         @click="updateSort(column)">
+                        <component v-if="column.component"
+                                   :is="column.component.name"
+                                   :data="data"
+                                   :column="column"
+                                   v-bind="column.component.value"
+                                   @update="updateColumn(columnIndex, $event)" />
                         <div class="dataTables_sizing">
                             {{ column.text }}
                         </div>
@@ -244,6 +256,7 @@ window.icbinDataTable.table = {
                             <component v-if="cell.component"
                                        :is="cell.component.name"
                                        :data="data"
+                                       :row-index="row.$rowIndex"
                                        v-bind="cell.component.value"
                                        @delete="deleteRow(row.$rowIndex, $event)"
                                        @update="updateData($event)" />
