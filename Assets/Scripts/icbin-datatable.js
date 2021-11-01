@@ -68,7 +68,10 @@ window.icbinDataTable.table = {
         },
         paging: {
             default: true,
-        }
+        },
+        filter: {
+            default: () => (collection) => collection,
+        },
     },
     data: function () {
         return {
@@ -112,8 +115,7 @@ window.icbinDataTable.table = {
         },
         sortedData(self) {
             const lower = self.sort.ascending ? -1 : 1;
-            const sorted = self.data
-                .concat() // Prevents the sort altering the original.
+            const sorted = self.filter(self.data.concat()) // The concat ensures the sort can't alter the original.
                 .sort((row1, row2) => {
                     const sortable1 = row1[self.sort.name]?.sort ?? row1[self.sort.name]?.text;
                     const sortable2 = row2[self.sort.name]?.sort ?? row2[self.sort.name]?.text;
@@ -146,10 +148,9 @@ window.icbinDataTable.table = {
             self.data.forEach((row) => {
                 Object.values(row)
                     .filter((cell) => typeof cell === 'object' && 'hiddenInput' in cell)
-                    .forEach((cell) =>
-                        Array.isArray(cell.hiddenInput)
-                            ? inputs.push(...cell.hiddenInput)
-                            : inputs.push(cell.hiddenInput));
+                    .forEach((cell) => (Array.isArray(cell.hiddenInput)
+                        ? inputs.push(...cell.hiddenInput)
+                        : inputs.push(cell.hiddenInput)));
             });
 
             // Calculate index
@@ -187,7 +188,7 @@ window.icbinDataTable.table = {
             sort.ascending = toAscending;
         },
         updateColumn(columnIndex, column) {
-            var newColumns = this.columns.concat();
+            const newColumns = this.columns.concat();
             newColumns.splice(columnIndex, 1, column);
             this.$emit('column', newColumns);
         },
