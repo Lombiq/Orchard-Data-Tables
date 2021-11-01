@@ -231,7 +231,7 @@ window.icbinDataTable.table = {
                         :data-orderable="(!!column.orderable).toString()"
                         :data-name="column.name"
                         :data-data="column.name"
-                        @click="updateSort(column)">
+                        @click="column.orderable && updateSort(column)">
                         <component v-if="column.component"
                                    :is="column.component.name"
                                    :data="data"
@@ -269,11 +269,11 @@ window.icbinDataTable.table = {
                 </tr>
                 </tbody>
             </table>
-            <div class="icbin-datatable-footer">
+            <div class="icbin-datatable-footer" v-if="paging">
                 <div class="icbin-datatable-display-count">
                     {{ displayCountText }}
                 </div>
-                <div class="icbin-datatable-display-pager" v-if="paging">
+                <div class="icbin-datatable-display-pager">
                     <div class="dataTables_paginate paging_simple_numbers">
                         <ul class="pagination">
                             <li class="paginate_button page-item previous" :class="{ disabled: pageIndex < 1 }">
