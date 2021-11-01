@@ -35,7 +35,7 @@ window.icbinDataTable.table = {
             //       special: Any?,
             //       // These can be set in JS code (e.g. with the "special" event):
             //       component: { name: String?, props: Object }?
-            //       hiddenInput: { name: String, value: String }?
+            //       hiddenInput: { name: String, value: String }? or [ { name: String, value: String } ]?
             //     }
             //   }
             // ]
@@ -145,7 +145,10 @@ window.icbinDataTable.table = {
             self.data.forEach((row) => {
                 Object.values(row)
                     .filter((cell) => typeof cell === 'object' && 'hiddenInput' in cell)
-                    .forEach((cell) => inputs.push(cell.hiddenInput));
+                    .forEach((cell) =>
+                        Array.isArray(cell.hiddenInput)
+                            ? inputs.push(...cell.hiddenInput)
+                            : inputs.push(cell.hiddenInput));
             });
 
             // Calculate index

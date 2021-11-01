@@ -29,10 +29,33 @@ namespace Lombiq.DataTables.Models
         [JsonProperty("special", NullValueHandling = NullValueHandling.Ignore)]
         public object Special { get; set; }
 
-        [JsonProperty("hiddenInput", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore]
         public HiddenInputValue HiddenInput { get; set; }
 
-        public VueModel() { }
+        [JsonIgnore]
+        public IEnumerable<HiddenInputValue> HiddenInputs { get; set; }
+
+        [JsonProperty("hiddenInput", NullValueHandling = NullValueHandling.Ignore)]
+        private object HiddenInputSerialize
+        {
+            get => (object)HiddenInput ?? HiddenInputs;
+            set
+            {
+                switch (value)
+                {
+                    case JArray hiddenInputs:
+                        HiddenInputs = hiddenInputs.ToObject<IEnumerable<HiddenInputValue>>();
+                        break;
+                    case JObject hiddenInput:
+                        HiddenInput = hiddenInput.ToObject<HiddenInputValue>();
+                        break;
+                    case null:
+                        return;
+                    default:
+                        throw new InvalidCastException("The value of \"hiddenInput\" must be Object, Array or null.");
+                }
+            }
+        }
 
         public VueModel(IContent content, IUrlHelper urlHelper)
         {
