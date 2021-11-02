@@ -57,13 +57,14 @@ namespace Lombiq.DataTables.Models
             }
         }
 
-        public VueModel(IContent content, IUrlHelper urlHelper)
+        public VueModel(IContent content, bool isEditor, IUrlHelper urlHelper)
         {
-            if (content != null)
-            {
-                Text = content.ContentItem.DisplayText;
-                Href = urlHelper.DisplayContentItem(content);
-            }
+            if (content == null) return;
+
+            Text = content.ContentItem.DisplayText;
+            Href = isEditor
+                ? urlHelper.EditContentItem(content.ContentItem.ContentItemId)
+                : urlHelper.DisplayContentItem(content);
         }
 
         public VueModel(string text = null, string href = null, object sort = null)
