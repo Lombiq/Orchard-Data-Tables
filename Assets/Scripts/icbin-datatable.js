@@ -218,7 +218,7 @@ window.icbinDataTable.table = {
             {{ lengthPickerAfter }}
         </div>
         <div>
-            <slot></slot>
+            <div class="icbin-datatable-above-header"><slot></slot></div>
             <table class="icbin-datatable-table dataTable row-border stripe table data-table no-footer" role="grid">
                 <thead class="dataTable__header">
                 <tr class="dataTable__headerRow" role="row">
