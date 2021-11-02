@@ -262,7 +262,7 @@ window.icbinDataTable.table = {
                                        @delete="deleteRow(row.$rowIndex, $event)"
                                        @update="updateData($event)" />
                             <a v-else-if="cell.href" :href="cell.href">{{ cell.text }}</a>
-                            <template v-else-if="cell.html" v-html="cell.html"></template>
+                            <div v-else-if="cell.html" v-html="cell.html"></div>
                             <span v-else>{{ cell.text }}</span>
                         </template>
                     </td>
