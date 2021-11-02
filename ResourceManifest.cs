@@ -5,7 +5,9 @@ namespace Lombiq.DataTables
 {
     public class ResourceManifest : IResourceManifestProvider
     {
-        private const string Vendors = "~/Lombiq.DataTables/vendors/";
+        private const string WwwRoot = "~/Lombiq.DataTables/";
+        private const string Vendors = WwwRoot + "vendors/";
+        private const string Lombiq = WwwRoot + "lombiq/";
 
         public void BuildManifests(IResourceManifestBuilder builder)
         {
@@ -88,7 +90,7 @@ namespace Lombiq.DataTables
             manifest
                 .DefineScript(ResourceNames.DataTables.AutoInit)
                 .SetDependencies(ResourceNames.DataTables.Bootstrap4, ResourceNames.DataTables.Bootstrap4Buttons)
-                .SetUrl("~/Lombiq.DataTables/lombiq/jquery-datatables-autoinit.js")
+                .SetUrl(Lombiq + "jquery-datatables-autoinit.js")
                 .SetVersion("1.0");
 
             manifest
@@ -100,17 +102,22 @@ namespace Lombiq.DataTables
                     ResourceNames.DataTables.Bootstrap4,
                     ResourceNames.DataTables.Buttons,
                     ResourceNames.DataTables.Bootstrap4Buttons)
-                .SetUrl("~/Lombiq.DataTables/lombiq/lombiq-datatables.js")
+                .SetUrl(Lombiq + "lombiq-datatables.js")
                 .SetVersion("1.0");
 
             manifest
                 .DefineScript(ResourceNames.LombiqContentPicker)
-                .SetUrl("~/Lombiq.DataTables/Scripts/lombiq/lombiq-contentpicker.js")
+                .SetUrl(Lombiq + "lombiq-contentpicker.js")
                 .SetDependencies("jQueryColorBox");
 
             manifest
                 .DefineStyle(ResourceNames.LombiqContentPicker)
                 .SetDependencies("jQueryColorBox");
+
+            manifest
+                .DefineScript(ResourceNames.ICantBelieveItsNotDataTable)
+                .SetUrl(Lombiq + "icbin-datatable.js")
+                .SetDependencies("vuejs");
         }
     }
 }
