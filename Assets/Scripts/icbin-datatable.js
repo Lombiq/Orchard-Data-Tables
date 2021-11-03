@@ -34,9 +34,10 @@ window.icbinDataTable.table = {
             //       sort: Any?,
             //       href: String?,
             //       special: Any?,
+            //       hiddenInput: { name: String, value: String }? or [ { name: String, value: String } ]?
             //       // These can be set in JS code (e.g. with the "special" event):
             //       component: { name: String?, props: Object }?
-            //       hiddenInput: { name: String, value: String }? or [ { name: String, value: String } ]?
+            //       rowClasses: String?
             //     }
             //   }
             // ]
@@ -192,6 +193,17 @@ window.icbinDataTable.table = {
             newColumns.splice(columnIndex, 1, column);
             this.$emit('column', newColumns);
         },
+        rowClasses(row) {
+            const classes = [];
+
+            Object.values(row).forEach((cell) => {
+                if (typeof cell.rowClasses === 'string') {
+                    classes.push(cell.rowClasses);
+                }
+            });
+
+            return classes.join(' ');
+        },
     },
     mounted: function () {
         const self = this;
@@ -247,8 +259,9 @@ window.icbinDataTable.table = {
                 <tbody class="dataTable__body">
                 <tr v-for="(row, rowIndex) in sortedData"
                     role="row"
+                    class="dataTable__row"
                     :key="'icbin-datatable-row-' + rowIndex"
-                    :class="'dataTable__row ' + (rowIndex % 2 ? 'even' : 'odd')">
+                    :class="(rowIndex % 2 ? 'even ' : 'odd ') + rowClasses(row)">
                     <td v-for="(column, columnIndex) in columns"
                         :key="'icbin-datatable-cell-' + rowIndex + '-' + columnIndex"
                         class="dataTable__cell"
