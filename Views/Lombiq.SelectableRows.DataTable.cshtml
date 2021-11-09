@@ -9,6 +9,7 @@
 
     var pageSize = viewModel?.PageSize ?? projectionPart?.Record.Items ?? WorkContext.CurrentSite.PageSize;
     var recordsTotalIds = viewModel?.RecordsTotalIds;
+
     const string DefaultBlockName = ElementNames.SelectableRowsDatatableBlockName;
 
     var BlockName = Model.BlockName as string ?? DefaultBlockName;
