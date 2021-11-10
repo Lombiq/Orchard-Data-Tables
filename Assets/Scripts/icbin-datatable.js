@@ -222,8 +222,8 @@ window.icbinDataTable.table = {
         if (self.defaultLength) self.length = self.defaultLength;
     },
     template: `
-    <div class="icbin-datatable">
-        <div class="icbin-datatable-length-picker" v-if="paging">
+    <div class="icbinDatatable">
+        <div class="icbinDatatable__lengthPicker" v-if="paging">
             {{ lengthPickerBefore }}
             <select v-model="length">
                 <option v-for="lengthOption in lengths" :value="lengthOption">
@@ -233,8 +233,8 @@ window.icbinDataTable.table = {
             {{ lengthPickerAfter }}
         </div>
         <div>
-            <div class="icbin-datatable-above-header"><slot></slot></div>
-            <table class="icbin-datatable-table dataTable row-border stripe table data-table no-footer" role="grid">
+            <div class="icbinDatatable__aboveHeader"><slot></slot></div>
+            <table class="icbinDatatable__table dataTable row-border stripe table data-table no-footer" role="grid">
                 <thead class="dataTable__header">
                 <tr class="dataTable__headerRow" role="row">
                     <th v-for="(column, columnIndex) in columns"
@@ -242,7 +242,7 @@ window.icbinDataTable.table = {
                         scope="col"
                         data-class-name="dataTable__cell"
                         :class="sort.name === column.name ? (sort.ascending ? 'sorting_asc' : 'sorting_desc') : ''"
-                        :key="'icbin-datatable-column-' + columnIndex"
+                        :key="'icbinDatatable__column_' + columnIndex"
                         :data-orderable="(!!column.orderable).toString()"
                         :data-name="column.name"
                         :data-data="column.text"
@@ -263,10 +263,10 @@ window.icbinDataTable.table = {
                 <tr v-for="(row, rowIndex) in sortedData"
                     role="row"
                     class="dataTable__row"
-                    :key="'icbin-datatable-row-' + rowIndex"
+                    :key="'icbinDatatable__row_' + rowIndex"
                     :class="(rowIndex % 2 ? 'even ' : 'odd ') + rowClasses(row)">
                     <td v-for="(column, columnIndex) in columns"
-                        :key="'icbin-datatable-cell-' + rowIndex + '-' + columnIndex"
+                        :key="'icbinDatatable__cell_' + rowIndex + 'x' + columnIndex"
                         class="dataTable__cell"
                         :class="{ sorting_1: sort.name === column.name }">
                         <template v-for="cell in [column.name in row ? row[column.name] : { text : '' }]">
@@ -289,11 +289,11 @@ window.icbinDataTable.table = {
                 </tr>
                 </tbody>
             </table>
-            <div class="icbin-datatable-footer" v-if="paging">
-                <div class="icbin-datatable-display-count">
+            <div class="icbinDatatable__footer" v-if="paging">
+                <div class="icbinDatatable__displayCount">
                     {{ displayCountText }}
                 </div>
-                <div class="icbin-datatable-display-pager">
+                <div class="icbinDatatable__pager">
                     <div class="dataTables_paginate paging_simple_numbers">
                         <ul class="pagination">
                             <li class="paginate_button page-item previous" :class="{ disabled: pageIndex < 1 }">
@@ -333,7 +333,7 @@ window.icbinDataTable.remove = {
     },
     template: `
     <a href="javascript:void(0)"
-       :class="{ 'icbin-datatable-remove': true, disabled: disabled }"
+       :class="{ 'icbinDatatableRemove': true, disabled: disabled }"
        @click="!disabled && $emit('delete', text.prompt)">
         <i class="fas fa-trash-alt"></i>
         {{ text.remove }}
