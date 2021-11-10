@@ -275,10 +275,13 @@ window.icbinDataTable.table = {
                                        v-bind="cell.component.value"
                                        @delete="deleteRow(row.$rowIndex, $event)"
                                        @update="updateData($event)" />
-                            <a v-else-if="cell.href" :href="cell.href">{{ cell.text }}</a>
+                            <a v-else-if="cell.href"
+                               :href="cell.href"
+                               :class="cell.badge ? ('badge badge-' + cell.badge) : ''">
+                                {{ cell.text }}
+                            </a>
                             <div v-else-if="cell.html" v-html="cell.html"></div>
-                            <span v-else-if="cell.badge" :class="'badge badge-' + cell.badge">{{ cell.text }}</span>
-                            <span v-else>{{ cell.text }}</span>
+                            <span v-else :class="cell.badge ? ('badge badge-' + cell.badge) : ''">{{ cell.text }}</span>
                         </template>
                     </td>
                 </tr>
