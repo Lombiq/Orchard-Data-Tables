@@ -52,7 +52,7 @@ window.icbinDataTable.table = {
             required: true,
         },
         text: {
-            // Expected properties: lengthPicker, displayCount, previous, next.
+            // Expected properties: lengthPicker, displayCount, previous, next, all.
             type: Object,
             required: true,
         },
@@ -104,7 +104,7 @@ window.icbinDataTable.table = {
                 .replace(/{{\s*total\s*}}/, self.total);
         },
         pagination(self) {
-            const pageCount = Math.ceil(self.total / self.length);
+            const pageCount = self.length > 0 ? Math.ceil(self.total / self.length) : 1;
             let range = [...Array(pageCount).keys()];
             if (self.pageIndex > 3) {
                 range = [0, '...'].concat(range.slice(self.pageIndex - 1));
@@ -128,7 +128,9 @@ window.icbinDataTable.table = {
                     return 0;
                 });
 
-            const page = self.paging ? sorted.slice(self.pageIndex * self.length, self.length) : sorted;
+            const page = (self.paging && self.length > 0)
+                ? sorted.slice(self.pageIndex * self.length, self.length)
+                : sorted;
 
             return page.map((row) => Object.fromEntries(
                 Object
@@ -225,7 +227,7 @@ window.icbinDataTable.table = {
             {{ lengthPickerBefore }}
             <select v-model="length">
                 <option v-for="lengthOption in lengths" :value="lengthOption">
-                    {{ lengthOption }}
+                    {{ lengthOption > 0 ? lengthOption : text.all }}
                 </option>
             </select>
             {{ lengthPickerAfter }}

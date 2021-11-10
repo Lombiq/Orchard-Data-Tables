@@ -144,6 +144,7 @@ namespace Lombiq.DataTables.Models
                 ["displayCount"] = localizer["Showing {{ from }} to {{ to }} of {{ total }} entries"].Value,
                 ["previous"] = localizer["Previous"].Value,
                 ["next"] = localizer["Next"].Value,
+                ["all"] = localizer["All"].Value,
             };
 
         public class HiddenInputValue
