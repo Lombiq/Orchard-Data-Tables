@@ -256,6 +256,12 @@
   <ItemGroup>
     <Content Include="Views\Lombiq.ContentPicker.DataTable.Resources.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Lombiq.SelectableRows.DataTable.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Lombiq.SelectableRows.DataTable.Resources.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
