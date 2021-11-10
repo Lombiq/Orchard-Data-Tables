@@ -9,6 +9,23 @@ namespace Lombiq.DataTables
         {
             var manifest = builder.Add();
 
+            manifest.DefineScript("jQuery")
+                .SetUrl("jquery-migrate.min.js", "jquery-migrate.js")
+                .SetVersion("3.3.2")
+                .SetCdn(
+                    "//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js",
+                    "//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.js",
+                    true)
+                .SetDependencies("jQueryMigrate");
+
+            manifest.DefineScript("jQueryMigrate")
+                .SetUrl("jquery.min.js", "jquery.js")
+                .SetVersion("3.6.0")
+                .SetCdn(
+                    "//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js",
+                    "//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js",
+                    true);
+
             // jQuery.DataTables-related resources.
             manifest.DefineScript(Uri_Js).SetUrl("../Content/URI.js/URI.min.js", "../Content/URI.js/URI.js").SetDependencies("jQuery");
             manifest.DefineScript(JQuery_DataTables).SetUrl("../Content/DataTables/dataTables.min.js", "../Content/DataTables/dataTables.js").SetDependencies("jQuery");

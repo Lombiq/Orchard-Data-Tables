@@ -186,6 +186,10 @@
     <Content Include="Content\DataTables\Plugins\processing%28%29.js" />
     <Content Include="Content\URI.js\URI.js" />
     <Content Include="Content\URI.js\URI.min.js" />
+    <Content Include="Scripts\jquery-migrate.js" />
+    <Content Include="Scripts\jquery-migrate.min.js" />
+    <Content Include="Scripts\jquery.js" />
+    <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\lombiq-contentpicker.js" />
     <Content Include="Scripts\lombiq-datatables.js" />
     <Content Include="packages.config" />
