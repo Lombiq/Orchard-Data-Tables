@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using OrchardCore.ContentManagement;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -25,12 +29,45 @@ namespace Lombiq.DataTables.Models
         [JsonProperty("special", NullValueHandling = NullValueHandling.Ignore)]
         public object Special { get; set; }
 
-        [JsonProperty("hiddenInput", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore]
         public HiddenInputValue HiddenInput { get; set; }
 
-        public VueModel() { }
+        [JsonIgnore]
+        public IEnumerable<HiddenInputValue> HiddenInputs { get; set; }
 
-        public VueModel(string text, string href = null, object sort = null)
+        [JsonProperty("hiddenInput", NullValueHandling = NullValueHandling.Ignore)]
+        private object HiddenInputSerialize
+        {
+            get => (object)HiddenInput ?? HiddenInputs;
+            set
+            {
+                switch (value)
+                {
+                    case JArray hiddenInputs:
+                        HiddenInputs = hiddenInputs.ToObject<IEnumerable<HiddenInputValue>>();
+                        break;
+                    case JObject hiddenInput:
+                        HiddenInput = hiddenInput.ToObject<HiddenInputValue>();
+                        break;
+                    case null:
+                        return;
+                    default:
+                        throw new InvalidCastException("The value of \"hiddenInput\" must be Object, Array or null.");
+                }
+            }
+        }
+
+        public VueModel(IContent content, bool isEditor, IUrlHelper urlHelper)
+        {
+            if (content == null) return;
+
+            Text = content.ContentItem.DisplayText;
+            Href = isEditor
+                ? urlHelper.EditContentItem(content.ContentItem.ContentItemId)
+                : urlHelper.DisplayContentItem(content);
+        }
+
+        public VueModel(string text = null, string href = null, object sort = null)
         {
             Text = text;
             Href = href;
@@ -62,6 +99,15 @@ namespace Lombiq.DataTables.Models
 
             return JArray.FromObject(rows);
         }
+
+        public static Dictionary<string, string> CreateTextForIcbinDataTable(IHtmlLocalizer localizer) =>
+            new()
+            {
+                ["lengthPicker"] = localizer["Show {{ count }} Entries"].Value,
+                ["displayCount"] = localizer["Showing {{ from }} to {{ to }} of {{ total }} entries"].Value,
+                ["previous"] = localizer["Previous"].Value,
+                ["next"] = localizer["Next"].Value,
+            };
 
         public class HiddenInputValue
         {

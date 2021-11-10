@@ -4,7 +4,7 @@ namespace Lombiq.DataTables.Models
 {
     public class DataTableColumnDefinition
     {
-        public Dictionary<string, string> AdditionalSettings { get; private set; } = new Dictionary<string, string>();
+        public Dictionary<string, object> AdditionalSettings { get; } = new();
         public string Name { get; set; }
         public string Text { get; set; }
         public string DataSource { get; set; }
@@ -16,8 +16,17 @@ namespace Lombiq.DataTables.Models
 
         public string this[string key]
         {
-            get => AdditionalSettings.ContainsKey(key) ? AdditionalSettings[key] : null;
+            get => AdditionalSettings.ContainsKey(key) ? AdditionalSettings[key]?.ToString() : null;
             set => AdditionalSettings[key] = value;
+        }
+
+        public DataTableColumnDefinition() { }
+
+        public DataTableColumnDefinition(string name, string text, bool orderable = true)
+        {
+            Name = name;
+            Text = text;
+            Orderable = orderable;
         }
     }
 }
