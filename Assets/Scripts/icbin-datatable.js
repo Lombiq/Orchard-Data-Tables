@@ -31,6 +31,7 @@ window.icbinDataTable.table = {
             //       // These can come from the server:
             //       text: String,
             //       html: String?,
+            //       badge: String?
             //       sort: Any?,
             //       href: String?,
             //       special: Any?,
@@ -276,6 +277,7 @@ window.icbinDataTable.table = {
                                        @update="updateData($event)" />
                             <a v-else-if="cell.href" :href="cell.href">{{ cell.text }}</a>
                             <div v-else-if="cell.html" v-html="cell.html"></div>
+                            <span v-else-if="cell.badge" :class="'badge badge-' + cell.badge">{{ cell.text }}</span>
                             <span v-else>{{ cell.text }}</span>
                         </template>
                     </td>

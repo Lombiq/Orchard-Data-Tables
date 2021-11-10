@@ -26,6 +26,9 @@ namespace Lombiq.DataTables.Models
         [JsonProperty("href", NullValueHandling = NullValueHandling.Ignore)]
         public string Href { get; set; }
 
+        [JsonProperty("badge", NullValueHandling = NullValueHandling.Ignore)]
+        public object Badge { get; set; }
+
         [JsonProperty("special", NullValueHandling = NullValueHandling.Ignore)]
         public object Special { get; set; }
 
