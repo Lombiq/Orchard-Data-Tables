@@ -7,6 +7,7 @@
     var projectionPart = Model.ContentPart as ProjectionPart;
     var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
 
+    var hideCheckboxIfColumnIsEmpty = viewModel?.HideCheckboxIfColumnIsEmpty;
     var pageSize = viewModel?.PageSize ?? projectionPart?.Record.Items ?? WorkContext.CurrentSite.PageSize;
     var recordsTotalIds = viewModel?.RecordsTotalIds;
 
@@ -65,11 +66,15 @@
                     order: [["@columnsDefinition.GetDefaultSortingColumnIndex()", "@columnsDefinition.GetDefaultSortingDirectionTechnicalValue()"]]
                 },
                 serverSidePagingEnabled: true,
-                
+
                 callbacks: {
                     ajaxDataLoadedCallback: function (response) {
                         $.each(response.data, function (index, value) {
-                            value["@ContentSelector"] = createCheckboxElementHtml(value.id);
+                            if (value['@hideCheckboxIfColumnIsEmpty'] === "") {
+                                value["@ContentSelector"] = createCheckboxElementHtml(value.id, true);
+                            } else {
+                                value["@ContentSelector"] = createCheckboxElementHtml(value.id, false);
+                            }
                         });
 
                         $(".dataTables_scrollHead [data-name='ContentSelector']").html("<label class=\"@(DataTableCheckboxBlockName)__label\"><input type=\"checkbox\" class=\"checkbox selectAll @(DataTableCheckboxBlockName)__input\"/><span class=\"@(DataTableCheckboxBlockName)__indicator\">Select</span></label>");
@@ -116,10 +121,10 @@
                 $selectedIdsElement.val(JSON.stringify(selectedContentItemIds));
             });
 
-            function createCheckboxElementHtml(contentItemId) {
+            function createCheckboxElementHtml(contentItemId, disabled) {
                 var checked = selectedContentItemIds.indexOf(contentItemId) > -1;
 
-                return "<label class=\"@(DataTableCheckboxBlockName)__label\"><input type=\"checkbox\" class=\"checkbox @ContentSelectorElementName js-@ContentSelectorElementName @(DataTableCheckboxBlockName)__input\" " + (checked ? "checked" : "") + "/><span class=\"@(DataTableCheckboxBlockName)__indicator\"></span></label>";
+                return "<label class=\"@(DataTableCheckboxBlockName)__label\"><input type=\"checkbox\" class=\"checkbox @ContentSelectorElementName js-@ContentSelectorElementName @(DataTableCheckboxBlockName)__input\" " + (checked ? "checked" : "") + " " + (disabled ? "disabled" : "") + "/ ><span class=\"@(DataTableCheckboxBlockName)__indicator\"></span></label>";
             }
         });
     })(jQuery);
