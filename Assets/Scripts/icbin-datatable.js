@@ -339,3 +339,24 @@ window.icbinDataTable.remove = {
         {{ text.remove }}
     </a>`,
 };
+
+window.icbinDataTable.checkbox = {
+    name: 'icbin-datatable-checkbox',
+    props: {
+        rowIndex: { type: Number, required: true },
+        value: { type: Boolean, required: true },
+        disabled: { type: Boolean, default: false },
+        classes: { default: '' },
+    },
+    template: `
+    <label class="icbinDatatableCheckbox__container">
+        <input
+            :checked="value"
+            :disabled="disabled"
+            :class="classes"
+            class="icbinDatatableCheckbox"
+            type="checkbox"
+            @change="$emit($event.target.checked, rowIndex, classes)">
+        <slot></slot>
+    </label>`,
+};
