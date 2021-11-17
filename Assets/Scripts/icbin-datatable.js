@@ -37,7 +37,7 @@ window.icbinDataTable.table = {
             //       special: Any?,
             //       hiddenInput: { name: String, value: String }? or [ { name: String, value: String } ]?
             //       // These can be set in JS code (e.g. with the "special" event):
-            //       component: { name: String?, props: Object }?
+            //       component: { name: String?, value: Object }?
             //       rowClasses: String?
             //     }
             //   }
@@ -208,6 +208,51 @@ window.icbinDataTable.table = {
             return classes.join(' ');
         },
     },
+    beforeCreate: function () {
+        const self = this;
+
+        self.data.forEach((row) => {
+            Object.keys(row)
+                .filter((key) => key[0] !== '$')
+                .forEach((column) => {
+                    const cell = row[column];
+                    switch (cell?.special?.type) {
+                        case 'checkbox': {
+                            const special = cell.special.value;
+                            const newHiddenInput = {
+                                name: cell.special.name,
+                                value: JSON.stringify(special.value),
+                            };
+
+                            if ('hiddenInput' in cell && Array.isArray(cell.hiddenInput)) {
+                                cell.hiddenInput.push(newHiddenInput);
+                            }
+                            else if ('hiddenInput' in cell) {
+                                cell.hiddenInput = [cell.hiddenInput, newHiddenInput];
+                            }
+                            else {
+                                cell.hiddenInput = newHiddenInput;
+                            }
+
+                            cell.component = {
+                                name: 'icbin-datatable-checkbox',
+                                value: {
+                                    label: special.label,
+                                    value: !!special.value,
+                                    disabled: special.value === null,
+                                    classes: special.classes,
+                                },
+                            };
+
+                            delete cell.special;
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                });
+        });
+    },
     mounted: function () {
         const self = this;
 
@@ -343,7 +388,9 @@ window.icbinDataTable.remove = {
 window.icbinDataTable.checkbox = {
     name: 'icbin-datatable-checkbox',
     props: {
+        data: { type: Array, required: true },
         rowIndex: { type: Number, required: true },
+        label: { default: '' },
         value: { type: Boolean, required: true },
         disabled: { type: Boolean, default: false },
         classes: { default: '' },
@@ -357,6 +404,6 @@ window.icbinDataTable.checkbox = {
             class="icbinDatatableCheckbox"
             type="checkbox"
             @change="$emit($event.target.checked, rowIndex, classes)">
-        <slot></slot>
+        <span v-if="label">{{ label }}</span>
     </label>`,
 };
