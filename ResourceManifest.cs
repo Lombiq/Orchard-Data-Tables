@@ -117,7 +117,8 @@ namespace Lombiq.DataTables
             manifest
                 .DefineScript(ResourceNames.ICantBelieveItsNotDataTable)
                 .SetUrl(Lombiq + "icbin-datatable.js")
-                .SetDependencies("vuejs");
+                .SetDependencies("vuejs")
+                .SetVersion("1.0.2");
         }
     }
 }

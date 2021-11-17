@@ -7,6 +7,7 @@ window.icbinDataTable = {};
 //   properties) with domain-specific behavior without having to edit this component.
 // - update(data): Sends the new desired value of the "data" property to the parent. Alternatively
 //   v-model can also be used.
+// - column(columns): Sends an updated columns array to the parent so it can replace the columns parameter with it.
 //
 // events received:
 // - delete(promptText): cell components may emit this event to signal a request to delete the row
@@ -30,12 +31,14 @@ window.icbinDataTable.table = {
             //       // These can come from the server:
             //       text: String,
             //       html: String?,
+            //       badge: String?
             //       sort: Any?,
             //       href: String?,
             //       special: Any?,
+            //       hiddenInput: { name: String, value: String }? or [ { name: String, value: String } ]?
             //       // These can be set in JS code (e.g. with the "special" event):
             //       component: { name: String?, props: Object }?
-            //       hiddenInput: { name: String, value: String }?
+            //       rowClasses: String?
             //     }
             //   }
             // ]
@@ -49,7 +52,7 @@ window.icbinDataTable.table = {
             required: true,
         },
         text: {
-            // Expected properties: lengthPicker, displayCount, previous, next.
+            // Expected properties: lengthPicker, displayCount, previous, next, all.
             type: Object,
             required: true,
         },
@@ -64,6 +67,12 @@ window.icbinDataTable.table = {
         lengths: {
             type: Array,
             default: () => [10, 25, 50, 100],
+        },
+        paging: {
+            default: true,
+        },
+        filter: {
+            default: () => (collection) => collection,
         },
     },
     data: function () {
@@ -95,7 +104,7 @@ window.icbinDataTable.table = {
                 .replace(/{{\s*total\s*}}/, self.total);
         },
         pagination(self) {
-            const pageCount = Math.ceil(self.total / self.length);
+            const pageCount = self.length > 0 ? Math.ceil(self.total / self.length) : 1;
             let range = [...Array(pageCount).keys()];
             if (self.pageIndex > 3) {
                 range = [0, '...'].concat(range.slice(self.pageIndex - 1));
@@ -108,8 +117,7 @@ window.icbinDataTable.table = {
         },
         sortedData(self) {
             const lower = self.sort.ascending ? -1 : 1;
-            const sorted = self.data
-                .concat() // Prevents the sort altering the original.
+            const sorted = self.filter(self.data.concat()) // The concat ensures the sort can't alter the original.
                 .sort((row1, row2) => {
                     const sortable1 = row1[self.sort.name]?.sort ?? row1[self.sort.name]?.text;
                     const sortable2 = row2[self.sort.name]?.sort ?? row2[self.sort.name]?.text;
@@ -120,7 +128,9 @@ window.icbinDataTable.table = {
                     return 0;
                 });
 
-            const page = sorted.slice(self.pageIndex * self.length, self.length);
+            const page = (self.paging && self.length > 0)
+                ? sorted.slice(self.pageIndex * self.length, self.length)
+                : sorted;
 
             return page.map((row) => Object.fromEntries(
                 Object
@@ -142,7 +152,9 @@ window.icbinDataTable.table = {
             self.data.forEach((row) => {
                 Object.values(row)
                     .filter((cell) => typeof cell === 'object' && 'hiddenInput' in cell)
-                    .forEach((cell) => inputs.push(cell.hiddenInput));
+                    .forEach((cell) => (Array.isArray(cell.hiddenInput)
+                        ? inputs.push(...cell.hiddenInput)
+                        : inputs.push(cell.hiddenInput)));
             });
 
             // Calculate index
@@ -179,6 +191,22 @@ window.icbinDataTable.table = {
             sort.name = column.name;
             sort.ascending = toAscending;
         },
+        updateColumn(columnIndex, column) {
+            const newColumns = this.columns.concat();
+            newColumns.splice(columnIndex, 1, column);
+            this.$emit('column', newColumns);
+        },
+        rowClasses(row) {
+            const classes = [];
+
+            Object.values(row).forEach((cell) => {
+                if (typeof cell.rowClasses === 'string') {
+                    classes.push(cell.rowClasses);
+                }
+            });
+
+            return classes.join(' ');
+        },
     },
     mounted: function () {
         const self = this;
@@ -194,19 +222,19 @@ window.icbinDataTable.table = {
         if (self.defaultLength) self.length = self.defaultLength;
     },
     template: `
-    <div class="icbin-datatable">
-        <div class="icbin-datatable-length-picker">
+    <div class="icbinDatatable">
+        <div class="icbinDatatable__lengthPicker" v-if="paging">
             {{ lengthPickerBefore }}
             <select v-model="length">
                 <option v-for="lengthOption in lengths" :value="lengthOption">
-                    {{ lengthOption }}
+                    {{ lengthOption > 0 ? lengthOption : text.all }}
                 </option>
             </select>
             {{ lengthPickerAfter }}
         </div>
         <div>
-            <slot></slot>
-            <table class="icbin-datatable-table dataTable row-border stripe table data-table no-footer" role="grid">
+            <div class="icbinDatatable__aboveHeader"><slot></slot></div>
+            <table class="icbinDatatable__table dataTable row-border stripe table data-table no-footer" role="grid">
                 <thead class="dataTable__header">
                 <tr class="dataTable__headerRow" role="row">
                     <th v-for="(column, columnIndex) in columns"
@@ -214,11 +242,17 @@ window.icbinDataTable.table = {
                         scope="col"
                         data-class-name="dataTable__cell"
                         :class="sort.name === column.name ? (sort.ascending ? 'sorting_asc' : 'sorting_desc') : ''"
-                        :key="'icbin-datatable-column-' + columnIndex"
+                        :key="'icbinDatatable__column_' + columnIndex"
                         :data-orderable="(!!column.orderable).toString()"
                         :data-name="column.name"
-                        :data-data="column.name"
-                        @click="updateSort(column)">
+                        :data-data="column.text"
+                        @click="column.orderable && updateSort(column)">
+                        <component v-if="column.component"
+                                   :is="column.component.name"
+                                   :data="data"
+                                   :column="column"
+                                   v-bind="column.component.value"
+                                   @update="updateColumn(columnIndex, $event)" />
                         <div class="dataTables_sizing">
                             {{ column.text }}
                         </div>
@@ -228,32 +262,38 @@ window.icbinDataTable.table = {
                 <tbody class="dataTable__body">
                 <tr v-for="(row, rowIndex) in sortedData"
                     role="row"
-                    :key="'icbin-datatable-row-' + rowIndex"
-                    :class="'dataTable__row ' + (rowIndex % 2 ? 'even' : 'odd')">
+                    class="dataTable__row"
+                    :key="'icbinDatatable__row_' + rowIndex"
+                    :class="(rowIndex % 2 ? 'even ' : 'odd ') + rowClasses(row)">
                     <td v-for="(column, columnIndex) in columns"
-                        :key="'icbin-datatable-cell-' + rowIndex + '-' + columnIndex"
+                        :key="'icbinDatatable__cell_' + rowIndex + 'x' + columnIndex"
                         class="dataTable__cell"
                         :class="{ sorting_1: sort.name === column.name }">
                         <template v-for="cell in [column.name in row ? row[column.name] : { text : '' }]">
                             <component v-if="cell.component"
                                        :is="cell.component.name"
                                        :data="data"
+                                       :row-index="row.$rowIndex"
                                        v-bind="cell.component.value"
                                        @delete="deleteRow(row.$rowIndex, $event)"
                                        @update="updateData($event)" />
-                            <a v-else-if="cell.href" :href="cell.href">{{ cell.text }}</a>
-                            <template v-else-if="cell.html" v-html="cell.html"></template>
-                            <span v-else>{{ cell.text }}</span>
+                            <a v-else-if="cell.href"
+                               :href="cell.href"
+                               :class="cell.badge ? ('badge badge-' + cell.badge) : ''">
+                                {{ cell.text }}
+                            </a>
+                            <div v-else-if="cell.html" v-html="cell.html"></div>
+                            <span v-else :class="cell.badge ? ('badge badge-' + cell.badge) : ''">{{ cell.text }}</span>
                         </template>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <div class="icbin-datatable-footer">
-                <div class="icbin-datatable-display-count">
+            <div class="icbinDatatable__footer" v-if="paging">
+                <div class="icbinDatatable__displayCount">
                     {{ displayCountText }}
                 </div>
-                <div class="icbin-datatable-display-pager">
+                <div class="icbinDatatable__pager">
                     <div class="dataTables_paginate paging_simple_numbers">
                         <ul class="pagination">
                             <li class="paginate_button page-item previous" :class="{ disabled: pageIndex < 1 }">
@@ -293,7 +333,7 @@ window.icbinDataTable.remove = {
     },
     template: `
     <a href="javascript:void(0)"
-       :class="{ 'icbin-datatable-remove': true, disabled: disabled }"
+       :class="{ 'icbinDatatableRemove': true, disabled: disabled }"
        @click="!disabled && $emit('delete', text.prompt)">
         <i class="fas fa-trash-alt"></i>
         {{ text.remove }}
