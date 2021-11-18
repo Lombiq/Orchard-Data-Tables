@@ -254,6 +254,7 @@ window.icbinDataTable.table = {
                                     classes: special.classes,
                                 },
                             };
+                            newCell.sort = special.value;
                             updateData(rowIndex, columnName, newCell);
                             break;
                         }
@@ -416,9 +417,13 @@ window.icbinDataTable.checkbox = {
             const cell = this.data.filter((row) => row.$rowIndex === this.rowIndex)[0][this.columnName];
             cell.component.value.checked = checked;
             cell.hiddenInput.value = JSON.stringify(!!checked);
+            cell.sort = checked;
             this.$emit('update', this.data);
             this.$emit('component', 'checked');
         },
+    },
+    mounted: function() {
+        this.$emit('component', 'checked');
     },
     template: `
     <label class="icbinDatatableCheckbox__container">
