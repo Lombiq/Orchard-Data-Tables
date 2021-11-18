@@ -422,7 +422,7 @@ window.icbinDataTable.checkbox = {
             this.$emit('component', 'checked');
         },
     },
-    mounted: function() {
+    mounted: function () {
         this.$emit('component', 'checked');
     },
     template: `
