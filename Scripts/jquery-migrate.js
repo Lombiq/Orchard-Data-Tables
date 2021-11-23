@@ -25,6 +25,9 @@
 "use strict";
 
 jQuery.migrateVersion = "3.3.2";
+// This migrate plugin generates console log output to warn when specific deprecated and/or removed features are being used.
+// We don't want that, therefore muting this feature here.
+jQuery.migrateMute = true;
 
 // Returns 0 if v1 == v2, -1 if v1 < v2, 1 if v1 > v2
 function compareVersions( v1, v2 ) {
