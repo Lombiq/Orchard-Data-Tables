@@ -1,13 +1,9 @@
 using Fluid;
-using Fluid.Values;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using Moq;
-using Moq.AutoMock;
 using Newtonsoft.Json.Linq;
 using OrchardCore.DisplayManagement.Liquid;
 using OrchardCore.Liquid;
@@ -17,7 +13,6 @@ using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Tests
