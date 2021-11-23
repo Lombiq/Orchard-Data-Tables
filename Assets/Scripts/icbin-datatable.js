@@ -109,6 +109,8 @@ window.icbinDataTable.table = {
                 .replace(/{{\s*total\s*}}/, self.total);
         },
         pagination(self) {
+            if (self.total < 1) return [0];
+
             const pageCount = self.length > 0 ? Math.ceil(self.total / self.length) : 1;
             let range = [...Array(pageCount).keys()];
             if (self.pageIndex > 3) {
@@ -133,9 +135,11 @@ window.icbinDataTable.table = {
                     return 0;
                 });
 
-            const page = (self.paging && self.length > 0)
-                ? sorted.slice(self.pageIndex * self.length, self.length)
-                : sorted;
+            let page = sorted;
+            if (self.paging && self.length > 0) {
+                const startIndex = self.pageIndex * self.length;
+                page = sorted.slice(startIndex, startIndex + self.length);
+            }
 
             return page.map((row) => Object.fromEntries(
                 Object
@@ -362,11 +366,14 @@ window.icbinDataTable.table = {
                                     {{ text.previous }}
                                 </a>
                             </li>
-                            <li v-for="page in pagination" class="paginate_button page-item" :class="{ active: page === pageIndex }">
+                            <li v-for="page in pagination"
+                                class="paginate_button page-item"
+                                :class="{ active: page === pageIndex }">
                                 <a v-if="page !== '...'" class="page-link" @click="changePage(page)">{{ page + 1 }}</a>
                                 <span v-else class="page-link">...</span>
                             </li>
-                            <li class="paginate_button page-item next" :class="{ disabled: (pageIndex * length) >= total }">
+                            <li class="paginate_button page-item next"
+                                :class="{ disabled: ((pageIndex + 1) * length) >= total }">
                                 <a class="page-link" @click="changePage(pageIndex + 1)">
                                     {{ text.next }}
                                 </a>
