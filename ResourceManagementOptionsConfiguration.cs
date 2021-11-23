@@ -6,7 +6,9 @@ namespace Lombiq.DataTables
 {
     public class ResourceManagementOptionsConfiguration : IConfigureOptions<ResourceManagementOptions>
     {
-        private const string Vendors = "~/Lombiq.DataTables/vendors/";
+        private const string WwwRoot = "~/Lombiq.DataTables/";
+        private const string Vendors = WwwRoot + "vendors/";
+        private const string Lombiq = WwwRoot + "lombiq/";
 
         private static readonly ResourceManifest _manifest = new();
 
@@ -89,7 +91,7 @@ namespace Lombiq.DataTables
             _manifest
                 .DefineScript(ResourceNames.DataTables.AutoInit)
                 .SetDependencies(ResourceNames.DataTables.Bootstrap4, ResourceNames.DataTables.Bootstrap4Buttons)
-                .SetUrl("~/Lombiq.DataTables/lombiq/jquery-datatables-autoinit.js")
+                .SetUrl(Lombiq + "jquery-datatables-autoinit.js")
                 .SetVersion("1.0");
 
             _manifest
@@ -101,17 +103,23 @@ namespace Lombiq.DataTables
                     ResourceNames.DataTables.Bootstrap4,
                     ResourceNames.DataTables.Buttons,
                     ResourceNames.DataTables.Bootstrap4Buttons)
-                .SetUrl("~/Lombiq.DataTables/lombiq/lombiq-datatables.js")
+                .SetUrl(Lombiq + "lombiq-datatables.js")
                 .SetVersion("1.0");
 
             _manifest
                 .DefineScript(ResourceNames.LombiqContentPicker)
-                .SetUrl("~/Lombiq.DataTables/Scripts/lombiq/lombiq-contentpicker.js")
+                .SetUrl(Lombiq + "lombiq-contentpicker.js")
                 .SetDependencies("jQueryColorBox");
 
             _manifest
                 .DefineStyle(ResourceNames.LombiqContentPicker)
                 .SetDependencies("jQueryColorBox");
+
+            manifest
+                .DefineScript(ResourceNames.ICantBelieveItsNotDataTable)
+                .SetUrl(Lombiq + "icbin-datatable.js")
+                .SetDependencies("vuejs")
+                .SetVersion("1.0.2");
         }
 
         public void Configure(ResourceManagementOptions options) => options.ResourceManifests.Add(_manifest);

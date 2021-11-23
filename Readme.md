@@ -34,3 +34,30 @@ You can use all the regular DataTables [events](https://datatables.net/manual/ev
 - `popstate.lombiqdt`: fired after a history back/forward between different states of the table. The event is `{ plugin: jQueryPlugin, state: { providerName, data, order }, cancel: false }`. Change `cancel` to `true` if you don't want to load this history.
 - `createstate.lombiqdt`: fired before a new DataTable history state is placed. The event is `{ plugin, state }` and you can alter the `state` object from the event handler.
 - `preXhr.lombiqdt`: fired inside the `options.ajax` function right before the web request is sent out. The event is `{ plugin, requestData, isHistory }`. You can change `requestData` here.
+
+
+## Vue.js Alternative
+
+You may say, _I Can't Believe It's Not DataTable!_ but it really is not. Use the `<icbin-datatable>` component for scenarios where you need something that matches the look and feel of DataTables and is a reusable Vue component with MVVM style logic.
+
+```vue
+<div id="my-app-id" class="my-app">
+    <icbin-datatable v-model="data"
+                     :columns="columns"
+                     :text="text"
+                     @@special="onSpecial">
+        <div>Content here goes between the page length picker and the table.</div>
+    </icbin-datatable>
+</div>
+```
+
+
+- `data`: a serialized array of [`VueModel`](Models/VueModel.cs) (`v-model` here refers to the `data` property and the `update` event).
+- `columns`: a serialized array of [`DataTableColumnDefinition`](Models/DataTableColumnDefinition.cs).
+- `text`: an object of keys and display texts (i.e. string-string dictionary). Its expected properties are: `lengthPicker`, `displayCount`, `previous`, `next`.
+- `onspecial`: a function that receives a cell that has the `VueModel.Special` property and can edit it.
+
+For additional properties and notes on the events take a look at the comments [in the component](Assets/Scripts/icbin-datatable.js).
+
+_Note: use `@Json.Serialize()` to automatically camelCase the data for JS._
+
