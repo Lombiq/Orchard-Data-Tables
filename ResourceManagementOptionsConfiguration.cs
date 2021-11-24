@@ -1,16 +1,15 @@
 using Lombiq.DataTables.Constants;
+using Lombiq.HelpfulLibraries.Libraries.ResourceManagement;
 using Microsoft.Extensions.Options;
 using OrchardCore.ResourceManagement;
 
 namespace Lombiq.DataTables
 {
-    public class ResourceManagementOptionsConfiguration : IConfigureOptions<ResourceManagementOptions>
+    public class ResourceManagementOptionsConfiguration : ResourceManagementOptionsConfigurationBase
     {
         private const string WwwRoot = "~/Lombiq.DataTables/";
         private const string Vendors = WwwRoot + "vendors/";
         private const string Lombiq = WwwRoot + "lombiq/";
-
-        private static readonly ResourceManifest _manifest = new();
 
         static ResourceManagementOptionsConfiguration()
         {
@@ -121,7 +120,5 @@ namespace Lombiq.DataTables
                 .SetDependencies("vuejs")
                 .SetVersion("1.0.2");
         }
-
-        public void Configure(ResourceManagementOptions options) => options.ResourceManifests.Add(_manifest);
     }
 }
