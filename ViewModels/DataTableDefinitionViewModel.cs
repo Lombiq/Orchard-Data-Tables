@@ -9,5 +9,6 @@
         public string QueryStringParametersLocalStorageKey { get; set; }
         public string DataProvider { get; set; }
         public string DataTableCssClasses { get; set; }
+        public string HideCheckboxIfColumnIsEmpty { get; set; }
     }
 }
