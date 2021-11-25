@@ -21,6 +21,7 @@
     const string LoadingIndicatorElementName = ElementNames.DataTableElementName + "__loadingIndicator";
     const string ContentSelector = "ContentSelector";
     const string DataTableCheckboxBlockName = "dataTableCheckbox";
+    const string DataTableCheckboxHeaderBlockName = "dataTableCheckboxHeader";
 
     var queryId = viewModel?.QueryId ?? 0;
     var columnsDefinition = viewModel?.ColumnsDefinition as DataTableColumnsDefinition;
@@ -33,7 +34,7 @@
     var rowApiUrl = Url.HttpRouteUrl("", new { Area = "Lombiq.DataTables", Controller = "DataTablesRow", Action = "Get" });
 
     columns = (new DataTableColumnDefinition[] {
-        new DataTableColumnDefinition { Name = "ContentSelector", Orderable = false, Text = T("Select").Text } })
+        new DataTableColumnDefinition { Name = "ContentSelector", Orderable = false, Text = T("Select All").Text } })
         .Concat(columns);
 }
 
@@ -77,7 +78,7 @@
                             }
                         });
 
-                        $(".dataTables_scrollHead [data-name='ContentSelector']").html("<label class=\"@(DataTableCheckboxBlockName)__label\"><input type=\"checkbox\" class=\"checkbox selectAll @(DataTableCheckboxBlockName)__input\"/><span class=\"@(DataTableCheckboxBlockName)__indicator\">Select</span></label>");
+                        $(".dataTables_scrollHead [data-name='ContentSelector']").html("<label class=\"@(DataTableCheckboxHeaderBlockName)__label\"><input type=\"checkbox\" class=\"checkbox selectAllCheckbox @(DataTableCheckboxHeaderBlockName)__input\"/><span class=\"@(DataTableCheckboxHeaderBlockName)__indicator\">@T("Select All").Text</span></label>");
                     }
                 }
             });
@@ -102,7 +103,7 @@
                 $selectedIdsElement.val(JSON.stringify(selectedContentItemIds));
             });
 
-            $(".js-@BlockName").on("change", ".selectAll", function (e) {
+            $(".js-@BlockName").on("change", ".selectAllCheckbox", function (e) {
                 if (this.checked) {
                     selectedContentItemIds = @Json.Encode(recordsTotalIds);
 
