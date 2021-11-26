@@ -37,11 +37,11 @@ namespace Lombiq.DataTables.Services
             _shapeFactory = services.ShapeFactory;
         }
 
-        public virtual Task<IEnumerable<dynamic>> GetShapesBeforeTableAsync() =>
-            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
+        public virtual Task<IEnumerable<IShape>> GetShapesBeforeTableAsync() =>
+            Task.FromResult<IEnumerable<IShape>>(Array.Empty<IShape>());
 
-        public virtual Task<IEnumerable<dynamic>> GetShapesAfterTableAsync() =>
-            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
+        public virtual Task<IEnumerable<IShape>> GetShapesAfterTableAsync() =>
+            Task.FromResult<IEnumerable<IShape>>(Array.Empty<IShape>());
 
         public abstract Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request);
 

@@ -38,9 +38,9 @@ namespace Lombiq.DataTables.Services
         }
 
         public Task<DataTableChildRowResponse> GetChildRowAsync(int contentItemId) => throw new NotSupportedException();
-        public Task<IEnumerable<dynamic>> GetShapesBeforeTableAsync() => Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
+        public Task<IEnumerable<IShape>> GetShapesBeforeTableAsync() => Task.FromResult(Enumerable.Empty<IShape>());
 
-        public Task<IEnumerable<dynamic>> GetShapesAfterTableAsync() => Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
+        public Task<IEnumerable<IShape>> GetShapesAfterTableAsync() => Task.FromResult(Enumerable.Empty<IShape>());
 
         public Task<DataTableColumnsDefinition> GetColumnsDefinitionAsync(string queryId) => throw new NotSupportedException();
 

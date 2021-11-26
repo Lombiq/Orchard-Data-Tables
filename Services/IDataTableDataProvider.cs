@@ -1,6 +1,7 @@
 using Lombiq.DataTables.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using OrchardCore.DisplayManagement;
 using OrchardCore.Security.Permissions;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,11 +57,11 @@ namespace Lombiq.DataTables.Services
         /// <summary>
         /// Optional shapes to be displayed before the table.
         /// </summary>
-        Task<IEnumerable<dynamic>> GetShapesBeforeTableAsync();
+        Task<IEnumerable<IShape>> GetShapesBeforeTableAsync();
 
         /// <summary>
         /// Optional shapes to be displayed after the table.
         /// </summary>
-        Task<IEnumerable<dynamic>> GetShapesAfterTableAsync();
+        Task<IEnumerable<IShape>> GetShapesAfterTableAsync();
     }
 }
