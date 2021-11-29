@@ -1,3 +1,5 @@
+/* globals Vue */
+
 window.icbinDataTable = {};
 
 // events emitted:
@@ -8,6 +10,8 @@ window.icbinDataTable = {};
 // - update(data): Sends the new desired value of the "data" property to the parent. Alternatively
 //   v-model can also be used.
 // - column(columns): Sends an updated columns array to the parent so it can replace the columns parameter with it.
+// - component(rowIndex, columnName, userData): Passed on from the child component. If it's a column header component
+//   then columnName is -1.
 //
 // events received:
 // - delete(promptText): cell components may emit this event to signal a request to delete the row
@@ -15,6 +19,7 @@ window.icbinDataTable = {};
 //   happens, a prompt will be displayed with the given text to confirm with the user that they
 //   really want to remove the row.
 // - update(data): Same as above. The component may have a "data" property for this purpose.
+// - component(userData): A child component may raise this to be bubbled up to the parent component.
 
 window.icbinDataTable.table = {
     name: 'icbin-datatable',
@@ -37,7 +42,7 @@ window.icbinDataTable.table = {
             //       special: Any?,
             //       hiddenInput: { name: String, value: String }? or [ { name: String, value: String } ]?
             //       // These can be set in JS code (e.g. with the "special" event):
-            //       component: { name: String?, props: Object }?
+            //       component: { name: String?, value: Object }?
             //       rowClasses: String?
             //     }
             //   }
@@ -212,6 +217,59 @@ window.icbinDataTable.table = {
             return classes.join(' ');
         },
     },
+    created: function () {
+        const self = this;
+        let changed = false;
+
+        function updateData(rowIndex, columnName, newCell) {
+            const newRow = { ...self.data[rowIndex] };
+            newRow[columnName] = { ...newCell };
+            Vue.set(self.data, rowIndex, newRow); // Regenerate this row for reactivity.
+            changed = true;
+        }
+
+        function cloneCell(cell) {
+            const newCell = { ...cell };
+            delete newCell.special;
+            return newCell;
+        }
+
+        self.data.forEach((row, rowIndex) => {
+            Object.keys(row)
+                .filter((key) => key[0] !== '$')
+                .forEach((columnName) => {
+                    const cell = row[columnName];
+                    switch (cell?.special?.type) {
+                        case 'checkbox': {
+                            const special = cell.special;
+                            const newCell = cloneCell(cell);
+
+                            newCell.hiddenInput = {
+                                name: special.name,
+                                value: JSON.stringify(!!special.value),
+                            };
+
+                            newCell.component = {
+                                name: 'icbin-datatable-checkbox',
+                                value: {
+                                    label: special.label,
+                                    checked: !!special.value,
+                                    disabled: special.value === null,
+                                    classes: special.classes,
+                                },
+                            };
+                            newCell.sort = special.value;
+                            updateData(rowIndex, columnName, newCell);
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                });
+        });
+
+        if (changed) this.updateData(this.data);
+    },
     mounted: function () {
         const self = this;
 
@@ -256,7 +314,8 @@ window.icbinDataTable.table = {
                                    :data="data"
                                    :column="column"
                                    v-bind="column.component.value"
-                                   @update="updateColumn(columnIndex, $event)" />
+                                   @update="updateColumn(columnIndex, $event)"
+                                   @component="$emit('component', -1, column, $event)"  />
                         <div class="dataTables_sizing">
                             {{ column.text }}
                         </div>
@@ -278,9 +337,11 @@ window.icbinDataTable.table = {
                                        :is="cell.component.name"
                                        :data="data"
                                        :row-index="row.$rowIndex"
+                                       :column-name="column.name"
                                        v-bind="cell.component.value"
                                        @delete="deleteRow(row.$rowIndex, $event)"
-                                       @update="updateData($event)" />
+                                       @update="updateData($event)"
+                                       @component="$emit('component', rowIndex, column.name, $event)" />
                             <a v-else-if="cell.href"
                                :href="cell.href"
                                :class="cell.badge ? ('badge badge-' + cell.badge) : ''">
@@ -345,4 +406,41 @@ window.icbinDataTable.remove = {
         <i class="fas fa-trash-alt"></i>
         {{ text.remove }}
     </a>`,
+};
+
+window.icbinDataTable.checkbox = {
+    name: 'icbin-datatable-checkbox',
+    props: {
+        data: { type: Array, required: true },
+        rowIndex: { type: Number, required: true },
+        columnName: { type: String, required: true },
+        label: { default: '' },
+        checked: { default: undefined },
+        disabled: { type: Boolean, default: false },
+        classes: { default: '' },
+    },
+    methods: {
+        update(checked) {
+            const cell = this.data.filter((row) => row.$rowIndex === this.rowIndex)[0][this.columnName];
+            cell.component.value.checked = checked;
+            cell.hiddenInput.value = JSON.stringify(!!checked);
+            cell.sort = checked;
+            this.$emit('update', this.data);
+            this.$emit('component', 'checked');
+        },
+    },
+    mounted: function () {
+        this.$emit('component', 'checked');
+    },
+    template: `
+    <label class="icbinDatatableCheckbox__container">
+        <input
+            :checked="checked"
+            :disabled="disabled"
+            :class="classes"
+            class="icbinDatatableCheckbox"
+            type="checkbox"
+            @change="update($event.target.checked)">
+        <span v-if="label">{{ label }}</span>
+    </label>`,
 };
