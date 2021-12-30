@@ -67,4 +67,6 @@ $.fn.dataTable.moment = function ( format, locale, reverseEmpties ) {
 	};
 };
 
+$.fn.dataTable.moment("M/D/YYYY");
+
 }));
