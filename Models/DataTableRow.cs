@@ -31,5 +31,11 @@ namespace Lombiq.DataTables.Models
 
         public IEnumerable<string> GetValuesOrderedByColumns(IEnumerable<DataTableColumnDefinition> columnDefinitions) =>
             columnDefinitions.Where(column => column.DisplayCondition()).Select(columnDefinition => this[columnDefinition.Name] ?? "");
+
+        /// <summary>
+        /// Can be useful if certain columns only needed in the export.
+        /// </summary>
+        public IEnumerable<string> GetValuesOrderedByColumnsWithNotDisplayed(IEnumerable<DataTableColumnDefinition> columnDefinitions) =>
+            columnDefinitions.Select(columnDefinition => this[columnDefinition.Name] ?? "");
     }
 }
