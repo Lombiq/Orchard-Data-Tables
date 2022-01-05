@@ -43,6 +43,9 @@ namespace Lombiq.DataTables.Models
         [JsonProperty("href", NullValueHandling = NullValueHandling.Ignore)]
         public string Href { get; set; }
 
+        [JsonProperty("multipleLinks", NullValueHandling = NullValueHandling.Ignore)]
+        public IEnumerable<MultipleHrefValue> MultipleLinks { get; set; }
+
         /// <summary>
         /// Gets or sets the Bootstrap badge class of the cell. To be used along with <see cref="Text"/> and optionally
         /// <see cref="Href"/>.
@@ -154,6 +157,15 @@ namespace Lombiq.DataTables.Models
 
             [JsonProperty("value")]
             public string Value { get; set; }
+        }
+
+        public class MultipleHrefValue
+        {
+            [JsonProperty("url")]
+            public string Url { get; set; }
+
+            [JsonProperty("text")]
+            public string Text { get; set; }
         }
 
         public static class BadgeNames
