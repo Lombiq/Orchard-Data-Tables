@@ -103,9 +103,10 @@ window.icbinDataTable.table = {
         },
         displayCountText(self) {
             const itemIndex = self.pageIndex * self.length;
+            const mathMin = Math.min(itemIndex + self.length, self.total);
             return self.text.displayCount
                 .replace(/{{\s*from\s*}}/, itemIndex + 1)
-                .replace(/{{\s*to\s*}}/, Math.min(itemIndex + self.length, self.total))
+                .replace(/{{\s*to\s*}}/, mathMin === -1 ? self.total : mathMin)
                 .replace(/{{\s*total\s*}}/, self.total);
         },
         pagination(self) {
