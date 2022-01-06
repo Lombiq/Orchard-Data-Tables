@@ -39,6 +39,7 @@ window.icbinDataTable.table = {
             //       badge: String?
             //       sort: Any?,
             //       href: String?,
+            //       multipleLinks: { link: String, text: String }? or [ { link: String, text: String } ]?,
             //       special: Any?,
             //       hiddenInput: { name: String, value: String }? or [ { name: String, value: String } ]?
             //       // These can be set in JS code (e.g. with the "special" event):
@@ -347,6 +348,12 @@ window.icbinDataTable.table = {
                                :class="cell.badge ? ('badge badge-' + cell.badge) : ''">
                                 {{ cell.text }}
                             </a>
+                            <div v-else-if="cell.multipleLinks">
+                                <a v-for="(link, index) in cell.multipleLinks" :href="link.url">
+                                    {{ link.text }}
+                                    <span v-if="cell.multipleLinks.length > 1 && cell.multipleLinks.length != index + 1">, </span>
+                                </a>
+                            </div>
                             <div v-else-if="cell.html" v-html="cell.html"></div>
                             <span v-else :class="cell.badge ? ('badge badge-' + cell.badge) : ''">{{ cell.text }}</span>
                         </template>
