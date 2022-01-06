@@ -126,8 +126,8 @@ window.icbinDataTable.table = {
             const lower = self.sort.ascending ? -1 : 1;
             const sorted = self.filter(self.data.concat()) // The concat ensures the sort can't alter the original.
                 .sort((row1, row2) => {
-                    const sortable1 = row1[self.sort.name]?.sort ?? row1[self.sort.name]?.text;
-                    const sortable2 = row2[self.sort.name]?.sort ?? row2[self.sort.name]?.text;
+                    const sortable1 = row1[self.sort.name]?.sort ?? row1[self.sort.name]?.text.toLowerCase();
+                    const sortable2 = row2[self.sort.name]?.sort ?? row2[self.sort.name]?.text.toLowerCase();
 
                     if (sortable1 < sortable2) return lower;
                     if (sortable1 > sortable2) return -lower;
