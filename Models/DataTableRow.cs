@@ -33,9 +33,9 @@ namespace Lombiq.DataTables.Models
             columnDefinitions.Where(column => column.DisplayCondition()).Select(columnDefinition => this[columnDefinition.Name] ?? "");
 
         /// <summary>
-        /// Can be useful if certain columns only needed in the export.
+        /// Can be useful if certain columns only needed in the export table.
         /// </summary>
-        public IEnumerable<string> GetValuesOrderedByColumnsWithNotDisplayed(IEnumerable<DataTableColumnDefinition> columnDefinitions) =>
+        public IEnumerable<string> GetValuesOrderedByColumnsWithNotDisplayedColumns(IEnumerable<DataTableColumnDefinition> columnDefinitions) =>
             columnDefinitions.Select(columnDefinition => this[columnDefinition.Name] ?? "");
     }
 }
