@@ -25,14 +25,9 @@
     <PackageReference Include="ClosedXML" Version="0.95.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.0" />
-    <PackageReference Include="OrchardCore.Contents" Version="1.0.0" />
-    <PackageReference Include="OrchardCore.ContentManagement" Version="1.0.0" />
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.0.0" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.0.0" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.0.0" />
-    <PackageReference Include="OrchardCore.Lucene" Version="1.0.0" />
-    <PackageReference Include="OrchardCore.Liquid.Abstractions" Version="1.0.0" />
-    <PackageReference Include="OrchardCore.Queries" Version="1.0.0" />
+    <PackageReference Include="OrchardCore.Contents" Version="1.1.0" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.1.0" />
+    <PackageReference Include="OrchardCore.Lucene" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
