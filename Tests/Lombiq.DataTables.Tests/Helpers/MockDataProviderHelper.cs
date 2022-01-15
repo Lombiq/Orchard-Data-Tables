@@ -1,7 +1,7 @@
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Microsoft.Extensions.Caching.Memory;
-using Shouldly;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
@@ -10,17 +10,18 @@ namespace Lombiq.DataTables.Tests.Helpers
     public static class MockDataProviderHelper
     {
         public static (IDataTableDataProvider Provider, DataTableDataRequest Request) GetProviderAndRequest(
-            string note,
             object[][] dataSet,
             (string Name, string Text, bool Exportable)[] columns,
             int start,
             int length,
             int orderColumnIndex,
-            IMemoryCache memoryCache)
+            IMemoryCache memoryCache,
+            IServiceProvider shellContextServiceProvider = null)
         {
-            note.ShouldNotBeEmpty("Please state the purpose of this input set!");
+            // For when Liquid is not needed.
+            shellContextServiceProvider ??= new ServiceCollection().BuildServiceProvider();
 
-            var provider = new MockDataProvider(dataSet, memoryCache);
+            var provider = new MockDataProvider(dataSet, memoryCache, shellContextServiceProvider);
             provider.Definition = provider.DefineColumns(
                 columns.Select(column => (column.Name, column.Text)).ToArray());
 

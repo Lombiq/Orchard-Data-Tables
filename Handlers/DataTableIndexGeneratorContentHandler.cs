@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YesSql;
 using YesSql.Indexes;
 using ISession = YesSql.ISession;
 
@@ -83,8 +82,8 @@ namespace Lombiq.DataTables.Handlers
         {
             // Using very raw query because it's too complex for the parser.
             var session = _sessionLazy.Value;
-            var transaction = await session.DemandAsync();
-            var dialect = TransactionSqlDialectFactory.For(transaction);
+            var transaction = await session.BeginTransactionAsync();
+            var dialect = session.Store.Configuration.SqlDialect;
             var prefix = session.Store.Configuration.TablePrefix;
 
             var contentItemIndex = dialect.QuoteForTableName(prefix + nameof(ContentItemIndex));
@@ -112,9 +111,9 @@ namespace Lombiq.DataTables.Handlers
                 WHERE new.{contentItemId} IS NULL";
             var invalidIds = await transaction.Connection.QueryAsync<int>(deletedSql, transaction: transaction);
 
-            // OrchardCore.AuditTrail compatibility check. As it just uses the regular Orchard Core facilities there is
+            // Finitive.AuditTrail compatibility check. As it just uses the regular Orchard Core facilities there is
             // no need to make it a dependency.
-            var restored = _hcaLazy.Value.HttpContext?.Items.GetMaybe("OrchardCore.AuditTrail.Restored");
+            var restored = _hcaLazy.Value.HttpContext?.Items.GetMaybe("Finitive.AuditTrail.Restored");
             if (restored is ContentItem { ContentItemId: { } } restoredContentItem)
             {
                 invalidIds = invalidIds.Where(id => id != restoredContentItem.Id);

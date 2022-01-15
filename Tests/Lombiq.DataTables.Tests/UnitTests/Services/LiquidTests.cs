@@ -8,9 +8,11 @@ using Microsoft.Extensions.Options;
 using Moq;
 using OrchardCore.DisplayManagement;
 using OrchardCore.DisplayManagement.Layout;
+using OrchardCore.DisplayManagement.Liquid;
 using OrchardCore.Environment.Shell.Builders;
 using OrchardCore.Environment.Shell.Scope;
-using OrchardCore.Liquid;
+using OrchardCore.Localization;
+using OrchardCore.Modules;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -34,20 +36,27 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             int length,
             int orderColumnIndex)
         {
+            note.ShouldNotBeEmpty("Please state the purpose of this input set!");
+
             // Everything in this section of code is required for the Liquid renderer to work. Otherwise it will throw
             // NRE or render empty string results. On the final line shellScope.StartAsyncFlow() initializes the static
             // variable representing the current ShellScope.
             using var shellContext = new ShellContext
             {
                 ServiceProvider = new ServiceCollection()
-                    .AddScoped<IOptions<LiquidOptions>>(provider =>
-                        new OptionsWrapper<LiquidOptions>(new LiquidOptions()))
-                    .AddScoped(provider => new ViewContextAccessor { ViewContext = new ViewContext() })
-                    .AddScoped(provider => new Mock<IDisplayHelper>().Object)
-                    .AddScoped(provider => new Mock<IUrlHelperFactory>().Object)
-                    .AddScoped(provider => new Mock<IShapeFactory>().Object)
-                    .AddScoped(provider => new Mock<ILayoutAccessor>().Object)
-                    .AddScoped(provider => new Mock<IViewLocalizer>().Object)
+                    .AddScoped<IOptions<LiquidViewOptions>>(_ =>
+                        new OptionsWrapper<LiquidViewOptions>(new LiquidViewOptions()))
+                    .AddScoped(_ => new ViewContextAccessor { ViewContext = new ViewContext() })
+                    .AddScoped(_ => new Mock<IDisplayHelper>().Object)
+                    .AddScoped(_ => new Mock<IUrlHelperFactory>().Object)
+                    .AddScoped(_ => new Mock<IShapeFactory>().Object)
+                    .AddScoped(_ => new Mock<ILayoutAccessor>().Object)
+                    .AddScoped(_ => new Mock<IViewLocalizer>().Object)
+                    .AddScoped<ILocalClock>(_ =>
+                        new LocalClock(
+                            Array.Empty<ITimeZoneSelector>(),
+                            new Clock(),
+                            new DefaultCalendarManager(Array.Empty<ICalendarSelector>())))
                     .BuildServiceProvider(),
             };
 
@@ -60,13 +69,13 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
 
             using var memoryCache = new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()));
             var (provider, request) = MockDataProviderHelper.GetProviderAndRequest(
-                note,
                 dataSet,
                 columns,
                 start,
                 length,
                 orderColumnIndex,
-                memoryCache);
+                memoryCache,
+                shellContext.ServiceProvider);
             var rows = (await provider.GetRowsAsync(request)).Data.ToList();
 
             for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
@@ -91,14 +100,15 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
 
             yield return new object[]
             {
+                // By "built-in" we mean only those implemented in Fluid, not the ones added by OrchardCore.
                 "Demonstrate some built-in filters.",
                 dataset,
                 new[]
                 {
                     ("Num||^.*$||{{ '$0' | date: '%m/%d/%Y' }}", "Dates", true),
-                    ("Cls||^.*$||{{ '$0' | html_class  }}", "Magic Words", true),
+                    ("Cls||^.*$||{{ '$0' | downcase }}", "Magic Words", true),
                 },
-                $"{today},foo-bar-baz;01/01/1970,lorem-ipsum-dolor-sit-amet;12/31/2020,the-quick-brown-fox"
+                $"{today},foo bar baz;01/01/1970,lorem ipsum dolor sit amet;12/31/2020,the quick brown fox"
                     .Split(';')
                     .Select(row => row.Split(','))
                     .ToArray(),

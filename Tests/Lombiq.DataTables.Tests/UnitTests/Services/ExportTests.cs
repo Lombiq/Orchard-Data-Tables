@@ -29,9 +29,10 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
             int length,
             int orderColumnIndex)
         {
+            note.ShouldNotBeEmpty("Please state the purpose of this input set!");
+
             using var memoryCache = new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()));
             var (provider, request) = MockDataProviderHelper.GetProviderAndRequest(
-                note,
                 dataSet,
                 columns,
                 start,

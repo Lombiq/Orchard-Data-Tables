@@ -1,3 +1,5 @@
+using Fluid;
+using Fluid.Values;
 using Lombiq.DataTables.Controllers;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Http;
@@ -24,8 +26,6 @@ namespace Lombiq.DataTables.Services
         protected readonly ILiquidTemplateManager _liquidTemplateManager;
         protected readonly IShapeFactory _shapeFactory;
 
-        protected readonly PlainTextEncoder _plainTextEncoder;
-
         public abstract LocalizedString Description { get; }
         public virtual IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
 
@@ -35,15 +35,13 @@ namespace Lombiq.DataTables.Services
             _hca = services.HttpContextAccessor;
             _liquidTemplateManager = services.LiquidTemplateManager;
             _shapeFactory = services.ShapeFactory;
-
-            _plainTextEncoder = new PlainTextEncoder();
         }
 
-        public virtual Task<IEnumerable<dynamic>> GetShapesBeforeTableAsync() =>
-            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
+        public virtual Task<IEnumerable<IShape>> GetShapesBeforeTableAsync() =>
+            Task.FromResult<IEnumerable<IShape>>(Array.Empty<IShape>());
 
-        public virtual Task<IEnumerable<dynamic>> GetShapesAfterTableAsync() =>
-            Task.FromResult<IEnumerable<dynamic>>(Array.Empty<IShape>());
+        public virtual Task<IEnumerable<IShape>> GetShapesAfterTableAsync() =>
+            Task.FromResult<IEnumerable<IShape>>(Array.Empty<IShape>());
 
         public abstract Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request);
 
@@ -107,11 +105,11 @@ namespace Lombiq.DataTables.Services
                     if (row.ValuesDictionary.TryGetValue(liquidColumn, out var token) &&
                         token?.ToString() is { } template)
                     {
-                        row[liquidColumn] = await _liquidTemplateManager.RenderAsync(
+                        row[liquidColumn] = await _liquidTemplateManager.RenderStringAsync(
                             template,
-                            _plainTextEncoder,
+                            NullEncoder.Default,
                             row,
-                            _ => { });
+                            Array.Empty<KeyValuePair<string, FluidValue>>());
                     }
                 }
             }

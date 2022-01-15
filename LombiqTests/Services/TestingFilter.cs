@@ -1,4 +1,5 @@
 using Lombiq.DataTables.Controllers;
+using Lombiq.HelpfulLibraries.Libraries.Contents;
 using Microsoft.AspNetCore.Mvc.Filters;
 using OrchardCore.DisplayManagement;
 using OrchardCore.DisplayManagement.Layout;
@@ -25,9 +26,8 @@ namespace Lombiq.DataTables.LombiqTests.Services
                 return;
             }
 
-            dynamic layout = await _layoutAccessor.GetLayoutAsync();
-            var zone = layout.Zones["Header"];
-            zone.Add(await _shapeFactory.New.Lombiq_Datatable_Testing_Header());
+            IShape testingHeader = await _shapeFactory.New.Lombiq_Datatable_Testing_Header();
+            await _layoutAccessor.AddShapeToZoneAsync("Header", testingHeader);
 
             await next();
         }

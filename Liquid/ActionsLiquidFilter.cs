@@ -57,7 +57,7 @@ namespace Lombiq.DataTables.Liquid
             _actionsDescriptorStringLocalizer = actionsDescriptorStringLocalizer;
         }
 
-        public ValueTask<FluidValue> ProcessAsync(FluidValue input, FilterArguments arguments, TemplateContext ctx)
+        public ValueTask<FluidValue> ProcessAsync(FluidValue input, FilterArguments arguments, LiquidTemplateContext context)
         {
             // These variables are declared separately because otherwise nameof wouldn't work claiming that the variable
             // doesn't exist in the scope. Once the variable is declared nameof can use it even if it's not defined yet.
@@ -89,7 +89,7 @@ namespace Lombiq.DataTables.Liquid
             await using var stringWriter = new StringWriter();
             content.WriteTo(stringWriter, HtmlEncoder.Default);
 
-            return FluidValue.Create(new HtmlString(stringWriter.ToString()));
+            return FluidValue.Create(new HtmlString(stringWriter.ToString()), TemplateOptions.Default);
         }
 
         private static InvalidOperationException GetException(object input) =>
