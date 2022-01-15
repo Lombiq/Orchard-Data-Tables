@@ -25,28 +25,6 @@ namespace Lombiq.DataTables.Controllers
             _contentManager = contentManager;
         }
 
-        public async Task<IActionResult> Query(string queryName, string contentId)
-        {
-            var provider = _dataTableDataProviders
-                .Single(provider => provider.Name == nameof(QueryDataTableDataProvider));
-            var definition = new DataTableDefinitionViewModel
-            {
-                DataProvider = provider.Name,
-                QueryId = queryName,
-                ColumnsDefinition = (await _contentManager.GetAsync(contentId))
-                    .As<DataTableColumnsDefinitionPart>()
-                    .Definition,
-            };
-
-            return View(nameof(Get), new DataTableViewModel
-            {
-                Definition = definition,
-                Provider = provider,
-                BeforeTable = await provider.GetShapesBeforeTableAsync(),
-                AfterTable = await provider.GetShapesAfterTableAsync(),
-            });
-        }
-
         [Route("/Admin/DataTable/{providerName}/{queryId?}")]
         public async Task<IActionResult> Get(string providerName, string queryId = null, bool paging = true, bool viewAction = false)
         {
