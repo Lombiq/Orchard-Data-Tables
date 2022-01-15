@@ -13,9 +13,9 @@
     <None Include="Readme.md" />
   </ItemGroup>
 
-  <Import Project="..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
-  <Import Project="..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
-  <Import Project="..\..\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.targets" />
+  <Import Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
+  <Import Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
+  <Import Project="..\..\..\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.targets" />
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -36,9 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.csproj" />
-    <ProjectReference Include="..\..\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.csproj" />
-    <ProjectReference Include="..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.csproj" />
+    <ProjectReference Include="..\..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.csproj" />
+    <ProjectReference Include="..\..\..\Utilities\Lombiq.Gulp.Extensions\Lombiq.Gulp.Extensions.csproj" />
+    <ProjectReference Include="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.csproj" />
   </ItemGroup>
 
 </Project>
