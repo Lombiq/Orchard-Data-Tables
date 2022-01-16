@@ -4,7 +4,9 @@
 
 ## About
 
-An Orchard Core wrapper around the [DataTables](https://datatables.net/) library for displaying tabular data from [Queries](https://docs.orchardcore.net/en/dev/docs/reference/modules/Queries/) and custom data sources. 
+An Orchard Core wrapper around the [DataTables](https://datatables.net/) library for displaying tabular data from [Queries](https://docs.orchardcore.net/en/dev/docs/reference/modules/Queries/) and custom data sources.
+
+Do you want to quickly try out this project and see it in action? Check it out in our [Open-Source Orchard Core Extensions](https://github.com/Lombiq/Open-Source-Orchard-Core-Extensions) full Orchard Core solution and also see our other useful Orchard Core-related open-source projects!
 
 
 ## How to use
@@ -60,4 +62,11 @@ You may say, _I Can't Believe It's Not DataTable!_ but it really is not. Use the
 For additional properties and notes on the events take a look at the comments [in the component](Assets/Scripts/icbin-datatable.js).
 
 _Note: use `@Json.Serialize()` to automatically camelCase the data for JS._
+
+
+## Contributing and support
+
+Bug reports, feature requests, comments, questions, code contributions, and love letters are warmly welcome, please do so via GitHub issues and pull requests. Please adhere to our [open-source guidelines](https://lombiq.com/open-source-guidelines) while doing so.
+
+This project is developed by [Lombiq Technologies](https://lombiq.com/). Commercial-grade support is available through Lombiq.
 
