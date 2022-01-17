@@ -3,6 +3,8 @@
    can pass a JSON encoded configuration object into the data-options attribute too. Use apostrophes instead of quotes
    to avoid encoding problems. *@
 
+@* Always make sure Views/_ViewImports.cshtml has "@addTagHelper *, Lombiq.DataTables.TagHelpers" for the tag helper. *@
+
 <datatable data-options="{ order: [[ 3, 'desc' ]] }">
     <thead>
         <tr>
@@ -483,3 +485,7 @@
         </tr>
     </tfoot>
 </datatable>
+
+@* END OF TRAINING SECTION: The <datatable> Tag Helper *@
+
+@* NEXT STATION: Services/SampleJsonResultDataTableDataProvider.cs*@

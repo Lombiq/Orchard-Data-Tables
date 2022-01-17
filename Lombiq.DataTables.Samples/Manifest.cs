@@ -6,5 +6,6 @@ using OrchardCore.Modules.Manifest;
     Website = "https://github.com/Lombiq/Orchard-Data-Tables",
     Version = "1.0.0",
     Description = "Samples for Lombiq Data Tables.",
-    Category = "Development"
+    Category = "Development",
+    Dependencies = new[] { Lombiq.DataTables.Constants.FeatureIds.DataTables }
 )]

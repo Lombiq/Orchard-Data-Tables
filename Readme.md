@@ -16,7 +16,7 @@ Do you want to quickly try out this project and see it in action? Check it out i
 
 In the most basic form you can use [DOM sourced data](https://datatables.net/examples/data_sources/dom.html) with the `<datatable>` tag helper.
 
-Follow the walkthrough on the sample project [here](Lombiq.DataTables.Samples/Views/Sample/DataTableTagHelper.cshtml).
+Follow the walkthrough on the sample project [The `<datatable>` Tag Helper](Lombiq.DataTables.Samples/Views/Sample/DataTableTagHelper.cshtml).
 
 
 ### Asynchronous Content With a Custom Provider
@@ -27,7 +27,8 @@ Once you have your data provider, it must be registered using `services.AddDataT
 
 If you need an admin page with just one data table you don't need to define a view, just link to `/Admin/DataTable/{providerName}/{queryId?}`.
 
-There is a h
+Follow the walkthroughs on the sample project:
+- [JSON Result DataTable Data Provider](Lombiq.DataTables.Samples/Services/SampleJsonResultDataTableDataProvider.cs).
 
 
 ## Client-side Extensibility
