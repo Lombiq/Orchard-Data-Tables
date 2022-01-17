@@ -11,10 +11,23 @@ Do you want to quickly try out this project and see it in action? Check it out i
 
 ## How to use
 
+
+### Static Content With Tag Helper
+
 In the most basic form you can use [DOM sourced data](https://datatables.net/examples/data_sources/dom.html) with the `<datatable>` tag helper.
 
-If your data source is a Query, you can use the built-in `QueryDataTableDataProvider`.
-Otherwise implement your own provider - to make it simpler use the `JsonResultDataTableDataProvider` as the base class. Register the provider using the `services.AddDataTableDataProvider<TProvider>()` extension method and use the `Lombiq_DataTable` shape to display it. 
+Follow the walkthrough on the sample project [here](Lombiq.DataTables.Samples/Views/Sample/DataTableTagHelper.cshtml).
+
+
+### Asynchronous Content With a Custom Provider
+
+The `Lombiq_DataTable` shape can display sortable, searchable, paginated data, but you must make your own data provider by extending `DataTableDataProviderBase` or either of the abstract base classes provided by us (`JsonResultDataTableDataProvider`, `IndexBasedDataTableDataProvider`). The latter is for complex database queries that would take a long time to calculate on demand, are tied to one or more content items and can be indexed ahead of time.
+
+Once you have your data provider, it must be registered using `services.AddDataTableDataProvider<TProvider>()`, or if it's index based then using `services.AddIndexBasedDataTableProvider<TIndex, TGenerator, TMigration, TProvider>()`.
+
+If you need an admin page with just one data table you don't need to define a view, just link to `/Admin/DataTable/{providerName}/{queryId?}`.
+
+There is a h
 
 
 ## Client-side Extensibility
@@ -54,12 +67,12 @@ You may say, _I Can't Believe It's Not DataTable!_ but it really is not. Use the
 ```
 
 
-- `data`: a serialized array of [`VueModel`](Models/VueModel.cs) (`v-model` here refers to the `data` property and the `update` event).
-- `columns`: a serialized array of [`DataTableColumnDefinition`](Models/DataTableColumnDefinition.cs).
+- `data`: a serialized array of [`VueModel`](Lombiq.DataTables/Models/VueModel.cs) (`v-model` here refers to the `data` property and the `update` event).
+- `columns`: a serialized array of [`DataTableColumnDefinition`](Lombiq.DataTables/Models/DataTableColumnDefinition.cs).
 - `text`: an object of keys and display texts (i.e. string-string dictionary). Its expected properties are: `lengthPicker`, `displayCount`, `previous`, `next`.
 - `onspecial`: a function that receives a cell that has the `VueModel.Special` property and can edit it.
 
-For additional properties and notes on the events take a look at the comments [in the component](Assets/Scripts/icbin-datatable.js).
+For additional properties and notes on the events take a look at the comments [in the component](Lombiq.DataTables/Assets/Scripts/icbin-datatable.js).
 
 _Note: use `@Json.Serialize()` to automatically camelCase the data for JS._
 
