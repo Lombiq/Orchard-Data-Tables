@@ -4,7 +4,7 @@ namespace Lombiq.DataTables.Models
 {
     public class DataTableColumnDefinition
     {
-        public Dictionary<string, object> AdditionalSettings { get; } = new();
+        public IDictionary<string, object> AdditionalSettings { get; } = new Dictionary<string, object>();
         public string Name { get; set; }
         public string Text { get; set; }
         public string DataSource { get; set; }

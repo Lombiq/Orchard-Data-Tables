@@ -140,8 +140,8 @@ namespace Lombiq.DataTables.Models
             return JArray.FromObject(rows);
         }
 
-        public static Dictionary<string, string> CreateTextForIcbinDataTable(IHtmlLocalizer localizer) =>
-            new()
+        public static IDictionary<string, string> CreateTextForIcbinDataTable(IHtmlLocalizer localizer) =>
+            new Dictionary<string, string>
             {
                 ["lengthPicker"] = localizer["Show {{ count }} Entries"].Value,
                 ["displayCount"] = localizer["Showing {{ from }} to {{ to }} of {{ total }} entries"].Value,

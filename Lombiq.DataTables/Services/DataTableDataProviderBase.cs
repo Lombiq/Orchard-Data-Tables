@@ -14,7 +14,6 @@ using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services
@@ -89,11 +88,11 @@ namespace Lombiq.DataTables.Services
             IList<DataTableColumnDefinition> columns) =>
             json.Select((result, index) =>
                 new DataTableRow(index, columns
-                    .Select(column => (column.Name, column.Regex, Token: result.SelectToken(column.Name, false)))
+                    .Select(column => (column.Name, column.Regex, Token: result.SelectToken(column.Name, errorWhenNoMatch: false)))
                     .ToDictionary(
                         cell => cell.Name,
                         cell => cell.Regex is { } regex
-                            ? new JValue(Regex.Replace(cell.Token?.ToString() ?? string.Empty, regex.From, regex.To))
+                            ? new JValue(cell.Token?.ToString().Replace(regex.From, regex.To) ?? string.Empty)
                             : cell.Token)));
 
         protected async Task RenderLiquidAsync(IEnumerable<DataTableRow> rowList, IList<string> liquidColumns)
