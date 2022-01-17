@@ -19,7 +19,7 @@ namespace Lombiq.DataTables.Services
         /// ordered and the value is <see langword="true"/> if the index should be removed, <see langword="false"/> if
         /// it should be updated.
         /// </summary>
-        Dictionary<string, bool> IndexGenerationIsRemovalByType { get; }
+        IDictionary<string, bool> IndexGenerationIsRemovalByType { get; }
 
         /// <summary>
         /// Gets the content type names that the index is made for. Other content types may only trigger index updates
@@ -63,7 +63,7 @@ namespace Lombiq.DataTables.Services
         /// Returns the <see cref="ContentItem.ContentItemId"/>s from the
         /// <see cref="IDataTableIndexGenerator{TIndex}.IndexGenerationIsRemovalByType"/> for updates only.
         /// </summary>
-        public static List<string> GetUpdateIds<TIndex>(this IDataTableIndexGenerator<TIndex> generator)
+        public static IList<string> GetUpdateIds<TIndex>(this IDataTableIndexGenerator<TIndex> generator)
             where TIndex : MapIndex =>
             generator.IndexGenerationIsRemovalByType
                 .Where(pair => !pair.Value)

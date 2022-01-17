@@ -56,6 +56,6 @@ namespace Lombiq.DataTables.Models
         /// <summary>
         /// Creates a new response with empty <see cref="Data"/>.
         /// </summary>
-        public static DataTableDataResponse Empty() => ErrorResult(null);
+        public static DataTableDataResponse Empty() => ErrorResult(errorText: null);
     }
 }

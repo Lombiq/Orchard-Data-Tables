@@ -46,6 +46,6 @@ namespace Lombiq.DataTables.Services
             IDataTableDataProvider dataProvider,
             DataTableDataRequest request,
             DataTableColumnsDefinition columnsDefinition = null,
-            Dictionary<int, string> customNumberFormat = null);
+            IDictionary<int, string> customNumberFormat = null);
     }
 }

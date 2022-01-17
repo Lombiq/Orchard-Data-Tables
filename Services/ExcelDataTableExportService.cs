@@ -23,7 +23,7 @@ namespace Lombiq.DataTables.Services
             IDataTableDataProvider dataProvider,
             DataTableDataRequest request,
             DataTableColumnsDefinition columnsDefinition = null,
-            Dictionary<int, string> customNumberFormat = null)
+            IDictionary<int, string> customNumberFormat = null)
         {
             columnsDefinition ??= await dataProvider.GetColumnsDefinitionAsync(request.QueryId);
             var columns = columnsDefinition.Columns.Where(column => column.Exportable).ToList();
@@ -64,7 +64,7 @@ namespace Lombiq.DataTables.Services
             JToken[][] results,
             IStringLocalizer<ExcelDataTableExportService> localizer,
             string error = null,
-            Dictionary<int, string> customNumberFormat = null)
+            IDictionary<int, string> customNumberFormat = null)
         {
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add(worksheetName);
@@ -121,7 +121,7 @@ namespace Lombiq.DataTables.Services
             {
                 var date = dateJObject.ToObject<ExportDate>();
                 cell.Value = (DateTime)date!;
-                cell.Style.DateFormat.Format = date.ExcelFormat ?? dateFormat;
+                cell.Style.DateFormat.Format = date?.ExcelFormat ?? dateFormat;
             }
             else
             {
