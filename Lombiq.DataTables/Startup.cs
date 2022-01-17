@@ -37,6 +37,8 @@ namespace Lombiq.DataTables
             services.AddOrchardServices();
 
             services.AddScoped<IDeferredTask, IndexGeneratorDeferredTask>();
+
+            services.AddDataTableDataProvider<DeletedContentItemDataTableDataProvider>();
         }
 
         public override void Configure(
