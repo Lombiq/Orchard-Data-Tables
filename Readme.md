@@ -25,6 +25,8 @@ Once you have your data provider, it must be registered using `services.AddDataT
 
 If you need an admin page with just one data table you don't need to define a view, just link to `/Admin/DataTable/{providerName}/{queryId?}`.
 
+You can find an example using LinqToSql queries do display a table of deleted content items at [DeletedContentItemDataTableDataProvider.cs](Services/DeletedContentItemDataTableDataProvider.cs).
+
 
 ## Client-side Extensibility
 
