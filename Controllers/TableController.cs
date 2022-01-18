@@ -1,8 +1,10 @@
+using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using OrchardCore.Admin;
+using OrchardCore.ContentManagement;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,10 +14,16 @@ namespace Lombiq.DataTables.Controllers
     [Admin]
     public class TableController : Controller
     {
+        private readonly IContentManager _contentManager;
         private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviders;
 
-        public TableController(IEnumerable<IDataTableDataProvider> dataTableDataProviders) =>
+        public TableController(
+            IContentManager contentManager,
+            IEnumerable<IDataTableDataProvider> dataTableDataProviders)
+        {
+            _contentManager = contentManager;
             _dataTableDataProviders = dataTableDataProviders;
+        }
 
         public async Task<IActionResult> Query(string queryName, string contentId)
         {

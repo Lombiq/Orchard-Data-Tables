@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LuceneQueryResults = OrchardCore.Lucene.LuceneQueryResults;
 
 namespace Lombiq.DataTables.Services
 {
