@@ -91,22 +91,24 @@ namespace Lombiq.DataTables.Services
         /// <param name="authorizationService">Authorizes the user.</param>
         /// <param name="user">The user to check.</param>
         /// <returns>
-        /// True if the user has at least one of the <see cref="Permission"/>s given by the <paramref
-        /// name="dataProvider"/>.
+        /// <see langword="true" /> if the user has at least one of the <see cref="Permission"/>s given by the <paramref
+        /// name="dataProvider"/> or if its <see  cref="IDataTableDataProvider.AllowedPermissions"/> is null or empty.
         /// </returns>
         public static async Task<bool> AuthorizeAsync(
             this IDataTableDataProvider dataProvider,
             IAuthorizationService authorizationService,
             ClaimsPrincipal user)
         {
-            if (dataProvider.AllowedPermissions == null) return false;
+            if (dataProvider.AllowedPermissions == null) return true;
 
+            var hasFailedPermissions = false;
             foreach (var permission in dataProvider.AllowedPermissions)
             {
                 if (await authorizationService.AuthorizeAsync(user, permission)) return true;
+                hasFailedPermissions = true;
             }
 
-            return false;
+            return !hasFailedPermissions;
         }
 
         public static ActionsDescriptor GetCustomActions(
