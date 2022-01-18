@@ -1,7 +1,15 @@
-﻿using Lombiq.DataTables.Models;
+﻿using Lombiq.DataTables.Constants;
+using Lombiq.DataTables.Models;
+using Lombiq.DataTables.Samples.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.HelpfulLibraries.Libraries.Contents;
 using Microsoft.Extensions.Localization;
+using OrchardCore.ContentManagement;
+using OrchardCore.DisplayManagement;
+using OrchardCore.Security.Permissions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using YesSql;
 using static Lombiq.DataTables.Samples.Constants.ContentTypes;
@@ -15,19 +23,37 @@ namespace Lombiq.DataTables.Samples.Services
     public class SampleJsonResultDataTableDataProvider : JsonResultDataTableDataProvider
     {
         private readonly ISession _session;
+        private readonly IShapeFactory _shapeFactory;
+        private readonly IStringLocalizer<ActionsDescriptor> _actionsStringLocalizer;
         private readonly IStringLocalizer T;
 
+        // This value is displayed on the excel export and the /Admin/DataTable/{providerName} page.
         public override LocalizedString Description => T["Sample Data Provider"];
+
+        // You can provide required permissions, the viewer will need at least one to display results on the page. If
+        // it's empty or null then no permission check is required.
+        public override IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
 
         public SampleJsonResultDataTableDataProvider(
             ISession session,
+            IShapeFactory shapeFactory,
             IDataTableDataProviderServices services,
-            IStringLocalizer implementationStringLocalizer)
+            IStringLocalizer<ActionsDescriptor> actionsStringLocalizer,
+            IStringLocalizer<SampleJsonResultDataTableDataProvider> implementationStringLocalizer)
             : base(services, implementationStringLocalizer)
         {
             _session = session;
+            _shapeFactory = shapeFactory;
+            _actionsStringLocalizer = actionsStringLocalizer;
             T = implementationStringLocalizer;
         }
+
+        // You can inject shapes before or after the table using this and GetShapesAfterTableAsync(). It's used by the
+        // /Admin/DataTable/{providerName} page.
+        public override async Task<IEnumerable<IShape>> GetShapesBeforeTableAsync() => new[]
+        {
+            await _shapeFactory.CreateAsync("ShapeBeforeExample"),
+        };
 
         // You must override this method and return a page of data based on the request.
         protected override async Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request)
@@ -47,7 +73,26 @@ namespace Lombiq.DataTables.Samples.Services
             var filteredQuery = query;
 
             // We have this helper method to avoid confusion because DataTables and YesSql describes slices differently.
-            var results = await PaginateAsync(query, request);
+            var results = (await PaginateAsync(query, request))
+                // The result will be converted into JSON so it's a good practice to strip anything unneeded to save
+                // bandwidth. Also you may have cyclic references in your results which this eliminates.
+                .Select(contentItem => contentItem.As<EmployeePart>())
+                .Select(part => new EmployeeJsonResult
+                {
+                    ContentItemId = part.ContentItem.ContentItemId,
+                    Name = part.Name.Text,
+                    Position = part.Position.Text,
+                    Office = part.Office.Text,
+                    Age = part.Age.Value,
+                    StartDate = part.StartDate.Value,
+                    Salary = part.Salary.Value,
+                    Actions = this.GetCustomActions(
+                        part.ContentItem.ContentItemId,
+                        canDelete: true,
+                        _hca,
+                        _linkGenerator,
+                        _actionsStringLocalizer),
+                });
 
             // To get an accurate total even when filtering, we need the counts of the query before and after filtering,
             // always before pagination. To save time, you can omit the filtered query when there was no search and
@@ -65,6 +110,40 @@ namespace Lombiq.DataTables.Samples.Services
                 Count = totalCount,
                 CountFiltered = filteredCount,
             };
+        }
+
+        // You also need to override GetColumnsDefinitionAsync or GetColumnsDefinitionInner to provide the column
+        // headers. The latter is ideal in most cases, but the async version is available in case you need to fetch a
+        // site setting or database value before providing your columns.
+        // The this.DefineColumns extension lets you simply provide a default sorting column, sorting direction and an
+        // array of property name - display text pairs. However you are free to make your DataTableColumnsDefinition
+        // from scratch if you need it.
+        // You can also amend a regex search-replace pattern which will be applied to every cell in that column. This is
+        // also a good way to inject Liquid expressions into the value, which are evaluated on the server side before
+        // the page is returned. A typical use case for that is the content item actions dropdown, we have a prebuilt
+        // method for that.
+        protected override DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) =>
+            this.DefineColumns(
+                nameof(EmployeeJsonResult.StartDate),
+                SortingDirection.Descending,
+                (nameof(EmployeeJsonResult.Name), T["Name"]),
+                (nameof(EmployeeJsonResult.Position), T["Position"]),
+                (nameof(EmployeeJsonResult.Office), T["Office"]),
+                (nameof(EmployeeJsonResult.Age), T["Age"]),
+                (nameof(EmployeeJsonResult.StartDate), T["Start Date"]),
+                (nameof(EmployeeJsonResult.Salary) + "||^||$", T["Salary"]),
+                (GetActionsColumn(nameof(EmployeeJsonResult.Actions), fromJson: true), T["Actions"]));
+
+        public class EmployeeJsonResult
+        {
+            public string ContentItemId { get; set; }
+            public string Name { get; set; }
+            public string Position { get; set; }
+            public string Office { get; set; }
+            public decimal? Age { get; set; }
+            public DateTime? StartDate { get; set; }
+            public decimal? Salary { get; set; }
+            public ActionsDescriptor Actions { get; set; }
         }
     }
 }
