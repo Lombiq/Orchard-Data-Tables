@@ -7,10 +7,12 @@
   "version": "1.0",
   "issetuprecipe": false,
   "categories": [
-    "content"
+    "training"
   ],
   "tags": [
-    "content"
+    "developer",
+    "training",
+    "sample"
   ],
   "steps": [
     {
@@ -21,14 +23,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Tiger Nixon"
-          },
+          "DisplayText": "Tiger Nixon",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.961Z",
-          "PublishedUtc": "2022-01-18T17:04:11.961Z",
-          "CreatedUtc": "2022-01-18T17:04:11.961Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -44,7 +44,7 @@
             "Age": {
               "Value": 61
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-04-25T12:00:00.000Z"
             },
             "Salary": {
@@ -56,14 +56,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Garrett Winters"
-          },
+          "DisplayText": "Garrett Winters",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.961Z",
-          "PublishedUtc": "2022-01-18T17:04:11.961Z",
-          "CreatedUtc": "2022-01-18T17:04:11.961Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -79,7 +77,7 @@
             "Age": {
               "Value": 63
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-07-25T12:00:00.000Z"
             },
             "Salary": {
@@ -91,14 +89,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Ashton Cox"
-          },
+          "DisplayText": "Ashton Cox",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.961Z",
-          "PublishedUtc": "2022-01-18T17:04:11.961Z",
-          "CreatedUtc": "2022-01-18T17:04:11.961Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -114,7 +110,7 @@
             "Age": {
               "Value": 66
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2009-01-12T12:00:00.000Z"
             },
             "Salary": {
@@ -126,14 +122,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Cedric Kelly"
-          },
+          "DisplayText": "Cedric Kelly",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.961Z",
-          "PublishedUtc": "2022-01-18T17:04:11.961Z",
-          "CreatedUtc": "2022-01-18T17:04:11.961Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -149,7 +143,7 @@
             "Age": {
               "Value": 22
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2012-03-29T12:00:00.000Z"
             },
             "Salary": {
@@ -161,14 +155,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Airi Satou"
-          },
+          "DisplayText": "Airi Satou",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.961Z",
-          "PublishedUtc": "2022-01-18T17:04:11.961Z",
-          "CreatedUtc": "2022-01-18T17:04:11.961Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -184,7 +176,7 @@
             "Age": {
               "Value": 33
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2008-11-28T12:00:00.000Z"
             },
             "Salary": {
@@ -196,14 +188,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Brielle Williamson"
-          },
+          "DisplayText": "Brielle Williamson",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -219,7 +209,7 @@
             "Age": {
               "Value": 61
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2012-12-02T12:00:00.000Z"
             },
             "Salary": {
@@ -231,14 +221,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Herrod Chandler"
-          },
+          "DisplayText": "Herrod Chandler",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -254,7 +242,7 @@
             "Age": {
               "Value": 59
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2012-08-06T12:00:00.000Z"
             },
             "Salary": {
@@ -266,14 +254,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Rhona Davidson"
-          },
+          "DisplayText": "Rhona Davidson",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -289,7 +275,7 @@
             "Age": {
               "Value": 55
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2010-10-14T12:00:00.000Z"
             },
             "Salary": {
@@ -301,14 +287,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Colleen Hurst"
-          },
+          "DisplayText": "Colleen Hurst",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -324,7 +308,7 @@
             "Age": {
               "Value": 39
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2009-09-15T12:00:00.000Z"
             },
             "Salary": {
@@ -336,14 +320,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Sonya Frost"
-          },
+          "DisplayText": "Sonya Frost",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -359,7 +341,7 @@
             "Age": {
               "Value": 23
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2008-12-13T12:00:00.000Z"
             },
             "Salary": {
@@ -371,14 +353,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Jena Gaines"
-          },
+          "DisplayText": "Jena Gaines",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -394,7 +374,7 @@
             "Age": {
               "Value": 30
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2008-12-19T12:00:00.000Z"
             },
             "Salary": {
@@ -406,14 +386,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Quinn Flynn"
-          },
+          "DisplayText": "Quinn Flynn",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -429,7 +407,7 @@
             "Age": {
               "Value": 22
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2013-03-03T12:00:00.000Z"
             },
             "Salary": {
@@ -441,14 +419,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Charde Marshall"
-          },
+          "DisplayText": "Charde Marshall",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -464,7 +440,7 @@
             "Age": {
               "Value": 36
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2008-10-16T12:00:00.000Z"
             },
             "Salary": {
@@ -476,14 +452,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Haley Kennedy"
-          },
+          "DisplayText": "Haley Kennedy",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -499,7 +473,7 @@
             "Age": {
               "Value": 43
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2012-12-18T12:00:00.000Z"
             },
             "Salary": {
@@ -511,14 +485,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Tatyana Fitzpatrick"
-          },
+          "DisplayText": "Tatyana Fitzpatrick",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -534,7 +506,7 @@
             "Age": {
               "Value": 19
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2010-03-17T12:00:00.000Z"
             },
             "Salary": {
@@ -546,14 +518,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Michael Silva"
-          },
+          "DisplayText": "Michael Silva",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -569,7 +539,7 @@
             "Age": {
               "Value": 66
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2012-11-27T12:00:00.000Z"
             },
             "Salary": {
@@ -581,14 +551,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Paul Byrd"
-          },
+          "DisplayText": "Paul Byrd",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -604,7 +572,7 @@
             "Age": {
               "Value": 64
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2010-06-09T12:00:00.000Z"
             },
             "Salary": {
@@ -616,14 +584,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Gloria Little"
-          },
+          "DisplayText": "Gloria Little",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -639,7 +605,7 @@
             "Age": {
               "Value": 59
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2009-04-10T12:00:00.000Z"
             },
             "Salary": {
@@ -651,14 +617,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Bradley Greer"
-          },
+          "DisplayText": "Bradley Greer",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -674,7 +638,7 @@
             "Age": {
               "Value": 41
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2012-10-13T12:00:00.000Z"
             },
             "Salary": {
@@ -686,14 +650,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Dai Rios"
-          },
+          "DisplayText": "Dai Rios",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -709,7 +671,7 @@
             "Age": {
               "Value": 35
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2012-09-26T12:00:00.000Z"
             },
             "Salary": {
@@ -721,14 +683,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Jenette Caldwell"
-          },
+          "DisplayText": "Jenette Caldwell",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -744,7 +704,7 @@
             "Age": {
               "Value": 30
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-09-03T12:00:00.000Z"
             },
             "Salary": {
@@ -756,14 +716,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Yuri Berry"
-          },
+          "DisplayText": "Yuri Berry",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -779,7 +737,7 @@
             "Age": {
               "Value": 40
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2009-06-25T12:00:00.000Z"
             },
             "Salary": {
@@ -791,14 +749,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Caesar Vance"
-          },
+          "DisplayText": "Caesar Vance",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -814,7 +770,7 @@
             "Age": {
               "Value": 21
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-12-12T12:00:00.000Z"
             },
             "Salary": {
@@ -826,14 +782,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Doris Wilder"
-          },
+          "DisplayText": "Doris Wilder",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -849,7 +803,7 @@
             "Age": {
               "Value": 23
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2010-09-20T12:00:00.000Z"
             },
             "Salary": {
@@ -861,14 +815,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Angelica Ramos"
-          },
+          "DisplayText": "Angelica Ramos",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -884,7 +836,7 @@
             "Age": {
               "Value": 47
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2009-10-09T12:00:00.000Z"
             },
             "Salary": {
@@ -896,14 +848,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Gavin Joyce"
-          },
+          "DisplayText": "Gavin Joyce",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -919,7 +869,7 @@
             "Age": {
               "Value": 42
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2010-12-22T12:00:00.000Z"
             },
             "Salary": {
@@ -931,14 +881,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Jennifer Chang"
-          },
+          "DisplayText": "Jennifer Chang",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -954,7 +902,7 @@
             "Age": {
               "Value": 28
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2010-11-14T12:00:00.000Z"
             },
             "Salary": {
@@ -966,14 +914,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Brenden Wagner"
-          },
+          "DisplayText": "Brenden Wagner",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -989,7 +935,7 @@
             "Age": {
               "Value": 28
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-06-07T12:00:00.000Z"
             },
             "Salary": {
@@ -1001,14 +947,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Fiona Green"
-          },
+          "DisplayText": "Fiona Green",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1024,7 +968,7 @@
             "Age": {
               "Value": 48
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2010-03-11T12:00:00.000Z"
             },
             "Salary": {
@@ -1036,14 +980,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Shou Itou"
-          },
+          "DisplayText": "Shou Itou",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1059,7 +1001,7 @@
             "Age": {
               "Value": 20
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-08-14T12:00:00.000Z"
             },
             "Salary": {
@@ -1071,14 +1013,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Michelle House"
-          },
+          "DisplayText": "Michelle House",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1094,7 +1034,7 @@
             "Age": {
               "Value": 37
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-06-02T12:00:00.000Z"
             },
             "Salary": {
@@ -1106,14 +1046,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Suki Burks"
-          },
+          "DisplayText": "Suki Burks",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1129,7 +1067,7 @@
             "Age": {
               "Value": 53
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2009-10-22T12:00:00.000Z"
             },
             "Salary": {
@@ -1141,14 +1079,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Prescott Bartlett"
-          },
+          "DisplayText": "Prescott Bartlett",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1164,7 +1100,7 @@
             "Age": {
               "Value": 27
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-05-07T12:00:00.000Z"
             },
             "Salary": {
@@ -1176,14 +1112,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Gavin Cortez"
-          },
+          "DisplayText": "Gavin Cortez",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1199,7 +1133,7 @@
             "Age": {
               "Value": 22
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2008-10-26T12:00:00.000Z"
             },
             "Salary": {
@@ -1211,14 +1145,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Martena Mccray"
-          },
+          "DisplayText": "Martena Mccray",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1234,7 +1166,7 @@
             "Age": {
               "Value": 46
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-03-09T12:00:00.000Z"
             },
             "Salary": {
@@ -1246,14 +1178,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Unity Butler"
-          },
+          "DisplayText": "Unity Butler",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1269,7 +1199,7 @@
             "Age": {
               "Value": 47
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2009-12-09T12:00:00.000Z"
             },
             "Salary": {
@@ -1281,14 +1211,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Howard Hatfield"
-          },
+          "DisplayText": "Howard Hatfield",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1304,7 +1232,7 @@
             "Age": {
               "Value": 51
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2008-12-16T12:00:00.000Z"
             },
             "Salary": {
@@ -1316,14 +1244,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Hope Fuentes"
-          },
+          "DisplayText": "Hope Fuentes",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1339,7 +1265,7 @@
             "Age": {
               "Value": 41
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2010-02-12T12:00:00.000Z"
             },
             "Salary": {
@@ -1351,14 +1277,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Vivian Harrell"
-          },
+          "DisplayText": "Vivian Harrell",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1374,7 +1298,7 @@
             "Age": {
               "Value": 62
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2009-02-14T12:00:00.000Z"
             },
             "Salary": {
@@ -1386,14 +1310,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Timothy Mooney"
-          },
+          "DisplayText": "Timothy Mooney",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1409,7 +1331,7 @@
             "Age": {
               "Value": 37
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2008-12-11T12:00:00.000Z"
             },
             "Salary": {
@@ -1421,14 +1343,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Jackson Bradshaw"
-          },
+          "DisplayText": "Jackson Bradshaw",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1444,7 +1364,7 @@
             "Age": {
               "Value": 65
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2008-09-26T12:00:00.000Z"
             },
             "Salary": {
@@ -1456,14 +1376,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Olivia Liang"
-          },
+          "DisplayText": "Olivia Liang",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1479,7 +1397,7 @@
             "Age": {
               "Value": 64
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-02-03T12:00:00.000Z"
             },
             "Salary": {
@@ -1491,14 +1409,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Bruno Nash"
-          },
+          "DisplayText": "Bruno Nash",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1514,7 +1430,7 @@
             "Age": {
               "Value": 38
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-05-03T12:00:00.000Z"
             },
             "Salary": {
@@ -1526,14 +1442,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Sakura Yamamoto"
-          },
+          "DisplayText": "Sakura Yamamoto",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1549,7 +1463,7 @@
             "Age": {
               "Value": 37
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2009-08-19T12:00:00.000Z"
             },
             "Salary": {
@@ -1561,14 +1475,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Thor Walton"
-          },
+          "DisplayText": "Thor Walton",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1584,7 +1496,7 @@
             "Age": {
               "Value": 61
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2013-08-11T12:00:00.000Z"
             },
             "Salary": {
@@ -1596,14 +1508,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Finn Camacho"
-          },
+          "DisplayText": "Finn Camacho",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1619,7 +1529,7 @@
             "Age": {
               "Value": 47
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2009-07-07T12:00:00.000Z"
             },
             "Salary": {
@@ -1631,14 +1541,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Serge Baldwin"
-          },
+          "DisplayText": "Serge Baldwin",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1654,7 +1562,7 @@
             "Age": {
               "Value": 64
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2012-04-09T12:00:00.000Z"
             },
             "Salary": {
@@ -1666,14 +1574,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Zenaida Frank"
-          },
+          "DisplayText": "Zenaida Frank",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1689,7 +1595,7 @@
             "Age": {
               "Value": 63
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2010-01-04T12:00:00.000Z"
             },
             "Salary": {
@@ -1701,14 +1607,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Zorita Serrano"
-          },
+          "DisplayText": "Zorita Serrano",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1724,7 +1628,7 @@
             "Age": {
               "Value": 56
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2012-06-01T12:00:00.000Z"
             },
             "Salary": {
@@ -1736,14 +1640,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Jennifer Acosta"
-          },
+          "DisplayText": "Jennifer Acosta",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1759,7 +1661,7 @@
             "Age": {
               "Value": 43
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2013-02-01T12:00:00.000Z"
             },
             "Salary": {
@@ -1771,14 +1673,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Cara Stevens"
-          },
+          "DisplayText": "Cara Stevens",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1794,7 +1694,7 @@
             "Age": {
               "Value": 46
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-12-06T12:00:00.000Z"
             },
             "Salary": {
@@ -1806,14 +1706,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Hermione Butler"
-          },
+          "DisplayText": "Hermione Butler",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1829,7 +1727,7 @@
             "Age": {
               "Value": 47
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-03-21T12:00:00.000Z"
             },
             "Salary": {
@@ -1841,14 +1739,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Lael Greer"
-          },
+          "DisplayText": "Lael Greer",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1864,7 +1760,7 @@
             "Age": {
               "Value": 21
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2009-02-27T12:00:00.000Z"
             },
             "Salary": {
@@ -1876,14 +1772,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Jonas Alexander"
-          },
+          "DisplayText": "Jonas Alexander",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1899,7 +1793,7 @@
             "Age": {
               "Value": 30
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2010-07-14T12:00:00.000Z"
             },
             "Salary": {
@@ -1911,14 +1805,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Shad Decker"
-          },
+          "DisplayText": "Shad Decker",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1934,7 +1826,7 @@
             "Age": {
               "Value": 51
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2008-11-13T12:00:00.000Z"
             },
             "Salary": {
@@ -1946,14 +1838,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Michael Bruce"
-          },
+          "DisplayText": "Michael Bruce",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -1969,7 +1859,7 @@
             "Age": {
               "Value": 29
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-06-27T12:00:00.000Z"
             },
             "Salary": {
@@ -1981,14 +1871,12 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": {
-            "Text": "Donna Snider"
-          },
+          "DisplayText": "Donna Snider",
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
-          "PublishedUtc": "2022-01-18T17:04:11.962Z",
-          "CreatedUtc": "2022-01-18T17:04:11.962Z",
+          "ModifiedUtc": "2022-01-18T17:44:40.156Z",
+          "PublishedUtc": "2022-01-18T17:44:40.156Z",
+          "CreatedUtc": "2022-01-18T17:44:40.156Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
@@ -2004,7 +1892,7 @@
             "Age": {
               "Value": 27
             },
-            "StartDateUtc": {
+            "StartDate": {
               "Value": "2011-01-25T12:00:00.000Z"
             },
             "Salary": {

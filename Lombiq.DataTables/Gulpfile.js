@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const watch = require('gulp-watch');
 const babel = require('gulp-babel');
 const paths = require('./Gulp/paths');
-const jsTargets = require('../../Utilities/Lombiq.Gulp.Extensions/Tasks/js-targets');
+const jsTargets = require('../../../Utilities/Lombiq.Gulp.Extensions/Tasks/js-targets');
 const copyAssets = require('./Gulp/tasks/copy-assets');
 
 gulp.task('copy:vendor-assets', () => copyAssets(paths.vendorAssets, paths.dist.vendors));
