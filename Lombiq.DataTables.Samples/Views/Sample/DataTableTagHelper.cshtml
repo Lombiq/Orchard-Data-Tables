@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Lombiq.DataTables.Samples.Models.EmployeePart>
+
+@* This is a static data table. It simply adds the script and stylesheet resources to the page, otherwise it behaves
+   like a zero configuration DataTable (https://datatables.net/examples/basic_init/zero_configuration.html). But you
+   can pass a JSON encoded configuration object into the data-options attribute too. Use apostrophes instead of quotes
+   to avoid encoding problems. *@
+
+@* Always make sure Views/_ViewImports.cshtml has "@addTagHelper *, Lombiq.DataTables.TagHelpers" for the tag helper. *@
+
+<datatable data-options="{ order: [[ 3, 'desc' ]] }">
+    <thead>
+        <tr>
+            <th>@T["Name"]</th>
+            <th>@T["Position"]</th>
+            <th>@T["Office"]</th>
+            <th>@T["Age"]</th>
+            <th>@T["Start date"]</th>
+            <th>@T["Salary"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>@employee.Name</td>
+                <td>@employee.Position</td>
+                <td>@employee.Office</td>
+                <td>@employee.Age</td>
+                <td><datetime utc="@employee.StartDateUtc" /></td>
+                <td>@T["${0:###,###}", employee.Salary]</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>@T["Name"]</th>
+            <th>@T["Position"]</th>
+            <th>@T["Office"]</th>
+            <th>@T["Age"]</th>
+            <th>@T["Start date"]</th>
+            <th>@T["Salary"]</th>
+        </tr>
+    </tfoot>
+</datatable>
+
+@* END OF TRAINING SECTION: The <datatable> Tag Helper *@
+
+@* NEXT STATION: Services/SampleJsonResultDataTableDataProvider.cs*@
