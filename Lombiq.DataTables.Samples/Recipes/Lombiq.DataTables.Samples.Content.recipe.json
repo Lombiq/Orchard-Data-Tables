@@ -21,1197 +21,1995 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Tiger Nixon",
+          "DisplayText": {
+            "Text": "Tiger Nixon"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.961Z",
+          "PublishedUtc": "2022-01-18T17:04:11.961Z",
+          "CreatedUtc": "2022-01-18T17:04:11.961Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Tiger Nixon",
-            "Position": "System Architect",
-            "Office": "Edinburgh",
-            "Age": 61,
-            "StartDateUtc": "2011-04-25T12:00:00.000Z",
-            "Salary": 320800
+            "Name": {
+              "Text": "Tiger Nixon"
+            },
+            "Position": {
+              "Text": "System Architect"
+            },
+            "Office": {
+              "Text": "Edinburgh"
+            },
+            "Age": {
+              "Value": 61
+            },
+            "StartDateUtc": {
+              "Value": "2011-04-25T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 320800
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Garrett Winters",
+          "DisplayText": {
+            "Text": "Garrett Winters"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.961Z",
+          "PublishedUtc": "2022-01-18T17:04:11.961Z",
+          "CreatedUtc": "2022-01-18T17:04:11.961Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Garrett Winters",
-            "Position": "Accountant",
-            "Office": "Tokyo",
-            "Age": 63,
-            "StartDateUtc": "2011-07-25T12:00:00.000Z",
-            "Salary": 170750
+            "Name": {
+              "Text": "Garrett Winters"
+            },
+            "Position": {
+              "Text": "Accountant"
+            },
+            "Office": {
+              "Text": "Tokyo"
+            },
+            "Age": {
+              "Value": 63
+            },
+            "StartDateUtc": {
+              "Value": "2011-07-25T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 170750
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Ashton Cox",
+          "DisplayText": {
+            "Text": "Ashton Cox"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.961Z",
+          "PublishedUtc": "2022-01-18T17:04:11.961Z",
+          "CreatedUtc": "2022-01-18T17:04:11.961Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Ashton Cox",
-            "Position": "Junior Technical Author",
-            "Office": "San Francisco",
-            "Age": 66,
-            "StartDateUtc": "2009-01-12T12:00:00.000Z",
-            "Salary": 86000
+            "Name": {
+              "Text": "Ashton Cox"
+            },
+            "Position": {
+              "Text": "Junior Technical Author"
+            },
+            "Office": {
+              "Text": "San Francisco"
+            },
+            "Age": {
+              "Value": 66
+            },
+            "StartDateUtc": {
+              "Value": "2009-01-12T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 86000
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Cedric Kelly",
+          "DisplayText": {
+            "Text": "Cedric Kelly"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.961Z",
+          "PublishedUtc": "2022-01-18T17:04:11.961Z",
+          "CreatedUtc": "2022-01-18T17:04:11.961Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Cedric Kelly",
-            "Position": "Senior Javascript Developer",
-            "Office": "Edinburgh",
-            "Age": 22,
-            "StartDateUtc": "2012-03-29T12:00:00.000Z",
-            "Salary": 433060
+            "Name": {
+              "Text": "Cedric Kelly"
+            },
+            "Position": {
+              "Text": "Senior Javascript Developer"
+            },
+            "Office": {
+              "Text": "Edinburgh"
+            },
+            "Age": {
+              "Value": 22
+            },
+            "StartDateUtc": {
+              "Value": "2012-03-29T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 433060
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Airi Satou",
+          "DisplayText": {
+            "Text": "Airi Satou"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.961Z",
+          "PublishedUtc": "2022-01-18T17:04:11.961Z",
+          "CreatedUtc": "2022-01-18T17:04:11.961Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Airi Satou",
-            "Position": "Accountant",
-            "Office": "Tokyo",
-            "Age": 33,
-            "StartDateUtc": "2008-11-28T12:00:00.000Z",
-            "Salary": 162700
+            "Name": {
+              "Text": "Airi Satou"
+            },
+            "Position": {
+              "Text": "Accountant"
+            },
+            "Office": {
+              "Text": "Tokyo"
+            },
+            "Age": {
+              "Value": 33
+            },
+            "StartDateUtc": {
+              "Value": "2008-11-28T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 162700
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Brielle Williamson",
+          "DisplayText": {
+            "Text": "Brielle Williamson"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Brielle Williamson",
-            "Position": "Integration Specialist",
-            "Office": "New York",
-            "Age": 61,
-            "StartDateUtc": "2012-12-02T12:00:00.000Z",
-            "Salary": 372000
+            "Name": {
+              "Text": "Brielle Williamson"
+            },
+            "Position": {
+              "Text": "Integration Specialist"
+            },
+            "Office": {
+              "Text": "New York"
+            },
+            "Age": {
+              "Value": 61
+            },
+            "StartDateUtc": {
+              "Value": "2012-12-02T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 372000
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Herrod Chandler",
+          "DisplayText": {
+            "Text": "Herrod Chandler"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Herrod Chandler",
-            "Position": "Sales Assistant",
-            "Office": "San Francisco",
-            "Age": 59,
-            "StartDateUtc": "2012-08-06T12:00:00.000Z",
-            "Salary": 137500
+            "Name": {
+              "Text": "Herrod Chandler"
+            },
+            "Position": {
+              "Text": "Sales Assistant"
+            },
+            "Office": {
+              "Text": "San Francisco"
+            },
+            "Age": {
+              "Value": 59
+            },
+            "StartDateUtc": {
+              "Value": "2012-08-06T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 137500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Rhona Davidson",
+          "DisplayText": {
+            "Text": "Rhona Davidson"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Rhona Davidson",
-            "Position": "Integration Specialist",
-            "Office": "Tokyo",
-            "Age": 55,
-            "StartDateUtc": "2010-10-14T12:00:00.000Z",
-            "Salary": 327900
+            "Name": {
+              "Text": "Rhona Davidson"
+            },
+            "Position": {
+              "Text": "Integration Specialist"
+            },
+            "Office": {
+              "Text": "Tokyo"
+            },
+            "Age": {
+              "Value": 55
+            },
+            "StartDateUtc": {
+              "Value": "2010-10-14T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 327900
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Colleen Hurst",
+          "DisplayText": {
+            "Text": "Colleen Hurst"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Colleen Hurst",
-            "Position": "Javascript Developer",
-            "Office": "San Francisco",
-            "Age": 39,
-            "StartDateUtc": "2009-09-15T12:00:00.000Z",
-            "Salary": 205500
+            "Name": {
+              "Text": "Colleen Hurst"
+            },
+            "Position": {
+              "Text": "Javascript Developer"
+            },
+            "Office": {
+              "Text": "San Francisco"
+            },
+            "Age": {
+              "Value": 39
+            },
+            "StartDateUtc": {
+              "Value": "2009-09-15T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 205500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Sonya Frost",
+          "DisplayText": {
+            "Text": "Sonya Frost"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Sonya Frost",
-            "Position": "Software Engineer",
-            "Office": "Edinburgh",
-            "Age": 23,
-            "StartDateUtc": "2008-12-13T12:00:00.000Z",
-            "Salary": 103600
+            "Name": {
+              "Text": "Sonya Frost"
+            },
+            "Position": {
+              "Text": "Software Engineer"
+            },
+            "Office": {
+              "Text": "Edinburgh"
+            },
+            "Age": {
+              "Value": 23
+            },
+            "StartDateUtc": {
+              "Value": "2008-12-13T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 103600
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Jena Gaines",
+          "DisplayText": {
+            "Text": "Jena Gaines"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Jena Gaines",
-            "Position": "Office Manager",
-            "Office": "London",
-            "Age": 30,
-            "StartDateUtc": "2008-12-19T12:00:00.000Z",
-            "Salary": 90560
+            "Name": {
+              "Text": "Jena Gaines"
+            },
+            "Position": {
+              "Text": "Office Manager"
+            },
+            "Office": {
+              "Text": "London"
+            },
+            "Age": {
+              "Value": 30
+            },
+            "StartDateUtc": {
+              "Value": "2008-12-19T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 90560
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Quinn Flynn",
+          "DisplayText": {
+            "Text": "Quinn Flynn"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Quinn Flynn",
-            "Position": "Support Lead",
-            "Office": "Edinburgh",
-            "Age": 22,
-            "StartDateUtc": "2013-03-03T12:00:00.000Z",
-            "Salary": 342000
+            "Name": {
+              "Text": "Quinn Flynn"
+            },
+            "Position": {
+              "Text": "Support Lead"
+            },
+            "Office": {
+              "Text": "Edinburgh"
+            },
+            "Age": {
+              "Value": 22
+            },
+            "StartDateUtc": {
+              "Value": "2013-03-03T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 342000
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Charde Marshall",
+          "DisplayText": {
+            "Text": "Charde Marshall"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Charde Marshall",
-            "Position": "Regional Director",
-            "Office": "San Francisco",
-            "Age": 36,
-            "StartDateUtc": "2008-10-16T12:00:00.000Z",
-            "Salary": 470600
+            "Name": {
+              "Text": "Charde Marshall"
+            },
+            "Position": {
+              "Text": "Regional Director"
+            },
+            "Office": {
+              "Text": "San Francisco"
+            },
+            "Age": {
+              "Value": 36
+            },
+            "StartDateUtc": {
+              "Value": "2008-10-16T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 470600
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Haley Kennedy",
+          "DisplayText": {
+            "Text": "Haley Kennedy"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Haley Kennedy",
-            "Position": "Senior Marketing Designer",
-            "Office": "London",
-            "Age": 43,
-            "StartDateUtc": "2012-12-18T12:00:00.000Z",
-            "Salary": 313500
+            "Name": {
+              "Text": "Haley Kennedy"
+            },
+            "Position": {
+              "Text": "Senior Marketing Designer"
+            },
+            "Office": {
+              "Text": "London"
+            },
+            "Age": {
+              "Value": 43
+            },
+            "StartDateUtc": {
+              "Value": "2012-12-18T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 313500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Tatyana Fitzpatrick",
+          "DisplayText": {
+            "Text": "Tatyana Fitzpatrick"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Tatyana Fitzpatrick",
-            "Position": "Regional Director",
-            "Office": "London",
-            "Age": 19,
-            "StartDateUtc": "2010-03-17T12:00:00.000Z",
-            "Salary": 385750
+            "Name": {
+              "Text": "Tatyana Fitzpatrick"
+            },
+            "Position": {
+              "Text": "Regional Director"
+            },
+            "Office": {
+              "Text": "London"
+            },
+            "Age": {
+              "Value": 19
+            },
+            "StartDateUtc": {
+              "Value": "2010-03-17T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 385750
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Michael Silva",
+          "DisplayText": {
+            "Text": "Michael Silva"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Michael Silva",
-            "Position": "Marketing Designer",
-            "Office": "London",
-            "Age": 66,
-            "StartDateUtc": "2012-11-27T12:00:00.000Z",
-            "Salary": 198500
+            "Name": {
+              "Text": "Michael Silva"
+            },
+            "Position": {
+              "Text": "Marketing Designer"
+            },
+            "Office": {
+              "Text": "London"
+            },
+            "Age": {
+              "Value": 66
+            },
+            "StartDateUtc": {
+              "Value": "2012-11-27T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 198500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Paul Byrd",
+          "DisplayText": {
+            "Text": "Paul Byrd"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Paul Byrd",
-            "Position": "Chief Financial Officer (CFO)",
-            "Office": "New York",
-            "Age": 64,
-            "StartDateUtc": "2010-06-09T12:00:00.000Z",
-            "Salary": 725000
+            "Name": {
+              "Text": "Paul Byrd"
+            },
+            "Position": {
+              "Text": "Chief Financial Officer (CFO)"
+            },
+            "Office": {
+              "Text": "New York"
+            },
+            "Age": {
+              "Value": 64
+            },
+            "StartDateUtc": {
+              "Value": "2010-06-09T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 725000
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Gloria Little",
+          "DisplayText": {
+            "Text": "Gloria Little"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Gloria Little",
-            "Position": "Systems Administrator",
-            "Office": "New York",
-            "Age": 59,
-            "StartDateUtc": "2009-04-10T12:00:00.000Z",
-            "Salary": 237500
+            "Name": {
+              "Text": "Gloria Little"
+            },
+            "Position": {
+              "Text": "Systems Administrator"
+            },
+            "Office": {
+              "Text": "New York"
+            },
+            "Age": {
+              "Value": 59
+            },
+            "StartDateUtc": {
+              "Value": "2009-04-10T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 237500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Bradley Greer",
+          "DisplayText": {
+            "Text": "Bradley Greer"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Bradley Greer",
-            "Position": "Software Engineer",
-            "Office": "London",
-            "Age": 41,
-            "StartDateUtc": "2012-10-13T12:00:00.000Z",
-            "Salary": 132000
+            "Name": {
+              "Text": "Bradley Greer"
+            },
+            "Position": {
+              "Text": "Software Engineer"
+            },
+            "Office": {
+              "Text": "London"
+            },
+            "Age": {
+              "Value": 41
+            },
+            "StartDateUtc": {
+              "Value": "2012-10-13T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 132000
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Dai Rios",
+          "DisplayText": {
+            "Text": "Dai Rios"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Dai Rios",
-            "Position": "Personnel Lead",
-            "Office": "Edinburgh",
-            "Age": 35,
-            "StartDateUtc": "2012-09-26T12:00:00.000Z",
-            "Salary": 217500
+            "Name": {
+              "Text": "Dai Rios"
+            },
+            "Position": {
+              "Text": "Personnel Lead"
+            },
+            "Office": {
+              "Text": "Edinburgh"
+            },
+            "Age": {
+              "Value": 35
+            },
+            "StartDateUtc": {
+              "Value": "2012-09-26T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 217500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Jenette Caldwell",
+          "DisplayText": {
+            "Text": "Jenette Caldwell"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Jenette Caldwell",
-            "Position": "Development Lead",
-            "Office": "New York",
-            "Age": 30,
-            "StartDateUtc": "2011-09-03T12:00:00.000Z",
-            "Salary": 345000
+            "Name": {
+              "Text": "Jenette Caldwell"
+            },
+            "Position": {
+              "Text": "Development Lead"
+            },
+            "Office": {
+              "Text": "New York"
+            },
+            "Age": {
+              "Value": 30
+            },
+            "StartDateUtc": {
+              "Value": "2011-09-03T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 345000
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Yuri Berry",
+          "DisplayText": {
+            "Text": "Yuri Berry"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Yuri Berry",
-            "Position": "Chief Marketing Officer (CMO)",
-            "Office": "New York",
-            "Age": 40,
-            "StartDateUtc": "2009-06-25T12:00:00.000Z",
-            "Salary": 675000
+            "Name": {
+              "Text": "Yuri Berry"
+            },
+            "Position": {
+              "Text": "Chief Marketing Officer (CMO)"
+            },
+            "Office": {
+              "Text": "New York"
+            },
+            "Age": {
+              "Value": 40
+            },
+            "StartDateUtc": {
+              "Value": "2009-06-25T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 675000
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Caesar Vance",
+          "DisplayText": {
+            "Text": "Caesar Vance"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Caesar Vance",
-            "Position": "Pre-Sales Support",
-            "Office": "New York",
-            "Age": 21,
-            "StartDateUtc": "2011-12-12T12:00:00.000Z",
-            "Salary": 106450
+            "Name": {
+              "Text": "Caesar Vance"
+            },
+            "Position": {
+              "Text": "Pre-Sales Support"
+            },
+            "Office": {
+              "Text": "New York"
+            },
+            "Age": {
+              "Value": 21
+            },
+            "StartDateUtc": {
+              "Value": "2011-12-12T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 106450
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Doris Wilder",
+          "DisplayText": {
+            "Text": "Doris Wilder"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Doris Wilder",
-            "Position": "Sales Assistant",
-            "Office": "Sydney",
-            "Age": 23,
-            "StartDateUtc": "2010-09-20T12:00:00.000Z",
-            "Salary": 85600
+            "Name": {
+              "Text": "Doris Wilder"
+            },
+            "Position": {
+              "Text": "Sales Assistant"
+            },
+            "Office": {
+              "Text": "Sydney"
+            },
+            "Age": {
+              "Value": 23
+            },
+            "StartDateUtc": {
+              "Value": "2010-09-20T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 85600
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Angelica Ramos",
+          "DisplayText": {
+            "Text": "Angelica Ramos"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Angelica Ramos",
-            "Position": "Chief Executive Officer (CEO)",
-            "Office": "London",
-            "Age": 47,
-            "StartDateUtc": "2009-10-09T12:00:00.000Z",
-            "Salary": 1200000
+            "Name": {
+              "Text": "Angelica Ramos"
+            },
+            "Position": {
+              "Text": "Chief Executive Officer (CEO)"
+            },
+            "Office": {
+              "Text": "London"
+            },
+            "Age": {
+              "Value": 47
+            },
+            "StartDateUtc": {
+              "Value": "2009-10-09T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 1200000
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Gavin Joyce",
+          "DisplayText": {
+            "Text": "Gavin Joyce"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Gavin Joyce",
-            "Position": "Developer",
-            "Office": "Edinburgh",
-            "Age": 42,
-            "StartDateUtc": "2010-12-22T12:00:00.000Z",
-            "Salary": 92575
+            "Name": {
+              "Text": "Gavin Joyce"
+            },
+            "Position": {
+              "Text": "Developer"
+            },
+            "Office": {
+              "Text": "Edinburgh"
+            },
+            "Age": {
+              "Value": 42
+            },
+            "StartDateUtc": {
+              "Value": "2010-12-22T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 92575
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Jennifer Chang",
+          "DisplayText": {
+            "Text": "Jennifer Chang"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Jennifer Chang",
-            "Position": "Regional Director",
-            "Office": "Singapore",
-            "Age": 28,
-            "StartDateUtc": "2010-11-14T12:00:00.000Z",
-            "Salary": 357650
+            "Name": {
+              "Text": "Jennifer Chang"
+            },
+            "Position": {
+              "Text": "Regional Director"
+            },
+            "Office": {
+              "Text": "Singapore"
+            },
+            "Age": {
+              "Value": 28
+            },
+            "StartDateUtc": {
+              "Value": "2010-11-14T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 357650
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Brenden Wagner",
+          "DisplayText": {
+            "Text": "Brenden Wagner"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Brenden Wagner",
-            "Position": "Software Engineer",
-            "Office": "San Francisco",
-            "Age": 28,
-            "StartDateUtc": "2011-06-07T12:00:00.000Z",
-            "Salary": 206850
+            "Name": {
+              "Text": "Brenden Wagner"
+            },
+            "Position": {
+              "Text": "Software Engineer"
+            },
+            "Office": {
+              "Text": "San Francisco"
+            },
+            "Age": {
+              "Value": 28
+            },
+            "StartDateUtc": {
+              "Value": "2011-06-07T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 206850
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Fiona Green",
+          "DisplayText": {
+            "Text": "Fiona Green"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Fiona Green",
-            "Position": "Chief Operating Officer (COO)",
-            "Office": "San Francisco",
-            "Age": 48,
-            "StartDateUtc": "2010-03-11T12:00:00.000Z",
-            "Salary": 850000
+            "Name": {
+              "Text": "Fiona Green"
+            },
+            "Position": {
+              "Text": "Chief Operating Officer (COO)"
+            },
+            "Office": {
+              "Text": "San Francisco"
+            },
+            "Age": {
+              "Value": 48
+            },
+            "StartDateUtc": {
+              "Value": "2010-03-11T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 850000
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Shou Itou",
+          "DisplayText": {
+            "Text": "Shou Itou"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Shou Itou",
-            "Position": "Regional Marketing",
-            "Office": "Tokyo",
-            "Age": 20,
-            "StartDateUtc": "2011-08-14T12:00:00.000Z",
-            "Salary": 163000
+            "Name": {
+              "Text": "Shou Itou"
+            },
+            "Position": {
+              "Text": "Regional Marketing"
+            },
+            "Office": {
+              "Text": "Tokyo"
+            },
+            "Age": {
+              "Value": 20
+            },
+            "StartDateUtc": {
+              "Value": "2011-08-14T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 163000
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Michelle House",
+          "DisplayText": {
+            "Text": "Michelle House"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Michelle House",
-            "Position": "Integration Specialist",
-            "Office": "Sydney",
-            "Age": 37,
-            "StartDateUtc": "2011-06-02T12:00:00.000Z",
-            "Salary": 95400
+            "Name": {
+              "Text": "Michelle House"
+            },
+            "Position": {
+              "Text": "Integration Specialist"
+            },
+            "Office": {
+              "Text": "Sydney"
+            },
+            "Age": {
+              "Value": 37
+            },
+            "StartDateUtc": {
+              "Value": "2011-06-02T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 95400
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Suki Burks",
+          "DisplayText": {
+            "Text": "Suki Burks"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Suki Burks",
-            "Position": "Developer",
-            "Office": "London",
-            "Age": 53,
-            "StartDateUtc": "2009-10-22T12:00:00.000Z",
-            "Salary": 114500
+            "Name": {
+              "Text": "Suki Burks"
+            },
+            "Position": {
+              "Text": "Developer"
+            },
+            "Office": {
+              "Text": "London"
+            },
+            "Age": {
+              "Value": 53
+            },
+            "StartDateUtc": {
+              "Value": "2009-10-22T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 114500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Prescott Bartlett",
+          "DisplayText": {
+            "Text": "Prescott Bartlett"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Prescott Bartlett",
-            "Position": "Technical Author",
-            "Office": "London",
-            "Age": 27,
-            "StartDateUtc": "2011-05-07T12:00:00.000Z",
-            "Salary": 145000
+            "Name": {
+              "Text": "Prescott Bartlett"
+            },
+            "Position": {
+              "Text": "Technical Author"
+            },
+            "Office": {
+              "Text": "London"
+            },
+            "Age": {
+              "Value": 27
+            },
+            "StartDateUtc": {
+              "Value": "2011-05-07T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 145000
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Gavin Cortez",
+          "DisplayText": {
+            "Text": "Gavin Cortez"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Gavin Cortez",
-            "Position": "Team Leader",
-            "Office": "San Francisco",
-            "Age": 22,
-            "StartDateUtc": "2008-10-26T12:00:00.000Z",
-            "Salary": 235500
+            "Name": {
+              "Text": "Gavin Cortez"
+            },
+            "Position": {
+              "Text": "Team Leader"
+            },
+            "Office": {
+              "Text": "San Francisco"
+            },
+            "Age": {
+              "Value": 22
+            },
+            "StartDateUtc": {
+              "Value": "2008-10-26T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 235500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Martena Mccray",
+          "DisplayText": {
+            "Text": "Martena Mccray"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Martena Mccray",
-            "Position": "Post-Sales support",
-            "Office": "Edinburgh",
-            "Age": 46,
-            "StartDateUtc": "2011-03-09T12:00:00.000Z",
-            "Salary": 324050
+            "Name": {
+              "Text": "Martena Mccray"
+            },
+            "Position": {
+              "Text": "Post-Sales support"
+            },
+            "Office": {
+              "Text": "Edinburgh"
+            },
+            "Age": {
+              "Value": 46
+            },
+            "StartDateUtc": {
+              "Value": "2011-03-09T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 324050
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Unity Butler",
+          "DisplayText": {
+            "Text": "Unity Butler"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Unity Butler",
-            "Position": "Marketing Designer",
-            "Office": "San Francisco",
-            "Age": 47,
-            "StartDateUtc": "2009-12-09T12:00:00.000Z",
-            "Salary": 85675
+            "Name": {
+              "Text": "Unity Butler"
+            },
+            "Position": {
+              "Text": "Marketing Designer"
+            },
+            "Office": {
+              "Text": "San Francisco"
+            },
+            "Age": {
+              "Value": 47
+            },
+            "StartDateUtc": {
+              "Value": "2009-12-09T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 85675
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Howard Hatfield",
+          "DisplayText": {
+            "Text": "Howard Hatfield"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Howard Hatfield",
-            "Position": "Office Manager",
-            "Office": "San Francisco",
-            "Age": 51,
-            "StartDateUtc": "2008-12-16T12:00:00.000Z",
-            "Salary": 164500
+            "Name": {
+              "Text": "Howard Hatfield"
+            },
+            "Position": {
+              "Text": "Office Manager"
+            },
+            "Office": {
+              "Text": "San Francisco"
+            },
+            "Age": {
+              "Value": 51
+            },
+            "StartDateUtc": {
+              "Value": "2008-12-16T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 164500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Hope Fuentes",
+          "DisplayText": {
+            "Text": "Hope Fuentes"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Hope Fuentes",
-            "Position": "Secretary",
-            "Office": "San Francisco",
-            "Age": 41,
-            "StartDateUtc": "2010-02-12T12:00:00.000Z",
-            "Salary": 109850
+            "Name": {
+              "Text": "Hope Fuentes"
+            },
+            "Position": {
+              "Text": "Secretary"
+            },
+            "Office": {
+              "Text": "San Francisco"
+            },
+            "Age": {
+              "Value": 41
+            },
+            "StartDateUtc": {
+              "Value": "2010-02-12T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 109850
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Vivian Harrell",
+          "DisplayText": {
+            "Text": "Vivian Harrell"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Vivian Harrell",
-            "Position": "Financial Controller",
-            "Office": "San Francisco",
-            "Age": 62,
-            "StartDateUtc": "2009-02-14T12:00:00.000Z",
-            "Salary": 452500
+            "Name": {
+              "Text": "Vivian Harrell"
+            },
+            "Position": {
+              "Text": "Financial Controller"
+            },
+            "Office": {
+              "Text": "San Francisco"
+            },
+            "Age": {
+              "Value": 62
+            },
+            "StartDateUtc": {
+              "Value": "2009-02-14T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 452500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Timothy Mooney",
+          "DisplayText": {
+            "Text": "Timothy Mooney"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Timothy Mooney",
-            "Position": "Office Manager",
-            "Office": "London",
-            "Age": 37,
-            "StartDateUtc": "2008-12-11T12:00:00.000Z",
-            "Salary": 136200
+            "Name": {
+              "Text": "Timothy Mooney"
+            },
+            "Position": {
+              "Text": "Office Manager"
+            },
+            "Office": {
+              "Text": "London"
+            },
+            "Age": {
+              "Value": 37
+            },
+            "StartDateUtc": {
+              "Value": "2008-12-11T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 136200
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Jackson Bradshaw",
+          "DisplayText": {
+            "Text": "Jackson Bradshaw"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Jackson Bradshaw",
-            "Position": "Director",
-            "Office": "New York",
-            "Age": 65,
-            "StartDateUtc": "2008-09-26T12:00:00.000Z",
-            "Salary": 645750
+            "Name": {
+              "Text": "Jackson Bradshaw"
+            },
+            "Position": {
+              "Text": "Director"
+            },
+            "Office": {
+              "Text": "New York"
+            },
+            "Age": {
+              "Value": 65
+            },
+            "StartDateUtc": {
+              "Value": "2008-09-26T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 645750
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Olivia Liang",
+          "DisplayText": {
+            "Text": "Olivia Liang"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Olivia Liang",
-            "Position": "Support Engineer",
-            "Office": "Singapore",
-            "Age": 64,
-            "StartDateUtc": "2011-02-03T12:00:00.000Z",
-            "Salary": 234500
+            "Name": {
+              "Text": "Olivia Liang"
+            },
+            "Position": {
+              "Text": "Support Engineer"
+            },
+            "Office": {
+              "Text": "Singapore"
+            },
+            "Age": {
+              "Value": 64
+            },
+            "StartDateUtc": {
+              "Value": "2011-02-03T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 234500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Bruno Nash",
+          "DisplayText": {
+            "Text": "Bruno Nash"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Bruno Nash",
-            "Position": "Software Engineer",
-            "Office": "London",
-            "Age": 38,
-            "StartDateUtc": "2011-05-03T12:00:00.000Z",
-            "Salary": 163500
+            "Name": {
+              "Text": "Bruno Nash"
+            },
+            "Position": {
+              "Text": "Software Engineer"
+            },
+            "Office": {
+              "Text": "London"
+            },
+            "Age": {
+              "Value": 38
+            },
+            "StartDateUtc": {
+              "Value": "2011-05-03T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 163500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Sakura Yamamoto",
+          "DisplayText": {
+            "Text": "Sakura Yamamoto"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Sakura Yamamoto",
-            "Position": "Support Engineer",
-            "Office": "Tokyo",
-            "Age": 37,
-            "StartDateUtc": "2009-08-19T12:00:00.000Z",
-            "Salary": 139575
+            "Name": {
+              "Text": "Sakura Yamamoto"
+            },
+            "Position": {
+              "Text": "Support Engineer"
+            },
+            "Office": {
+              "Text": "Tokyo"
+            },
+            "Age": {
+              "Value": 37
+            },
+            "StartDateUtc": {
+              "Value": "2009-08-19T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 139575
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Thor Walton",
+          "DisplayText": {
+            "Text": "Thor Walton"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Thor Walton",
-            "Position": "Developer",
-            "Office": "New York",
-            "Age": 61,
-            "StartDateUtc": "2013-08-11T12:00:00.000Z",
-            "Salary": 98540
+            "Name": {
+              "Text": "Thor Walton"
+            },
+            "Position": {
+              "Text": "Developer"
+            },
+            "Office": {
+              "Text": "New York"
+            },
+            "Age": {
+              "Value": 61
+            },
+            "StartDateUtc": {
+              "Value": "2013-08-11T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 98540
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Finn Camacho",
+          "DisplayText": {
+            "Text": "Finn Camacho"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Finn Camacho",
-            "Position": "Support Engineer",
-            "Office": "San Francisco",
-            "Age": 47,
-            "StartDateUtc": "2009-07-07T12:00:00.000Z",
-            "Salary": 87500
+            "Name": {
+              "Text": "Finn Camacho"
+            },
+            "Position": {
+              "Text": "Support Engineer"
+            },
+            "Office": {
+              "Text": "San Francisco"
+            },
+            "Age": {
+              "Value": 47
+            },
+            "StartDateUtc": {
+              "Value": "2009-07-07T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 87500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Serge Baldwin",
+          "DisplayText": {
+            "Text": "Serge Baldwin"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Serge Baldwin",
-            "Position": "Data Coordinator",
-            "Office": "Singapore",
-            "Age": 64,
-            "StartDateUtc": "2012-04-09T12:00:00.000Z",
-            "Salary": 138575
+            "Name": {
+              "Text": "Serge Baldwin"
+            },
+            "Position": {
+              "Text": "Data Coordinator"
+            },
+            "Office": {
+              "Text": "Singapore"
+            },
+            "Age": {
+              "Value": 64
+            },
+            "StartDateUtc": {
+              "Value": "2012-04-09T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 138575
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Zenaida Frank",
+          "DisplayText": {
+            "Text": "Zenaida Frank"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Zenaida Frank",
-            "Position": "Software Engineer",
-            "Office": "New York",
-            "Age": 63,
-            "StartDateUtc": "2010-01-04T12:00:00.000Z",
-            "Salary": 125250
+            "Name": {
+              "Text": "Zenaida Frank"
+            },
+            "Position": {
+              "Text": "Software Engineer"
+            },
+            "Office": {
+              "Text": "New York"
+            },
+            "Age": {
+              "Value": 63
+            },
+            "StartDateUtc": {
+              "Value": "2010-01-04T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 125250
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Zorita Serrano",
+          "DisplayText": {
+            "Text": "Zorita Serrano"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Zorita Serrano",
-            "Position": "Software Engineer",
-            "Office": "San Francisco",
-            "Age": 56,
-            "StartDateUtc": "2012-06-01T12:00:00.000Z",
-            "Salary": 115000
+            "Name": {
+              "Text": "Zorita Serrano"
+            },
+            "Position": {
+              "Text": "Software Engineer"
+            },
+            "Office": {
+              "Text": "San Francisco"
+            },
+            "Age": {
+              "Value": 56
+            },
+            "StartDateUtc": {
+              "Value": "2012-06-01T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 115000
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Jennifer Acosta",
+          "DisplayText": {
+            "Text": "Jennifer Acosta"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Jennifer Acosta",
-            "Position": "Junior Javascript Developer",
-            "Office": "Edinburgh",
-            "Age": 43,
-            "StartDateUtc": "2013-02-01T12:00:00.000Z",
-            "Salary": 75650
+            "Name": {
+              "Text": "Jennifer Acosta"
+            },
+            "Position": {
+              "Text": "Junior Javascript Developer"
+            },
+            "Office": {
+              "Text": "Edinburgh"
+            },
+            "Age": {
+              "Value": 43
+            },
+            "StartDateUtc": {
+              "Value": "2013-02-01T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 75650
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Cara Stevens",
+          "DisplayText": {
+            "Text": "Cara Stevens"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Cara Stevens",
-            "Position": "Sales Assistant",
-            "Office": "New York",
-            "Age": 46,
-            "StartDateUtc": "2011-12-06T12:00:00.000Z",
-            "Salary": 145600
+            "Name": {
+              "Text": "Cara Stevens"
+            },
+            "Position": {
+              "Text": "Sales Assistant"
+            },
+            "Office": {
+              "Text": "New York"
+            },
+            "Age": {
+              "Value": 46
+            },
+            "StartDateUtc": {
+              "Value": "2011-12-06T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 145600
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Hermione Butler",
+          "DisplayText": {
+            "Text": "Hermione Butler"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Hermione Butler",
-            "Position": "Regional Director",
-            "Office": "London",
-            "Age": 47,
-            "StartDateUtc": "2011-03-21T12:00:00.000Z",
-            "Salary": 356250
+            "Name": {
+              "Text": "Hermione Butler"
+            },
+            "Position": {
+              "Text": "Regional Director"
+            },
+            "Office": {
+              "Text": "London"
+            },
+            "Age": {
+              "Value": 47
+            },
+            "StartDateUtc": {
+              "Value": "2011-03-21T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 356250
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Lael Greer",
+          "DisplayText": {
+            "Text": "Lael Greer"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Lael Greer",
-            "Position": "Systems Administrator",
-            "Office": "London",
-            "Age": 21,
-            "StartDateUtc": "2009-02-27T12:00:00.000Z",
-            "Salary": 103500
+            "Name": {
+              "Text": "Lael Greer"
+            },
+            "Position": {
+              "Text": "Systems Administrator"
+            },
+            "Office": {
+              "Text": "London"
+            },
+            "Age": {
+              "Value": 21
+            },
+            "StartDateUtc": {
+              "Value": "2009-02-27T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 103500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Jonas Alexander",
+          "DisplayText": {
+            "Text": "Jonas Alexander"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Jonas Alexander",
-            "Position": "Developer",
-            "Office": "San Francisco",
-            "Age": 30,
-            "StartDateUtc": "2010-07-14T12:00:00.000Z",
-            "Salary": 86500
+            "Name": {
+              "Text": "Jonas Alexander"
+            },
+            "Position": {
+              "Text": "Developer"
+            },
+            "Office": {
+              "Text": "San Francisco"
+            },
+            "Age": {
+              "Value": 30
+            },
+            "StartDateUtc": {
+              "Value": "2010-07-14T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 86500
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Shad Decker",
+          "DisplayText": {
+            "Text": "Shad Decker"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Shad Decker",
-            "Position": "Regional Director",
-            "Office": "Edinburgh",
-            "Age": 51,
-            "StartDateUtc": "2008-11-13T12:00:00.000Z",
-            "Salary": 183000
+            "Name": {
+              "Text": "Shad Decker"
+            },
+            "Position": {
+              "Text": "Regional Director"
+            },
+            "Office": {
+              "Text": "Edinburgh"
+            },
+            "Age": {
+              "Value": 51
+            },
+            "StartDateUtc": {
+              "Value": "2008-11-13T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 183000
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Michael Bruce",
+          "DisplayText": {
+            "Text": "Michael Bruce"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Michael Bruce",
-            "Position": "Javascript Developer",
-            "Office": "Singapore",
-            "Age": 29,
-            "StartDateUtc": "2011-06-27T12:00:00.000Z",
-            "Salary": 183000
+            "Name": {
+              "Text": "Michael Bruce"
+            },
+            "Position": {
+              "Text": "Javascript Developer"
+            },
+            "Office": {
+              "Text": "Singapore"
+            },
+            "Age": {
+              "Value": 29
+            },
+            "StartDateUtc": {
+              "Value": "2011-06-27T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 183000
+            }
           }
         },
         {
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Donna Snider",
+          "DisplayText": {
+            "Text": "Donna Snider"
+          },
           "Latest": true,
           "Published": true,
-          "ModifiedUtc": "2022-01-18T14:01:39.299Z",
-          "PublishedUtc": "2022-01-18T14:01:39.299Z",
-          "CreatedUtc": "2022-01-18T14:01:39.299Z",
+          "ModifiedUtc": "2022-01-18T17:04:11.962Z",
+          "PublishedUtc": "2022-01-18T17:04:11.962Z",
+          "CreatedUtc": "2022-01-18T17:04:11.962Z",
           "Owner": "admin",
           "Author": "admin",
           "EmployeePart": {
-            "Name": "Donna Snider",
-            "Position": "Customer Support",
-            "Office": "New York",
-            "Age": 27,
-            "StartDateUtc": "2011-01-25T12:00:00.000Z",
-            "Salary": 112000
+            "Name": {
+              "Text": "Donna Snider"
+            },
+            "Position": {
+              "Text": "Customer Support"
+            },
+            "Office": {
+              "Text": "New York"
+            },
+            "Age": {
+              "Value": 27
+            },
+            "StartDateUtc": {
+              "Value": "2011-01-25T12:00:00.000Z"
+            },
+            "Salary": {
+              "Value": 112000
+            }
           }
         }
       ]
