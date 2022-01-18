@@ -26,21 +26,21 @@
                 <td>@employee.Position</td>
                 <td>@employee.Office</td>
                 <td>@employee.Age</td>
-                <td><datetime utc="@employee.StartDateUtc" /></td>
-                <td>@T["${0:###,###}", employee.Salary]</td>
+                <td data-order="@(employee.StartDate.Value?.Ticks ?? 0)">
+                    @if (employee.StartDate.Value is { } startDate)
+                    {
+                        @T["{0:d}", startDate]
+                    }
+                </td>
+                <td data-order="@(employee.Salary.Value ?? 0)">
+                    @if (employee.Salary.Value is { } salary)
+                    {
+                        @T["${0:###,###}", salary]
+                    }
+                </td>
             </tr>
         }
     </tbody>
-    <tfoot>
-        <tr>
-            <th>@T["Name"]</th>
-            <th>@T["Position"]</th>
-            <th>@T["Office"]</th>
-            <th>@T["Age"]</th>
-            <th>@T["Start date"]</th>
-            <th>@T["Salary"]</th>
-        </tr>
-    </tfoot>
 </datatable>
 
 @* END OF TRAINING SECTION: The <datatable> Tag Helper *@
