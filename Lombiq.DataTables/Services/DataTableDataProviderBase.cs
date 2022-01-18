@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YesSql;
 
 namespace Lombiq.DataTables.Services
 {
@@ -113,5 +114,9 @@ namespace Lombiq.DataTables.Services
                 }
             }
         }
+
+        protected Task<IEnumerable<T>> PaginateAsync<T>(IQuery<T> query, DataTableDataRequest request)
+            where T : class =>
+            query.PaginateAsync(request.Start / request.Length, request.Length);
     }
 }
