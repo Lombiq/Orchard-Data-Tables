@@ -10,11 +10,11 @@ An Orchard Core wrapper around the [DataTables](https://datatables.net/) library
 ## How to use
 
 
+If you'd like to learn by example, check out our [Open-Source Orchard Core Extensions](https://github.com/Lombiq/Open-Source-Orchard-Core-Extensions) full Orchard Core solution and also see our other useful Orchard Core-related open-source projects! 
+
 ### Static Content With Tag Helper
 
 In the most basic form you can use [DOM sourced data](https://datatables.net/examples/data_sources/dom.html) with the `<datatable>` tag helper.
-
-Follow the walkthrough on the sample project [The `<datatable>` Tag Helper](Lombiq.DataTables.Samples/Views/Sample/DataTableTagHelper.cshtml).
 
 
 ### Asynchronous Content With a Custom Provider
@@ -24,9 +24,6 @@ The `Lombiq_DataTable` shape can display sortable, searchable, paginated data, b
 Once you have your data provider, it must be registered using `services.AddDataTableDataProvider<TProvider>()`, or if it's index based then using `services.AddIndexBasedDataTableProvider<TIndex, TGenerator, TMigration, TProvider>()`.
 
 If you need an admin page with just one data table you don't need to define a view, just link to `/Admin/DataTable/{providerName}/{queryId?}`.
-
-Follow the walkthroughs on the sample project:
-- [JSON Result DataTable Data Provider](Lombiq.DataTables.Samples/Services/SampleJsonResultDataTableDataProvider.cs).
 
 
 ## Client-side Extensibility
@@ -66,12 +63,12 @@ You may say, _I Can't Believe It's Not DataTable!_ but it really is not. Use the
 ```
 
 
-- `data`: a serialized array of [`VueModel`](Lombiq.DataTables/Models/VueModel.cs) (`v-model` here refers to the `data` property and the `update` event).
-- `columns`: a serialized array of [`DataTableColumnDefinition`](Lombiq.DataTables/Models/DataTableColumnDefinition.cs).
+- `data`: a serialized array of [`VueModel`](Models/VueModel.cs) (`v-model` here refers to the `data` property and the `update` event).
+- `columns`: a serialized array of [`DataTableColumnDefinition`](Models/DataTableColumnDefinition.cs).
 - `text`: an object of keys and display texts (i.e. string-string dictionary). Its expected properties are: `lengthPicker`, `displayCount`, `previous`, `next`.
 - `onspecial`: a function that receives a cell that has the `VueModel.Special` property and can edit it.
 
-For additional properties and notes on the events take a look at the comments [in the component](Lombiq.DataTables/Assets/Scripts/icbin-datatable.js).
+For additional properties and notes on the events take a look at the comments [in the component](Assets/Scripts/icbin-datatable.js).
 
 _Note: use `@Json.Serialize()` to automatically camelCase the data for JS._
 
