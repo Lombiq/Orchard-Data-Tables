@@ -25,7 +25,7 @@ Once you have your data provider, it must be registered using `services.AddDataT
 
 If you need an admin page with just one data table you don't need to define a view, just link to `/Admin/DataTable/{providerName}/{queryId?}`.
 
-You can find an example using LinqToSql queries do display a table of deleted content items at [DeletedContentItemDataTableDataProvider.cs](Services/DeletedContentItemDataTableDataProvider.cs).
+You can find an example using LinqToSql queries do display a table of deleted content items at [DeletedContentItemDataTableDataProvider.cs](Lombiq.DataTables/Services/DeletedContentItemDataTableDataProvider.cs).
 
 
 ## Client-side Extensibility
@@ -65,12 +65,12 @@ You may say, _I Can't Believe It's Not DataTable!_ but it really is not. Use the
 ```
 
 
-- `data`: a serialized array of [`VueModel`](Models/VueModel.cs) (`v-model` here refers to the `data` property and the `update` event).
-- `columns`: a serialized array of [`DataTableColumnDefinition`](Models/DataTableColumnDefinition.cs).
+- `data`: a serialized array of [`VueModel`](Lombiq.DataTables/Models/VueModel.cs) (`v-model` here refers to the `data` property and the `update` event).
+- `columns`: a serialized array of [`DataTableColumnDefinition`](Lombiq.DataTables/Models/DataTableColumnDefinition.cs).
 - `text`: an object of keys and display texts (i.e. string-string dictionary). Its expected properties are: `lengthPicker`, `displayCount`, `previous`, `next`.
 - `onspecial`: a function that receives a cell that has the `VueModel.Special` property and can edit it.
 
-For additional properties and notes on the events take a look at the comments [in the component](Assets/Scripts/icbin-datatable.js).
+For additional properties and notes on the events take a look at the comments [in the component](Lombiq.DataTables/Assets/Scripts/icbin-datatable.js).
 
 _Note: use `@Json.Serialize()` to automatically camelCase the data for JS._
 
