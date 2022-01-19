@@ -23,7 +23,6 @@ namespace Lombiq.DataTables.Samples.Services
     public class SampleJsonResultDataTableDataProvider : JsonResultDataTableDataProvider
     {
         private readonly ISession _session;
-        private readonly IShapeFactory _shapeFactory;
         private readonly IStringLocalizer<ActionsDescriptor> _actionsStringLocalizer;
         private readonly IStringLocalizer T;
 
@@ -36,14 +35,12 @@ namespace Lombiq.DataTables.Samples.Services
 
         public SampleJsonResultDataTableDataProvider(
             ISession session,
-            IShapeFactory shapeFactory,
             IDataTableDataProviderServices services,
             IStringLocalizer<ActionsDescriptor> actionsStringLocalizer,
             IStringLocalizer<SampleJsonResultDataTableDataProvider> implementationStringLocalizer)
             : base(services, implementationStringLocalizer)
         {
             _session = session;
-            _shapeFactory = shapeFactory;
             _actionsStringLocalizer = actionsStringLocalizer;
             T = implementationStringLocalizer;
         }
@@ -60,7 +57,7 @@ namespace Lombiq.DataTables.Samples.Services
         {
             var query = _session.QueryContentItem(PublicationStatus.Published)
                 .Where(index => index.ContentType == Employee);
-            var allContentsQuery = query; // Without filtering or pagination.
+            var totalCount = await query.CountAsync();
 
             // For the sake of simplicity, we only make this one column searchable. With a content part index you can
             // search all the relevant fields on the database side. Otherwise you'd need to do the filtering offline
@@ -70,10 +67,22 @@ namespace Lombiq.DataTables.Samples.Services
             // backing data changes.
             var isFiltered = request.HasSearch;
             if (isFiltered) query = query.Where(index => index.DisplayText.Contains(request.Search.Value));
-            var filteredQuery = query;
+            var filteredCount = isFiltered ? await query.CountAsync() : -1;
+
+            // For the same reason we can only paginate on the SQL side if it's sorted by name. This is why, unless you
+            // have use for content part indexes anyway it's best to use IndexBasedDataTableDataProvider for large data.
+            // The query needs to be ordered before it can be reliably paginated; you may need to branch this for all
+            // orderable columns.
+            var isPaginated = request.Order.FirstOrDefault()?.Column == nameof(EmployeeJsonResult.Name);
+            if (isPaginated)
+            {
+                query = request.Order.First().IsAscending
+                    ? query.OrderBy(index => index.DisplayText)
+                    : query.OrderByDescending(index => index.DisplayText);
+            }
 
             // We have this helper method to avoid confusion because DataTables and YesSql describes slices differently.
-            var results = (await PaginateAsync(query, request))
+            var results = (isPaginated ? await PaginateAsync(query, request) : await query.ListAsync())
                 // The result will be converted into JSON so it's a good practice to strip anything unneeded to save
                 // bandwidth. Also you may have cyclic references in your results which this eliminates.
                 .Select(contentItem => contentItem.As<EmployeePart>())
@@ -94,19 +103,17 @@ namespace Lombiq.DataTables.Samples.Services
                         _actionsStringLocalizer),
                 });
 
-            // To get an accurate total even when filtering, we need the counts of the query before and after filtering,
-            // always before pagination. To save time, you can omit the filtered query when there was no search and
-            // return -1 instead. The presence of a positive number is what tells DataTables on the client side that
-            // it's a filtered result set.
-            var totalCount = await allContentsQuery.CountAsync();
-            var filteredCount = isFiltered ? await filteredQuery.CountAsync() : -1;
-
             // If you didn't filter or paginate (sufficient for known very small datasets) you can just pass the
             // constructor. Otherwise, make sure to fill all properties too.
             return new JsonResultDataTableDataProviderResult(results)
             {
                 IsFiltered = isFiltered,
-                IsPaginated = true,
+                IsPaginated = isPaginated,
+
+                // To get an accurate total even when filtering, we need the counts of the query before and after filtering,
+                // always before pagination. To save time, you can omit the filtered query when there was no search and
+                // return -1 instead. The presence of a positive number is what tells DataTables on the client side that
+                // it's a filtered result set.
                 Count = totalCount,
                 CountFiltered = filteredCount,
             };
@@ -124,8 +131,8 @@ namespace Lombiq.DataTables.Samples.Services
         // method for that.
         protected override DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) =>
             this.DefineColumns(
-                nameof(EmployeeJsonResult.StartDate),
-                SortingDirection.Descending,
+                nameof(EmployeeJsonResult.Name),
+                SortingDirection.Ascending,
                 (nameof(EmployeeJsonResult.Name), T["Name"]),
                 (nameof(EmployeeJsonResult.Position), T["Position"]),
                 (nameof(EmployeeJsonResult.Office), T["Office"]),

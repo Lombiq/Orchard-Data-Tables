@@ -27,7 +27,6 @@ namespace Lombiq.DataTables.Samples.Migrations
                 .WithField(nameof(EmployeePart.Salary), ConfigureField<NumericField>(name: "Salary")));
 
             _contentDefinitionManager.AlterTypeDefinition(Employee, type => type
-                .Creatable()
                 .Listable()
                 .WithPart(nameof(EmployeePart)));
 
