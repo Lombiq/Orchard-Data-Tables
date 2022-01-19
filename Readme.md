@@ -13,7 +13,7 @@ An Orchard Core wrapper around the [DataTables](https://datatables.net/) library
 If you'd like to learn by example, check out our [Open-Source Orchard Core Extensions](https://github.com/Lombiq/Open-Source-Orchard-Core-Extensions) full Orchard Core solution and also see our other useful Orchard Core-related open-source projects!
 - [The <datatable> Tag Helper](Lombiq.DataTables.Samples/Views/Sample/DataTableTagHelper.cshtml)
 - [JSON Data Provider](Lombiq.DataTables.Samples/Services/SampleJsonResultDataTableDataProvider.cs)
-- [Index based Data Provider](Lombiq.DataTables.Samples/Services/)
+- [Index based Data Provider](Lombiq.DataTables.Samples/Indexes/EmployeeDataTableIndex.cs)
 
 ### Static Content With Tag Helper
 

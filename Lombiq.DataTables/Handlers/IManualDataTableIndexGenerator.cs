@@ -42,7 +42,7 @@ namespace Lombiq.DataTables.Handlers
         public static async Task ScheduleDeferredIndexGenerationAsync(
             this IEnumerable<IManualDataTableIndexGenerator> indexGenerators,
             ICollection<ContentItem> contentItems,
-            bool managedTypeOnly)
+            bool managedTypeOnly = true)
         {
             foreach (var indexGenerator in indexGenerators)
             {
