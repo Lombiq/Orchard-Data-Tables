@@ -1,6 +1,6 @@
 # Lombiq Data Tables for Orchard Core
 
-
+[![Lombiq.DataTables NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.DataTables)](https://www.nuget.org/packages/Lombiq.DataTables/)
 
 ## About
 
