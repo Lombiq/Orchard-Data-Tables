@@ -1,6 +1,9 @@
 @using OrchardCore.ResourceManagement
 @using System.Globalization
 @using Newtonsoft.Json.Linq
+@using Lombiq.DataTables.Services
+
+@inject IEnumerable<IDataTableDataProvider> Providers
 
 @inject IResourceManager ResourceManager
 
@@ -10,13 +13,15 @@
     var pageSize = viewModel?.PageSize ?? Site.PageSize;
     var skip = viewModel?.Skip ?? 0;
 
-    var queryId = viewModel?.QueryId ?? "";
-    var columnsDefinition = viewModel?.ColumnsDefinition;
+    string queryId = viewModel?.QueryId ?? Model.QueryId?.ToString() ?? "";
+    string dataProvider = viewModel?.DataProvider ?? Model.Provider?.ToString() ?? "";
+    var columnsDefinition = viewModel?.ColumnsDefinition ?? await Providers
+        .Single(provider => provider.GetType().Name == dataProvider)
+        .GetColumnsDefinitionAsync(queryId);
     var columns = columnsDefinition?.Columns.ToList() ?? new List<DataTableColumnDefinition>();
     var childRowsEnabled = viewModel?.ChildRowsEnabled ?? false;
     var progressiveLoadingEnabled = viewModel?.ProgressiveLoadingEnabled ?? false;
     var queryStringParametersLocalStorageKey = viewModel?.QueryStringParametersLocalStorageKey ?? "";
-    var dataProvider = viewModel?.DataProvider ?? "";
     var dataTableId = string.IsNullOrEmpty(viewModel?.DataTableId) ? ElementNames.DataTableElementName : viewModel.DataTableId;
     var dataTableCssClasses = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? "" : viewModel.DataTableCssClasses;
 

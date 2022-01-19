@@ -1,4 +1,8 @@
 @using Newtonsoft.Json
+@using Lombiq.DataTables.Services
+
+@inject IEnumerable<IDataTableDataProvider> Providers
+
 @{
     var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
 
@@ -18,11 +22,13 @@
 
     var query = Context.Request.Query;
 
-    var queryId = viewModel?.QueryId ?? "";
-    var columnsDefinition = viewModel?.ColumnsDefinition;
+    string queryId = viewModel?.QueryId ?? Model.QueryId?.ToString() ?? "";
+    string dataProvider = viewModel?.DataProvider ?? Model.Provider?.ToString() ?? "";
+    var columnsDefinition = viewModel?.ColumnsDefinition ?? await Providers
+        .Single(provider => provider.GetType().Name == dataProvider)
+        .GetColumnsDefinitionAsync(queryId);
     var columns = (new[] { new DataTableColumnDefinition { Name = pickerInputDataName, Orderable = false, Text = T["Select"].Value } })
         .Concat(columnsDefinition?.Columns ?? Array.Empty<DataTableColumnDefinition>());
-    var dataProvider = viewModel?.DataProvider ?? "";
     var dataTableId = string.IsNullOrEmpty(viewModel?.DataTableId) ? defaultDataTableId : viewModel.DataTableId;
     var wrapperClassNames = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? defaultBlockName : viewModel.DataTableCssClasses;
     var hideActions = Model.HideActions != null ? (bool)Model.HideActions : query["HideActions"].FirstOrDefault() != null;
