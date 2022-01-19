@@ -152,5 +152,10 @@ namespace Lombiq.DataTables.Samples.Services
             public decimal? Salary { get; set; }
             public ActionsDescriptor Actions { get; set; }
         }
+
+        // Once you log in as admin you can access it on the /Admin/DataTable/SampleJsonResultDataTableDataProvider
+        // or the /Lombiq.DataTables.Samples/Sample/ProviderWithShape relative URLs. We'll check out the latter next.
     }
 }
+
+// NEXT STATION: Views/Sample/ProviderWithShape.cshtml

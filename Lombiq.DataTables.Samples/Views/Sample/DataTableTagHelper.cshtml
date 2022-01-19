@@ -2,12 +2,13 @@
 
 @* This is a static data table. It simply adds the script and stylesheet resources to the page, otherwise it behaves
    like a zero configuration DataTable (https://datatables.net/examples/basic_init/zero_configuration.html). But you
-   can pass a JSON encoded configuration object into the data-options attribute too. Use apostrophes instead of quotes
-   to avoid encoding problems. *@
+   can pass a JSON encoded configuration object into the data-options attribute too. Surround the attribute value with
+   apostrophes so the string itself can remain valid JSON. Note that using @Json.Serialize() here would escape the
+   quotes so we have to use literals. For example here we change the default sort to show the oldest employees first *@
 
-@* Always make sure Views/_ViewImports.cshtml has "@addTagHelper *, Lombiq.DataTables.TagHelpers" for the tag helper. *@
+@* Always make sure Views/_ViewImports.cshtml has "@addTagHelper *, Lombiq.DataTables" for the tag helper. *@
 
-<datatable data-options="{ order: [[ 3, 'desc' ]] }">
+<datatable data-options='{ "order": [[ 3, "desc" ]] }'>
     <thead>
         <tr>
             <th>@T["Name"]</th>
@@ -22,10 +23,10 @@
         @foreach (var employee in Model)
         {
             <tr>
-                <td>@employee.Name</td>
-                <td>@employee.Position</td>
-                <td>@employee.Office</td>
-                <td>@employee.Age</td>
+                <td>@employee.Name.Text</td>
+                <td>@employee.Position.Text</td>
+                <td>@employee.Office.Text</td>
+                <td>@employee.Age.Value</td>
                 <td data-order="@(employee.StartDate.Value?.Ticks ?? 0)">
                     @if (employee.StartDate.Value is { } startDate)
                     {
