@@ -14,6 +14,7 @@ using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using YesSql;
 
@@ -93,7 +94,7 @@ namespace Lombiq.DataTables.Services
                     .ToDictionary(
                         cell => cell.Name,
                         cell => cell.Regex is { } regex
-                            ? new JValue(cell.Token?.ToString().Replace(regex.From, regex.To) ?? string.Empty)
+                            ? new JValue(cell.Token?.ToString().RegexReplace(regex.From, regex.To, RegexOptions.Singleline) ?? string.Empty)
                             : cell.Token)));
 
         protected async Task RenderLiquidAsync(IEnumerable<DataTableRow> rowList, IList<string> liquidColumns)
