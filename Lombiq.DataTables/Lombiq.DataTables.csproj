@@ -9,7 +9,7 @@
 
     <Title>Lombiq Data Tables</Title>
     <Authors>Lombiq Technologies</Authors>
-    <Copyright>Copyright © 2022, Lombiq Technologies Ltd.</Copyright>
+    <Copyright>Copyright © 2020, Lombiq Technologies Ltd.</Copyright>
     <Description>
       An Orchard Core wrapper around the DataTables(https://datatables.net/) library for displaying tabular data from
       custom data sources. It lets you replace HTML tables with a tag helper or create asynchronous, sortable,
