@@ -1,7 +1,7 @@
 /*!
  * URI.js - Mutating URLs
  *
- * Version: 1.19.0
+ * Version: 1.19.7
  *
  * Author: Rodney Rehm
  * Web: http://medialize.github.io/URI.js/
@@ -81,7 +81,7 @@
     return /^[0-9]+$/.test(value);
   }
 
-  URI.version = '1.19.0';
+  URI.version = '1.19.7';
 
   var p = URI.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
@@ -512,6 +512,9 @@
       string = string.substring(0, pos);
     }
 
+    // slashes and backslashes have lost all meaning for the web protocols (https, http, wss, ws)
+    string = string.replace(/^(https?|ftp|wss?)?:[/\\]*/, '$1://');
+
     // extract protocol
     if (string.substring(0, 2) === '//') {
       // relative-scheme
@@ -526,7 +529,7 @@
         if (parts.protocol && !parts.protocol.match(URI.protocol_expression)) {
           // : may be within the path
           parts.protocol = undefined;
-        } else if (string.substring(pos + 1, pos + 3) === '//') {
+        } else if (string.substring(pos + 1, pos + 3).replace(/\\/g, '/') === '//') {
           string = string.substring(pos + 3);
 
           // extract "user:pass@host:port"
@@ -612,17 +615,22 @@
   };
   URI.parseUserinfo = function(string, parts) {
     // extract username:password
+    var _string = string
+    var firstBackSlash = string.indexOf('\\');
+    if (firstBackSlash !== -1) {
+      string = string.replace(/\\/g, '/')
+    }
     var firstSlash = string.indexOf('/');
     var pos = string.lastIndexOf('@', firstSlash > -1 ? firstSlash : string.length - 1);
     var t;
 
-    // authority@ must come before /path
+    // authority@ must come before /path or \path
     if (pos > -1 && (firstSlash === -1 || pos < firstSlash)) {
       t = string.substring(0, pos).split(':');
       parts.username = t[0] ? URI.decode(t[0]) : null;
       t.shift();
       parts.password = t[0] ? URI.decode(t.join(':')) : null;
-      string = string.substring(pos + 1);
+      string = _string.substring(pos + 1);
     } else {
       parts.username = null;
       parts.password = null;
@@ -653,7 +661,10 @@
       // no "=" is null according to http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html#collect-url-parameters
       value = v.length ? URI.decodeQuery(v.join('='), escapeQuerySpace) : null;
 
-      if (hasOwn.call(items, name)) {
+      if (name === '__proto__') {
+        // ignore attempt at exploiting JavaScript internals
+        continue;
+      } else if (hasOwn.call(items, name)) {
         if (typeof items[name] === 'string' || items[name] === null) {
           items[name] = [items[name]];
         }
@@ -669,6 +680,7 @@
 
   URI.build = function(parts) {
     var t = '';
+    var requireAbsolutePath = false
 
     if (parts.protocol) {
       t += parts.protocol + ':';
@@ -676,12 +688,13 @@
 
     if (!parts.urn && (t || parts.hostname)) {
       t += '//';
+      requireAbsolutePath = true
     }
 
     t += (URI.buildAuthority(parts) || '');
 
     if (typeof parts.path === 'string') {
-      if (parts.path.charAt(0) !== '/' && typeof parts.hostname === 'string') {
+      if (parts.path.charAt(0) !== '/' && requireAbsolutePath) {
         t += '/';
       }
 
@@ -744,7 +757,10 @@
     var t = '';
     var unique, key, i, length;
     for (key in data) {
-      if (hasOwn.call(data, key) && key) {
+      if (key === '__proto__') {
+        // ignore attempt at exploiting JavaScript internals
+        continue;
+      } else if (hasOwn.call(data, key)) {
         if (isArray(data[key])) {
           unique = {};
           for (i = 0, length = data[key].length; i < length; i++) {
@@ -1241,9 +1257,13 @@
     } else if (_URI || _object) {
       var src = _URI ? href._parts : href;
       for (key in src) {
+        if (key === 'query') { continue; }
         if (hasOwn.call(this._parts, key)) {
           this._parts[key] = src[key];
         }
+      }
+      if (src.query) {
+        this.query(src.query, false);
       }
     } else {
       throw new TypeError('invalid input');
