@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using YesSql.Indexes;
 
 namespace Lombiq.DataTables.Samples.Indexes
 {
     // An index based provider needs its own dedicated index which represents the final computed or joined data to be
-    // displayed on the table. During display you only need to query this index alone to get all table data. However
+    // displayed in the table. During display you only need to query this index alone to get all table data. However,
     // to make it happen you must update the index with an index generator.
     public class EmployeeDataTableIndex : MapIndex
     {

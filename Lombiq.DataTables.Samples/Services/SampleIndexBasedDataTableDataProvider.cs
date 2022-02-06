@@ -1,4 +1,4 @@
-﻿using Lombiq.DataTables.Constants;
+using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Samples.Indexes;
 using Lombiq.DataTables.Services;
@@ -47,7 +47,7 @@ namespace Lombiq.DataTables.Samples.Services
                 // Here we demonstrate export links. This is the way to return a cell with link text that still
                 // correctly sorts and works in the Excel export too.
                 var name = new ExportLink(
-                    url: "https://www.lombiq.com",
+                    url: "https://lombiq.com",
                     text: row.Name,
                     attributes: new Dictionary<string, string>
                     {

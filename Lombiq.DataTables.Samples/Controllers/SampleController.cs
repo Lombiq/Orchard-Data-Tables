@@ -1,4 +1,4 @@
-﻿using Lombiq.DataTables.Samples.Models;
+using Lombiq.DataTables.Samples.Models;
 using Lombiq.HelpfulLibraries.Libraries.Contents;
 using Microsoft.AspNetCore.Mvc;
 using OrchardCore.ContentManagement;
@@ -24,7 +24,7 @@ namespace Lombiq.DataTables.Samples.Controllers
                     .ListAsync())
                 .Select(contentItem => contentItem.As<EmployeePart>()));
 
-        // Nothing interesting happens here, the shape sends out the asynchronous request on its own via Javascript.
+        // Nothing interesting happens here, the shape sends out the asynchronous request on its own via JavaScript.
         public IActionResult ProviderWithShape() => View();
     }
 }

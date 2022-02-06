@@ -1,4 +1,4 @@
-﻿using Lombiq.DataTables.Constants;
+using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Samples.Models;
 using Lombiq.DataTables.Services;
@@ -26,7 +26,7 @@ namespace Lombiq.DataTables.Samples.Services
         private readonly IStringLocalizer<ActionsDescriptor> _actionsStringLocalizer;
         private readonly IStringLocalizer T;
 
-        // This value is displayed on the excel export and the /Admin/DataTable/{providerName} page.
+        // This value is displayed in the Excel export and the /Admin/DataTable/{providerName} page.
         public override LocalizedString Description => T["JSON based Sample Data Provider"];
 
         // You can provide required permissions, the viewer will need at least one to display results on the page. If
@@ -110,10 +110,10 @@ namespace Lombiq.DataTables.Samples.Services
                 IsFiltered = isFiltered,
                 IsPaginated = isPaginated,
 
-                // To get an accurate total even when filtering, we need the counts of the query before and after filtering,
-                // always before pagination. To save time, you can omit the filtered query when there was no search and
-                // return -1 instead. The presence of a positive number is what tells DataTables on the client side that
-                // it's a filtered result set.
+                // To get an accurate total even when filtering, we need the counts of the query before and after
+                // filtering, always before pagination. To save time, you can omit the filtered query when there was no
+                // search and return -1 instead. The presence of a positive number is what tells DataTables on the
+                // client-side that it's a filtered result set.
                 Count = totalCount,
                 CountFiltered = filteredCount,
             };
@@ -123,7 +123,7 @@ namespace Lombiq.DataTables.Samples.Services
         // headers. The latter is ideal in most cases, but the async version is available in case you need to fetch a
         // site setting or database value before providing your columns.
         // The this.DefineColumns extension lets you simply provide a default sorting column, sorting direction and an
-        // array of property name - display text pairs. However you are free to make your DataTableColumnsDefinition
+        // array of property name-display text pairs. However you are free to make your DataTableColumnsDefinition
         // from scratch if you need it.
         // You can also amend a regex search-replace pattern which will be applied to every cell in that column. This is
         // also a good way to inject Liquid expressions into the value, which are evaluated on the server side before
