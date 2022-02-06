@@ -27,7 +27,7 @@ namespace Lombiq.DataTables.Samples.Services
         private readonly IStringLocalizer T;
 
         // This value is displayed in the Excel export and the /Admin/DataTable/{providerName} page.
-        public override LocalizedString Description => T["JSON based Sample Data Provider"];
+        public override LocalizedString Description => T["JSON-based Sample Data Provider"];
 
         // You can provide required permissions, the viewer will need at least one to display results on the page. If
         // it's empty or null then no permission check is required.

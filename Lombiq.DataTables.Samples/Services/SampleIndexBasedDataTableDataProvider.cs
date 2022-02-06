@@ -14,7 +14,7 @@ namespace Lombiq.DataTables.Samples.Services
         private readonly IStringLocalizer<ActionsDescriptor> _actionsStringLocalizer;
         private readonly IStringLocalizer<SampleIndexBasedDataTableDataProvider> T;
 
-        public override LocalizedString Description => T["Index based Sample Data Provider"];
+        public override LocalizedString Description => T["Index-based Sample Data Provider"];
 
         public SampleIndexBasedDataTableDataProvider(
             IStringLocalizer<ActionsDescriptor> actionsStringLocalizer,

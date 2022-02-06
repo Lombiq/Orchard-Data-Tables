@@ -15,10 +15,10 @@ namespace Lombiq.DataTables.Samples
             services.AddContentPart<EmployeePart>()
                 .WithMigration<EmployeeMigrations>();
 
-            // A JSON based provider doesn't need anything else.
+            // A JSON-based provider doesn't need anything else.
             services.AddDataTableDataProvider<SampleJsonResultDataTableDataProvider>();
 
-            // As index based providers rely on their own index, generator and migration they're registered all at once
+            // As index-based providers rely on their own index, generator and migration they're registered all at once
             // to ensure their types match.
             services.AddIndexBasedDataTableProvider<
                 EmployeeDataTableIndex,
@@ -29,4 +29,4 @@ namespace Lombiq.DataTables.Samples
     }
 }
 
-// END OF TRAINING SECTION: Index based Data Provider
+// END OF TRAINING SECTION: Index-based Data Provider

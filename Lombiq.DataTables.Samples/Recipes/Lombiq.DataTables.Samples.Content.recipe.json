@@ -16,6 +16,12 @@
   ],
   "steps": [
     {
+      "name": "feature",
+      "enable": [
+        "Lombiq.DataTables.Samples"
+      ]
+    },
+    {
       "comment": "Example data is sourced from https://datatables.net/examples/basic_init/table_sorting.html",
       "name": "content",
       "data": [
