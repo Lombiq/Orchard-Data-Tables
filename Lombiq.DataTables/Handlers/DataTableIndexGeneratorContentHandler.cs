@@ -111,9 +111,9 @@ namespace Lombiq.DataTables.Handlers
                 WHERE new.{contentItemId} IS NULL";
             var invalidIds = await transaction.Connection.QueryAsync<int>(deletedSql, transaction: transaction);
 
-            // Finitive.AuditTrail compatibility check. As it just uses the regular Orchard Core facilities there is
+            // OrchardCore.AuditTrail compatibility check. As it just uses the regular Orchard Core facilities there is
             // no need to make it a dependency.
-            var restored = _hcaLazy.Value.HttpContext?.Items.GetMaybe("Finitive.AuditTrail.Restored");
+            var restored = _hcaLazy.Value.HttpContext?.Items.GetMaybe("OrchardCore.AuditTrail.Restored");
             if (restored is ContentItem { ContentItemId: { } } restoredContentItem)
             {
                 invalidIds = invalidIds.Where(id => id != restoredContentItem.Id);
