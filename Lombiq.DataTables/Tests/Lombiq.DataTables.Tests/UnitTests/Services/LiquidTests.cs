@@ -84,7 +84,9 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 columns
                     .Select(column => row[column.Name.Split(new[] { "||" }, StringSplitOptions.None)[0]])
                     .ToArray()
-                    .ShouldBe(pattern[rowIndex], $"Row {rowIndex + 1} didn't match expectation.");
+                    .ShouldBe(
+                        pattern[rowIndex],
+                        FormattableString.Invariant($"Row {rowIndex + 1} didn't match expectation."));
             }
         }
 
