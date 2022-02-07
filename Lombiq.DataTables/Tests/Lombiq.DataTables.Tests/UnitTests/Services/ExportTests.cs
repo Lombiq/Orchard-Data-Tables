@@ -2,7 +2,6 @@ using ClosedXML.Excel;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.Tests.Helpers;
-using Lombiq.HelpfulLibraries.Libraries.Utilities;
 using Lombiq.Tests.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
