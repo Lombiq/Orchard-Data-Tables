@@ -16,7 +16,8 @@ namespace Lombiq.DataTables.Samples.Controllers
         public SampleController(ISession session) => _session = session;
 
         // The tag helper needs the data during page render, which can make the initial page load slower. This is okay
-        // for small tables. You'll see approaches better suited for large datasets later.
+        // for small tables. You'll see approaches better suited for large datasets later. See it under
+        // /Lombiq.DataTables.Samples/Sample/DataTableTagHelper
         public async Task<IActionResult> DataTableTagHelper() =>
             View(
                 (await _session
@@ -25,7 +26,8 @@ namespace Lombiq.DataTables.Samples.Controllers
                     .ListAsync())
                 .Select(contentItem => contentItem.As<EmployeePart>()));
 
-        // Nothing interesting happens here, the shape sends out the asynchronous request on its own via JavaScript.
+        // Nothing interesting happens here, the shape sends out the asynchronous request on its own via JavaScript. See
+        // it under /Lombiq.DataTables.Samples/Sample/ProviderWithShape
         public IActionResult ProviderWithShape() => View();
     }
 }
