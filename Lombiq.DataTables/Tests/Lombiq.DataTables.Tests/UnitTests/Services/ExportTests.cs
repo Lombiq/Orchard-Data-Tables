@@ -2,6 +2,7 @@ using ClosedXML.Excel;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.Tests.Helpers;
+using Lombiq.HelpfulLibraries.Libraries.Utilities;
 using Lombiq.Tests.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -87,7 +88,9 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                         null => "NULL",
                     })
                     .ToArray()
-                    .ShouldBe(pattern[rowIndex], $"Row {rowIndex + 1} didn't match expectation.");
+                    .ShouldBe(
+                        pattern[rowIndex],
+                        FormattableString.Invariant($"Row {rowIndex + 1} didn't match expectation."));
             }
         }
 
@@ -184,8 +187,12 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                     new object[] { 3, new DateTime(2020, 11, 26, 1, 42, 01).ToString(CultureInfo.InvariantCulture) },
                 },
                 new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
-                ($"1,{new DateTime(2020, 11, 26, 23, 42, 01)};2,{new DateTime(2020, 11, 26, 13, 42, 01)};" +
-                $"3,{new DateTime(2020, 11, 26, 1, 42, 01)}").Split(';').Select(row => row.Split(',')).ToArray(),
+                StringHelper.Concatenate(
+                    $"1,{new DateTime(2020, 11, 26, 23, 42, 01)};2,{new DateTime(2020, 11, 26, 13, 42, 01)};",
+                    $"3,{new DateTime(2020, 11, 26, 1, 42, 01)}")
+                    .Split(';')
+                    .Select(row => row.Split(','))
+                    .ToArray(),
                 0,
                 10,
                 0,

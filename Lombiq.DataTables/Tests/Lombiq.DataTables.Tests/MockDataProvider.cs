@@ -49,7 +49,7 @@ namespace Lombiq.DataTables.Tests
 
         protected override async Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request)
         {
-            var columns = (await GetColumnsDefinitionAsync(null))
+            var columns = (await GetColumnsDefinitionAsync(queryId: null))
                 .Columns
                 .Select((item, index) => new { item.Name, Index = index });
 
