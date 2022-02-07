@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Lombiq.DataTables.csproj" />
-    <ProjectReference Include="..\..\..\..\..\test\Lombiq.Tests\Lombiq.Tests.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\test\Lombiq.Tests\Lombiq.Tests.csproj" />
   </ItemGroup>
 
 </Project>
