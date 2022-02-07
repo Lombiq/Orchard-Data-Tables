@@ -29,7 +29,7 @@ namespace Lombiq.DataTables.Services
         protected abstract string IdColumnName { get; }
 
         public IDictionary<string, bool> IndexGenerationIsRemovalByType { get; } = new Dictionary<string, bool>();
-        public abstract IEnumerable<string> ManagedContentType { get; }
+        public abstract IEnumerable<string> ManagedContentTypes { get; }
 
         protected DataTableIndexGeneratorBase(
             IContentManager contentManager,
@@ -42,7 +42,7 @@ namespace Lombiq.DataTables.Services
         }
 
         public virtual ValueTask<bool> NeedsUpdatingAsync(ContentContextBase context) =>
-            new(ManagedContentType.Contains(context.ContentItem.ContentType));
+            new(ManagedContentTypes.Contains(context.ContentItem.ContentType));
 
         public abstract Task ScheduleDeferredIndexGenerationAsync(ContentItem contentItem, bool remove);
 

@@ -25,7 +25,7 @@ namespace Lombiq.DataTables.Services
         /// Gets the content type names that the index is made for. Other content types may only trigger index updates
         /// by being in some relationship with these types.
         /// </summary>
-        IEnumerable<string> ManagedContentType { get; }
+        IEnumerable<string> ManagedContentTypes { get; }
 
         /// <summary>
         /// Checks if the index generator is applicable and if it needs to do anything.

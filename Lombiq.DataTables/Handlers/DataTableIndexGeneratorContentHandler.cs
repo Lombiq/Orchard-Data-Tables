@@ -57,7 +57,7 @@ namespace Lombiq.DataTables.Handlers
         }
 
         public Task ScheduleDeferredIndexGenerationAsync(ContentItem contentItem, bool managedTypeOnly) =>
-            _indexGeneratorLazy.Value.ManagedContentType.Contains(contentItem.ContentType)
+            _indexGeneratorLazy.Value.ManagedContentTypes.Contains(contentItem.ContentType)
                 ? ReserveIndexGenerationAsync(new UpdateContentContext(contentItem))
                 : Task.CompletedTask;
 
@@ -65,7 +65,7 @@ namespace Lombiq.DataTables.Handlers
         {
             var generator = _indexGeneratorLazy.Value;
             var contentItem = context.ContentItem;
-            var isRemove = generator.ManagedContentType.Contains(contentItem.ContentType) && context.IsRemove();
+            var isRemove = generator.ManagedContentTypes.Contains(contentItem.ContentType) && context.IsRemove();
 
             if (!await generator.NeedsUpdatingAsync(context)) return;
             if (!IsInMiddlewarePipeline) await _sessionLazy.Value.FlushAsync();
