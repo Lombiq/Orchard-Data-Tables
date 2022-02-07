@@ -29,6 +29,7 @@ If you need an admin page with just one data table you don't need to define a vi
 
 You can find an example using [LinqToDb](https://github.com/Lombiq/Helpful-Libraries/blob/dev/Lombiq.HelpfulLibraries.LinqToDb/Readme.md) queries do display a table of deleted content items at [DeletedContentItemDataTableDataProvider.cs](Lombiq.DataTables/Services/DeletedContentItemDataTableDataProvider.cs).
 
+If you want a display a table of deleted content items, we already happen to have a provider for that called [`DeletedContentItemDataTableDataProvider`](Lombiq.DataTables/Services/DeletedContentItemDataTableDataProvider.cs).
 
 ## Client-side Extensibility
 

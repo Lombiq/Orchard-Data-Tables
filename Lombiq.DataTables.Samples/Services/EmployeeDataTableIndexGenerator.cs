@@ -19,7 +19,7 @@ namespace Lombiq.DataTables.Samples.Services
         // This column is used automatically to delete old rows.
         protected override string IdColumnName => nameof(EmployeeDataTableIndex.ContentItemId);
 
-        // If your table represents a content type provide it here. This means the "main" content type, if you need to
+        // If your table represents a content type, provide it here. This means the "main" content type, if you need to
         // join other content types to it for related information (e.g. with ContentPickerField), those don't go here.
         public override IEnumerable<string> ManagedContentTypes { get; } = new[] { Employee };
 

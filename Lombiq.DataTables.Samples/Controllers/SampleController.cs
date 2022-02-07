@@ -15,7 +15,8 @@ namespace Lombiq.DataTables.Samples.Controllers
 
         public SampleController(ISession session) => _session = session;
 
-        // The tag helper needs the data during page render which can make the initial page load slower.
+        // The tag helper needs the data during page render, which can make the initial page load slower. This is okay
+        // for small tables. You'll see approaches better suited for large datasets later.
         public async Task<IActionResult> DataTableTagHelper() =>
             View(
                 (await _session

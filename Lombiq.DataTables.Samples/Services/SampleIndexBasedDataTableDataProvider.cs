@@ -93,6 +93,9 @@ namespace Lombiq.DataTables.Samples.Services
                 (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.StartDate), T["Start Date"]),
                 (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Salary) + "||^||$", T["Salary"]),
                 (GetActionsColumn(nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Actions), fromJson: true), T["Actions"]));
+
+        // Once you log in as admin you can access it on the /Admin/DataTable/SampleJsonResultDataTableDataProvider
+        // or the /Lombiq.DataTables.Samples/Sample/ProviderWithShape relative URLs.
     }
 }
 
