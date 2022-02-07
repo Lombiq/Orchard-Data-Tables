@@ -4,7 +4,6 @@ using Microsoft.Extensions.Localization;
 using OrchardCore.DisplayManagement;
 using OrchardCore.Security.Permissions;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services
@@ -33,7 +32,7 @@ namespace Lombiq.DataTables.Services
         /// <summary>
         /// Gets an optional collection of permissions. If not null, the user must authorize against at least one.
         /// </summary>
-        IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
+        IEnumerable<Permission> AllowedPermissions { get; }
 
         /// <summary>
         /// Returns the table body created based on the provided request.

@@ -99,7 +99,12 @@ namespace Lombiq.DataTables.Services
             IAuthorizationService authorizationService,
             ClaimsPrincipal user)
         {
-            if (dataProvider.AllowedPermissions == null) return true;
+            if (dataProvider.AllowedPermissions == null)
+            {
+                throw new InvalidOperationException(
+                    $"Please provide a collection of {nameof(Permission)}s in the {dataProvider.GetType().Name}." +
+                    $"{nameof(dataProvider.AllowedPermissions)} property. It can be empty too, but not null.");
+            }
 
             var hasFailedPermissions = false;
             foreach (var permission in dataProvider.AllowedPermissions)

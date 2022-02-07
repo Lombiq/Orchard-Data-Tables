@@ -30,7 +30,7 @@ namespace Lombiq.DataTables.Samples.Services
         public override LocalizedString Description => T["JSON-based Sample Data Provider"];
 
         // You can provide required permissions, the viewer will need at least one to display results on the page. If
-        // it's empty or null then no permission check is required.
+        // it's empty then no permission check is required.
         public override IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
 
         public SampleJsonResultDataTableDataProvider(

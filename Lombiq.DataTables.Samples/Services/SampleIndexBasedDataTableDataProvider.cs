@@ -3,7 +3,9 @@ using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Samples.Indexes;
 using Lombiq.DataTables.Services;
 using Microsoft.Extensions.Localization;
+using OrchardCore.Security.Permissions;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using static Lombiq.DataTables.Samples.Constants.ContentTypes;
 
@@ -15,6 +17,10 @@ namespace Lombiq.DataTables.Samples.Services
         private readonly IStringLocalizer<SampleIndexBasedDataTableDataProvider> T;
 
         public override LocalizedString Description => T["Index-based Sample Data Provider"];
+
+        // You can provide required permissions, the viewer will need at least one to display results on the page. If
+        // it's empty then no permission check is required.
+        public override IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
 
         public SampleIndexBasedDataTableDataProvider(
             IStringLocalizer<ActionsDescriptor> actionsStringLocalizer,

@@ -8,6 +8,7 @@ using OrchardCore.DisplayManagement;
 using OrchardCore.Lucene;
 using OrchardCore.Modules;
 using OrchardCore.Queries;
+using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Lombiq.DataTables.Services
 
         public string Name => nameof(QueryDataTableDataProvider);
         public LocalizedString Description => T["Query"];
+        public IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
 
         public QueryDataTableDataProvider(
             IQueryManager queryManager,

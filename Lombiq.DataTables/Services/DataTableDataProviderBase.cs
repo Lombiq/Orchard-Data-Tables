@@ -28,7 +28,7 @@ namespace Lombiq.DataTables.Services
         protected readonly IShapeFactory _shapeFactory;
 
         public abstract LocalizedString Description { get; }
-        public virtual IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
+        public abstract IEnumerable<Permission> AllowedPermissions { get; }
 
         protected DataTableDataProviderBase(IDataTableDataProviderServices services)
         {
