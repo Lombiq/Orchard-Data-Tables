@@ -6,8 +6,5 @@ namespace Lombiq.DataTables.Constants
         public const string DataTableRowElementName = DataTableElementName + "__row";
 
         public const string DataTableWrapperDefaultElementName = "dataTableWrapper";
-
-        public const string ContentPickerBlockName = "contentPicker";
-        public const string ContentPickerSelectedContentIdsElementName = ContentPickerBlockName + "__selectedContentIds";
     }
 }

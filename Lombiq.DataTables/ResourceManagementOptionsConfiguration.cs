@@ -106,15 +106,6 @@ namespace Lombiq.DataTables
                 .SetVersion("1.0");
 
             _manifest
-                .DefineScript(ResourceNames.LombiqContentPicker)
-                .SetUrl(Lombiq + "lombiq-contentpicker.js")
-                .SetDependencies("jQueryColorBox");
-
-            _manifest
-                .DefineStyle(ResourceNames.LombiqContentPicker)
-                .SetDependencies("jQueryColorBox");
-
-            _manifest
                 .DefineScript(ResourceNames.ICantBelieveItsNotDataTable)
                 .SetUrl(Lombiq + "icbin-datatable.js")
                 .SetDependencies("vuejs")
