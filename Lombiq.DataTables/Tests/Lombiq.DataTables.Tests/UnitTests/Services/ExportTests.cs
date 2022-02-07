@@ -176,20 +176,22 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 0,
             };
 
+            var date1 = new DateTime(2020, 11, 26, 23, 42, 01);
+            var date2 = new DateTime(2020, 11, 26, 13, 42, 01);
+            var date3 = new DateTime(2020, 11, 26, 1, 42, 01);
+
             // The date value should be the same, only the formatting changes.
             yield return new object[]
             {
                 "Verify custom number formatting.",
                 new[]
                 {
-                    new object[] { 1, new DateTime(2020, 11, 26, 23, 42, 01).ToString(CultureInfo.InvariantCulture) },
-                    new object[] { 2, new DateTime(2020, 11, 26, 13, 42, 01).ToString(CultureInfo.InvariantCulture) },
-                    new object[] { 3, new DateTime(2020, 11, 26, 1, 42, 01).ToString(CultureInfo.InvariantCulture) },
+                    new object[] { 1, date1.ToString(CultureInfo.InvariantCulture) },
+                    new object[] { 2, date2.ToString(CultureInfo.InvariantCulture) },
+                    new object[] { 3, date3.ToString(CultureInfo.InvariantCulture) },
                 },
                 new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
-                StringHelper.Concatenate(
-                    $"1,{new DateTime(2020, 11, 26, 23, 42, 01)};2,{new DateTime(2020, 11, 26, 13, 42, 01)};",
-                    $"3,{new DateTime(2020, 11, 26, 1, 42, 01)}")
+                FormattableString.CurrentCulture($"1,{date1};2,{date2};3,{date3}")
                     .Split(';')
                     .Select(row => row.Split(','))
                     .ToArray(),
