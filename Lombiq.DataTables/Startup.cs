@@ -20,7 +20,6 @@ namespace Lombiq.DataTables
     {
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddDataTableDataProvider<QueryDataTableDataProvider>();
             services.AddDataTableExportService<ExcelDataTableExportService>();
 
             services.AddTagHelpers<DataTableTagHelper>();
