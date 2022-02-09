@@ -15,6 +15,7 @@ Do you want to quickly try out this project and see it in action? Check it out i
 
 
 You can start with any of these sections, they demonstrate different approaches that best fit different use-cases.
+
 - [The <datatable> Tag Helper](../Lombiq.DataTables.Samples/Views/Sample/DataTableTagHelper.cshtml)
 - [JSON Data Provider](../Lombiq.DataTables.Samples/Services/SampleJsonResultDataTableDataProvider.cs)
 - [Index-based Data Provider](../Lombiq.DataTables.Samples/Indexes/EmployeeDataTableIndex.cs)
