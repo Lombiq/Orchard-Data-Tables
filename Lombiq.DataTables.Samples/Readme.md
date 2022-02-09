@@ -14,9 +14,9 @@ If you'd like to learn by example, check out our [Open-Source Orchard Core Exten
 ## Training sections
 
 
-- [The <datatable> Tag Helper](Lombiq.DataTables.Samples/Views/Sample/DataTableTagHelper.cshtml)
-- [JSON Data Provider](Lombiq.DataTables.Samples/Services/SampleJsonResultDataTableDataProvider.cs)
-- [Index-based Data Provider](Lombiq.DataTables.Samples/Indexes/EmployeeDataTableIndex.cs)
+- [The <datatable> Tag Helper](../Lombiq.DataTables.Samples/Views/Sample/DataTableTagHelper.cshtml)
+- [JSON Data Provider](../Lombiq.DataTables.Samples/Services/SampleJsonResultDataTableDataProvider.cs)
+- [Index-based Data Provider](../Lombiq.DataTables.Samples/Indexes/EmployeeDataTableIndex.cs)
 
 
 ## Contributing and support
