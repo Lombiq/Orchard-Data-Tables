@@ -291,6 +291,7 @@
                             plugin.settings.callbacks.ajaxDataLoadedCallback(response);
 
                             latestDraw = response.draw;
+                            $wrapper.attr('data-draw', latestDraw);
 
                             callback(response);
 

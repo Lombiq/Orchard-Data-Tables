@@ -273,6 +273,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             success: function success(response) {
               plugin.settings.callbacks.ajaxDataLoadedCallback(response);
               latestDraw = response.draw;
+              $wrapper.attr('data-draw', latestDraw);
               callback(response);
               var page = history.state.data.start / history.state.data.length;
               plugin.history.isRedraw = true;

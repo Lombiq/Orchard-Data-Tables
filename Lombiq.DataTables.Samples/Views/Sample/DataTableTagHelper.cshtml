@@ -11,12 +11,14 @@
 <datatable data-options='{ "order": [[ 3, "desc" ]] }'>
     <thead>
         <tr>
-            <th>@T["Name"]</th>
-            <th>@T["Position"]</th>
-            <th>@T["Office"]</th>
-            <th>@T["Age"]</th>
-            <th>@T["Start date"]</th>
-            <th>@T["Salary"]</th>
+            @* The "data-name" is not required for the tag helper to work. However data tables generated from JSON
+               (rather than HTML like here) have it so adding it here for parity makes scripting and testing easier. *@
+            <th scope="col" data-name="Name">@T["Name"]</th>
+            <th scope="col" data-name="Position">@T["Position"]</th>
+            <th scope="col" data-name="Office">@T["Office"]</th>
+            <th scope="col" data-name="Age">@T["Age"]</th>
+            <th scope="col" data-name="StartDate">@T["Start date"]</th>
+            <th scope="col" data-name="Salary">@T["Salary"]</th>
         </tr>
     </thead>
     <tbody>
