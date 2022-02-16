@@ -30,10 +30,7 @@
                 <td>@employee.Office.Text</td>
                 <td>@employee.Age.Value</td>
                 <td data-order="@(employee.StartDate.Value?.Ticks ?? 0)">
-                    @if (employee.StartDate.Value is { } startDate)
-                    {
-                        @T["{0:d}", startDate]
-                    }
+                    @await DisplayAsync(await New.DateTime(Utc: employee.StartDate?.Value, Format: T["MM/dd/yyyy"].Value))
                 </td>
                 <td data-order="@(employee.Salary.Value ?? 0)">
                     @if (employee.Salary.Value is { } salary)
