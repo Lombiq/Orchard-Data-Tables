@@ -5,24 +5,29 @@
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <DefaultItemExcludes>$(DefaultItemExcludes);.git*;node_modules\**;Tests\**</DefaultItemExcludes>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
 
-
-    <Title>Lombiq Data Tables</Title>
+  <PropertyGroup>
+    <Title>Lombiq Data Tables for Orchard Core</Title>
     <Authors>Lombiq Technologies</Authors>
     <Copyright>Copyright © 2020, Lombiq Technologies Ltd.</Copyright>
-    <Description>An Orchard Core wrapper around the DataTables(https://datatables.net/) library for displaying tabular data from custom data sources. It lets you replace HTML tables with a tag helper or create asynchronous, sortable, searchable server-side generated tables. It also includes a pure Vue.js module that works similarly to DataTables. See the project website for detailed documentation and a sample project.</Description>
-    <PackageTags>OrchardCore;Lombiq;AspNetCore;DataTables;Vuejs</PackageTags>
+    <Description>An Orchard Core wrapper around the DataTables(https://datatables.net/) library for displaying tabular data from custom data sources. It lets you replace HTML tables with a tag helper or create asynchronous, sortable, searchable server-side generated tables. It also includes a pure Vue.js module that works similarly to DataTables. See the project website for detailed documentation.</Description>
+    <PackageIcon>NuGetIcon.png</PackageIcon>
+    <PackageTags>OrchardCore;Lombiq;AspNetCore;DataTables;Vue.js</PackageTags>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Data-Tables</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Lombiq/Orchard-Data-Tables</PackageProjectUrl>
     <PackageLicenseFile>Licence.md</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Licence.md" Pack="true" PackagePath="" />
+    <None Include="\..Readme.md" />
+    <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="node_modules\**" />
     <None Remove="Tests\**" />
-
-    <None Include="Licence.md" Pack="true" PackagePath="" />
-    <None Include="..\Readme.md" />
   </ItemGroup>
 
   <Import Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
