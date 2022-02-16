@@ -16,7 +16,7 @@ namespace Lombiq.DataTables.Tests.UI.Extensions
             "Junior Technical Author",
             "San Francisco",
             "66",
-            "1/12/2009",
+            "2009-01-12",
             "$86,000",
         };
 
@@ -26,7 +26,7 @@ namespace Lombiq.DataTables.Tests.UI.Extensions
             "Accountant",
             "Tokyo",
             "33",
-            "11/28/2008",
+            "2008-11-28",
             "$162,700",
         };
 
