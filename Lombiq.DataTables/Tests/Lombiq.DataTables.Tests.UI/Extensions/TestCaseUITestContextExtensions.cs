@@ -30,6 +30,16 @@ namespace Lombiq.DataTables.Tests.UI.Extensions
             "$162,700",
         };
 
+        public static async Task TestDataTableRecipeData(this UITestContext context)
+        {
+            await context.SignInDirectlyAsync();
+            await context.ExecuteDataTablesSampleRecipeDirectlyAsync();
+
+            await context.TestDataTableTagHelperAsync();
+            await context.TestDataTableProviderWithShapeAsync();
+            await context.TestDataTableIndexBasedProviderAsync();
+        }
+
         public static async Task TestDataTableTagHelperAsync(this UITestContext context)
         {
             await context.GoToDataTableTagHelperAsync();
