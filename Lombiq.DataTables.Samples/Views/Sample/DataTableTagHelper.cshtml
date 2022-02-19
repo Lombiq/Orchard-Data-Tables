@@ -37,7 +37,9 @@
                 <td data-order="@(employee.StartDate.Value?.Ticks ?? 0)">
                     @if (employee.StartDate.Value is { } startDate)
                     {
-                        @string.Format(CultureInfo.CurrentCulture, "{0:d}", startDate)
+                        <p>@CultureInfo.CurrentCulture</p>
+                        <p>@string.Format(CultureInfo.CurrentCulture, "{0:d}", startDate)</p>
+                        <p>@string.Format(CultureInfo.CurrentCulture, "{0:dd/MM/yyyy}", startDate)</p>
                     }
                 </td>
                 <td data-order="@(employee.Salary.Value ?? 0)">
