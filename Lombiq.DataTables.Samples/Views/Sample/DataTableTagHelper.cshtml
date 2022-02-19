@@ -10,7 +10,7 @@
 @* Always make sure Views/_ViewImports.cshtml has "@addTagHelper *, Lombiq.DataTables" for the tag helper. *@
 
 @{
-    CultureInfo.CurrentCulture = new CultureInfo(CultureInfo.CurrentCulture.Name, useUserOverride: false);
+    var cultureInfo = new CultureInfo(CultureInfo.CurrentCulture.Name, useUserOverride: false);
 }
 
 <datatable data-options='{ "order": [[ 3, "desc" ]] }'>
@@ -37,7 +37,7 @@
                 <td data-order="@(employee.StartDate.Value?.Ticks ?? 0)">
                     @if (employee.StartDate.Value is { } startDate)
                     {
-                        @T["{0:d}", startDate]
+                        @string.Format(cultureInfo, "{0:d}", startDate)
                     }
                 </td>
                 <td data-order="@(employee.Salary.Value ?? 0)">
