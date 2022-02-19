@@ -10,6 +10,8 @@
 @* Always make sure Views/_ViewImports.cshtml has "@addTagHelper *, Lombiq.DataTables" for the tag helper. *@
 
 @{
+    @* Forces the CultureInfo to use the canonical date format. This prevents user or system level customizations. We
+       need this for the UI tests to work reliably. *@
     var cultureInfo = new CultureInfo(CultureInfo.CurrentCulture.Name, useUserOverride: false);
 }
 
