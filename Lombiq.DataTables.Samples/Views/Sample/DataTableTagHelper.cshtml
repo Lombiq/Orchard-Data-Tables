@@ -39,7 +39,7 @@
                 <td data-order="@(employee.StartDate.Value?.Ticks ?? 0)">
                     @if (employee.StartDate.Value is { } startDate)
                     {
-                        @string.Format(cultureInfo, "{0:d}", startDate)
+                        @startDate.ToString("d", cultureInfo)
                     }
                 </td>
                 <td data-order="@(employee.Salary.Value ?? 0)">
