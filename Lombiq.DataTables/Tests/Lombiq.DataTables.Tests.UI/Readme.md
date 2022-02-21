@@ -1,8 +1,6 @@
 # Lombiq Data Tables for Orchard Core - UI Test Extensions
 
 
-[![Lombiq.DataTables.Tests.UI NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.DataTables.Tests.UI)](https://www.nuget.org/packages/Lombiq.DataTables.Tests.UI/)
-
 
 ## About
 
