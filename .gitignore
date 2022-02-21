@@ -15,3 +15,6 @@ node_modules/
 !**/wwwroot/favicon.ico
 !**/wwwroot/.placeholder
 /Lombiq.DataTables/.editorconfig
+
+# Auto-added .editorconfig
+/.editorconfig
