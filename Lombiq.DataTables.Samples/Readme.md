@@ -1,27 +1,15 @@
 # Lombiq Data Tables for Orchard Core - Samples
 
 
-[![Lombiq.DataTables NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.DataTables)](https://www.nuget.org/packages/Lombiq.DataTables/)
+[![Lombiq.DataTables NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.DataTables.Samples)](https://www.nuget.org/packages/Lombiq.DataTables.Samples/)
 
 
 ## About
 
 
-Example Orchard Core module that makes use of Lombiq Data Tables for Orchard Core.
-
-For general details about and usage instructions see the [root Readme](../Readme.md).
+Sample content that demonstrates the features of Lombiq Data Tables for Orchard Core
 
 Do you want to quickly try out this project and see it in action? Check it out in our [Open-Source Orchard Core Extensions](https://github.com/Lombiq/Open-Source-Orchard-Core-Extensions) full Orchard Core solution and also see our other useful Orchard Core-related open-source projects!
-
-
-## Training sections
-
-
-You can start with any of these sections, they demonstrate different approaches that best fit different use-cases.
-
-- [The <datatable> Tag Helper](../Lombiq.DataTables.Samples/Views/Sample/DataTableTagHelper.cshtml)
-- [JSON Data Provider](../Lombiq.DataTables.Samples/Services/SampleJsonResultDataTableDataProvider.cs)
-- [Index-based Data Provider](../Lombiq.DataTables.Samples/Indexes/EmployeeDataTableIndex.cs)
 
 
 ## Contributing and support

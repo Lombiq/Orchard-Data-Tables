@@ -16,9 +16,14 @@
     <PackageLicenseFile>Licence.md</PackageLicenseFile>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
     <ProjectReference Include="..\..\..\..\..\..\test\Lombiq.UITestingToolbox\Lombiq.Tests.UI\Lombiq.Tests.UI.csproj" />
     <ProjectReference Include="..\..\..\Lombiq.DataTables.Samples\Lombiq.DataTables.Samples.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
+    <PackageReference Include="Lombiq.Tests.UI" Version="1.0.0" />
+    <PackageReference Include="Lombiq.DataTables.Samples" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
