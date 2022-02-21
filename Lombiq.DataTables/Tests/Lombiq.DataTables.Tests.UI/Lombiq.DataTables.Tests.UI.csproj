@@ -16,7 +16,7 @@
     <PackageLicenseFile>Licence.md</PackageLicenseFile>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Lombiq.DataTables.Samples\Lombiq.DataTables.Samples.csproj" />
   </ItemGroup>
   
