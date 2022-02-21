@@ -7,7 +7,7 @@
 ## About
 
 
-Sample content that demonstrates the features of Lombiq Data Tables for Orchard Core.
+Example Orchard Core module that makes use of Lombiq Data Tables for Orchard Core.
 
 For general details about and usage instructions see the [root Readme](../Readme.md).
 
