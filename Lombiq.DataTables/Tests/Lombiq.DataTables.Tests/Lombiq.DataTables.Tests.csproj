@@ -12,7 +12,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Lombiq.DataTables.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
     <ProjectReference Include="..\..\..\..\..\..\test\Lombiq.Tests\Lombiq.Tests.csproj" />
+
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
+    <PackageReference Include="Lombiq.Tests" Version="1.0.1" />
   </ItemGroup>
 
 </Project>
