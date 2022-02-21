@@ -10,7 +10,7 @@
     <Title>Lombiq Data Tables for Orchard Core - Samples</Title>
     <Authors>Lombiq Technologies</Authors>
     <Copyright>Copyright © 2020, Lombiq Technologies Ltd.</Copyright>
-    <Description>Lombiq Data Tables for Orchard Core - Samples: Sample content that demonstrates the features of Lombiq Data Tables for Orchard Core.</Description>
+    <Description>Lombiq Data Tables for Orchard Core - Samples: Sample content that demonstrates the features of Lombiq Data Tables for Orchard Core. See the project website for detailed documentation.</Description>
     <PackageIcon>NuGetIcon.png</PackageIcon>
     <PackageTags>OrchardCore;Lombiq;AspNetCore;DataTables;Vue.js</PackageTags>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Data-Tables</RepositoryUrl>

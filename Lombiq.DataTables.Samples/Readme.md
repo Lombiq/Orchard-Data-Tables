@@ -1,7 +1,7 @@
 # Lombiq Data Tables for Orchard Core - Samples
 
 
-[![Lombiq.DataTables NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.DataTables.Samples)](https://www.nuget.org/packages/Lombiq.DataTables.Samples/)
+[![Lombiq.DataTables.Samples NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.DataTables.Samples)](https://www.nuget.org/packages/Lombiq.DataTables.Samples/)
 
 
 ## About

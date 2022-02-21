@@ -8,7 +8,7 @@
     <Title>Lombiq Data Tables for Orchard Core - UI Test Extensions</Title>
     <Authors>Lombiq Technologies</Authors>
     <Copyright>Copyright © 2020, Lombiq Technologies Ltd.</Copyright>
-    <Description>Lombiq Data Tables for Orchard Core - UI Test Extensions: Extension methods that test various features in Lombiq Data Tables for Orchard Core.</Description>
+    <Description>Lombiq Data Tables for Orchard Core - UI Test Extensions: Extension methods that test various features in Lombiq Data Tables for Orchard Core. See the project website for detailed documentation.</Description>
     <PackageIcon>NuGetIcon.png</PackageIcon>
     <PackageTags>OrchardCore;Lombiq;AspNetCore;DataTables;Vue.js;Shouldly;xUnit;UITesting;Testing</PackageTags>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Data-Tables</RepositoryUrl>
