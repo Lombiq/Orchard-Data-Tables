@@ -1,0 +1,25 @@
+@using Lombiq.DataTables.ViewModels
+
+@* By overriding this shape you can provide custom resources for pages with the Lombiq.DataTable shape. *@
+
+@{
+    var viewModel = Model.ViewModel is DataTableDefinitionViewModel;
+}
+
+<script at="Foot" depends-on="jQuery">
+    jQuery(function ($) {
+        // This is the place to change the data table configurations.
+        // - window.dataTableResources.options : The "dataTablesOptions" passed to the plugin
+        //   (see Lombiq.DataTables/Assets/Scripts/lombiq-datatables.js)
+        // - window.dataTableResources.created($dataTableWrapper, plugin, dataTablesOptions) : Use this to make changes
+        //   on the table immediately after it's created. Use $dataTableWrapper.on('eventname') to register events to
+        //   the table.
+
+        var viewModel = @Json.Serialize(viewModel) ;
+        console.log('view model', viewModel);
+
+        window.dataTableResources.created = function($dataTableWrapper, plugin, dataTablesOptions) {
+            console.log('created!');
+        };
+    });
+</script>

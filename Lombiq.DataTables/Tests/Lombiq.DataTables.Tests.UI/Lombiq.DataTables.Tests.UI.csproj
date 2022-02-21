@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>Lombiq Data Tables for Orchard Core - UI Test Extensions</Title>
+    <Authors>Lombiq Technologies</Authors>
+    <Copyright>Copyright © 2020, Lombiq Technologies Ltd.</Copyright>
+    <Description>Lombiq Data Tables for Orchard Core - UI Test Extensions: Extension methods that test various features in Lombiq Data Tables for Orchard Core. See the project website for detailed documentation.</Description>
+    <PackageIcon>NuGetIcon.png</PackageIcon>
+    <PackageTags>OrchardCore;Lombiq;AspNetCore;DataTables;Vue.js;Shouldly;xUnit;UITesting;Testing</PackageTags>
+    <RepositoryUrl>https://github.com/Lombiq/Orchard-Data-Tables</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Lombiq/Orchard-Data-Tables/Lombiq.DataTables.Tests.UI/Readme.md</PackageProjectUrl>
+    <PackageLicenseFile>Licence.md</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
+    <ProjectReference Include="..\..\..\..\..\..\test\Lombiq.UITestingToolbox\Lombiq.Tests.UI\Lombiq.Tests.UI.csproj" />
+    <ProjectReference Include="..\..\..\Lombiq.DataTables.Samples\Lombiq.DataTables.Samples.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
+    <PackageReference Include="Lombiq.Tests.UI" Version="1.6.2" />
+    <PackageReference Include="Lombiq.DataTables.Samples" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Licence.md" Pack="true" PackagePath="" />
+    <None Include="Readme.md" />
+    <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+</Project>

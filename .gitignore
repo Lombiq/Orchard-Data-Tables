@@ -14,3 +14,4 @@ node_modules/
 **/wwwroot/*
 !**/wwwroot/favicon.ico
 !**/wwwroot/.placeholder
+/Lombiq.DataTables/.editorconfig

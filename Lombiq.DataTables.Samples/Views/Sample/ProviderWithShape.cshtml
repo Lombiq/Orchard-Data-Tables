@@ -1,0 +1,19 @@
+@using Lombiq.DataTables.Samples.Services
+
+@* You need to include this shape once per page, it has configuration for the table below. Alternatively you can include
+   it in the top of your theme layout's body. It's not much content by default. On the admin side it's already included
+   in the /Admin/DataTable/{providerName} page. *@
+<shape type="Lombiq_DataTable_Before"></shape>
+
+<h2>@RenderTitleSegments(T["DataTable Custom Data Provider Sample With Shapes"].Value)</h2>
+
+@* While you have the option to pass in a whole DataTableDefinitionViewModel to this shape (see
+   Lombiq.Datatables/Views/Table/Get.cshtml) the provider name is all you need to build the shape. If you want to make
+   use of the provider's Description, BeforeTable and AfterTable features, then you need to inject
+   "@inject IEnumerable<IDataTableDataProvider> Providers" and find the provider by type name. *@
+
+<shape type="Lombiq_DataTable"
+       provider="@nameof(SampleJsonResultDataTableDataProvider)"
+       queryId="it doesn't matter for this provider"></shape>
+
+@* END OF TRAINING SECTION: JSON Data Provider *@
