@@ -79,6 +79,15 @@ For additional properties and notes on the events take a look at the comments [i
 
 _Note: use `@Json.Serialize()` to automatically camelCase the data for JS._
 
+## Troubleshooting
+
+### Visual Studio 2022
+
+If you get the IntelliSense-only error _TS6053 File "(...)/types/types.d.ts" not found. The file is in the program because: The root file specified for compilation__ you need to disable automatic type acquisition. This problem isn't present in VS2019 or third party IDEs, and it's cause by the Javascript Language Service. Solution:
+1. From the menu select Tools > Options.
+2. From the sidebar select Text Editor > JavaScript/Typescript > Project > General.
+3. Scroll down and untick _Enable automatic type acquisition (TS 4.1 or later)_.
+
 ## Contributing and support
 
 Bug reports, feature requests, comments, questions, code contributions, and love letters are warmly welcome, please do so via GitHub issues and pull requests. Please adhere to our [open-source guidelines](https://lombiq.com/open-source-guidelines) while doing so.
