@@ -10,11 +10,5 @@ bin/
 # Exclude node modules
 node_modules/
 
-# Exclude wwwroot and add exceptions
-**/wwwroot/*
-!**/wwwroot/favicon.ico
-!**/wwwroot/.placeholder
-/Lombiq.DataTables/.editorconfig
-
 # Auto-added .editorconfig
 /.editorconfig
