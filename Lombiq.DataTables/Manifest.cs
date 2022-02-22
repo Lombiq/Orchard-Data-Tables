@@ -4,7 +4,7 @@ using static Lombiq.DataTables.Constants.FeatureIds;
 [assembly: Module(
     Name = "Lombiq Data Tables",
     Author = "Lombiq Technologies",
-    Version = "2.1.3",
+    Version = "2.1.4",
     Description = "Module for displaying data using jQuery Data Tables.",
     Website = "https://github.com/Lombiq/Orchard-Data-Tables"
 )]
