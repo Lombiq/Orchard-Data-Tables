@@ -45,30 +45,30 @@ namespace Lombiq.DataTables.Tests.UI.Extensions
             await context.GoToDataTableTagHelperAsync();
             context.VerifyDataTablePager(pageCount: 6);
             VerifyText(context, _oldest);
-            context.ClickReliablyOn(By.CssSelector("th[data-name='Name']"));
+            await context.ClickReliablyOnAsync(By.CssSelector("th[data-name='Name']"));
             VerifyText(context, _alphabeticallyFirst);
         }
 
         public static async Task TestDataTableProviderWithShapeAsync(this UITestContext context)
         {
             await context.GoToDataTableProviderWithShapeAsync();
-            context.TestDataTableProvider();
+            await context.TestDataTableProviderAsync();
         }
 
         public static async Task TestDataTableIndexBasedProviderAsync(this UITestContext context)
         {
             await context.GoToAdminDataTableAsync<SampleIndexBasedDataTableDataProvider>();
-            context.TestDataTableProvider();
+            await context.TestDataTableProviderAsync();
         }
 
-        public static void TestDataTableProvider(this UITestContext context)
+        public static async Task TestDataTableProviderAsync(this UITestContext context)
         {
             context.VerifyDataTablePager(pageCount: 6);
             VerifyText(context, AdjustForProvider(_alphabeticallyFirst));
 
             var ageColumnHeader = By.CssSelector("th[data-name='Age']");
-            context.ClickAndWaitForTableChange(ageColumnHeader);
-            context.ClickAndWaitForTableChange(ageColumnHeader);
+            await context.ClickAndWaitForTableChangeAsync(ageColumnHeader);
+            await context.ClickAndWaitForTableChangeAsync(ageColumnHeader);
 
             VerifyText(context, AdjustForProvider(_oldest));
         }
