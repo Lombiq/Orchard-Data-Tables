@@ -53,10 +53,10 @@ namespace Lombiq.DataTables.Tests.UI.Extensions
             VerifyNavigation(context, "next", currentPage < pageCount);
         }
 
-        public static void ClickAndWaitForTableChange(this UITestContext context, By selector)
+        public static async Task ClickAndWaitForTableChangeAsync(this UITestContext context, By selector)
         {
             var state = new TableDrawState(context);
-            context.ClickReliablyOn(selector);
+            await context.ClickReliablyOnAsync(selector);
             state.Wait();
         }
     }
