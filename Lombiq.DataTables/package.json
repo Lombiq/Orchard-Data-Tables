@@ -10,6 +10,6 @@
     "datatables.net-buttons": "1.7.1",
     "datatables.net-buttons-bs4": "1.7.1",
     "gulp-babel": "^8.0.0",
-    "urijs": "1.19.7"
+    "urijs": "1.19.8"
   }
 }
