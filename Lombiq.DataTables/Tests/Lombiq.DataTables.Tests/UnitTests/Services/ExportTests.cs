@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -79,22 +80,25 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
 
             for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
             {
-                Enumerable.Range(1, pattern[0].Length)
+                var row = Enumerable.Range(1, pattern[0].Length)
                     .Select(index => worksheet.Cell(2 + rowIndex, index).Value switch
                     {
                         XLHyperlink hyperlink => hyperlink.Tooltip,
                         { } value => value.ToString(),
                         null => "NULL",
                     })
-                    .ToArray()
-                    .ShouldBe(
-                        pattern[rowIndex],
-                        FormattableString.Invariant($"Row {rowIndex + 1} didn't match expectation."));
+                    .ToArray();
+                row.ShouldBe(pattern[rowIndex], FormattableString.Invariant($"Row {rowIndex + 1} didn't match expectation."));
             }
         }
 
         public static IEnumerable<object[]> Data()
         {
+            // ClosedXML looks at the CurrentCulture to initialize the workbook's culture. They also to set it like this
+            // in their own unit tests. See:
+            // https://github.com/ClosedXML/ClosedXML/blob/c2d408b127844ea3d4a5f6b060c548c953b6bcf3/ClosedXML_Tests/Excel/CalcEngine/LookupTests.cs#L16-L17
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
             var dataset = new[]
             {
                 new object[] { 1, "z", "foo" },
@@ -185,9 +189,9 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
                 "Verify custom number formatting.",
                 new[]
                 {
-                    new object[] { 1, date1.ToString(CultureInfo.InvariantCulture) },
-                    new object[] { 2, date2.ToString(CultureInfo.InvariantCulture) },
-                    new object[] { 3, date3.ToString(CultureInfo.InvariantCulture) },
+                    new object[] { 1, date1.ToString(CultureInfo.CurrentCulture) },
+                    new object[] { 2, date2.ToString(CultureInfo.CurrentCulture) },
+                    new object[] { 3, date3.ToString(CultureInfo.CurrentCulture) },
                 },
                 new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
                 FormattableString.CurrentCulture($"1,{date1};2,{date2};3,{date3}")
