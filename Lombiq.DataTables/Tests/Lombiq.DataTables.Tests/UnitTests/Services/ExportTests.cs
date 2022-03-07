@@ -96,7 +96,9 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services
         {
             // ClosedXML looks at the CurrentCulture to initialize the workbook's culture. They also to set it like this
             // in their own unit tests. See:
+#pragma warning disable S103 // Split this long line.
             // https://github.com/ClosedXML/ClosedXML/blob/c2d408b127844ea3d4a5f6b060c548c953b6bcf3/ClosedXML_Tests/Excel/CalcEngine/LookupTests.cs#L16-L17
+#pragma warning restore S103 // Split this long line.
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
 
             var dataset = new[]
