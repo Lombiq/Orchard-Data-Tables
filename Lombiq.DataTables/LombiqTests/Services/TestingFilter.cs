@@ -20,7 +20,7 @@ namespace Lombiq.DataTables.LombiqTests.Services
 
         public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
         {
-            if (context?.HttpContext == null || !(context.Controller is TableController) || context.IsNotFullViewRendering())
+            if (context?.HttpContext == null || context.Controller is not TableController || context.IsNotFullViewRendering())
             {
                 await next();
                 return;
