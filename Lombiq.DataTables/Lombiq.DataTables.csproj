@@ -41,7 +41,7 @@
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.95.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.0" />
+    <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.2" />
     <PackageReference Include="OrchardCore.Contents" Version="1.3.0" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="1.3.0" />
     <PackageReference Include="OrchardCore.Lucene" Version="1.3.0" />
