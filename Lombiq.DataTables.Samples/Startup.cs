@@ -1,10 +1,12 @@
 using Lombiq.DataTables.Samples.Indexes;
 using Lombiq.DataTables.Samples.Migrations;
 using Lombiq.DataTables.Samples.Models;
+using Lombiq.DataTables.Samples.Navigation;
 using Lombiq.DataTables.Samples.Services;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.ContentManagement;
 using OrchardCore.Modules;
+using OrchardCore.Navigation;
 
 namespace Lombiq.DataTables.Samples
 {
@@ -25,6 +27,8 @@ namespace Lombiq.DataTables.Samples
                 EmployeeDataTableIndexGenerator,
                 EmployeeDataTableMigrations,
                 SampleIndexBasedDataTableDataProvider>();
+
+            services.AddScoped<INavigationProvider, DataTablesNavigationProvider>();
         }
     }
 }
