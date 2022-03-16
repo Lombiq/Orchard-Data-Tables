@@ -168,6 +168,7 @@ public abstract class IndexBasedDataTableDataProvider<TIndex> : DataTableDataPro
 
     protected string GetIndexColumnName(string tableResultColumnName) =>
         _columnMapping.GetMaybe(tableResultColumnName) ?? tableResultColumnName;
+
     protected string GetIndexColumnName(DataTableColumnDefinition definition) =>
         _columnMapping.GetMaybe(definition.Name) ?? definition.Name;
 

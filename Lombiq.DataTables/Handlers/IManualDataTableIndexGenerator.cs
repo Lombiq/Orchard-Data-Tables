@@ -12,27 +12,27 @@ public interface IManualDataTableIndexGenerator
 {
     /// <summary>
     /// Gets or sets a value indicating whether the index generation start should be deferred to a middleware, or
-    /// executed immediately by calling <see cref="ScheduleDeferredIndexGenerationAsync"/> from inside
-    /// <see cref="ScheduleDeferredIndexGenerationAsync"/>.
+    /// executed immediately by calling <see cref="ScheduleDeferredIndexGenerationAsync"/> from inside <see
+    /// cref="ScheduleDeferredIndexGenerationAsync"/>.
     /// </summary>
     bool IsInMiddlewarePipeline { get; set; }
 
     /// <summary>
-    /// Schedules deferred index generation the same way as if it was an update event from a content handler. This
-    /// way you don't have to prepare for unforeseen consequences from other content handlers if you just want to
-    /// update the index.
+    /// Schedules deferred index generation the same way as if it was an update event from a content handler. This way
+    /// you don't have to prepare for unforeseen consequences from other content handlers if you just want to update the
+    /// index.
     /// </summary>
-    /// <param name="contentItem"> The item for which the index is generated.</param>
+    /// <param name="contentItem">The item for which the index is generated.</param>
     /// <param name="managedTypeOnly">
-    /// If <see langword="true"/>, the <paramref name="contentItem"/> is only handled if its type is in
-    /// <see cref="IDataTableIndexGenerator{TIndex}.ManagedContentTypes"/>, otherwise it gets skipped. Ideal for
-    /// running a content item through all supported <see cref="IManualDataTableIndexGenerator"/> implementations.
+    /// If <see langword="true"/>, the <paramref name="contentItem"/> is only handled if its type is in <see
+    /// cref="IDataTableIndexGenerator{TIndex}.ManagedContentTypes"/>, otherwise it gets skipped. Ideal for running a
+    /// content item through all supported <see cref="IManualDataTableIndexGenerator"/> implementations.
     /// </param>
     Task ScheduleDeferredIndexGenerationAsync(ContentItem contentItem, bool managedTypeOnly);
 
     /// <summary>
-    /// Asks every <see cref="IDataTableIndexGenerator{TIndex}"/> to start generating indexes for the content items
-    /// that received an order for it.
+    /// Asks every <see cref="IDataTableIndexGenerator{TIndex}"/> to start generating indexes for the content items that
+    /// received an order for it.
     /// </summary>
     Task GenerateOrderedIndicesAsync();
 }

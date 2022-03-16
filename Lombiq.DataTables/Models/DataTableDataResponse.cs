@@ -9,9 +9,8 @@ namespace Lombiq.DataTables.Models;
 public class DataTableDataResponse
 {
     /// <summary>
-    /// Gets or sets the request identifier for the jQuery.DataTables plugin. This needs to be parsed and sent back
-    /// in order to prevent Cross Site Scripting (XSS) attack. See https://datatables.net/manual/server-side for
-    /// more info.
+    /// Gets or sets the request identifier for the jQuery.DataTables plugin. This needs to be parsed and sent back in
+    /// order to prevent Cross Site Scripting (XSS) attack. See https://datatables.net/manual/server-side for more info.
     /// </summary>
     /// <remarks>
     /// <para>For internal use only. It's overwritten during normal use.</para>

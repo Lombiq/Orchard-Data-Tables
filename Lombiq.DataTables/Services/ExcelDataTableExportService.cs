@@ -50,9 +50,9 @@ public class ExcelDataTableExportService : IDataTableExportService
     /// <param name="localizer">IStringLocalizer instance.</param>
     /// <param name="error">User-facing error message in case something went wrong.</param>
     /// <param name="customNumberFormat">
-    /// Custom formatting of columns. The key should be the number of the column from left to right. The value
-    /// should be the format. For example: Key: 2 Value: "h:mm:ss AM/PM", meaning second column ("B" column) and
-    /// format like 4:42:15 PM.
+    /// Custom formatting of columns. The key should be the number of the column from left to right. The value should be
+    /// the format. For example: Key: 2 Value: "h:mm:ss AM/PM", meaning second column ("B" column) and format like
+    /// 4:42:15 PM.
     /// </param>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Blocker Code Smell",

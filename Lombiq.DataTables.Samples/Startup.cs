@@ -18,8 +18,8 @@ public class Startup : StartupBase
         // A JSON-based provider doesn't need anything else.
         services.AddDataTableDataProvider<SampleJsonResultDataTableDataProvider>();
 
-        // As index-based providers rely on their own index, generator, and migration they're registered all at once
-        // to ensure their types match.
+        // As index-based providers rely on their own index, generator, and migration they're registered all at once to
+        // ensure their types match.
         services.AddIndexBasedDataTableProvider<
             EmployeeDataTableIndex,
             EmployeeDataTableIndexGenerator,

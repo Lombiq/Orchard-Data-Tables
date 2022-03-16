@@ -38,9 +38,9 @@ public class LiquidTests
     {
         note.ShouldNotBeEmpty("Please state the purpose of this input set!");
 
-        // Everything in this section of code is required for the Liquid renderer to work. Otherwise it will throw
-        // NRE or render empty string results. On the final line shellScope.StartAsyncFlow() initializes the static
-        // variable representing the current ShellScope.
+        // Everything in this section of code is required for the Liquid renderer to work. Otherwise it will throw NRE
+        // or render empty string results. On the final line shellScope.StartAsyncFlow() initializes the static variable
+        // representing the current ShellScope.
         using var shellContext = new ShellContext
         {
             ServiceProvider = new ServiceCollection()

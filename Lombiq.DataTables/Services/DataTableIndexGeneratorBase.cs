@@ -1,4 +1,4 @@
-﻿using Lombiq.HelpfulLibraries.Libraries.Database;
+using Lombiq.HelpfulLibraries.Libraries.Database;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Handlers;
 using System.Collections.Generic;
@@ -10,8 +10,8 @@ using YesSql.Indexes;
 namespace Lombiq.DataTables.Services;
 
 /// <summary>
-/// A base class for implementing <see cref="IDataTableIndexGenerator{TIndex}"/>, a service for generating
-/// DataTables indexes for a specific table.
+/// A base class for implementing <see cref="IDataTableIndexGenerator{TIndex}"/>, a service for generating DataTables
+/// indexes for a specific table.
 /// </summary>
 /// <typeparam name="TIndex">The type of <see cref="MapIndex"/> this service maintains.</typeparam>
 public abstract class DataTableIndexGeneratorBase<TIndex>

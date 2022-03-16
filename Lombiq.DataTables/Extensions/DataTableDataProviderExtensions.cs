@@ -71,8 +71,8 @@ public static class DataTableDataProviderExtensions
     /// </summary>
     /// <param name="dataProvider">The data provider to create for.</param>
     /// <param name="columns">
-    /// Tuples each describing a column. They must be (string Name, string Text, bool Searchable, bool Exportable)
-    /// with the last 2 being optional.
+    /// Tuples each describing a column. They must be (string Name, string Text, bool Searchable, bool Exportable) with
+    /// the last 2 being optional.
     /// </param>
     /// <returns>The generated columns definition.</returns>
     public static DataTableColumnsDefinition DefineColumns(
@@ -91,8 +91,8 @@ public static class DataTableDataProviderExtensions
     /// <param name="authorizationService">Authorizes the user.</param>
     /// <param name="user">The user to check.</param>
     /// <returns>
-    /// <see langword="true" /> if the user has at least one of the <see cref="Permission"/>s given by the <paramref
-    /// name="dataProvider"/> or if its <see  cref="IDataTableDataProvider.AllowedPermissions"/> is null or empty.
+    /// <see langword="true"/> if the user has at least one of the <see cref="Permission"/> s given by the <paramref
+    /// name="dataProvider"/> or if its <see cref="IDataTableDataProvider.AllowedPermissions"/> is null or empty.
     /// </returns>
     public static async Task<bool> AuthorizeAsync(
         this IDataTableDataProvider dataProvider,

@@ -15,15 +15,15 @@ public interface IDataTableIndexGenerator<TIndex>
     where TIndex : MapIndex
 {
     /// <summary>
-    /// Gets a dictionary where the key is the <see cref="ContentItem.ContentItemId"/> where index generation is
-    /// ordered and the value is <see langword="true"/> if the index should be removed, <see langword="false"/> if
-    /// it should be updated.
+    /// Gets a dictionary where the key is the <see cref="ContentItem.ContentItemId"/> where index generation is ordered
+    /// and the value is <see langword="true"/> if the index should be removed, <see langword="false"/> if it should be
+    /// updated.
     /// </summary>
     IDictionary<string, bool> IndexGenerationIsRemovalByType { get; }
 
     /// <summary>
-    /// Gets the content type names that the index is made for. Other content types may only trigger index updates
-    /// by being in some relationship with these types.
+    /// Gets the content type names that the index is made for. Other content types may only trigger index updates by
+    /// being in some relationship with these types.
     /// </summary>
     IEnumerable<string> ManagedContentTypes { get; }
 
@@ -33,8 +33,8 @@ public interface IDataTableIndexGenerator<TIndex>
     ValueTask<bool> NeedsUpdatingAsync(ContentContextBase context);
 
     /// <summary>
-    /// Places an index generation order for <paramref name="contentItem"/> or any related content items that fit
-    /// the operation of this index generator.
+    /// Places an index generation order for <paramref name="contentItem"/> or any related content items that fit the
+    /// operation of this index generator.
     /// </summary>
     Task ScheduleDeferredIndexGenerationAsync(ContentItem contentItem, bool remove);
 
@@ -47,8 +47,8 @@ public interface IDataTableIndexGenerator<TIndex>
 public static class DataTableIndexGeneratorExtensions
 {
     /// <summary>
-    /// Adds a content item to the index generation orders. Update (<see langword="false"/>) is preferred over
-    /// remove (<see langword="true"/>).
+    /// Adds a content item to the index generation orders. Update ( <see langword="false"/>) is preferred over remove
+    /// (<see langword="true"/>).
     /// </summary>
     public static void AddIndexGenerationOrder<TIndex>(this IDataTableIndexGenerator<TIndex> generator, string id, bool remove)
         where TIndex : MapIndex
@@ -60,8 +60,8 @@ public static class DataTableIndexGeneratorExtensions
     }
 
     /// <summary>
-    /// Returns the <see cref="ContentItem.ContentItemId"/>s from the
-    /// <see cref="IDataTableIndexGenerator{TIndex}.IndexGenerationIsRemovalByType"/> for updates only.
+    /// Returns the <see cref="ContentItem.ContentItemId"/> s from the <see
+    /// cref="IDataTableIndexGenerator{TIndex}.IndexGenerationIsRemovalByType"/> for updates only.
     /// </summary>
     public static IList<string> GetUpdateIds<TIndex>(this IDataTableIndexGenerator<TIndex> generator)
         where TIndex : MapIndex =>

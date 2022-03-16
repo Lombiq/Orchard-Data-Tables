@@ -1,4 +1,4 @@
-﻿using Lombiq.DataTables.Samples.Indexes;
+using Lombiq.DataTables.Samples.Indexes;
 using Lombiq.DataTables.Samples.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.HelpfulLibraries.Libraries.Database;
@@ -11,16 +11,16 @@ using static Lombiq.DataTables.Samples.Constants.ContentTypes;
 
 namespace Lombiq.DataTables.Samples.Services;
 
-// This is the service that crunches all the data for the index. It is automatically used in a content handler, but
-// you may call ScheduleDeferredIndexGenerationAsync manually from any controller, filter, etc that's on the forward
-// side of the middleware pipeline.
+// This is the service that crunches all the data for the index. It is automatically used in a content handler, but you
+// may call ScheduleDeferredIndexGenerationAsync manually from any controller, filter, etc that's on the forward side of
+// the middleware pipeline.
 public class EmployeeDataTableIndexGenerator : DataTableIndexGeneratorBase<EmployeeDataTableIndex>
 {
     // This column is used automatically to delete old rows.
     protected override string IdColumnName => nameof(EmployeeDataTableIndex.ContentItemId);
 
-    // If your table represents a content type, provide it here. This means the "main" content type, if you need to
-    // join other content types to it for related information (e.g. with ContentPickerField), those don't go here.
+    // If your table represents a content type, provide it here. This means the "main" content type, if you need to join
+    // other content types to it for related information (e.g. with ContentPickerField), those don't go here.
     public override IEnumerable<string> ManagedContentTypes { get; } = new[] { Employee };
 
     public EmployeeDataTableIndexGenerator(
@@ -31,12 +31,12 @@ public class EmployeeDataTableIndexGenerator : DataTableIndexGeneratorBase<Emplo
     {
     }
 
-    // This is called by the DataTableIndexGeneratorContentHandler<TIndexGenerator, TIndex> to check if this
-    // generator wants to update anything on any content item event (updated, published, deleted, etc). Unlike the
+    // This is called by the DataTableIndexGeneratorContentHandler<TIndexGenerator, TIndex> to check if this generator
+    // wants to update anything on any content item event (updated, published, deleted, etc). Unlike the
     // ManagedContentType property, here you should actually consider all related content types yours may depend on.
-    // There also may be more complex use-cases where you want to do further checks on the passed content type
-    // before making a decision, for example you may want to check if relevant changes were actually made before
-    // committing to an update that will cascade down and change a lot of rows in the index table.
+    // There also may be more complex use-cases where you want to do further checks on the passed content type before
+    // making a decision, for example you may want to check if relevant changes were actually made before committing to
+    // an update that will cascade down and change a lot of rows in the index table.
     //
     // In this sample there aren't any, but to raise an example: if we wanted to have an Office content type and use
     // instead of the Employee's Office column, then this method would return true if the content in the context is
@@ -45,9 +45,9 @@ public class EmployeeDataTableIndexGenerator : DataTableIndexGeneratorBase<Emplo
         // Actually if all you want to check is the ManagedContentType then you don't need to override this method.
         new(context.ContentItem.ContentType == Employee);
 
-    // Once we have decided that a content item causes an update, we have to include it (or the related content
-    // items that are ManagedContentType) and note if we need to delete or update. Since we don't work with related
-    // content types here, it's pretty simple.
+    // Once we have decided that a content item causes an update, we have to include it (or the related content items
+    // that are ManagedContentType) and note if we need to delete or update. Since we don't work with related content
+    // types here, it's pretty simple.
     public override Task ScheduleDeferredIndexGenerationAsync(ContentItem contentItem, bool remove)
     {
         this.AddIndexGenerationOrder(contentItem.ContentItemId, remove);
@@ -75,8 +75,8 @@ public class EmployeeDataTableIndexGenerator : DataTableIndexGeneratorBase<Emplo
         return Task.FromResult(index);
     }
 
-    // Note that if you add or change the table after there is already content, you need to create a maintenance
-    // action to regenerate the indexes. This should fetch the content items that need to be regenerated and call
+    // Note that if you add or change the table after there is already content, you need to create a maintenance action
+    // to regenerate the indexes. This should fetch the content items that need to be regenerated and call
     // IEnumerable<IManualDataTableIndexGenerator>.ScheduleDeferredIndexGenerationAsync(contentItems).
 }
 

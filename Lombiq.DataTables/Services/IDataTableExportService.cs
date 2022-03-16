@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 namespace Lombiq.DataTables.Services;
 
 /// <summary>
-/// A service to send a <see cref="DataTableDataRequest"/> into the <see cref="IDataTableDataProvider"/> and export
-/// the results as file into a <see cref="Stream"/>.
+/// A service to send a <see cref="DataTableDataRequest"/> into the <see cref="IDataTableDataProvider"/> and export the
+/// results as file into a <see cref="Stream"/>.
 /// </summary>
 public interface IDataTableExportService
 {

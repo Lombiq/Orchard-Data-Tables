@@ -18,8 +18,8 @@ public class SampleIndexBasedDataTableDataProvider : IndexBasedDataTableDataProv
 
     public override LocalizedString Description => T["Index-based Sample Data Provider"];
 
-    // You can provide required permissions, the viewer will need at least one to display results on the page. If
-    // it's empty then no permission check is required.
+    // You can provide required permissions, the viewer will need at least one to display results on the page. If it's
+    // empty then no permission check is required.
     public override IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
 
     public SampleIndexBasedDataTableDataProvider(
@@ -32,12 +32,12 @@ public class SampleIndexBasedDataTableDataProvider : IndexBasedDataTableDataProv
         T = stringLocalizer;
     }
 
-    // This is the method where you map your index row into a display type. Actually this result becomes JSON too,
-    // so you don't have to worry about type safety as long as the names match.
+    // This is the method where you map your index row into a display type. Actually this result becomes JSON too, so
+    // you don't have to worry about type safety as long as the names match.
     protected override async ValueTask<IEnumerable<object>> TransformAsync(IEnumerable<EmployeeDataTableIndex> rows)
     {
-        // This protected method looks at the current user to see if they have delete permission for that content
-        // type. It is used in the Actions dropdown menu.
+        // This protected method looks at the current user to see if they have delete permission for that content type.
+        // It is used in the Actions dropdown menu.
         var canDelete = await CanDeleteAsync(Employee);
 
         var results = new List<object>();
@@ -50,8 +50,8 @@ public class SampleIndexBasedDataTableDataProvider : IndexBasedDataTableDataProv
                 _linkGenerator,
                 _actionsStringLocalizer);
 
-            // Here we demonstrate export links. This is the way to return a cell with link text that still
-            // correctly sorts and works in the Excel export too.
+            // Here we demonstrate export links. This is the way to return a cell with link text that still correctly
+            // sorts and works in the Excel export too.
             var name = new ExportLink(
                 url: "https://lombiq.com",
                 text: row.Name,
@@ -61,8 +61,8 @@ public class SampleIndexBasedDataTableDataProvider : IndexBasedDataTableDataProv
                     ["role"] = "button",
                 });
 
-            // Here we demonstrate export dates. These are safe from client side time zone troubles if you don't
-            // need a precise time, just a calendar day.
+            // Here we demonstrate export dates. These are safe from client side time zone troubles if you don't need a
+            // precise time, just a calendar day.
             var startDate = row.StartDate is { } date
                 ? new ExportDate { Year = date.Year, Month = date.Month, Day = date.Day }
                 : null;
@@ -86,8 +86,8 @@ public class SampleIndexBasedDataTableDataProvider : IndexBasedDataTableDataProv
         return results;
     }
 
-    // This is the same as in SampleJsonResultDataTableDataProvider. See more comments there Normally you'd never do
-    // two different types of providers for the exact same table so we don't care about DRY here.
+    // This is the same as in SampleJsonResultDataTableDataProvider. See more comments there Normally you'd never do two
+    // different types of providers for the exact same table so we don't care about DRY here.
     protected override DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) =>
         this.DefineColumns(
             nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Name),
@@ -100,8 +100,8 @@ public class SampleIndexBasedDataTableDataProvider : IndexBasedDataTableDataProv
             (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Salary) + "||^||$", T["Salary"]),
             (GetActionsColumn(nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Actions), fromJson: true), T["Actions"]));
 
-    // Once you log in as admin you can access it on the /Admin/DataTable/SampleJsonResultDataTableDataProvider
-    // or the /Lombiq.DataTables.Samples/Sample/ProviderWithShape relative URLs.
+    // Once you log in as admin you can access it on the /Admin/DataTable/SampleJsonResultDataTableDataProvider or the
+    // /Lombiq.DataTables.Samples/Sample/ProviderWithShape relative URLs.
 }
 
 // NEXT STATION: Startup.cs

@@ -77,8 +77,8 @@ public class RowsController : Controller
 
         var response = await dataProvider.GetRowsAsync(request);
 
-        // This property identifies the request for the jQuery.DataTables plugin. This needs to be parsed and sent
-        // back in order to prevent Cross Site Scripting (XSS) attack.
+        // This property identifies the request for the jQuery.DataTables plugin. This needs to be parsed and sent back
+        // in order to prevent Cross Site Scripting (XSS) attack.
         // See: https://datatables.net/manual/server-side
         response.Draw = request.Draw;
 
