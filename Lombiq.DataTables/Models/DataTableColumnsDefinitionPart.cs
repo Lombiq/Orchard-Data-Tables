@@ -1,9 +1,8 @@
 using OrchardCore.ContentManagement;
 
-namespace Lombiq.DataTables.Models
+namespace Lombiq.DataTables.Models;
+
+public class DataTableColumnsDefinitionPart : ContentPart
 {
-    public class DataTableColumnsDefinitionPart : ContentPart
-    {
-        public DataTableColumnsDefinition Definition { get; set; }
-    }
+    public DataTableColumnsDefinition Definition { get; set; }
 }

@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Modules;
 
-namespace Lombiq.DataTables.LombiqTests
+namespace Lombiq.DataTables.LombiqTests;
+
+[RequireFeatures("Lombiq.Tests.UI.Shortcuts")]
+public class Startup : StartupBase
 {
-    [RequireFeatures("Lombiq.Tests.UI.Shortcuts")]
-    public class Startup : StartupBase
-    {
-        public override void ConfigureServices(IServiceCollection services) =>
-            services.Configure<MvcOptions>(options => options.Filters.Add(typeof(TestingFilter)));
-    }
+    public override void ConfigureServices(IServiceCollection services) =>
+        services.Configure<MvcOptions>(options => options.Filters.Add(typeof(TestingFilter)));
 }

@@ -1,7 +1,6 @@
-namespace Lombiq.DataTables.Constants
+namespace Lombiq.DataTables.Constants;
+
+public static class FeatureIds
 {
-    public static class FeatureIds
-    {
-        public const string DataTables = "Lombiq.DataTables";
-    }
+    public const string DataTables = "Lombiq.DataTables";
 }

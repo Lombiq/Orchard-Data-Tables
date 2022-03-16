@@ -14,33 +14,32 @@ using OrchardCore.Modules;
 using OrchardCore.ResourceManagement;
 using System;
 
-namespace Lombiq.DataTables
+namespace Lombiq.DataTables;
+
+public class Startup : StartupBase
 {
-    public class Startup : StartupBase
+    public override void ConfigureServices(IServiceCollection services)
     {
-        public override void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDataTableExportService<ExcelDataTableExportService>();
+        services.AddDataTableExportService<ExcelDataTableExportService>();
 
-            services.AddTagHelpers<DataTableTagHelper>();
+        services.AddTagHelpers<DataTableTagHelper>();
 
-            services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
-            services.AddScoped<IDataMigration, ColumnsDefinitionMigrations>();
+        services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
+        services.AddScoped<IDataMigration, ColumnsDefinitionMigrations>();
 
-            services.AddLiquidFilter<ActionsLiquidFilter>("actions");
+        services.AddLiquidFilter<ActionsLiquidFilter>("actions");
 
-            services.AddScoped<IDataTableDataProviderServices, DataTableDataProviderServices>();
-            services.AddOrchardServices();
+        services.AddScoped<IDataTableDataProviderServices, DataTableDataProviderServices>();
+        services.AddOrchardServices();
 
-            services.AddScoped<IDeferredTask, IndexGeneratorDeferredTask>();
+        services.AddScoped<IDeferredTask, IndexGeneratorDeferredTask>();
 
-            services.AddDataTableDataProvider<DeletedContentItemDataTableDataProvider>();
-        }
-
-        public override void Configure(
-            IApplicationBuilder app,
-            IEndpointRouteBuilder routes,
-            IServiceProvider serviceProvider) =>
-            app.UseDeferredTasks();
+        services.AddDataTableDataProvider<DeletedContentItemDataTableDataProvider>();
     }
+
+    public override void Configure(
+        IApplicationBuilder app,
+        IEndpointRouteBuilder routes,
+        IServiceProvider serviceProvider) =>
+        app.UseDeferredTasks();
 }

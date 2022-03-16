@@ -3,24 +3,23 @@ using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
 
-namespace Lombiq.DataTables.Migrations
+namespace Lombiq.DataTables.Migrations;
+
+public class ColumnsDefinitionMigrations : DataMigration
 {
-    public class ColumnsDefinitionMigrations : DataMigration
+    private readonly IContentDefinitionManager _contentDefinitionManager;
+
+    public ColumnsDefinitionMigrations(IContentDefinitionManager contentDefinitionManager) =>
+        _contentDefinitionManager = contentDefinitionManager;
+
+    public int Create()
     {
-        private readonly IContentDefinitionManager _contentDefinitionManager;
+        _contentDefinitionManager.AlterTypeDefinition("ColumnsDefinition", type => type
+            .Creatable()
+            .Securable()
+            .WithPart(nameof(DataTableColumnsDefinitionPart))
+        );
 
-        public ColumnsDefinitionMigrations(IContentDefinitionManager contentDefinitionManager) =>
-            _contentDefinitionManager = contentDefinitionManager;
-
-        public int Create()
-        {
-            _contentDefinitionManager.AlterTypeDefinition("ColumnsDefinition", type => type
-                .Creatable()
-                .Securable()
-                .WithPart(nameof(DataTableColumnsDefinitionPart))
-            );
-
-            return 1;
-        }
+        return 1;
     }
 }
