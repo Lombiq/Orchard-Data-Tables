@@ -55,8 +55,8 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
-    <PackageReference Include="Lombiq.HelpfulLibraries.LinqToDb" Version="2.0.1" />
-    <PackageReference Include="Lombiq.HelpfulLibraries" Version="2.0.1" />
+    <PackageReference Include="Lombiq.HelpfulLibraries.LinqToDb" Version="3.0.0" />
+    <PackageReference Include="Lombiq.HelpfulLibraries" Version="3.0.0" />
   </ItemGroup>
 
 </Project>
