@@ -80,15 +80,17 @@ public class ExportTests
 
         for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
         {
-            var row = Enumerable.Range(1, pattern[0].Length)
+            Enumerable.Range(1, pattern[0].Length)
                 .Select(index => worksheet.Cell(2 + rowIndex, index).Value switch
                 {
                     XLHyperlink hyperlink => hyperlink.Tooltip,
                     { } value => value.ToString(),
                     null => "NULL",
                 })
-                .ToArray();
-            row.ShouldBe(pattern[rowIndex], FormattableString.Invariant($"Row {rowIndex + 1} didn't match expectation."));
+                .ToArray()
+                .ShouldBe(
+                    pattern[rowIndex],
+                    FormattableString.Invariant($"Row {rowIndex + 1} didn't match expectation."));
         }
     }
 

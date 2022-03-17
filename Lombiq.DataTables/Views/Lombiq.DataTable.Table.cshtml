@@ -30,7 +30,7 @@
                     data-class-name="@cellElementName"
                     data-orderable="@Json.Serialize(column.Orderable)"
                     scope="col"
-                    @if (!string.IsNullOrEmpty(column.Name)) { <text> data-name="@column.Name" data-data="@column.Name" </text>  }>
+                    @if (!string.IsNullOrEmpty(column.Name)) { <text> data-name="@column.Name" data-data="@column.Name" </text> }>
                     @column.Text
                 </th>
             }
