@@ -6,36 +6,35 @@ using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Lombiq.DataTables.Controllers.Api
+namespace Lombiq.DataTables.Controllers.Api;
+
+public class ChildRowsController : Controller
 {
-    public class ChildRowsController : Controller
+    private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviderAccessor;
+    private readonly IAuthorizationService _authorizationService;
+    private readonly IStringLocalizer T;
+
+    public ChildRowsController(
+        IEnumerable<IDataTableDataProvider> dataTableDataProviderAccessor,
+        IAuthorizationService authorizationService,
+        IStringLocalizer<ChildRowsController> stringLocalizer)
     {
-        private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviderAccessor;
-        private readonly IAuthorizationService _authorizationService;
-        private readonly IStringLocalizer T;
+        _dataTableDataProviderAccessor = dataTableDataProviderAccessor;
+        _authorizationService = authorizationService;
+        T = stringLocalizer;
+    }
 
-        public ChildRowsController(
-            IEnumerable<IDataTableDataProvider> dataTableDataProviderAccessor,
-            IAuthorizationService authorizationService,
-            IStringLocalizer<ChildRowsController> stringLocalizer)
+    public async Task<ActionResult<DataTableChildRowResponse>> Get(int contentItemId, string dataProvider)
+    {
+        var provider = _dataTableDataProviderAccessor.GetDataProvider(dataProvider);
+        if (provider == null)
         {
-            _dataTableDataProviderAccessor = dataTableDataProviderAccessor;
-            _authorizationService = authorizationService;
-            T = stringLocalizer;
+            var errorText = T["The given data provider name is invalid."].Value;
+            return BadRequest(DataTableChildRowResponse.ErrorResult(errorText));
         }
 
-        public async Task<ActionResult<DataTableChildRowResponse>> Get(int contentItemId, string dataProvider)
-        {
-            var provider = _dataTableDataProviderAccessor.GetDataProvider(dataProvider);
-            if (provider == null)
-            {
-                var errorText = T["The given data provider name is invalid."].Value;
-                return BadRequest(DataTableChildRowResponse.ErrorResult(errorText));
-            }
-
-            return !await provider.AuthorizeAsync(_authorizationService, User)
-                ? DataTableChildRowResponse.ErrorResult(T["Unauthorized!"])
-                : (ActionResult<DataTableChildRowResponse>)await provider.GetChildRowAsync(contentItemId);
-        }
+        return !await provider.AuthorizeAsync(_authorizationService, User)
+            ? DataTableChildRowResponse.ErrorResult(T["Unauthorized!"])
+            : (ActionResult<DataTableChildRowResponse>)await provider.GetChildRowAsync(contentItemId);
     }
 }

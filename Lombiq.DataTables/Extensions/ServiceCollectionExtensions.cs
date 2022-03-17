@@ -5,39 +5,38 @@ using OrchardCore.ContentManagement.Handlers;
 using OrchardCore.Data.Migration;
 using YesSql.Indexes;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection;
+
+public static class ServiceCollectionExtensions
 {
-    public static class ServiceCollectionExtensions
+    /// <summary>
+    /// Registers a <see cref="IDataTableDataProvider"/> for DataTables.
+    /// </summary>
+    public static IServiceCollection AddDataTableDataProvider<TDataProvider>(this IServiceCollection services)
+        where TDataProvider : class, IDataTableDataProvider =>
+        services.AddScoped<IDataTableDataProvider, TDataProvider>();
+
+    /// <summary>
+    /// Registers a <see cref="IDataTableExportService"/> for DataTables.
+    /// </summary>
+    public static IServiceCollection AddDataTableExportService<TService>(this IServiceCollection services)
+        where TService : class, IDataTableExportService =>
+        services.AddScoped<IDataTableExportService, TService>();
+
+    public static IServiceCollection AddIndexBasedDataTableProvider<TIndex, TGenerator, TMigration, TProvider>(
+        this IServiceCollection services)
+        where TIndex : MapIndex
+        where TGenerator : class, IDataTableIndexGenerator<TIndex>
+        where TMigration : IndexDataMigration<TIndex>
+        where TProvider : IndexBasedDataTableDataProvider<TIndex>
     {
-        /// <summary>
-        /// Registers a <see cref="IDataTableDataProvider"/> for DataTables.
-        /// </summary>
-        public static IServiceCollection AddDataTableDataProvider<TDataProvider>(this IServiceCollection services)
-            where TDataProvider : class, IDataTableDataProvider =>
-            services.AddScoped<IDataTableDataProvider, TDataProvider>();
+        services.AddSingleton<IManualConnectingIndexService<TIndex>, ManualConnectingIndexService<TIndex>>();
+        services.AddScoped<TGenerator, TGenerator>();
+        services.AddScoped<IContentHandler, DataTableIndexGeneratorContentHandler<TGenerator, TIndex>>();
+        services.AddScoped<IManualDataTableIndexGenerator, DataTableIndexGeneratorContentHandler<TGenerator, TIndex>>();
+        services.AddScoped<IDataMigration, TMigration>();
+        services.AddDataTableDataProvider<TProvider>();
 
-        /// <summary>
-        /// Registers a <see cref="IDataTableExportService"/> for DataTables.
-        /// </summary>
-        public static IServiceCollection AddDataTableExportService<TService>(this IServiceCollection services)
-            where TService : class, IDataTableExportService =>
-            services.AddScoped<IDataTableExportService, TService>();
-
-        public static IServiceCollection AddIndexBasedDataTableProvider<TIndex, TGenerator, TMigration, TProvider>(
-            this IServiceCollection services)
-            where TIndex : MapIndex
-            where TGenerator : class, IDataTableIndexGenerator<TIndex>
-            where TMigration : IndexDataMigration<TIndex>
-            where TProvider : IndexBasedDataTableDataProvider<TIndex>
-        {
-            services.AddSingleton<IManualConnectingIndexService<TIndex>, ManualConnectingIndexService<TIndex>>();
-            services.AddScoped<TGenerator, TGenerator>();
-            services.AddScoped<IContentHandler, DataTableIndexGeneratorContentHandler<TGenerator, TIndex>>();
-            services.AddScoped<IManualDataTableIndexGenerator, DataTableIndexGeneratorContentHandler<TGenerator, TIndex>>();
-            services.AddScoped<IDataMigration, TMigration>();
-            services.AddDataTableDataProvider<TProvider>();
-
-            return services;
-        }
+        return services;
     }
 }

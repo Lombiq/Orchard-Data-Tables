@@ -1,11 +1,10 @@
-﻿@using System.Globalization
+@using System.Globalization
 @model IEnumerable<Lombiq.DataTables.Samples.Models.EmployeePart>
-
 @* This is a static data table. It simply adds the script and stylesheet resources to the page, otherwise it behaves
-   like a zero configuration DataTable (https://datatables.net/examples/basic_init/zero_configuration.html). But you
-   can pass a JSON encoded configuration object into the data-options attribute too. Surround the attribute value with
-   apostrophes so the string itself can remain valid JSON. Note that using @Json.Serialize() here would escape the
-   quotes so we have to use literals. For example here we change the default sort to show the oldest employees first *@
+    like a zero configuration DataTable (https://datatables.net/examples/basic_init/zero_configuration.html). But you
+    can pass a JSON encoded configuration object into the data-options attribute too. Surround the attribute value with
+    apostrophes so the string itself can remain valid JSON. Note that using @Json.Serialize() here would escape the
+    quotes so we have to use literals. For example here we change the default sort to show the oldest employees first *@
 
 @* Always make sure Views/_ViewImports.cshtml has "@addTagHelper *, Lombiq.DataTables" for the tag helper. *@
 
@@ -20,7 +19,7 @@
     <thead>
         <tr>
             @* The "data-name" is not required for the tag helper to work. However data tables generated from JSON
-               (rather than HTML like here) have it so adding it here for parity makes scripting and testing easier. *@
+                (rather than HTML like here) have it so adding it here for parity makes scripting and testing easier. *@
             <th scope="col" data-name="Name">@T["Name"]</th>
             <th scope="col" data-name="Position">@T["Position"]</th>
             <th scope="col" data-name="Office">@T["Office"]</th>
