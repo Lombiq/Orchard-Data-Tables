@@ -9,55 +9,54 @@ using Shouldly;
 using System;
 using System.Threading.Tasks;
 
-namespace Lombiq.DataTables.Tests.UI.Extensions
+namespace Lombiq.DataTables.Tests.UI.Extensions;
+
+public static class UITestContextExtensions
 {
-    public static class UITestContextExtensions
+    public static Task ExecuteDataTablesSampleRecipeDirectlyAsync(this UITestContext context) =>
+        context.ExecuteRecipeDirectlyAsync("Lombiq.DataTables.Samples.Content");
+
+    public static Task GoToDataTableTagHelperAsync(this UITestContext context) =>
+        context.GoToAsync<SampleController>(controller => controller.DataTableTagHelper());
+
+    public static Task GoToDataTableProviderWithShapeAsync(this UITestContext context) =>
+        context.GoToAsync<SampleController>(controller => controller.ProviderWithShape());
+
+    public static Task GoToAdminDataTableAsync<T>(this UITestContext context)
+        where T : IDataTableDataProvider =>
+        context.GoToAdminDataTableAsync(typeof(T).Name);
+
+    public static Task GoToAdminDataTableAsync(this UITestContext context, string providerName) =>
+        context.GoToRelativeUrlAsync("/Admin/DataTable/" + providerName);
+
+    public static void VerifyDataTablePager(this UITestContext context, int pageCount, int currentPage = 1)
     {
-        public static Task ExecuteDataTablesSampleRecipeDirectlyAsync(this UITestContext context) =>
-            context.ExecuteRecipeDirectlyAsync("Lombiq.DataTables.Samples.Content");
+        const string pagerItemXPath = "//li[contains(@class, 'paginate_button') and not(contains(@class, 'page-item next'))]";
 
-        public static Task GoToDataTableTagHelperAsync(this UITestContext context) =>
-            context.GoToAsync<SampleController>(controller => controller.DataTableTagHelper());
+        context.Exists(By.XPath(FormattableString.Invariant($"({pagerItemXPath})[last()]/a[@data-dt-idx='{pageCount}']")));
 
-        public static Task GoToDataTableProviderWithShapeAsync(this UITestContext context) =>
-            context.GoToAsync<SampleController>(controller => controller.ProviderWithShape());
-
-        public static Task GoToAdminDataTableAsync<T>(this UITestContext context)
-            where T : IDataTableDataProvider =>
-            context.GoToAdminDataTableAsync(typeof(T).Name);
-
-        public static Task GoToAdminDataTableAsync(this UITestContext context, string providerName) =>
-            context.GoToRelativeUrlAsync("/Admin/DataTable/" + providerName);
-
-        public static void VerifyDataTablePager(this UITestContext context, int pageCount, int currentPage = 1)
+        static void VerifyNavigation(UITestContext context, string className, bool exists)
         {
-            const string pagerItemXPath = "//li[contains(@class, 'paginate_button') and not(contains(@class, 'page-item next'))]";
+            var classes = context.Get(By.CssSelector($".page-item.{className}")).GetAttribute("class");
 
-            context.Exists(By.XPath(FormattableString.Invariant($"({pagerItemXPath})[last()]/a[@data-dt-idx='{pageCount}']")));
-
-            static void VerifyNavigation(UITestContext context, string className, bool exists)
+            if (exists)
             {
-                var classes = context.Get(By.CssSelector($".page-item.{className}")).GetAttribute("class");
-
-                if (exists)
-                {
-                    classes.ShouldNotContain("disabled");
-                }
-                else
-                {
-                    classes.ShouldContain("disabled");
-                }
+                classes.ShouldNotContain("disabled");
             }
-
-            VerifyNavigation(context, "previous", currentPage > 1);
-            VerifyNavigation(context, "next", currentPage < pageCount);
+            else
+            {
+                classes.ShouldContain("disabled");
+            }
         }
 
-        public static async Task ClickAndWaitForTableChangeAsync(this UITestContext context, By selector)
-        {
-            var state = new TableDrawState(context);
-            await context.ClickReliablyOnAsync(selector);
-            state.Wait();
-        }
+        VerifyNavigation(context, "previous", currentPage > 1);
+        VerifyNavigation(context, "next", currentPage < pageCount);
+    }
+
+    public static async Task ClickAndWaitForTableChangeAsync(this UITestContext context, By selector)
+    {
+        var state = new TableDrawState(context);
+        await context.ClickReliablyOnAsync(selector);
+        state.Wait();
     }
 }

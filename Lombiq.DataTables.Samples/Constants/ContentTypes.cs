@@ -1,7 +1,6 @@
-﻿namespace Lombiq.DataTables.Samples.Constants
+﻿namespace Lombiq.DataTables.Samples.Constants;
+
+public static class ContentTypes
 {
-    public static class ContentTypes
-    {
-        public const string Employee = nameof(Employee);
-    }
+    public const string Employee = nameof(Employee);
 }

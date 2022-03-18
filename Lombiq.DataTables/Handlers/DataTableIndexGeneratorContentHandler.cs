@@ -12,89 +12,94 @@ using System.Threading.Tasks;
 using YesSql.Indexes;
 using ISession = YesSql.ISession;
 
-namespace Lombiq.DataTables.Handlers
+namespace Lombiq.DataTables.Handlers;
+
+public class DataTableIndexGeneratorContentHandler<TIndexGenerator, TIndex>
+    : ContentHandlerBase, IManualDataTableIndexGenerator
+    where TIndexGenerator : IDataTableIndexGenerator<TIndex>
+    where TIndex : MapIndex
 {
-    public class DataTableIndexGeneratorContentHandler<TIndexGenerator, TIndex>
-        : ContentHandlerBase, IManualDataTableIndexGenerator
-        where TIndexGenerator : IDataTableIndexGenerator<TIndex>
-        where TIndex : MapIndex
+    private readonly Lazy<IHttpContextAccessor> _hcaLazy;
+    private readonly Lazy<IManualConnectingIndexService<TIndex>> _indexServiceLazy;
+    private readonly Lazy<ISession> _sessionLazy;
+    private readonly Lazy<TIndexGenerator> _indexGeneratorLazy;
+
+    public bool IsInMiddlewarePipeline { get; set; }
+
+    public DataTableIndexGeneratorContentHandler(
+        Lazy<IHttpContextAccessor> hcaLazy,
+        Lazy<IManualConnectingIndexService<TIndex>> indexServiceLazy,
+        Lazy<ISession> sessionLazy,
+        Lazy<TIndexGenerator> indexGeneratorLazy)
     {
-        private readonly Lazy<IHttpContextAccessor> _hcaLazy;
-        private readonly Lazy<IManualConnectingIndexService<TIndex>> _indexServiceLazy;
-        private readonly Lazy<ISession> _sessionLazy;
-        private readonly Lazy<TIndexGenerator> _indexGeneratorLazy;
+        _hcaLazy = hcaLazy;
+        _indexServiceLazy = indexServiceLazy;
+        _sessionLazy = sessionLazy;
+        _indexGeneratorLazy = indexGeneratorLazy;
+    }
 
-        public bool IsInMiddlewarePipeline { get; set; }
+    public override Task CreatedAsync(CreateContentContext context) => ReserveIndexGenerationAsync(context);
 
-        public DataTableIndexGeneratorContentHandler(
-            Lazy<IHttpContextAccessor> hcaLazy,
-            Lazy<IManualConnectingIndexService<TIndex>> indexServiceLazy,
-            Lazy<ISession> sessionLazy,
-            Lazy<TIndexGenerator> indexGeneratorLazy)
+    public override Task UpdatedAsync(UpdateContentContext context) => ReserveIndexGenerationAsync(context);
+
+    public override Task ImportedAsync(ImportContentContext context) => ReserveIndexGenerationAsync(context);
+
+    public override Task PublishedAsync(PublishContentContext context) => ReserveIndexGenerationAsync(context);
+
+    public override Task UnpublishedAsync(PublishContentContext context) => ReserveIndexGenerationAsync(context);
+
+    public override Task RemovedAsync(RemoveContentContext context) => ReserveIndexGenerationAsync(context);
+
+    public async Task GenerateOrderedIndicesAsync()
+    {
+        var indexGenerator = _indexGeneratorLazy.Value;
+
+        if (!indexGenerator.IndexGenerationIsRemovalByType.Any()) return;
+        await indexGenerator.GenerateIndexAsync();
+
+        // Clear out any deleted items. We use raw queries for quick communication between SQL and ASP.NET servers.
+        await RemoveInvalidAsync();
+    }
+
+    public Task ScheduleDeferredIndexGenerationAsync(ContentItem contentItem, bool managedTypeOnly) =>
+        _indexGeneratorLazy.Value.ManagedContentTypes.Contains(contentItem.ContentType)
+            ? ReserveIndexGenerationAsync(new UpdateContentContext(contentItem))
+            : Task.CompletedTask;
+
+    private async Task ReserveIndexGenerationAsync(ContentContextBase context)
+    {
+        var generator = _indexGeneratorLazy.Value;
+        var contentItem = context.ContentItem;
+        var isRemove = generator.ManagedContentTypes.Contains(contentItem.ContentType) && context.IsRemove();
+
+        if (!await generator.NeedsUpdatingAsync(context)) return;
+        if (!IsInMiddlewarePipeline) await _sessionLazy.Value.FlushAsync();
+        await generator.ScheduleDeferredIndexGenerationAsync(contentItem, isRemove);
+
+        // The middlewares don't execute during setup so we have to update here.
+        if (!IsInMiddlewarePipeline && generator.IndexGenerationIsRemovalByType.Any())
         {
-            _hcaLazy = hcaLazy;
-            _indexServiceLazy = indexServiceLazy;
-            _sessionLazy = sessionLazy;
-            _indexGeneratorLazy = indexGeneratorLazy;
+            await GenerateOrderedIndicesAsync();
         }
+    }
 
-        public override Task CreatedAsync(CreateContentContext context) => ReserveIndexGenerationAsync(context);
-        public override Task UpdatedAsync(UpdateContentContext context) => ReserveIndexGenerationAsync(context);
-        public override Task ImportedAsync(ImportContentContext context) => ReserveIndexGenerationAsync(context);
-        public override Task PublishedAsync(PublishContentContext context) => ReserveIndexGenerationAsync(context);
-        public override Task UnpublishedAsync(PublishContentContext context) => ReserveIndexGenerationAsync(context);
-        public override Task RemovedAsync(RemoveContentContext context) => ReserveIndexGenerationAsync(context);
+    private async Task RemoveInvalidAsync()
+    {
+        // Using very raw query because it's too complex for the parser.
+        var session = _sessionLazy.Value;
+        var transaction = await session.BeginTransactionAsync();
+        var dialect = session.Store.Configuration.SqlDialect;
+        var prefix = session.Store.Configuration.TablePrefix;
 
-        public async Task GenerateOrderedIndicesAsync()
-        {
-            var indexGenerator = _indexGeneratorLazy.Value;
+        var contentItemIndex = dialect.QuoteForTableName(prefix + nameof(ContentItemIndex));
+        var dataTableIndex = dialect.QuoteForTableName(prefix + typeof(TIndex).Name);
 
-            if (!indexGenerator.IndexGenerationIsRemovalByType.Any()) return;
-            await indexGenerator.GenerateIndexAsync();
+        const string documentId = "DocumentId";
+        const string contentItemId = nameof(ContentItemIndex.ContentItemId);
+        const string latest = nameof(ContentItemIndex.Latest);
+        const string published = nameof(ContentItemIndex.Published);
 
-            // Clear out any deleted items. We use raw queries for quick communication between SQL and ASP.NET servers.
-            await RemoveInvalidAsync();
-        }
-
-        public Task ScheduleDeferredIndexGenerationAsync(ContentItem contentItem, bool managedTypeOnly) =>
-            _indexGeneratorLazy.Value.ManagedContentTypes.Contains(contentItem.ContentType)
-                ? ReserveIndexGenerationAsync(new UpdateContentContext(contentItem))
-                : Task.CompletedTask;
-
-        private async Task ReserveIndexGenerationAsync(ContentContextBase context)
-        {
-            var generator = _indexGeneratorLazy.Value;
-            var contentItem = context.ContentItem;
-            var isRemove = generator.ManagedContentTypes.Contains(contentItem.ContentType) && context.IsRemove();
-
-            if (!await generator.NeedsUpdatingAsync(context)) return;
-            if (!IsInMiddlewarePipeline) await _sessionLazy.Value.FlushAsync();
-            await generator.ScheduleDeferredIndexGenerationAsync(contentItem, isRemove);
-
-            // The middlewares don't execute during setup so we have to update here.
-            if (!IsInMiddlewarePipeline && generator.IndexGenerationIsRemovalByType.Any())
-            {
-                await GenerateOrderedIndicesAsync();
-            }
-        }
-
-        private async Task RemoveInvalidAsync()
-        {
-            // Using very raw query because it's too complex for the parser.
-            var session = _sessionLazy.Value;
-            var transaction = await session.BeginTransactionAsync();
-            var dialect = session.Store.Configuration.SqlDialect;
-            var prefix = session.Store.Configuration.TablePrefix;
-
-            var contentItemIndex = dialect.QuoteForTableName(prefix + nameof(ContentItemIndex));
-            var dataTableIndex = dialect.QuoteForTableName(prefix + typeof(TIndex).Name);
-
-            const string documentId = "DocumentId";
-            const string contentItemId = nameof(ContentItemIndex.ContentItemId);
-            const string latest = nameof(ContentItemIndex.Latest);
-            const string published = nameof(ContentItemIndex.Published);
-
-            var deletedSql = @$"
+        var deletedSql = @$"
             SELECT old.{documentId}
                 FROM (
                     SELECT {documentId}, {contentItemId}
@@ -109,17 +114,16 @@ namespace Lombiq.DataTables.Handlers
                 INNER JOIN {dataTableIndex} dataTable
                     ON old.{documentId} = dataTable.{documentId}
                 WHERE new.{contentItemId} IS NULL";
-            var invalidIds = await transaction.Connection.QueryAsync<int>(deletedSql, transaction: transaction);
+        var invalidIds = await transaction.Connection.QueryAsync<int>(deletedSql, transaction: transaction);
 
-            // OrchardCore.AuditTrail compatibility check. As it just uses the regular Orchard Core facilities there is
-            // no need to make it a dependency.
-            var restored = _hcaLazy.Value.HttpContext?.Items.GetMaybe("OrchardCore.AuditTrail.Restored");
-            if (restored is ContentItem { ContentItemId: { } } restoredContentItem)
-            {
-                invalidIds = invalidIds.Where(id => id != restoredContentItem.Id);
-            }
-
-            foreach (var invalidId in invalidIds) await _indexServiceLazy.Value.RemoveByIndexAsync(invalidId, session);
+        // OrchardCore.AuditTrail compatibility check. As it just uses the regular Orchard Core facilities there is no
+        // need to make it a dependency.
+        var restored = _hcaLazy.Value.HttpContext?.Items.GetMaybe("OrchardCore.AuditTrail.Restored");
+        if (restored is ContentItem { ContentItemId: { } } restoredContentItem)
+        {
+            invalidIds = invalidIds.Where(id => id != restoredContentItem.Id);
         }
+
+        foreach (var invalidId in invalidIds) await _indexServiceLazy.Value.RemoveByIndexAsync(invalidId, session);
     }
 }

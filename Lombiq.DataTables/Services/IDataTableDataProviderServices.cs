@@ -8,24 +8,23 @@ using OrchardCore.Liquid;
 using System.Diagnostics.CodeAnalysis;
 using ISession = YesSql.ISession;
 
-namespace Lombiq.DataTables.Services
+namespace Lombiq.DataTables.Services;
+
+/// <summary>
+/// Bundle of services that are always needed in <see cref="IDataTableDataProvider"/> implementations.
+/// </summary>
+[SuppressMessage(
+    "StyleCop.CSharp.DocumentationRules",
+    "SA1600:Elements should be documented",
+    Justification = "There is nothing to add past what's already on the individual services' documentations.")]
+public interface IDataTableDataProviderServices
 {
-    /// <summary>
-    /// Bundle of services that are always needed in <see cref="IDataTableDataProvider"/> implementations.
-    /// </summary>
-    [SuppressMessage(
-        "StyleCop.CSharp.DocumentationRules",
-        "SA1600:Elements should be documented",
-        Justification = "There is nothing to add past what's already on the individual services' documentations.")]
-    public interface IDataTableDataProviderServices
-    {
-        IHttpContextAccessor HttpContextAccessor { get; }
-        LinkGenerator LinkGenerator { get; }
-        ILiquidTemplateManager LiquidTemplateManager { get; }
-        IMemoryCache MemoryCache { get; }
-        IShapeFactory ShapeFactory { get; }
-        ISession Session { get; }
-        IAuthorizationService AuthorizationService { get; }
-        IContentManager ContentManager { get; }
-    }
+    IHttpContextAccessor HttpContextAccessor { get; }
+    LinkGenerator LinkGenerator { get; }
+    ILiquidTemplateManager LiquidTemplateManager { get; }
+    IMemoryCache MemoryCache { get; }
+    IShapeFactory ShapeFactory { get; }
+    ISession Session { get; }
+    IAuthorizationService AuthorizationService { get; }
+    IContentManager ContentManager { get; }
 }

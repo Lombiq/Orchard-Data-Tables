@@ -3,65 +3,64 @@ using OrchardCore.ContentManagement;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Lombiq.DataTables.Handlers
+namespace Lombiq.DataTables.Handlers;
+
+/// <summary>
+/// Service for manually calling index generation for a specified <see cref="ContentItem"/>.
+/// </summary>
+public interface IManualDataTableIndexGenerator
 {
     /// <summary>
-    /// Service for manually calling index generation for a specified <see cref="ContentItem"/>.
+    /// Gets or sets a value indicating whether the index generation start should be deferred to a middleware, or
+    /// executed immediately by calling <see cref="ScheduleDeferredIndexGenerationAsync"/> from inside <see
+    /// cref="ScheduleDeferredIndexGenerationAsync"/>.
     /// </summary>
-    public interface IManualDataTableIndexGenerator
+    bool IsInMiddlewarePipeline { get; set; }
+
+    /// <summary>
+    /// Schedules deferred index generation the same way as if it was an update event from a content handler. This way
+    /// you don't have to prepare for unforeseen consequences from other content handlers if you just want to update the
+    /// index.
+    /// </summary>
+    /// <param name="contentItem">The item for which the index is generated.</param>
+    /// <param name="managedTypeOnly">
+    /// If <see langword="true"/>, the <paramref name="contentItem"/> is only handled if its type is in <see
+    /// cref="IDataTableIndexGenerator{TIndex}.ManagedContentTypes"/>, otherwise it gets skipped. Ideal for running a
+    /// content item through all supported <see cref="IManualDataTableIndexGenerator"/> implementations.
+    /// </param>
+    Task ScheduleDeferredIndexGenerationAsync(ContentItem contentItem, bool managedTypeOnly);
+
+    /// <summary>
+    /// Asks every <see cref="IDataTableIndexGenerator{TIndex}"/> to start generating indexes for the content items that
+    /// received an order for it.
+    /// </summary>
+    Task GenerateOrderedIndicesAsync();
+}
+
+public static class ManualDataTableIndexGeneratorExtensions
+{
+    public static async Task ScheduleDeferredIndexGenerationAsync(
+        this IEnumerable<IManualDataTableIndexGenerator> indexGenerators,
+        ICollection<ContentItem> contentItems,
+        bool managedTypeOnly = true)
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether the index generation start should be deferred to a middleware, or
-        /// executed immediately by calling <see cref="ScheduleDeferredIndexGenerationAsync"/> from inside
-        /// <see cref="ScheduleDeferredIndexGenerationAsync"/>.
-        /// </summary>
-        bool IsInMiddlewarePipeline { get; set; }
-
-        /// <summary>
-        /// Schedules deferred index generation the same way as if it was an update event from a content handler. This
-        /// way you don't have to prepare for unforeseen consequences from other content handlers if you just want to
-        /// update the index.
-        /// </summary>
-        /// <param name="contentItem"> The item for which the index is generated.</param>
-        /// <param name="managedTypeOnly">
-        /// If <see langword="true"/>, the <paramref name="contentItem"/> is only handled if its type is in
-        /// <see cref="IDataTableIndexGenerator{TIndex}.ManagedContentTypes"/>, otherwise it gets skipped. Ideal for
-        /// running a content item through all supported <see cref="IManualDataTableIndexGenerator"/> implementations.
-        /// </param>
-        Task ScheduleDeferredIndexGenerationAsync(ContentItem contentItem, bool managedTypeOnly);
-
-        /// <summary>
-        /// Asks every <see cref="IDataTableIndexGenerator{TIndex}"/> to start generating indexes for the content items
-        /// that received an order for it.
-        /// </summary>
-        Task GenerateOrderedIndicesAsync();
-    }
-
-    public static class ManualDataTableIndexGeneratorExtensions
-    {
-        public static async Task ScheduleDeferredIndexGenerationAsync(
-            this IEnumerable<IManualDataTableIndexGenerator> indexGenerators,
-            ICollection<ContentItem> contentItems,
-            bool managedTypeOnly = true)
+        foreach (var indexGenerator in indexGenerators)
         {
-            foreach (var indexGenerator in indexGenerators)
+            foreach (var contentItem in contentItems)
             {
-                foreach (var contentItem in contentItems)
+                if (contentItem != null)
                 {
-                    if (contentItem != null)
-                    {
-                        await indexGenerator.ScheduleDeferredIndexGenerationAsync(contentItem, managedTypeOnly);
-                    }
+                    await indexGenerator.ScheduleDeferredIndexGenerationAsync(contentItem, managedTypeOnly);
                 }
             }
         }
+    }
 
-        public static async Task GenerateOrderedIndicesAsync(this IEnumerable<IManualDataTableIndexGenerator> indexGenerators)
+    public static async Task GenerateOrderedIndicesAsync(this IEnumerable<IManualDataTableIndexGenerator> indexGenerators)
+    {
+        foreach (var indexGenerator in indexGenerators)
         {
-            foreach (var indexGenerator in indexGenerators)
-            {
-                await indexGenerator.GenerateOrderedIndicesAsync();
-            }
+            await indexGenerator.GenerateOrderedIndicesAsync();
         }
     }
 }
