@@ -1,5 +1,5 @@
 using Lombiq.DataTables.Handlers;
-using Lombiq.HelpfulLibraries.Libraries.Middlewares;
+using Lombiq.HelpfulLibraries.AspNetCore.Middlewares;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
