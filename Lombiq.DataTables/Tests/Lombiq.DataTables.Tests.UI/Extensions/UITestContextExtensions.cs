@@ -1,7 +1,7 @@
 using Lombiq.DataTables.Samples.Controllers;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.Tests.UI.Models;
-using Lombiq.HelpfulLibraries.Libraries.Mvc;
+using Lombiq.HelpfulLibraries.OrchardCore.Mvc;
 using Lombiq.Tests.UI.Extensions;
 using Lombiq.Tests.UI.Services;
 using OpenQA.Selenium;

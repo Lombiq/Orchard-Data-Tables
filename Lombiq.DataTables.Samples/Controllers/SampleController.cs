@@ -1,5 +1,5 @@
 using Lombiq.DataTables.Samples.Models;
-using Lombiq.HelpfulLibraries.Libraries.Contents;
+using Lombiq.HelpfulLibraries.OrchardCore.Contents;
 using Microsoft.AspNetCore.Mvc;
 using OrchardCore.ContentManagement;
 using System.Linq;
