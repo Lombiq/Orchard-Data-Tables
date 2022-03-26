@@ -1,6 +1,6 @@
 using Dapper;
 using Lombiq.DataTables.Services;
-using Lombiq.HelpfulLibraries.Libraries.Database;
+using Lombiq.HelpfulLibraries.OrchardCore.Data;
 using Microsoft.AspNetCore.Http;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Handlers;
