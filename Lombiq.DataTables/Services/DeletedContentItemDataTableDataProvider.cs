@@ -1,9 +1,9 @@
-﻿using LinqToDB;
+using LinqToDB;
 using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Controllers;
 using Lombiq.DataTables.Models;
-using Lombiq.HelpfulLibraries.Libraries.DependencyInjection;
 using Lombiq.HelpfulLibraries.LinqToDb;
+using Lombiq.HelpfulLibraries.OrchardCore.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Records;
