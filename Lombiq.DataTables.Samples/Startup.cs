@@ -28,7 +28,7 @@ public class Startup : StartupBase
             EmployeeDataTableMigrations,
             SampleIndexBasedDataTableDataProvider>();
 
-            services.AddScoped<INavigationProvider, DataTablesNavigationProvider>();
+        services.AddScoped<INavigationProvider, DataTablesNavigationProvider>();
     }
 }
 
