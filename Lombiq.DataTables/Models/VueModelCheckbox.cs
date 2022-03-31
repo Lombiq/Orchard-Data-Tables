@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace Lombiq.DataTables.Models;
 
+// This class is used in <icbin-datatable>.
 public class VueModelCheckbox
 {
     [JsonProperty("type")]
