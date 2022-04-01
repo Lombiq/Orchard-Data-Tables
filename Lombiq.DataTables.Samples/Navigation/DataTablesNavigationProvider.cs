@@ -12,13 +12,12 @@ namespace Lombiq.DataTables.Samples.Navigation;
 
 public class DataTablesNavigationProvider : MainMenuNavigationProviderBase
 {
-    private readonly IHttpContextAccessor _hca;
-
     public DataTablesNavigationProvider(
         IHttpContextAccessor hca,
         IStringLocalizer<DataTablesNavigationProvider> stringLocalizer)
-        : base(hca, stringLocalizer) =>
-        _hca = hca;
+        : base(hca, stringLocalizer)
+    {
+    }
 
     protected override void Build(NavigationBuilder builder) =>
         builder
