@@ -2,7 +2,7 @@ using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Samples.Models;
 using Lombiq.DataTables.Services;
-using Lombiq.HelpfulLibraries.Libraries.Contents;
+using Lombiq.HelpfulLibraries.OrchardCore.Contents;
 using Microsoft.Extensions.Localization;
 using OrchardCore.ContentManagement;
 using OrchardCore.DisplayManagement;

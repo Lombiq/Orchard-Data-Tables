@@ -1,4 +1,4 @@
-using Lombiq.HelpfulLibraries.Libraries.Database;
+using Lombiq.HelpfulLibraries.OrchardCore.Data;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Handlers;
 using System.Collections.Generic;
