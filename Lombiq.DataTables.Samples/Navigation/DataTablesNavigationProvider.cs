@@ -1,4 +1,4 @@
-﻿using Lombiq.DataTables.Controllers;
+using Lombiq.DataTables.Controllers;
 using Lombiq.DataTables.Samples.Controllers;
 using Lombiq.DataTables.Samples.Services;
 using Lombiq.HelpfulLibraries.OrchardCore.Navigation;
@@ -33,6 +33,7 @@ public class DataTablesNavigationProvider : MainMenuNavigationProviderBase
         "Style",
         "MA0003:Add argument name to improve readability",
         Justification = "You can't use named arguments in Expressions.")]
+    [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Not unnecessary.")]
     private Action<NavigationItemBuilder> AdminTable(string name) =>
         itemBuilder => itemBuilder
             .ActionTask<TableController>(_hca.HttpContext, controller => controller.Get(
