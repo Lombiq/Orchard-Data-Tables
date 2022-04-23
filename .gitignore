@@ -1,14 +1,10 @@
-# Exclude build directories
+.vs/
+.idea/
+.vscode/
 obj/
 bin/
-*.user
-
-# Exclude IDE directories
-/.idea
-/.vs
-
-# Exclude node modules
+artifacts/
+wwwroot/
 node_modules/
-
-# Auto-added .editorconfig
-/.editorconfig
+*.user
+.pnpm-debug.log
