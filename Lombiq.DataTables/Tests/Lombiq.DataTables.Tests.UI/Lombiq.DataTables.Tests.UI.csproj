@@ -13,7 +13,7 @@
     <PackageTags>OrchardCore;Lombiq;AspNetCore;DataTables;Vue.js;Shouldly;xUnit;UITesting;Testing</PackageTags>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Data-Tables</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Lombiq/Orchard-Data-Tables/Lombiq.DataTables.Tests.UI/Readme.md</PackageProjectUrl>
-    <PackageLicenseFile>Licence.md</PackageLicenseFile>
+    <PackageLicenseFile>License.md</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,11 +25,11 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
-    <PackageReference Include="Lombiq.Tests.UI" Version="2.0.2" />
+    <PackageReference Include="Lombiq.Tests.UI" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Licence.md" Pack="true" PackagePath="" />
+    <None Include="License.md" Pack="true" PackagePath="" />
     <None Include="Readme.md" />
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
   </ItemGroup>
