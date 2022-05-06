@@ -19,7 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Lombiq.DataTables.Samples\Lombiq.DataTables.Samples.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
     <ProjectReference Include="..\..\..\..\..\..\test\Lombiq.UITestingToolbox\Lombiq.Tests.UI\Lombiq.Tests.UI.csproj" />
   </ItemGroup>
