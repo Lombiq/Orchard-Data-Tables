@@ -84,7 +84,7 @@ public class ExportTests
                 .Select(index => worksheet.Cell(2 + rowIndex, index).Value switch
                 {
                     XLHyperlink hyperlink => hyperlink.Tooltip,
-                    { } value => value.ToString(),
+                    { } => worksheet.Cell(2 + rowIndex, index).RichText.Text,
                     null => "NULL",
                 })
                 .ToArray()
@@ -101,7 +101,7 @@ public class ExportTests
 #pragma warning disable S103 // Split this long line.
         // https://github.com/ClosedXML/ClosedXML/blob/c2d408b127844ea3d4a5f6b060c548c953b6bcf3/ClosedXML_Tests/Excel/CalcEngine/LookupTests.cs#L16-L17
 #pragma warning restore S103 // Split this long line.
-        Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", useUserOverride: false);
 
         var dataset = new[]
         {
@@ -178,6 +178,35 @@ public class ExportTests
             new[] { new object[] { 1, true }, new object[] { 2, true }, new object[] { 3, false } },
             new[] { ("Num", "Numbers", true), ("Bool", "Booleans", true) },
             "1,Yes;2,Yes;3,No".Split(';').Select(row => row.Split(',')).ToArray(),
+            0,
+            10,
+            0,
+        };
+
+        var date1 = new DateTime(2020, 11, 26, 23, 42, 01);
+        var date2 = new DateTime(2020, 11, 26, 13, 42, 01);
+        var date3 = new DateTime(2020, 11, 26, 1, 42, 01);
+
+        // The date value should be the same, only the formatting changes.
+        yield return new object[]
+        {
+            "Verify custom number formatting.",
+            new[]
+            {
+                new object[] { 1, date1 },
+                new object[] { 2, date2 },
+                new object[] { 3, date3 },
+            },
+            new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
+            string.Format(
+                    Thread.CurrentThread.CurrentCulture,
+                    "1,{0:h:mm:ss tt};2,{1:h:mm:ss tt};3,{2:h:mm:ss tt}",
+                    date1,
+                    date2,
+                    date3)
+                .Split(';')
+                .Select(row => row.Split(','))
+                .ToArray(),
             0,
             10,
             0,
