@@ -19,6 +19,9 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services;
 
 public class ExportTests
 {
+    // ClosedXML looks at the CurrentCulture to initialize the workbook's culture.
+    private static readonly CultureInfo _worksheetCulture = new("en-US", useUserOverride: false);
+
     [Theory]
     [MemberData(nameof(Data))]
     public async Task ExportTableShouldMatchExpectation(
@@ -30,6 +33,14 @@ public class ExportTests
         int length,
         int orderColumnIndex)
     {
+        // ClosedXML looks at the CurrentCulture to initialize the workbook's culture. They also to set it like this
+        // in their own unit tests. See:
+#pragma warning disable S103 // Split this long line.
+        // https://github.com/ClosedXML/ClosedXML/blob/c2d408b127844ea3d4a5f6b060c548c953b6bcf3/ClosedXML_Tests/Excel/CalcEngine/LookupTests.cs#L16-L17
+#pragma warning restore S103 // Split this long line.
+        // As this is an async method, it runs in its own thread so this has no effect on other tests.
+        Thread.CurrentThread.CurrentCulture = _worksheetCulture;
+
         note.ShouldNotBeEmpty("Please state the purpose of this input set!");
 
         using var memoryCache = new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()));
@@ -96,13 +107,6 @@ public class ExportTests
 
     public static IEnumerable<object[]> Data()
     {
-        // ClosedXML looks at the CurrentCulture to initialize the workbook's culture. They also to set it like this
-        // in their own unit tests. See:
-#pragma warning disable S103 // Split this long line.
-        // https://github.com/ClosedXML/ClosedXML/blob/c2d408b127844ea3d4a5f6b060c548c953b6bcf3/ClosedXML_Tests/Excel/CalcEngine/LookupTests.cs#L16-L17
-#pragma warning restore S103 // Split this long line.
-        Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", useUserOverride: false);
-
         var dataset = new[]
         {
             new object[] { 1, "z", "foo" },
@@ -199,7 +203,7 @@ public class ExportTests
             },
             new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
             string.Format(
-                    Thread.CurrentThread.CurrentCulture,
+                    _worksheetCulture,
                     "1,{0:h:mm:ss tt};2,{1:h:mm:ss tt};3,{2:h:mm:ss tt}",
                     date1,
                     date2,
