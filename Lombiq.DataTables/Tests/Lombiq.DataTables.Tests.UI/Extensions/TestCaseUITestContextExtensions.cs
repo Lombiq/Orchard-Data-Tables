@@ -2,7 +2,9 @@ using Lombiq.DataTables.Samples.Services;
 using Lombiq.Tests.UI.Extensions;
 using Lombiq.Tests.UI.Services;
 using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,7 +18,7 @@ public static class TestCaseUITestContextExtensions
         "Junior Technical Author",
         "San Francisco",
         "66",
-        "1/12/2009",
+        new DateTime(2009, 1, 12, 12, 0, 0),
         "$86,000",
     };
 
@@ -26,7 +28,7 @@ public static class TestCaseUITestContextExtensions
         "Accountant",
         "Tokyo",
         "33",
-        "11/28/2008",
+        new DateTime(2008, 11, 28, 12, 0, 0),
         "$162,700",
     };
 
@@ -74,7 +76,13 @@ public static class TestCaseUITestContextExtensions
     }
 
     private static void VerifyText(UITestContext context, IEnumerable<object> texts) =>
-        context.VerifyElementTexts(By.CssSelector(".dataTable tbody > tr:first-child td"), texts);
+        context.VerifyElementTexts(
+            By.CssSelector(".dataTable tbody > tr:first-child td"),
+            texts.Select(item => item is DateTime date
+                ? date.ToString(
+                    "d",
+                    new CultureInfo(context.Configuration.BrowserConfiguration.AcceptLanguage.Name, useUserOverride: false))
+                : item));
 
     private static IEnumerable<object> AdjustForProvider(object[] source) =>
         source[..^1]
