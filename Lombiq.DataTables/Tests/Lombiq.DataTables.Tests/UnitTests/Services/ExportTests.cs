@@ -56,20 +56,14 @@ public class ExportTests
             mocker => mocker.MockStringLocalizer<ExcelDataTableExportService>());
 
         Dictionary<int, string> customNumberFormat = null;
-        int columnIndex = 0;
-        do
+        int columnIndex;
+        for (columnIndex = 0; columnIndex < columns.Length && columns[columnIndex - 1].Name != "Time"; columnIndex++)
         {
             if (columns[columnIndex].Name == "Time")
             {
-                customNumberFormat = new Dictionary<int, string>
-                {
-                    [columnIndex + 1] = "h:mm:ss AM/PM",
-                };
+                customNumberFormat = new Dictionary<int, string> { [columnIndex + 1] = "h:mm:ss AM/PM" };
             }
-
-            columnIndex++;
         }
-        while (columnIndex < columns.Length && columns[columnIndex - 1].Name != "Time");
 
         var stream = await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat);
 
