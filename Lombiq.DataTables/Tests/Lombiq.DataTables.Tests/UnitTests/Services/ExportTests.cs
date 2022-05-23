@@ -61,10 +61,7 @@ public class ExportTests
         {
             if (columns[columnIndex].Name == "Time")
             {
-                customNumberFormat = new Dictionary<int, string>
-                {
-                    [columnIndex + 1] = "h:mm:ss AM/PM",
-                };
+                customNumberFormat = new Dictionary<int, string> { [columnIndex + 1] = "h:mm:ss AM/PM" };
             }
 
             columnIndex++;
