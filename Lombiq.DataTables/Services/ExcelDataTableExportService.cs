@@ -80,14 +80,6 @@ public class ExcelDataTableExportService : IDataTableExportService
         worksheet.Range(1, 1, 1, columns.Length).Style.Font.Bold = true;
         worksheet.SheetView.Freeze(1, 0);
 
-        if (customNumberFormat != null)
-        {
-            foreach ((int columnNumber, string numberFormat) in customNumberFormat)
-            {
-                worksheet.Column(columnNumber).Style.NumberFormat.Format = numberFormat;
-            }
-        }
-
         // Permit it to be null if we don't plan to use it anyway.
         var dateFormat = localizer == null ? string.Empty : localizer["mm\"/\"dd\"/\"yyyy"].Value;
 
@@ -100,6 +92,14 @@ public class ExcelDataTableExportService : IDataTableExportService
                 var cell = worksheet.Cell(row, c + 1);
                 var value = results[i][c];
                 CreateTableCell(cell, value, dateFormat, localizer);
+            }
+        }
+
+        if (customNumberFormat != null)
+        {
+            foreach ((int columnNumber, string numberFormat) in customNumberFormat)
+            {
+                worksheet.Column(columnNumber).Style.NumberFormat.Format = numberFormat;
             }
         }
 

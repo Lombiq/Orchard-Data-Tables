@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -18,6 +19,9 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services;
 
 public class ExportTests
 {
+    // ClosedXML looks at the CurrentCulture to initialize the workbook's culture.
+    private static readonly CultureInfo _worksheetCulture = new("en-US", useUserOverride: false);
+
     [Theory]
     [MemberData(nameof(Data))]
     public async Task ExportTableShouldMatchExpectation(
@@ -29,6 +33,14 @@ public class ExportTests
         int length,
         int orderColumnIndex)
     {
+        // ClosedXML looks at the CurrentCulture to initialize the workbook's culture. They also to set it like this in
+        // their own unit tests. See:
+#pragma warning disable S103 // Split this long line.
+        // https://github.com/ClosedXML/ClosedXML/blob/c2d408b127844ea3d4a5f6b060c548c953b6bcf3/ClosedXML_Tests/Excel/CalcEngine/LookupTests.cs#L16-L17
+#pragma warning restore S103 // Split this long line.
+        // Since this is an async method, it runs in its own thread; so this has no effect on other tests.
+        Thread.CurrentThread.CurrentCulture = _worksheetCulture;
+
         note.ShouldNotBeEmpty("Please state the purpose of this input set!");
 
         using var memoryCache = new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()));
@@ -49,10 +61,7 @@ public class ExportTests
         {
             if (columns[columnIndex].Name == "Time")
             {
-                customNumberFormat = new Dictionary<int, string>
-                {
-                    [columnIndex + 1] = "h:mm:ss AM/PM",
-                };
+                customNumberFormat = new Dictionary<int, string> { [columnIndex + 1] = "h:mm:ss AM/PM" };
             }
 
             columnIndex++;
@@ -83,7 +92,7 @@ public class ExportTests
                 .Select(index => worksheet.Cell(2 + rowIndex, index).Value switch
                 {
                     XLHyperlink hyperlink => hyperlink.Tooltip,
-                    { } value => value.ToString(),
+                    { } => worksheet.Cell(2 + rowIndex, index).RichText.Text,
                     null => "NULL",
                 })
                 .ToArray()
@@ -185,12 +194,17 @@ public class ExportTests
             "Verify custom number formatting.",
             new[]
             {
-                new object[] { 1, date1.ToString(CultureInfo.InvariantCulture) },
-                new object[] { 2, date2.ToString(CultureInfo.InvariantCulture) },
-                new object[] { 3, date3.ToString(CultureInfo.InvariantCulture) },
+                new object[] { 1, date1 },
+                new object[] { 2, date2 },
+                new object[] { 3, date3 },
             },
             new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
-            FormattableString.CurrentCulture($"1,{date1};2,{date2};3,{date3}")
+            string.Format(
+                    _worksheetCulture,
+                    "1,{0:h:mm:ss tt};2,{1:h:mm:ss tt};3,{2:h:mm:ss tt}",
+                    date1,
+                    date2,
+                    date3)
                 .Split(';')
                 .Select(row => row.Split(','))
                 .ToArray(),

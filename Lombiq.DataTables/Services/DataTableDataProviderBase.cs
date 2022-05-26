@@ -116,7 +116,7 @@ public abstract class DataTableDataProviderBase : IDataTableDataProvider
         }
     }
 
-    protected Task<IEnumerable<T>> PaginateAsync<T>(IQuery<T> query, DataTableDataRequest request)
+    protected static Task<IEnumerable<T>> PaginateAsync<T>(IQuery<T> query, DataTableDataRequest request)
         where T : class =>
         query.PaginateAsync(request.Start / request.Length, request.Length);
 }
