@@ -10,14 +10,14 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Registers a <see cref="IDataTableDataProvider"/> for DataTables.
+    /// Registers an implementation of <see cref="IDataTableDataProvider"/> for DataTables.
     /// </summary>
     public static IServiceCollection AddDataTableDataProvider<TDataProvider>(this IServiceCollection services)
         where TDataProvider : class, IDataTableDataProvider =>
         services.AddScoped<IDataTableDataProvider, TDataProvider>();
 
     /// <summary>
-    /// Registers a <see cref="IDataTableExportService"/> for DataTables.
+    /// Registers an implementation of <see cref="IDataTableExportService"/> for DataTables.
     /// </summary>
     public static IServiceCollection AddDataTableExportService<TService>(this IServiceCollection services)
         where TService : class, IDataTableExportService =>
@@ -26,7 +26,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddIndexBasedDataTableProvider<TIndex, TGenerator, TMigration, TProvider>(
         this IServiceCollection services)
         where TIndex : MapIndex
-        where TGenerator : class, IDataTableIndexGenerator<TIndex>
+        where TGenerator : class, IDataTableIndexGenerator
         where TMigration : IndexDataMigration<TIndex>
         where TProvider : IndexBasedDataTableDataProvider<TIndex>
     {
