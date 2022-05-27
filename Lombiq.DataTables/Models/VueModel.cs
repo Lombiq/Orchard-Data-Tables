@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -75,6 +76,7 @@ public class VueModel
     public IEnumerable<HiddenInputValue> HiddenInputs { get; set; }
 
     [JsonProperty("hiddenInput", NullValueHandling = NullValueHandling.Ignore)]
+    [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "It's used by JSON.NET.")]
     private object HiddenInputSerialize
     {
         get => (object)HiddenInput ?? HiddenInputs;
