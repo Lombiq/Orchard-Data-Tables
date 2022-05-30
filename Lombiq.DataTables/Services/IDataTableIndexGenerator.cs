@@ -3,16 +3,13 @@ using OrchardCore.ContentManagement.Handlers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YesSql.Indexes;
 
 namespace Lombiq.DataTables.Services;
 
 /// <summary>
 /// A service for generating DataTables indexes for a specific table.
 /// </summary>
-/// <typeparam name="TIndex">The type of <see cref="MapIndex"/> this service maintains.</typeparam>
-public interface IDataTableIndexGenerator<TIndex>
-    where TIndex : MapIndex
+public interface IDataTableIndexGenerator
 {
     /// <summary>
     /// Gets a dictionary where the key is the <see cref="ContentItem.ContentItemId"/> where index generation is ordered
@@ -47,11 +44,10 @@ public interface IDataTableIndexGenerator<TIndex>
 public static class DataTableIndexGeneratorExtensions
 {
     /// <summary>
-    /// Adds a content item to the index generation orders. Update ( <see langword="false"/>) is preferred over remove
+    /// Adds a content item to the index generation orders. Update (<see langword="false"/>) is preferred over remove
     /// (<see langword="true"/>).
     /// </summary>
-    public static void AddIndexGenerationOrder<TIndex>(this IDataTableIndexGenerator<TIndex> generator, string id, bool remove)
-        where TIndex : MapIndex
+    public static void AddIndexGenerationOrder(this IDataTableIndexGenerator generator, string id, bool remove)
     {
         if (string.IsNullOrEmpty(id)) return;
 
@@ -61,10 +57,9 @@ public static class DataTableIndexGeneratorExtensions
 
     /// <summary>
     /// Returns the <see cref="ContentItem.ContentItemId"/> s from the <see
-    /// cref="IDataTableIndexGenerator{TIndex}.IndexGenerationIsRemovalByType"/> for updates only.
+    /// cref="IDataTableIndexGenerator.IndexGenerationIsRemovalByType"/> for updates only.
     /// </summary>
-    public static IList<string> GetUpdateIds<TIndex>(this IDataTableIndexGenerator<TIndex> generator)
-        where TIndex : MapIndex =>
+    public static IList<string> GetUpdateIds(this IDataTableIndexGenerator generator) =>
         generator.IndexGenerationIsRemovalByType
             .Where(pair => !pair.Value)
             .Select(pair => pair.Key)
