@@ -16,7 +16,7 @@ namespace Lombiq.DataTables.Handlers;
 
 public class DataTableIndexGeneratorContentHandler<TIndexGenerator, TIndex>
     : ContentHandlerBase, IManualDataTableIndexGenerator
-    where TIndexGenerator : IDataTableIndexGenerator<TIndex>
+    where TIndexGenerator : IDataTableIndexGenerator
     where TIndex : MapIndex
 {
     private readonly Lazy<IHttpContextAccessor> _hcaLazy;
