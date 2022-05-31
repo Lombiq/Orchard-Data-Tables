@@ -84,9 +84,9 @@ public class DeletedContentItemDataTableDataProvider : JsonResultDataTableDataPr
         // This returns the indices which don't have a published or draft content item version. Still needs to be
         // grouped offline to only select the latest one.
         Task<ContentItemIndex[]> SqlQuery(ITableAccessor accessor) =>
-            (from deleted in accessor.GetTable<ContentItemIndex>()
+            (from deleted in accessor.GetTable<ContentItemIndex>(string.Empty)
              from notDeleted in
-                 (from contentItemIndex in accessor.GetTable<ContentItemIndex>()
+                 (from contentItemIndex in accessor.GetTable<ContentItemIndex>(string.Empty)
                   where contentItemIndex.ContentType == contentType
                      && (contentItemIndex.Latest || contentItemIndex.Published)
                   group contentItemIndex by contentItemIndex.ContentItemId into contentItemIdGroup
