@@ -4,7 +4,7 @@ using OrchardCore.Modules.Manifest;
     Name = "Lombiq Data Tables - Samples",
     Author = "Lombiq Technologies",
     Website = "https://github.com/Lombiq/Orchard-Data-Tables",
-    Version = "3.1.0",
+    Version = "3.1.1-alpha.osoe-111",
     Description = "Samples for Lombiq Data Tables.",
     Category = "Development",
     Dependencies = new[] { Lombiq.DataTables.Constants.FeatureIds.DataTables }
