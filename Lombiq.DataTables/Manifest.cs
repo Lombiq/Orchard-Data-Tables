@@ -21,7 +21,3 @@ using static Lombiq.DataTables.Constants.FeatureIds;
         "OrchardCore.Queries",
     }
 )]
-
-
-
-
