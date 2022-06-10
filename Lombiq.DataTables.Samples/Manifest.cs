@@ -9,7 +9,3 @@ using OrchardCore.Modules.Manifest;
     Category = "Development",
     Dependencies = new[] { Lombiq.DataTables.Constants.FeatureIds.DataTables }
 )]
-
-
-
-
