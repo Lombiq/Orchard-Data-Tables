@@ -1,8 +1,6 @@
 # Lombiq Data Tables for Orchard Core
 
-[![Lombiq.DataTables NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.DataTables)](https://www.nuget.org/packages/Lombiq.DataTables/)
-[![Lombiq.DataTables.Samples NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.DataTables.Samples)](https://www.nuget.org/packages/Lombiq.DataTables.Samples/)
-[![Lombiq.DataTables.Tests.UI NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.DataTables.Tests.UI)](https://www.nuget.org/packages/Lombiq.DataTables.Tests.UI/)
+[![Lombiq.DataTables NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.DataTables)](https://www.nuget.org/packages/Lombiq.DataTables/) [![Lombiq.DataTables.Samples NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.DataTables.Samples)](https://www.nuget.org/packages/Lombiq.DataTables.Samples/) [![Lombiq.DataTables.Tests.UI NuGet](https://img.shields.io/nuget/v/Lombiq.DataTables?label=Lombiq.DataTables.Tests.UI)](https://www.nuget.org/packages/Lombiq.DataTables.Tests.UI/)
 
 ## About
 
