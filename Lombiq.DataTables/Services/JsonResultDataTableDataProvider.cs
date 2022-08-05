@@ -78,10 +78,11 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
     {
         var searchValue = request.Search?.Value;
         var columnFilters = request.GetColumnSearches();
+        int recordsFilteredResponse = recordsFiltered;
 
         if (!meta.IsFiltered && (request.HasSearch || columnFilters?.Count > 0))
         {
-            (rows, recordsFiltered) = Search(rows, columns, request.HasSearch, searchValue, columnFilters);
+            (rows, recordsFilteredResponse) = Search(rows, columns, request.HasSearch, searchValue, columnFilters);
         }
 
         if (!meta.IsPaginated)
@@ -90,7 +91,7 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
             if (request.Length > 0) rows = rows.Take(request.Length);
         }
 
-        return (rows, recordsFiltered);
+        return (rows, recordsFilteredResponse);
     }
 
     private static (IEnumerable<DataTableRow> Results, int Count) Search(
