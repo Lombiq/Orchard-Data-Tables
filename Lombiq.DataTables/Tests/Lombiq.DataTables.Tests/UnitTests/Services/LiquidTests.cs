@@ -86,7 +86,7 @@ public class LiquidTests
                 .ToArray()
                 .ShouldBe(
                     pattern[rowIndex],
-                    FormattableString.Invariant($"Row {rowIndex + 1} didn't match expectation."));
+                    string.Create(CultureInfo.InvariantCulture, $"Row {rowIndex + 1} didn't match expectation."));
         }
     }
 
