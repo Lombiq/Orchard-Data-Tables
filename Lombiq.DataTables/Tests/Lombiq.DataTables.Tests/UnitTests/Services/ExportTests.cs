@@ -98,7 +98,7 @@ public class ExportTests
                 .ToArray()
                 .ShouldBe(
                     pattern[rowIndex],
-                    string.Create(CultureInfo.InvariantCulture, $"Row {rowIndex + 1} didn't match expectation."));
+                    FormattableString.Invariant($"Row {rowIndex + 1} didn't match expectation."));
         }
     }
 
