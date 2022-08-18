@@ -92,7 +92,7 @@ public class ExportTests
                 .Select(index => worksheet.Cell(2 + rowIndex, index).Value switch
                 {
                     XLHyperlink hyperlink => hyperlink.Tooltip,
-                    { } => worksheet.Cell(2 + rowIndex, index).RichText.Text,
+                    { } => worksheet.Cell(2 + rowIndex, index).GetRichText().Text,
                     null => "NULL",
                 })
                 .ToArray()
