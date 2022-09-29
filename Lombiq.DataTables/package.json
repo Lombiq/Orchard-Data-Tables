@@ -1,15 +1,45 @@
 {
   "private": true,
-  "scripts": {
-    "dotnet-prebuild": "gulp"
-  },
   "dependencies": {
-    "@babel/preset-env": "^7.14.8",
-    "datatables.net": "1.10.25",
-    "datatables.net-bs4": "3.2.2",
     "datatables.net-buttons": "1.7.1",
     "datatables.net-buttons-bs4": "1.7.1",
-    "gulp-babel": "^8.0.0",
     "urijs": "1.19.7"
+  },
+  "scripts": {
+    "build": "npm explore nodejs-extensions -- pnpm build",
+    "clean": "npm explore nodejs-extensions -- pnpm clean",
+    "watch": "npm explore nodejs-extensions -- pnpm watch"
+  },
+  "nodejsExtensions": {
+    "assetsToCopy": [
+      {
+        "sources": [ "Assets/node_modules/datatables.net/js" ],
+        "pattern": "*",
+        "target": "wwwroot/vendors/datatables.net"
+      },
+      {
+        "sources": [ "node_modules/datatables.net-buttons/js" ],
+        "pattern": "*",
+        "target": "wwwroot/vendors/datatables.net-buttons"
+      },
+      {
+        "sources": [ "Assets/node_modules/datatables.net-bs4/js", "node_modules/datatables.net-buttons-bs4/js" ],
+        "pattern": "*",
+        "target": "wwwroot/vendors/datatables.net-bs4-js"
+      },
+      {
+        "sources": [ "Assets/node_modules/datatables.net-bs4/css", "node_modules/datatables.net-buttons-bs4/css" ],
+        "pattern": "*",
+        "target": "wwwroot/vendors/datatables.net-bs4-css"
+      },
+      {
+        "sources": [ "node_modules/urijs/src" ],
+        "target": "wwwroot/vendors/urijs"
+      }
+    ],
+    "scripts": {
+      "source": "Assets/Scripts",
+      "target": "wwwroot/lombiq"
+    }
   }
 }
