@@ -13,7 +13,7 @@
   "nodejsExtensions": {
     "assetsToCopy": [
       {
-        "sources": [ "Assets/node_modules/datatables.net/js" ],
+        "sources": [ "Assets/NodeModules/datatables.net/js" ],
         "pattern": "*",
         "target": "wwwroot/vendors/datatables.net"
       },
@@ -23,12 +23,12 @@
         "target": "wwwroot/vendors/datatables.net-buttons"
       },
       {
-        "sources": [ "Assets/node_modules/datatables.net-bs4/js", "node_modules/datatables.net-buttons-bs4/js" ],
+        "sources": [ "Assets/NodeModules/datatables.net-bs4/js", "node_modules/datatables.net-buttons-bs4/js" ],
         "pattern": "*",
         "target": "wwwroot/vendors/datatables.net-bs4-js"
       },
       {
-        "sources": [ "Assets/node_modules/datatables.net-bs4/css", "node_modules/datatables.net-buttons-bs4/css" ],
+        "sources": [ "Assets/NodeModules/datatables.net-bs4/css", "node_modules/datatables.net-buttons-bs4/css" ],
         "pattern": "*",
         "target": "wwwroot/vendors/datatables.net-bs4-css"
       },
