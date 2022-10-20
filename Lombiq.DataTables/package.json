@@ -1,9 +1,5 @@
 {
   "private": true,
-  "// inactive dependencies - currently replaced by static files with custom fixes": {
-    "datatables.net": "1.10.25",
-    "datatables.net-bs4": "3.2.2"
-  },
   "dependencies": {
     "datatables.net-buttons": "1.7.1",
     "datatables.net-buttons-bs4": "1.7.1",
