@@ -27,7 +27,7 @@ public static class UITestContextExtensions
         context.GoToAdminDataTableAsync(typeof(T).Name);
 
     public static Task GoToAdminDataTableAsync(this UITestContext context, string providerName) =>
-        context.GoToRelativeUrlAsync("/Admin/DataTable/" + providerName);
+        context.GoToAdminRelativeUrlAsync("/DataTable/" + providerName);
 
     public static void VerifyDataTablePager(this UITestContext context, int pageCount, int currentPage = 1)
     {
