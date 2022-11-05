@@ -34,8 +34,9 @@ public abstract class IndexBasedDataTableDataProvider<TIndex> : DataTableDataPro
     public override async Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request)
     {
         var query = new SqlBuilder(_session.Store.Configuration.TablePrefix, _session.Store.Configuration.SqlDialect);
+        var schema = _session.Store.Configuration.Schema;
         query.Select();
-        query.Table(typeof(TIndex).Name);
+        query.Table(typeof(TIndex).Name, alias: null, schema);
 
         var columnsDefinition = await GetColumnsDefinitionAsync(request.QueryId);
 
