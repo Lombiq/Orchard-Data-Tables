@@ -34,7 +34,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<TGenerator, TGenerator>();
         services.AddScoped<IContentHandler, DataTableIndexGeneratorContentHandler<TGenerator, TIndex>>();
         services.AddScoped<IManualDataTableIndexGenerator, DataTableIndexGeneratorContentHandler<TGenerator, TIndex>>();
-        services.AddScoped<IDataMigration, TMigration>();
+        services.AddDataMigration<TMigration>();
         services.AddDataTableDataProvider<TProvider>();
 
         return services;

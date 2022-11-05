@@ -25,7 +25,7 @@ public class Startup : StartupBase
         services.AddTagHelpers<DataTableTagHelper>();
 
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
-        services.AddScoped<IDataMigration, ColumnsDefinitionMigrations>();
+        services.AddDataMigration<ColumnsDefinitionMigrations>();
 
         services.AddLiquidFilter<ActionsLiquidFilter>("actions");
 
