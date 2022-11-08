@@ -44,7 +44,7 @@
     <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.2" />
     <PackageReference Include="OrchardCore.Contents" Version="1.5.0" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="1.5.0" />
-    <PackageReference Include="OrchardCore.Lucene" Version="1.4.0" />
+    <PackageReference Include="OrchardCore.Search.Lucene" Version="1.5.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
