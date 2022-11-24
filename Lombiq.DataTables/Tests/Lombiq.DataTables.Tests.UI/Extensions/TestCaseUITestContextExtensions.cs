@@ -24,7 +24,7 @@ public static class TestCaseUITestContextExtensions
 
     private static readonly object[] _alphabeticallyFirst =
     {
-        "Airi Saturn",
+        "Airlee Saturn",
         "Accountant",
         "Tokyo",
         "33",

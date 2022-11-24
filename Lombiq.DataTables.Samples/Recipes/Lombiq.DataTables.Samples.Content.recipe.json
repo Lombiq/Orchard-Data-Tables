@@ -161,7 +161,7 @@
           "ContentItemId": "[js:uuid()]",
           "ContentItemVersionId": "[js:uuid()]",
           "ContentType": "Employee",
-          "DisplayText": "Airi Saturn",
+          "DisplayText": "Airlee Saturn",
           "Latest": true,
           "Published": true,
           "ModifiedUtc": "2022-01-18T17:44:40.156Z",
@@ -171,7 +171,7 @@
           "Author": "admin",
           "EmployeePart": {
             "Name": {
-              "Text": "Airi Saturn"
+              "Text": "Airlee Saturn"
             },
             "Position": {
               "Text": "Accountant"
