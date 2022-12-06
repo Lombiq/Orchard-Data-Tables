@@ -14,7 +14,7 @@
     <PackageIcon>NuGetIcon.png</PackageIcon>
     <PackageTags>OrchardCore;Lombiq;AspNetCore;DataTables;Vue.js</PackageTags>
     <RepositoryUrl>https://github.com/Lombiq/Orchard-Data-Tables</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/Lombiq/Orchard-Data-Tables/Lombiq.DataTables.Samples/Readme.md</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Lombiq/Orchard-Data-Tables/blob/dev/Lombiq.DataTables.Samples/Readme.md</PackageProjectUrl>
     <PackageLicenseFile>License.md</PackageLicenseFile>
   </PropertyGroup>
 
