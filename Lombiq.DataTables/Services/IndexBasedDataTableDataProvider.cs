@@ -35,7 +35,7 @@ public abstract class IndexBasedDataTableDataProvider<TIndex> : DataTableDataPro
     {
         var query = new SqlBuilder(_session.Store.Configuration.TablePrefix, _session.Store.Configuration.SqlDialect);
         query.Select();
-        query.Table(typeof(TIndex).Name);
+        query.Table(typeof(TIndex).Name, alias: null, _session.Store.Configuration.Schema);
 
         var columnsDefinition = await GetColumnsDefinitionAsync(request.QueryId);
 

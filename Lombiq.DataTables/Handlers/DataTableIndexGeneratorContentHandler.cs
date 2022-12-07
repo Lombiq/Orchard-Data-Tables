@@ -90,9 +90,10 @@ public class DataTableIndexGeneratorContentHandler<TIndexGenerator, TIndex>
         var transaction = await session.BeginTransactionAsync();
         var dialect = session.Store.Configuration.SqlDialect;
         var prefix = session.Store.Configuration.TablePrefix;
+        var schema = session.Store.Configuration.Schema;
 
-        var contentItemIndex = dialect.QuoteForTableName(prefix + nameof(ContentItemIndex));
-        var dataTableIndex = dialect.QuoteForTableName(prefix + typeof(TIndex).Name);
+        var contentItemIndex = dialect.QuoteForTableName(prefix + nameof(ContentItemIndex), schema);
+        var dataTableIndex = dialect.QuoteForTableName(prefix + typeof(TIndex).Name, schema);
 
         const string documentId = "DocumentId";
         const string contentItemId = nameof(ContentItemIndex.ContentItemId);
