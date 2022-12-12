@@ -90,7 +90,7 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
         _manifest
             .DefineScript(ResourceNames.DataTables.AutoInit)
             .SetDependencies(ResourceNames.DataTables.Bootstrap4, ResourceNames.DataTables.Bootstrap4Buttons)
-            .SetUrl(Lombiq + "jquery-datatables-autoinit.js")
+            .SetUrl(Lombiq + "jquery-datatables-autoinit.js") // #spell-check-ignore-line
             .SetVersion("1.0");
 
         _manifest

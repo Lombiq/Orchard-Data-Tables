@@ -94,7 +94,8 @@ public abstract class DataTableDataProviderBase : IDataTableDataProvider
                 .ToDictionary(
                     cell => cell.Name,
                     cell => cell.Regex is { } regex
-                        ? new JValue(cell.Token?.ToString().RegexReplace(regex.From, regex.To, RegexOptions.Singleline) ?? string.Empty)
+                        ? new JValue(cell.Token?.ToString().RegexReplace(regex.From, regex.To, RegexOptions.Singleline) // #spell-check-ignore-line
+                            ?? string.Empty)
                         : cell.Token)));
 
     protected async Task RenderLiquidAsync(IEnumerable<DataTableRow> rowList, IList<string> liquidColumns)
