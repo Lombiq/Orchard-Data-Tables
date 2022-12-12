@@ -16,7 +16,7 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
         // jQuery.DataTables-related resources.
         _manifest
             .DefineScript(ResourceNames.UriJs)
-            .SetUrl(Vendors + "urijs/URI.min.js", Vendors + "urijs/URI.js")
+            .SetUrl(Vendors + "urijs/URI.min.js", Vendors + "urijs/URI.js") // #spell-check-ignore-line
             .SetDependencies(ResourceNames.JQuery)
             .SetVersion("1.19.2");
 
