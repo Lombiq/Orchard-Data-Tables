@@ -101,7 +101,7 @@
         $(function () {
             var templates = {};
             $(".@templatesElementName > div[data-id]").each(function(index, element) {
-                templates[element.getAttribute('data-id')] = element.innerHTML.replace(/%7B%7Bdata%7D%7D/g, '@templatePlaceholder');
+                templates[element.getAttribute('data-id')] = element.innerHTML.replace(/%7B%7Bdata%7D%7D/g, '@templatePlaceholder'); // #spell-check-ignore-line
                 element.parentElement.removeChild(element);
             });
 

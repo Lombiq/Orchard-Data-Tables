@@ -108,7 +108,7 @@ public class LiquidTests
             new[]
             {
                 ("Num||^.*$||{{ '$0' | date: '%m/%d/%Y' }}", "Dates", true),
-                ("Cls||^.*$||{{ '$0' | downcase }}", "Magic Words", true),
+                ("Cls||^.*$||{{ '$0' | downcase }}", "Magic Words", true), // #spell-check-ignore-line
             },
             $"{today},foo bar baz;01/01/1970,lorem ipsum dolor sit amet;12/31/2020,the quick brown fox"
                 .Split(';')
