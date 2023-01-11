@@ -37,6 +37,9 @@ public static class TestCaseUITestContextExtensions
         await context.SignInDirectlyAsync();
         await context.ExecuteDataTablesSampleRecipeDirectlyAsync();
 
+        // Added temporarily to investigate the stacktrace of this extension method.
+        context.AssertVisualVerificationApproved(element: null, pixelErrorPercentageThreshold: 5, regionOfInterest: null);
+
         await context.TestDataTableTagHelperAsync();
         await context.TestDataTableProviderWithShapeAsync();
         await context.TestDataTableIndexBasedProviderAsync();
