@@ -71,7 +71,14 @@ You may say, _I Can't Believe It's Not DataTable!_ but it really is not. Use the
 
 For additional properties and notes on the events take a look at the comments [in the component](Lombiq.DataTables/Assets/Scripts/icbin-datatable.js).
 
-_Note: use `@Json.Serialize()` to automatically camelCase the data for JS._
+_Note: Use `@Json.Serialize()` to automatically camelCase the data for JS._
+
+## Dependencies
+
+This module has the following dependencies:
+
+- [Lombiq Helpful Libraries for Orchard Core](https://github.com/Lombiq/Helpful-Libraries)
+- [Lombiq Node.js Extensions](https://gihub.com/Lombiq/NodeJs-Extensions)
 
 ## Troubleshooting
 
