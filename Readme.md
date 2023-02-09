@@ -88,7 +88,7 @@ If you get the IntelliSense-only error _TS6053 File "(...)/types/types.d.ts" not
 
 1. From the menu select Tools → Options.
 2. From the sidebar select Text Editor → JavaScript/Typescript → Project → General.
-3. Scroll down and untick _Enable automatic type acquisition (TS 4.1 or later)_.
+3. Scroll down and uncheck _Enable automatic type acquisition (TS 4.1 or later)_.
 
 ## Contributing and support
 

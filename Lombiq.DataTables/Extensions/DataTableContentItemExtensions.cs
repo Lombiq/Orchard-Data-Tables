@@ -25,7 +25,7 @@ public static class DataTableContentItemExtensions
             {
                 area = "OrchardCore.Contents",
                 contentItemId,
-                bootstraptab = bootstrapTabType == null
+                bootstraptab = bootstrapTabType == null // #spell-check-ignore-line
                     ? null
                     : $"tab-{bootstrapTabType}-{contentItemId}",
             });
