@@ -3,12 +3,12 @@ lockfileVersion: 5.4
 specifiers:
   datatables.net-buttons: 1.7.1
   datatables.net-buttons-bs4: 1.7.1
-  eslint: 8.25.0
-  eslint-config-airbnb-base: 15.0.0
-  eslint-plugin-import: 2.26.0
-  eslint-plugin-node: 11.1.0
-  eslint-plugin-only-warn: 1.0.3
-  eslint-plugin-promise: 6.1.0
+  eslint: ^8.25.0
+  eslint-config-airbnb-base: ^15.0.0
+  eslint-plugin-import: ^2.26.0
+  eslint-plugin-node: ^11.1.0
+  eslint-plugin-only-warn: ^1.0.3
+  eslint-plugin-promise: ^6.1.0
   urijs: 1.19.7
 
 dependencies:
