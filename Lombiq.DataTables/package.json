@@ -13,39 +13,27 @@
   "nodejsExtensions": {
     "assetsToCopy": [
       {
-        "sources": [
-          "Assets/UnmanagedNodeModules/datatables.net/js"
-        ],
+        "sources": [ "Assets/UnmanagedNodeModules/datatables.net/js" ],
         "pattern": "*",
         "target": "wwwroot/vendors/datatables.net"
       },
       {
-        "sources": [
-          "node_modules/datatables.net-buttons/js"
-        ],
+        "sources": [ "node_modules/datatables.net-buttons/js" ],
         "pattern": "*",
         "target": "wwwroot/vendors/datatables.net-buttons"
       },
       {
-        "sources": [
-          "Assets/UnmanagedNodeModules/datatables.net-bs4/js",
-          "node_modules/datatables.net-buttons-bs4/js"
-        ],
+        "sources": [ "Assets/UnmanagedNodeModules/datatables.net-bs4/js", "node_modules/datatables.net-buttons-bs4/js" ],
         "pattern": "*",
         "target": "wwwroot/vendors/datatables.net-bs4-js"
       },
       {
-        "sources": [
-          "Assets/UnmanagedNodeModules/datatables.net-bs4/css",
-          "node_modules/datatables.net-buttons-bs4/css"
-        ],
+        "sources": [ "Assets/UnmanagedNodeModules/datatables.net-bs4/css", "node_modules/datatables.net-buttons-bs4/css" ],
         "pattern": "*",
         "target": "wwwroot/vendors/datatables.net-bs4-css"
       },
       {
-        "sources": [
-          "node_modules/urijs/src"
-        ],
+        "sources": [ "node_modules/urijs/src" ],
         "target": "wwwroot/vendors/urijs"
       }
     ],
@@ -53,13 +41,5 @@
       "source": "Assets/Scripts",
       "target": "wwwroot/lombiq"
     }
-  },
-  "devDependencies": {
-    "eslint": "^8.25.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-only-warn": "^1.0.3",
-    "eslint-plugin-promise": "^6.1.0"
   }
 }
