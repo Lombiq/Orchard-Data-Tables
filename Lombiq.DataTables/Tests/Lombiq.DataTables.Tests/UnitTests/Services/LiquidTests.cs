@@ -96,7 +96,7 @@ public class LiquidTests
         {
             new object[] { "now", "Foo Bar Baz" },
             new object[] { "2020-12-31", "The quick brown fox" },
-            new object[] { "1970-01-01", "Lorem Ipsum Dolor Sit Amet" },
+            new object[] { "1970-01-01", "Lorem Ipsum Dolor Sit Amet" }, // #spell-check-ignore-line
         };
         var today = DateTime.Today.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
 
@@ -110,7 +110,7 @@ public class LiquidTests
                 ("Num||^.*$||{{ '$0' | date: '%m/%d/%Y' }}", "Dates", true),
                 ("Cls||^.*$||{{ '$0' | downcase }}", "Magic Words", true), // #spell-check-ignore-line
             },
-            $"{today},foo bar baz;01/01/1970,lorem ipsum dolor sit amet;12/31/2020,the quick brown fox"
+            $"{today},foo bar baz;01/01/1970,lorem ipsum dolor sit amet;12/31/2020,the quick brown fox" // #spell-check-ignore-line
                 .Split(';')
                 .Select(row => row.Split(','))
                 .ToArray(),
