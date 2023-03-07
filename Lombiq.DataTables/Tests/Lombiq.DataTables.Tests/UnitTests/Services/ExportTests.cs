@@ -89,12 +89,8 @@ public class ExportTests
         for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
         {
             Enumerable.Range(1, pattern[0].Length)
-                .Select(index => worksheet.Cell(2 + rowIndex, index).Value switch
-                {
-                    XLHyperlink hyperlink => hyperlink.Tooltip,
-                    { } => worksheet.Cell(2 + rowIndex, index).GetRichText().Text,
-                    null => "NULL",
-                })
+                .Select(index => worksheet.Cell(2 + rowIndex, index))
+                .Select(cell => cell.GetFormattedString())
                 .ToArray()
                 .ShouldBe(
                     pattern[rowIndex],
