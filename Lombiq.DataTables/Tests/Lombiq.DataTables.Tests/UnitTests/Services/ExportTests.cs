@@ -1,4 +1,5 @@
 using ClosedXML.Excel;
+using ClosedXML.Graphics;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.Tests.Helpers;
@@ -70,6 +71,7 @@ public class ExportTests
 
         var stream = await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat);
 
+        LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine("Tahoma");
         using var workbook = new XLWorkbook(stream);
         var worksheet = workbook.Worksheets.Worksheet(1);
 
@@ -89,8 +91,7 @@ public class ExportTests
         for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
         {
             Enumerable.Range(1, pattern[0].Length)
-                .Select(index => worksheet.Cell(2 + rowIndex, index))
-                .Select(cell => cell.GetFormattedString())
+                .Select(index => worksheet.Cell(2 + rowIndex, index).GetFormattedString())
                 .ToArray()
                 .ShouldBe(
                     pattern[rowIndex],
