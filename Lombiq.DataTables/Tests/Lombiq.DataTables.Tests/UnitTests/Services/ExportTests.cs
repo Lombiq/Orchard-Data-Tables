@@ -8,10 +8,12 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Moq.AutoMock;
 using Shouldly;
+using SixLabors.Fonts;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -23,16 +25,16 @@ public class ExportTests
     // ClosedXML looks at the CurrentCulture to initialize the workbook's culture.
     private static readonly CultureInfo _worksheetCulture = new("en-US", useUserOverride: false);
 
+    // ClosedXML needs a fallback font on all systems but Windows, so let's use the first installed one.
+    private static readonly string _fallbackFont = SystemFonts.Collection.Families.First().Name;
+
     public ExportTests()
     {
-        var fontFamilies = SixLabors.Fonts.SystemFonts.Collection.Families.ToList();
-        foreach (var fontFamily in fontFamilies)
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            Console.WriteLine(fontFamily.Name);
+            // On non-Windows platforms, we need to specify a fallback font manually for ClosedXML to work.
+            LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine(_fallbackFont);
         }
-
-        var font = fontFamilies.First(family => family.Name.StartsWith("d", ignoreCase: true, CultureInfo.InvariantCulture));
-        LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine(font.Name);
     }
 
     [Theory]
