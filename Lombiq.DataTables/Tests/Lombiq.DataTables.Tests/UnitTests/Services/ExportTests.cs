@@ -23,6 +23,8 @@ public class ExportTests
     // ClosedXML looks at the CurrentCulture to initialize the workbook's culture.
     private static readonly CultureInfo _worksheetCulture = new("en-US", useUserOverride: false);
 
+    public ExportTests() => LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine("Tahoma");
+
     [Theory]
     [MemberData(nameof(Data))]
     public async Task ExportTableShouldMatchExpectation(
@@ -71,7 +73,6 @@ public class ExportTests
 
         var stream = await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat);
 
-        LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine("Tahoma");
         using var workbook = new XLWorkbook(stream);
         var worksheet = workbook.Worksheets.Worksheet(1);
 
