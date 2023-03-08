@@ -23,7 +23,17 @@ public class ExportTests
     // ClosedXML looks at the CurrentCulture to initialize the workbook's culture.
     private static readonly CultureInfo _worksheetCulture = new("en-US", useUserOverride: false);
 
-    public ExportTests() => LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine("Tahoma");
+    public ExportTests()
+    {
+        var fontFamilies = SixLabors.Fonts.SystemFonts.Collection.Families.ToList();
+        foreach (var fontFamily in fontFamilies)
+        {
+            Console.WriteLine(fontFamily.Name);
+        }
+
+        var font = fontFamilies.First(family => family.Name.StartsWith("d", ignoreCase: true, CultureInfo.InvariantCulture));
+        LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine(font.Name);
+    }
 
     [Theory]
     [MemberData(nameof(Data))]
