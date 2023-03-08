@@ -114,9 +114,24 @@ public class ExportTests
     {
         var dataset = new[]
         {
-            new object[] { 1, "z", "foo" },
-            new object[] { new ExportLink("http://example.com/", 2), "y", "bar" },
-            new object[] { 10, "x", "baz" },
+            new object[]
+            {
+                1,
+                "z",
+                "foo",
+            },
+            new object[]
+            {
+                new ExportLink("http://example.com/", 2),
+                "y",
+                "bar",
+            },
+            new object[]
+            {
+                10,
+                "x",
+                "baz",
+            },
         };
 
         var columns = new[]
@@ -141,7 +156,12 @@ public class ExportTests
         {
             "Make last column not exportable.",
             dataset,
-            new[] { ("Num", "Numbers", true), ("Letters", "Letters", true), ("MagicWords", "Magic Words", false) },
+            new[]
+            {
+                ("Num", "Numbers", true),
+                ("Letters", "Letters", true),
+                ("MagicWords", "Magic Words", false),
+            },
             "1,z;2,y;10,x".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
             10,
@@ -184,7 +204,12 @@ public class ExportTests
         yield return new object[]
         {
             "Verify boolean formatting.",
-            new[] { new object[] { 1, true }, new object[] { 2, true }, new object[] { 3, false } },
+            new[]
+            {
+                new object[] { 1, true },
+                new object[] { 2, true },
+                new object[] { 3, false },
+            },
             new[] { ("Num", "Numbers", true), ("Bool", "Booleans", true) },
             "1,Yes;2,Yes;3,No".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
