@@ -1,4 +1,5 @@
 using ClosedXML.Excel;
+using ClosedXML.Graphics;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.Tests.Helpers;
@@ -7,10 +8,12 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Moq.AutoMock;
 using Shouldly;
+using SixLabors.Fonts;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -21,6 +24,18 @@ public class ExportTests
 {
     // ClosedXML looks at the CurrentCulture to initialize the workbook's culture.
     private static readonly CultureInfo _worksheetCulture = new("en-US", useUserOverride: false);
+
+    // ClosedXML needs a fallback font on all systems but Windows, so let's use the first installed one.
+    private static readonly string _fallbackFont = SystemFonts.Collection.Families.First().Name;
+
+    public ExportTests()
+    {
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            // On non-Windows platforms, we need to specify a fallback font manually for ClosedXML to work.
+            LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine(_fallbackFont);
+        }
+    }
 
     [Theory]
     [MemberData(nameof(Data))]
@@ -35,9 +50,7 @@ public class ExportTests
     {
         // ClosedXML looks at the CurrentCulture to initialize the workbook's culture. They also to set it like this in
         // their own unit tests. See:
-#pragma warning disable S103 // Split this long line.
-        // https://github.com/ClosedXML/ClosedXML/blob/c2d408b127844ea3d4a5f6b060c548c953b6bcf3/ClosedXML_Tests/Excel/CalcEngine/LookupTests.cs#L16-L17
-#pragma warning restore S103 // Split this long line.
+        // https://github.com/ClosedXML/ClosedXML/blob/c2d408b/ClosedXML_Tests/Excel/CalcEngine/LookupTests.cs#L16-L17
         // Since this is an async method, it runs in its own thread; so this has no effect on other tests.
         Thread.CurrentThread.CurrentCulture = _worksheetCulture;
 
@@ -89,12 +102,7 @@ public class ExportTests
         for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
         {
             Enumerable.Range(1, pattern[0].Length)
-                .Select(index => worksheet.Cell(2 + rowIndex, index).Value switch
-                {
-                    XLHyperlink hyperlink => hyperlink.Tooltip,
-                    { } => worksheet.Cell(2 + rowIndex, index).GetRichText().Text,
-                    null => "NULL",
-                })
+                .Select(index => worksheet.Cell(2 + rowIndex, index).GetFormattedString())
                 .ToArray()
                 .ShouldBe(
                     pattern[rowIndex],
@@ -106,9 +114,24 @@ public class ExportTests
     {
         var dataset = new[]
         {
-            new object[] { 1, "z", "foo" },
-            new object[] { new ExportLink("http://example.com/", 2), "y", "bar" },
-            new object[] { 10, "x", "baz" },
+            new object[]
+            {
+                1,
+                "z",
+                "foo",
+            },
+            new object[]
+            {
+                new ExportLink("http://example.com/", 2),
+                "y",
+                "bar",
+            },
+            new object[]
+            {
+                10,
+                "x",
+                "baz",
+            },
         };
 
         var columns = new[]
@@ -133,7 +156,12 @@ public class ExportTests
         {
             "Make last column not exportable.",
             dataset,
-            new[] { ("Num", "Numbers", true), ("Letters", "Letters", true), ("MagicWords", "Magic Words", false) },
+            new[]
+            {
+                ("Num", "Numbers", true),
+                ("Letters", "Letters", true),
+                ("MagicWords", "Magic Words", false),
+            },
             "1,z;2,y;10,x".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
             10,
@@ -176,7 +204,12 @@ public class ExportTests
         yield return new object[]
         {
             "Verify boolean formatting.",
-            new[] { new object[] { 1, true }, new object[] { 2, true }, new object[] { 3, false } },
+            new[]
+            {
+                new object[] { 1, true },
+                new object[] { 2, true },
+                new object[] { 3, false },
+            },
             new[] { ("Num", "Numbers", true), ("Bool", "Booleans", true) },
             "1,Yes;2,Yes;3,No".Split(';').Select(row => row.Split(',')).ToArray(),
             0,

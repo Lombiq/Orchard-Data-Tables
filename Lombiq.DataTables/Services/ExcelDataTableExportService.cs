@@ -135,7 +135,7 @@ public class ExcelDataTableExportService : IDataTableExportService
                 JTokenType.Date => value.ToObject<DateTime>(),
                 JTokenType.Float => value.ToObject<double>(),
                 JTokenType.Integer => value.ToObject<int>(),
-                JTokenType.Null => null,
+                JTokenType.Null => Blank.Value,
                 JTokenType.TimeSpan => value.ToObject<TimeSpan>(),
                 JTokenType.Array => string.Join(", ", ((JArray)value).Select(item => item.ToString())),
                 _ => value.ToString(),
