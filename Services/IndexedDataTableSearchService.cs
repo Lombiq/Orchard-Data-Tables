@@ -1,4 +1,5 @@
-﻿using Orchard.ContentManagement;
+﻿using Orchard;
+using Orchard.ContentManagement;
 using Orchard.ContentManagement.Records;
 using Orchard.Data;
 using Orchard.Indexing;
@@ -6,30 +7,33 @@ using Orchard.Projections.Models;
 using Orchard.Projections.Services;
 using Orchard.Search.Services;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace Lombiq.DataTables.Services
 {
-    public class DataTableSearchingProvider : IIndexedDataTableDataProvider
+    public class IndexedDataTableSearchService : IIndexedDataTableSearchService
     {
         private readonly IIndexManager _indexManager;
+        private readonly IWorkContextAccessor _workContextAccessor;
         private readonly ISearchService _searchService;
         private readonly IProjectionManager _projectionManager;
         private readonly ITransactionManager _transactionManager;
         private readonly IRepository<QueryPartRecord> _queryPartRecordRepository;
-        public string IndexName => string.Empty;
 
-        public DataTableSearchingProvider(
+        public IndexedDataTableSearchService(
             IIndexManager indexManager,
             ISearchService searchService,
             IProjectionManager projectionManager,
             ITransactionManager transactionManager,
+            IWorkContextAccessor workContextAccessor,
             IRepository<QueryPartRecord> queryPartRecordRepository)
         {
             _indexManager = indexManager;
             _searchService = searchService;
             _projectionManager = projectionManager;
             _transactionManager = transactionManager;
+            _workContextAccessor = workContextAccessor;
             _queryPartRecordRepository = queryPartRecordRepository;
         }
 
@@ -90,11 +94,14 @@ namespace Lombiq.DataTables.Services
                 filter => filter.In("Id", contentPartRecordIds.ToArray())).ListIds();
         }
 
-        public ISearchBuilder GetSearchBuilder(string indexName)
-        {
-            return _indexManager.HasIndexProvider()
+        public ISearchBuilder GetSearchBuilder(string indexName) =>
+            _indexManager.HasIndexProvider()
                 ? _indexManager.GetSearchIndexProvider().CreateSearchBuilder(indexName)
                 : new NullSearchBuilder();
+
+        public IEnumerable<ISearchHit> GetSearchResults(ISearchBuilder searchBuilder, NameValueCollection searchCollection)
+        {
+            return null;
         }
 
         public IEnumerable<ISearchHit> GetSearchResults(ISearchBuilder searchBuilder, int skip, int count, string remoteTitle, string thoughtLeaderManager)

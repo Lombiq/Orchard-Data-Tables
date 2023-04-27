@@ -143,11 +143,14 @@
     <Compile Include="Services\ContentPickerLayoutShapeTableProvider.cs" />
     <Compile Include="Services\ContentTypeDataTableSortingProvider.cs" />
     <Compile Include="Services\DataTableDataProviderAccessor.cs" />
-    <Compile Include="Services\DataTableSearchingProvider.cs" />
+    <Compile Include="Services\IIndexedDataTableDataProvider.cs" />
+    <Compile Include="Services\IIndexedDataTableDataProviderAccessor.cs" />
+    <Compile Include="Services\IndexedDataTableDataProviderAccessor.cs" />
+    <Compile Include="Services\IndexedDataTableSearchService.cs" />
     <Compile Include="Services\DataTableSortingProviderAccessor.cs" />
     <Compile Include="Services\IDataTableDataProvider.cs" />
     <Compile Include="Services\IDataTableDataProviderAccessor.cs" />
-    <Compile Include="Services\IIndexedDataTableDataProvider.cs" />
+    <Compile Include="Services\IIndexedDataTableSearchService.cs" />
     <Compile Include="Services\IDataTableSortingProvider.cs" />
     <Compile Include="Services\IDataTableSortingProviderAccessor.cs" />
     <Compile Include="Services\ContentPartRecordPropertyDataTableSortingProvider.cs" />
