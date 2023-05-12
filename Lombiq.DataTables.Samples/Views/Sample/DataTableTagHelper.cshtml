@@ -1,4 +1,3 @@
-@using System.Globalization
 @model IEnumerable<Lombiq.DataTables.Samples.Models.EmployeePart>
 @* This is a static data table. It simply adds the script and stylesheet resources to the page, otherwise it behaves
     like a zero configuration DataTable (https://datatables.net/examples/basic_init/zero_configuration.html). But you
@@ -7,13 +6,6 @@
     quotes so we have to use literals. For example here we change the default sort to show the oldest employees first *@
 
 @* Always make sure Views/_ViewImports.cshtml has "@addTagHelper *, Lombiq.DataTables" for the tag helper. *@
-
-@{
-    // Forces the CultureInfo to use the canonical date format. This prevents user or system level customizations. We
-    // need this for the UI tests to work in a portable way. This is a temporary workaround,  and the problem has been
-    // reported and a general solution requested here: https://github.com/OrchardCMS/OrchardCore/issues/11228
-    var cultureInfo = new CultureInfo(CultureInfo.CurrentCulture.Name, useUserOverride: false);
-}
 
 <datatable data-options='{ "order": [[ 3, "desc" ]] }'>
     <thead>
@@ -39,7 +31,7 @@
                 <td data-order="@(employee.StartDate.Value?.Ticks ?? 0)">
                     @if (employee.StartDate.Value is { } startDate)
                     {
-                        @startDate.ToString("d", cultureInfo)
+                        @startDate.ToString("d")
                     }
                 </td>
                 <td data-order="@(employee.Salary.Value ?? 0)">
