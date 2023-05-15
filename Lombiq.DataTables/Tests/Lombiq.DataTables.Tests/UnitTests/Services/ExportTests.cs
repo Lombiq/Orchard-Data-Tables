@@ -71,51 +71,16 @@ public class ExportTests
         }
         while (columnIndex < columns.Length && columns[columnIndex - 1].Name != "Time");
 
-        var fontFamilies = SystemFonts.Collection.Families.ToArray();
-        var fontIndex = 0;
         Stream stream = null;
 
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            // Sometimes a font is available however, it's corrupted or missing a table (for example, this can happen on
-            // GitHub-hosted runners). We can't check directly if a font is missing a table or corrupted, but we can try
-            // other fonts if this happens.
-            var fontFamiliesLength = fontFamilies.Length;
-
-            while (fontIndex < 3 && fontIndex < fontFamiliesLength)
-            {
-                var fallbackFont = fontFamilies[fontIndex].Name;
-
-                // On non-Windows platforms, we need to specify a fallback font manually for ClosedXML to work.
-                LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine(fallbackFont);
-
-                try
-                {
-                    stream = await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat);
-                }
-                catch (MissingFontTableException missingFontTableException)
-                {
-                    DebugHelper.WriteLineTimestamped($"Attempt {(fontIndex + 1).ToTechnicalString()} of exporting the" +
-                        $" data table with the font {fallbackFont} failed with the MissingFontTableException: " +
-                        $"{missingFontTableException.Message}.");
-
-                    if (fontIndex + 1 < 3 && fontIndex + 1 < fontFamiliesLength)
-                    {
-                        DebugHelper.WriteLineTimestamped("Retrying with a different font...");
-                    }
-                    else
-                    {
-                        throw missingFontTableException;
-                    }
-                }
-
-                stream.Close();
-                fontIndex++;
-            }
+            // On non-Windows platforms, we need to specify a fallback font manually for ClosedXML to work.
+            stream = await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat);
         }
         else
         {
-            stream = await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat);
+            stream = await TryExportWithFallbackFontsAsync(service, provider, request, customNumberFormat);
         }
 
         using var workbook = new XLWorkbook(stream);
@@ -280,5 +245,52 @@ public class ExportTests
             10,
             0,
         };
+    }
+
+    // Sometimes a font is available however, it's corrupted or missing a table (for example, this can happen on
+    // GitHub-hosted runners). We can't check directly if a font is missing a table or corrupted, but we can try
+    // other fonts if this happens.
+    private static async Task<Stream> TryExportWithFallbackFontsAsync(
+        ExcelDataTableExportService service,
+        IDataTableDataProvider provider,
+        DataTableDataRequest request,
+        IDictionary<int, string> customNumberFormat)
+    {
+        var fontFamilies = SystemFonts.Collection.Families.ToArray();
+
+        var fontFamiliesLength = fontFamilies.Length;
+        var maxAttempts = Math.Min(3, fontFamiliesLength);
+        var fontIndex = 0;
+
+        while (fontIndex < maxAttempts)
+        {
+            var fallbackFont = fontFamilies[fontIndex].Name;
+
+            LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine(fallbackFont);
+
+            try
+            {
+                return await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat);
+            }
+            catch (MissingFontTableException missingFontTableException)
+            {
+                DebugHelper.WriteLineTimestamped($"Attempt {(fontIndex + 1).ToTechnicalString()} of exporting the" +
+                    $" data table with the font {fallbackFont} failed with the MissingFontTableException: " +
+                    $"{missingFontTableException.Message}.");
+
+                if (fontIndex + 1 < maxAttempts)
+                {
+                    DebugHelper.WriteLineTimestamped("Retrying with a different font...");
+                }
+                else
+                {
+                    throw missingFontTableException;
+                }
+            }
+
+            fontIndex++;
+        }
+
+        return null;
     }
 }
