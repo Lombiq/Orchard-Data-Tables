@@ -26,7 +26,7 @@ public class ExportTests
     private static readonly CultureInfo _worksheetCulture = new("en-US", useUserOverride: false);
 
     // ClosedXML needs a fallback font on all systems but Windows, so let's use the first installed one.
-    private static readonly string _fallbackFont = SystemFonts.Collection.Families.ToArray()[3].Name;
+    private static readonly string _fallbackFont = SystemFonts.Collection.Families.ToArray()[1].Name;
 
     public ExportTests()
     {
