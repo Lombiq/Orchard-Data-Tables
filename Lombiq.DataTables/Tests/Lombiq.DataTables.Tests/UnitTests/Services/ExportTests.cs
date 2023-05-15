@@ -24,7 +24,6 @@ public class ExportTests
 {
     private static readonly FontProvider _fontProvider = new();
 
-
     // ClosedXML looks at the CurrentCulture to initialize the workbook's culture.
     private static readonly CultureInfo _worksheetCulture = new("en-US", useUserOverride: false);
 
