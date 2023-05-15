@@ -4,6 +4,7 @@ using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.Tests.Helpers;
 using Lombiq.Tests.Helpers;
+using Lombiq.Tests.UI.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Moq.AutoMock;
@@ -12,6 +13,7 @@ using SixLabors.Fonts;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -24,23 +26,6 @@ public class ExportTests
 {
     // ClosedXML looks at the CurrentCulture to initialize the workbook's culture.
     private static readonly CultureInfo _worksheetCulture = new("en-US", useUserOverride: false);
-
-    // ClosedXML needs a fallback font on all systems but Windows, so let's use the first installed one.
-    private static readonly string _fallbackFont = SystemFonts.Collection.Families.ToArray()[1].Name;
-
-    public ExportTests()
-    {
-        foreach (var font in SystemFonts.Collection.Families)
-        {
-            Console.WriteLine(font.Name);
-        }
-
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            // On non-Windows platforms, we need to specify a fallback font manually for ClosedXML to work.
-            LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine(_fallbackFont);
-        }
-    }
 
     [Theory]
     [MemberData(nameof(Data))]
@@ -86,7 +71,52 @@ public class ExportTests
         }
         while (columnIndex < columns.Length && columns[columnIndex - 1].Name != "Time");
 
-        var stream = await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat);
+        var fontFamilies = SystemFonts.Collection.Families.ToArray();
+        var fontIndex = 0;
+        Stream stream = null;
+
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            // Sometimes a font is available however, it's corrupted or missing a table (for example, this can happen on
+            // GitHub-hosted runners). We can't check directly if a font is missing a table or corrupted, but we can try
+            // other fonts if this happens.
+            var fontFamiliesLength = fontFamilies.Length;
+
+            while (fontIndex < 3 && fontIndex < fontFamiliesLength)
+            {
+                var fallbackFont = fontFamilies[fontIndex].Name;
+
+                // On non-Windows platforms, we need to specify a fallback font manually for ClosedXML to work.
+                LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine(fallbackFont);
+
+                try
+                {
+                    stream = await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat);
+                }
+                catch (MissingFontTableException missingFontTableException)
+                {
+                    DebugHelper.WriteLineTimestamped($"Attempt {(fontIndex + 1).ToTechnicalString()} of exporting the" +
+                        $" data table with the font {fallbackFont} failed with the MissingFontTableException: " +
+                        $"{missingFontTableException.Message}.");
+
+                    if (fontIndex + 1 < 3 && fontIndex + 1 < fontFamiliesLength)
+                    {
+                        DebugHelper.WriteLineTimestamped("Retrying with a different font...");
+                    }
+                    else
+                    {
+                        throw missingFontTableException;
+                    }
+                }
+
+                stream.Close();
+                fontIndex++;
+            }
+        }
+        else
+        {
+            stream = await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat);
+        }
 
         using var workbook = new XLWorkbook(stream);
         var worksheet = workbook.Worksheets.Worksheet(1);
