@@ -30,6 +30,11 @@ public class ExportTests
 
     public ExportTests()
     {
+        foreach (var font in SystemFonts.Collection.Families)
+        {
+            Console.WriteLine(font.Name);
+        }
+
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             // On non-Windows platforms, we need to specify a fallback font manually for ClosedXML to work.
