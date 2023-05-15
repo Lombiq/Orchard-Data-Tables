@@ -8,7 +8,6 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Moq.AutoMock;
 using Shouldly;
-using SixLabors.Fonts;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -22,11 +21,11 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services;
 
 public class ExportTests
 {
+    // ClosedXML needs a fallback font on all systems but Windows, so let's use the first installed one.
+    private const string _fallbackFont = "this is just debugging";
+
     // ClosedXML looks at the CurrentCulture to initialize the workbook's culture.
     private static readonly CultureInfo _worksheetCulture = new("en-US", useUserOverride: false);
-
-    // ClosedXML needs a fallback font on all systems but Windows, so let's use the first installed one.
-    private static readonly string _fallbackFont = "this is just debugging";
 
     public ExportTests()
     {
