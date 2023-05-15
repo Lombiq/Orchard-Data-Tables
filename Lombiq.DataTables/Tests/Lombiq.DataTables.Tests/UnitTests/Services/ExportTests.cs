@@ -258,8 +258,7 @@ public class ExportTests
     {
         var fontFamilies = SystemFonts.Collection.Families.ToArray();
 
-        var fontFamiliesLength = fontFamilies.Length;
-        var maxAttempts = Math.Min(3, fontFamiliesLength);
+        var maxAttempts = Math.Min(3, fontFamilies.Length);
         var fontIndex = 0;
 
         while (fontIndex < maxAttempts)
