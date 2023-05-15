@@ -1,6 +1,5 @@
 using ClosedXML.Excel;
 using ClosedXML.Graphics;
-using iText.Layout.Font;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.Tests.Helpers;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Moq.AutoMock;
 using Shouldly;
+using SixLabors.Fonts;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -22,21 +22,18 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services;
 
 public class ExportTests
 {
-    private static readonly FontProvider _fontProvider = new();
-
     // ClosedXML looks at the CurrentCulture to initialize the workbook's culture.
     private static readonly CultureInfo _worksheetCulture = new("en-US", useUserOverride: false);
+
+    // ClosedXML needs a fallback font on all systems but Windows, so let's use the first installed one.
+    private static readonly string _fallbackFont = SystemFonts.Collection.Families.ToArray()[3].Name;
 
     public ExportTests()
     {
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            _fontProvider.AddSystemFonts();
-            // ClosedXML needs a fallback font on all systems but Windows, so let's use the first installed one.
-            var fallbackFont = _fontProvider.GetFontSet().GetFonts().First().GetDescriptor().GetFontName();
-
             // On non-Windows platforms, we need to specify a fallback font manually for ClosedXML to work.
-            LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine(fallbackFont);
+            LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine(_fallbackFont);
         }
     }
 
