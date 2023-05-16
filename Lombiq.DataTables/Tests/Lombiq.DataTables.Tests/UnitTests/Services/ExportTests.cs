@@ -73,15 +73,10 @@ public class ExportTests
 
         Stream stream = null;
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
+        stream = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
             // On non-Windows platforms, we need to specify a fallback font manually for ClosedXML to work.
-            stream = await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat);
-        }
-        else
-        {
-            stream = await TryExportWithFallbackFontsAsync(service, provider, request, customNumberFormat);
-        }
+            ? await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat)
+            : await TryExportWithFallbackFontsAsync(service, provider, request, customNumberFormat);
 
         using var workbook = new XLWorkbook(stream);
         var worksheet = workbook.Worksheets.Worksheet(1);
