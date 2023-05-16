@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\test\Lombiq.UITestingToolbox\Lombiq.Tests.UI\Lombiq.Tests.UI.csproj" />
     <ProjectReference Include="..\..\Lombiq.DataTables.csproj" />
     <ProjectReference Include="..\..\..\..\..\..\test\Lombiq.Tests\Lombiq.Tests.csproj" />
   </ItemGroup>

@@ -4,7 +4,6 @@ using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.Tests.Helpers;
 using Lombiq.Tests.Helpers;
-using Lombiq.Tests.UI.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Moq.AutoMock;
