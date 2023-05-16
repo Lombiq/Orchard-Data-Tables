@@ -268,9 +268,9 @@ public class ExportTests
             }
             catch (MissingFontTableException missingFontTableException)
             {
-                DebugHelper.WriteLineTimestamped($"Attempt {(fontIndex + 1).ToTechnicalString()} of exporting the" +
-                    $" data table with the font {fallbackFont} failed with the MissingFontTableException: " +
-                    $"{missingFontTableException.Message}.");
+                DebugHelper.WriteLineTimestamped(
+                    $"Attempt {(fontIndex + 1).ToTechnicalString()} of exporting the data table with the font " +
+                    $"{fallbackFont} failed with the MissingFontTableException: {missingFontTableException.Message}.");
 
                 if (fontIndex + 1 < maxAttempts)
                 {
