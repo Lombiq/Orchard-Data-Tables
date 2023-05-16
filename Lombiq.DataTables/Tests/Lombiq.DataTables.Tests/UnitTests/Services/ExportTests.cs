@@ -253,11 +253,10 @@ public class ExportTests
         var fontFamilies = SystemFonts.Collection.Families.ToArray();
 
         var maxAttempts = Math.Min(3, fontFamilies.Length);
-        var fontIndex = 0;
 
-        while (fontIndex < maxAttempts)
+        for (int i = 0; i < maxAttempts; i++)
         {
-            var fallbackFont = fontFamilies[fontIndex].Name;
+            var fallbackFont = fontFamilies[i].Name;
 
             LoadOptions.DefaultGraphicEngine = new DefaultGraphicEngine(fallbackFont);
 
@@ -268,20 +267,18 @@ public class ExportTests
             catch (MissingFontTableException missingFontTableException)
             {
                 DebugHelper.WriteLineTimestamped(
-                    $"Attempt {(fontIndex + 1).ToTechnicalString()} of exporting the data table with the font " +
+                    $"Attempt {(i + 1).ToTechnicalString()} of exporting the data table with the font " +
                     $"{fallbackFont} failed with the MissingFontTableException: {missingFontTableException.Message}.");
 
-                if (fontIndex + 1 < maxAttempts)
+                if (i + 1 < maxAttempts)
                 {
                     DebugHelper.WriteLineTimestamped("Retrying with a different font...");
                 }
                 else
                 {
-                    throw missingFontTableException;
+                    throw;
                 }
             }
-
-            fontIndex++;
         }
 
         return null;
