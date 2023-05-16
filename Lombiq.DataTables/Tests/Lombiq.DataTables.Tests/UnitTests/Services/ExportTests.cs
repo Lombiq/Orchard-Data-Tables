@@ -242,7 +242,7 @@ public class ExportTests
         };
     }
 
-    // Sometimes a font is available however, it's corrupted or missing a table (for example, this can happen on
+    // Sometimes a font is available, however, it's corrupted or missing a table (for example, this can happen on
     // GitHub-hosted runners). We can't check directly if a font is missing a table or corrupted, but we can try
     // other fonts if this happens.
     private static async Task<Stream> TryExportWithFallbackFontsAsync(
