@@ -16,7 +16,7 @@ public class DataTableRow
 
     public string this[string name]
     {
-        get => ValuesDictionary.ContainsKey(name) ? ValuesDictionary[name].Value<string>() : null;
+        get => ValuesDictionary.TryGetValue(name, out var value) ? value.Value<string>() : null;
         set => ValuesDictionary[name] = value;
     }
 
