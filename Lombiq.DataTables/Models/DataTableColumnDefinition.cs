@@ -16,7 +16,7 @@ public class DataTableColumnDefinition
 
     public string this[string key]
     {
-        get => AdditionalSettings.TryGetValue(key, out var settings) ? settings?.ToString() : null;
+        get => AdditionalSettings.TryGetValue(key, out var settings) ? settings.ToString() : null;
         set => AdditionalSettings[key] = value;
     }
 
