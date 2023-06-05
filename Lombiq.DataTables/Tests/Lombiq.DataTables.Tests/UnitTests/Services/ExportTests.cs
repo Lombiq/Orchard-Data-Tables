@@ -3,6 +3,7 @@ using ClosedXML.Graphics;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.Tests.Helpers;
+using Lombiq.HelpfulLibraries.Common.Utilities;
 using Lombiq.Tests.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -100,7 +101,7 @@ public class ExportTests
                 .ToArray()
                 .ShouldBe(
                     pattern[rowIndex],
-                    string.Create(CultureInfo.InvariantCulture, $"Row {rowIndex + 1} didn't match expectation."));
+                    StringHelper.CreateInvariant($"Row {rowIndex + 1} didn't match expectation."));
         }
     }
 
