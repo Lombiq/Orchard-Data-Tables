@@ -127,7 +127,7 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
                 .Where(word => !string.IsNullOrWhiteSpace(word))
                 .ToList();
             filteredRows = filteredRows.Where(row =>
-                words.All(word =>
+                words.TrueForAll(word =>
                     columns.Any(filter =>
                         filter.Searchable &&
                         row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
