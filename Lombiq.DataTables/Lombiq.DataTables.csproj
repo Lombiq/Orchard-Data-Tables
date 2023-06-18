@@ -39,11 +39,11 @@
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.101.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.2" />
-    <PackageReference Include="OrchardCore.Contents" Version="1.5.0" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="1.5.0" />
-    <PackageReference Include="OrchardCore.Search.Lucene" Version="1.5.0" />
+    <PackageReference Include="OrchardCore.Contents" Version="1.6.0" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="1.6.0" />
+    <PackageReference Include="OrchardCore.Search.Lucene" Version="1.6.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
@@ -53,9 +53,9 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
-    <PackageReference Include="Lombiq.HelpfulLibraries.OrchardCore" Version="5.2.0" />
-    <PackageReference Include="Lombiq.HelpfulLibraries.LinqToDb" Version="5.2.0" />
-    <PackageReference Include="Lombiq.NodeJs.Extensions" Version="1.2.3" />
+    <PackageReference Include="Lombiq.HelpfulLibraries.OrchardCore" Version="6.0.0" />
+    <PackageReference Include="Lombiq.HelpfulLibraries.LinqToDb" Version="6.0.0" />
+    <PackageReference Include="Lombiq.NodeJs.Extensions" Version="1.2.4" />
   </ItemGroup>
 
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.targets" />
