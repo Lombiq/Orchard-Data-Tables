@@ -18,7 +18,7 @@ public static class TestCaseUITestContextExtensions
         "Junior Technical Author",
         "San Francisco",
         "66",
-        new DateTime(2009, 1, 12, 12, 0, 0),
+        new DateTime(2009, 1, 12, 12, 0, 0, DateTimeKind.Utc),
         "$86,000",
     };
 
@@ -28,7 +28,7 @@ public static class TestCaseUITestContextExtensions
         "Accountant",
         "Tokyo",
         "33",
-        new DateTime(2008, 11, 28, 12, 0, 0),
+        new DateTime(2008, 11, 28, 12, 0, 0, DateTimeKind.Utc),
         "$162,700",
     };
 
