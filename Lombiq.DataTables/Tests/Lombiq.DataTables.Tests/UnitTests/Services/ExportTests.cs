@@ -212,9 +212,9 @@ public class ExportTests
             0,
         };
 
-        var date1 = new DateTime(2020, 11, 26, 23, 42, 01);
-        var date2 = new DateTime(2020, 11, 26, 13, 42, 01);
-        var date3 = new DateTime(2020, 11, 26, 1, 42, 01);
+        var date1 = new DateTime(2020, 11, 26, 23, 42, 01, DateTimeKind.Utc);
+        var date2 = new DateTime(2020, 11, 26, 13, 42, 01, DateTimeKind.Utc);
+        var date3 = new DateTime(2020, 11, 26, 1, 42, 01, DateTimeKind.Utc);
 
         // The date value should be the same, only the formatting changes.
         yield return new object[]
