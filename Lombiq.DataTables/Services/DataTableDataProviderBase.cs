@@ -60,7 +60,7 @@ public abstract class DataTableDataProviderBase : IDataTableDataProvider
         if (_hca?.HttpContext != null)
         {
             var returnUrl = _linkGenerator.GetPathByAction(
-                _hca?.HttpContext,
+                _hca.HttpContext,
                 nameof(TableController.Get),
                 typeof(TableController).ControllerName(),
                 new { providerName = GetType().Name });
