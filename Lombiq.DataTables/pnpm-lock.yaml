@@ -12,8 +12,8 @@ dependencies:
     specifier: 1.7.1
     version: 1.7.1
   urijs:
-    specifier: 1.19.7
-    version: 1.19.7
+    specifier: 1.19.11
+    version: 1.19.11
 
 packages:
 
@@ -55,6 +55,6 @@ packages:
     resolution: {integrity: sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw==}
     dev: false
 
-  /urijs@1.19.7:
-    resolution: {integrity: sha512-Id+IKjdU0Hx+7Zx717jwLPsPeUqz7rAtuVBRLLs+qn+J2nf9NGITWVCxcijgYxBqe83C7sqsQPs6H1pyz3x9gA==}
+  /urijs@1.19.11:
+    resolution: {integrity: sha512-HXgFDgDommxn5/bIv0cnQZsPhHDA90NPHD6+c/v21U5+Sx5hoP8+dP9IZXBU1gIfvdRfhG8cel9QNPeionfcCQ==}
     dev: false
