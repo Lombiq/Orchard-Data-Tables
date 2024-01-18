@@ -2,6 +2,7 @@ using Lombiq.DataTables.Models;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
+using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Migrations;
 
@@ -12,9 +13,9 @@ public class ColumnsDefinitionMigrations : DataMigration
     public ColumnsDefinitionMigrations(IContentDefinitionManager contentDefinitionManager) =>
         _contentDefinitionManager = contentDefinitionManager;
 
-    public int Create()
+    public async Task<int> CreateAsync()
     {
-        _contentDefinitionManager.AlterTypeDefinition("ColumnsDefinition", type => type
+        await _contentDefinitionManager.AlterTypeDefinitionAsync("ColumnsDefinition", type => type
             .Creatable()
             .Securable()
             .WithPart(nameof(DataTableColumnsDefinitionPart))
