@@ -93,12 +93,15 @@ public class LiquidTests
 
     public static IEnumerable<object[]> Data()
     {
+#pragma warning disable IDE0300 // Simplify collection initialization
+        // This use case would prevent the 3rd object to be converted into a simplified collection.
         var dataset = new[]
         {
             new object[] { "now", "Foo Bar Baz" },
             new object[] { "2020-12-31", "The quick brown fox" },
             new object[] { "1970-01-01", "Lorem Ipsum Dolor Sit Amet" }, // #spell-check-ignore-line
         };
+#pragma warning restore IDE0300 // Simplify collection initialization
         var today = DateTime.Today.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
 
         yield return new object[]

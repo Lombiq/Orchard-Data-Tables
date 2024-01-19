@@ -109,18 +109,16 @@ public class ExportTests
     {
         var dataset = new[]
         {
-            new object[]
-            {
+            [
                 1,
                 "z",
                 "foo",
-            },
-            new object[]
-            {
+            ],
+            [
                 new ExportLink("http://example.com/", 2),
                 "y",
                 "bar",
-            },
+            ],
             new object[]
             {
                 10,
@@ -201,8 +199,8 @@ public class ExportTests
             "Verify boolean formatting.",
             new[]
             {
-                new object[] { 1, true },
-                new object[] { 2, true },
+                [1, true],
+                [2, true],
                 new object[] { 3, false },
             },
             new[] { ("Num", "Numbers", true), ("Bool", "Booleans", true) },
@@ -217,6 +215,8 @@ public class ExportTests
         var date3 = new DateTime(2020, 11, 26, 1, 42, 01, DateTimeKind.Utc);
 
         // The date value should be the same, only the formatting changes.
+#pragma warning disable IDE0300 // Simplify collection initialization
+        // This use case would prevent the 3rd object to be converted into a simplified collection.
         yield return new object[]
         {
             "Verify custom number formatting.",
@@ -240,6 +240,7 @@ public class ExportTests
             10,
             0,
         };
+#pragma warning restore IDE0300 // Simplify collection initialization
     }
 
     // Sometimes a font is available, however, it's corrupted or missing a table (for example, this can happen on
