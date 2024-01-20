@@ -6,17 +6,13 @@ using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services;
 
-public class IndexGeneratorDeferredTask : IDeferredTask
+public class IndexGeneratorDeferredTask(IEnumerable<IManualDataTableIndexGenerator> manualDataTableIndexGenerators) : IDeferredTask
 {
-    private readonly IEnumerable<IManualDataTableIndexGenerator> _manualDataTableIndexGenerators;
     public bool IsScheduled { get; set; }
-
-    public IndexGeneratorDeferredTask(IEnumerable<IManualDataTableIndexGenerator> manualDataTableIndexGenerators) =>
-        _manualDataTableIndexGenerators = manualDataTableIndexGenerators;
 
     public Task PreProcessAsync(HttpContext context)
     {
-        foreach (var generator in _manualDataTableIndexGenerators)
+        foreach (var generator in manualDataTableIndexGenerators)
         {
             generator.IsInMiddlewarePipeline = true;
         }
@@ -25,5 +21,5 @@ public class IndexGeneratorDeferredTask : IDeferredTask
     }
 
     public Task PostProcessAsync(HttpContext context) =>
-        _manualDataTableIndexGenerators.GenerateOrderedIndicesAsync();
+        manualDataTableIndexGenerators.GenerateOrderedIndicesAsync();
 }

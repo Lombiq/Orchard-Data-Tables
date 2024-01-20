@@ -10,15 +10,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Lombiq.DataTables.Samples.Navigation;
 
-public class DataTablesNavigationProvider : MainMenuNavigationProviderBase
+public class DataTablesNavigationProvider(
+    IHttpContextAccessor hca,
+    IStringLocalizer<DataTablesNavigationProvider> stringLocalizer) : MainMenuNavigationProviderBase(hca, stringLocalizer)
 {
-    public DataTablesNavigationProvider(
-        IHttpContextAccessor hca,
-        IStringLocalizer<DataTablesNavigationProvider> stringLocalizer)
-        : base(hca, stringLocalizer)
-    {
-    }
-
     protected override void Build(NavigationBuilder builder) =>
         builder
             .Add(T["Data Tables"], builder => builder

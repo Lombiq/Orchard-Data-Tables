@@ -20,11 +20,13 @@ namespace Lombiq.DataTables.Samples.Services;
 /// This is a data provider that can return a page of data from any available source. Also see <see
 /// cref="DeletedContentItemDataTableDataProvider"/> for a practical example that uses a LinqToDB query.
 /// </summary>
-public class SampleJsonResultDataTableDataProvider : JsonResultDataTableDataProvider
+public class SampleJsonResultDataTableDataProvider(
+    ISession session,
+    IDataTableDataProviderServices services,
+    IStringLocalizer<ActionsDescriptor> actionsStringLocalizer,
+    IStringLocalizer<SampleJsonResultDataTableDataProvider> implementationStringLocalizer) : JsonResultDataTableDataProvider(services, implementationStringLocalizer)
 {
-    private readonly ISession _session;
-    private readonly IStringLocalizer<ActionsDescriptor> _actionsStringLocalizer;
-    private readonly IStringLocalizer T;
+    private readonly IStringLocalizer T = implementationStringLocalizer;
 
     // This value is displayed in the Excel export and the /Admin/DataTable/{providerName} page.
     public override LocalizedString Description => T["JSON-based Sample Data Provider"];
@@ -32,18 +34,6 @@ public class SampleJsonResultDataTableDataProvider : JsonResultDataTableDataProv
     // You can provide required permissions, the viewer will need at least one to display results on the page. If it's
     // empty then no permission check is required.
     public override IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
-
-    public SampleJsonResultDataTableDataProvider(
-        ISession session,
-        IDataTableDataProviderServices services,
-        IStringLocalizer<ActionsDescriptor> actionsStringLocalizer,
-        IStringLocalizer<SampleJsonResultDataTableDataProvider> implementationStringLocalizer)
-        : base(services, implementationStringLocalizer)
-    {
-        _session = session;
-        _actionsStringLocalizer = actionsStringLocalizer;
-        T = implementationStringLocalizer;
-    }
 
     // You can inject shapes before or after the table using this and GetShapesAfterTableAsync(). It's used by the
     // /Admin/DataTable/{providerName} page.
@@ -55,7 +45,7 @@ public class SampleJsonResultDataTableDataProvider : JsonResultDataTableDataProv
     // You must override this method and return a page of data based on the request.
     protected override async Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request)
     {
-        var query = _session.QueryContentItem(PublicationStatus.Published)
+        var query = session.QueryContentItem(PublicationStatus.Published)
             .Where(index => index.ContentType == Employee);
         var totalCount = await query.CountAsync();
 
@@ -100,7 +90,7 @@ public class SampleJsonResultDataTableDataProvider : JsonResultDataTableDataProv
                     canDelete: true,
                     _hca,
                     _linkGenerator,
-                    _actionsStringLocalizer),
+                    actionsStringLocalizer),
             });
 
         // If you didn't filter or paginate (sufficient for known very small datasets) you can just pass the

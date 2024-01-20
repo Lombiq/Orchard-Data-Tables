@@ -22,5 +22,5 @@ public class DataTableDataRequest
     public IReadOnlyCollection<DataTableColumn> GetColumnSearches() =>
         ColumnFilters?
             .Where(filter => !string.IsNullOrWhiteSpace(filter.Search?.Value))
-            .ToList() ?? new List<DataTableColumn>();
+            .ToList() ?? [];
 }

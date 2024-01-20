@@ -8,32 +8,23 @@ using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Controllers.Api;
 
-public class ChildRowsController : Controller
+public class ChildRowsController(
+    IEnumerable<IDataTableDataProvider> dataTableDataProviderAccessor,
+    IAuthorizationService authorizationService,
+    IStringLocalizer<ChildRowsController> stringLocalizer) : Controller
 {
-    private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviderAccessor;
-    private readonly IAuthorizationService _authorizationService;
-    private readonly IStringLocalizer T;
-
-    public ChildRowsController(
-        IEnumerable<IDataTableDataProvider> dataTableDataProviderAccessor,
-        IAuthorizationService authorizationService,
-        IStringLocalizer<ChildRowsController> stringLocalizer)
-    {
-        _dataTableDataProviderAccessor = dataTableDataProviderAccessor;
-        _authorizationService = authorizationService;
-        T = stringLocalizer;
-    }
+    private readonly IStringLocalizer T = stringLocalizer;
 
     public async Task<ActionResult<DataTableChildRowResponse>> Get(int contentItemId, string dataProvider)
     {
-        var provider = _dataTableDataProviderAccessor.GetDataProvider(dataProvider);
+        var provider = dataTableDataProviderAccessor.GetDataProvider(dataProvider);
         if (provider == null)
         {
             var errorText = T["The given data provider name is invalid."].Value;
             return BadRequest(DataTableChildRowResponse.ErrorResult(errorText));
         }
 
-        return !await provider.AuthorizeAsync(_authorizationService, User)
+        return !await provider.AuthorizeAsync(authorizationService, User)
             ? DataTableChildRowResponse.ErrorResult(T["Unauthorized!"])
             : (ActionResult<DataTableChildRowResponse>)await provider.GetChildRowAsync(contentItemId);
     }

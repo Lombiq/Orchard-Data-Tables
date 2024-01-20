@@ -21,19 +21,12 @@ namespace Lombiq.DataTables.Services;
 /// <summary>
 /// This is a data provider which returns the list of deleted items with some <see cref="ContentItem"/> information.
 /// </summary>
-public class DeletedContentItemDataTableDataProvider : JsonResultDataTableDataProvider
+public class DeletedContentItemDataTableDataProvider(
+    IOrchardServices<DeletedContentItemDataTableDataProvider> orchardServices,
+    IDataTableDataProviderServices services) : JsonResultDataTableDataProvider(services, orchardServices.StringLocalizer.Value)
 {
-    private readonly ISession _session;
-    private readonly IStringLocalizer T;
-
-    public DeletedContentItemDataTableDataProvider(
-        IOrchardServices<DeletedContentItemDataTableDataProvider> orchardServices,
-        IDataTableDataProviderServices services)
-        : base(services, orchardServices.StringLocalizer.Value)
-    {
-        _session = orchardServices.Session.Value;
-        T = orchardServices.StringLocalizer.Value;
-    }
+    private readonly ISession _session = orchardServices.Session.Value;
+    private readonly IStringLocalizer T = orchardServices.StringLocalizer.Value;
 
     public override LocalizedString Description => T["Deleted Content Items"];
 

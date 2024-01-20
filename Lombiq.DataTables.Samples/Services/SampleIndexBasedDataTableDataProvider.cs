@@ -11,26 +11,16 @@ using static Lombiq.DataTables.Samples.Constants.ContentTypes;
 
 namespace Lombiq.DataTables.Samples.Services;
 
-public class SampleIndexBasedDataTableDataProvider : IndexBasedDataTableDataProvider<EmployeeDataTableIndex>
+public class SampleIndexBasedDataTableDataProvider(
+    IStringLocalizer<ActionsDescriptor> actionsStringLocalizer,
+    IDataTableDataProviderServices services,
+    IStringLocalizer<SampleIndexBasedDataTableDataProvider> stringLocalizer) : IndexBasedDataTableDataProvider<EmployeeDataTableIndex>(services)
 {
-    private readonly IStringLocalizer<ActionsDescriptor> _actionsStringLocalizer;
-    private readonly IStringLocalizer<SampleIndexBasedDataTableDataProvider> T;
-
-    public override LocalizedString Description => T["Index-based Sample Data Provider"];
+    public override LocalizedString Description => stringLocalizer["Index-based Sample Data Provider"];
 
     // You can provide required permissions, the viewer will need at least one to display results on the page. If it's
     // empty then no permission check is required.
     public override IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
-
-    public SampleIndexBasedDataTableDataProvider(
-        IStringLocalizer<ActionsDescriptor> actionsStringLocalizer,
-        IDataTableDataProviderServices services,
-        IStringLocalizer<SampleIndexBasedDataTableDataProvider> stringLocalizer)
-        : base(services)
-    {
-        _actionsStringLocalizer = actionsStringLocalizer;
-        T = stringLocalizer;
-    }
 
     // This is the method where you map your index row into a display type. Actually this result becomes JSON too, so
     // you don't have to worry about type safety as long as the names match.
@@ -48,7 +38,7 @@ public class SampleIndexBasedDataTableDataProvider : IndexBasedDataTableDataProv
                 canDelete,
                 _hca,
                 _linkGenerator,
-                _actionsStringLocalizer);
+                actionsStringLocalizer);
 
             // Here we demonstrate export links. This is the way to return a cell with link text that still correctly
             // sorts and works in the Excel export too.
@@ -92,13 +82,13 @@ public class SampleIndexBasedDataTableDataProvider : IndexBasedDataTableDataProv
         this.DefineColumns(
             nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Name),
             SortingDirection.Ascending,
-            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Name), T["Name"]),
-            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Position), T["Position"]),
-            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Office), T["Office"]),
-            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Age), T["Age"]),
-            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.StartDate), T["Start Date"]),
-            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Salary) + "||^||$", T["Salary"]),
-            (GetActionsColumn(nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Actions), fromJson: true), T["Actions"]));
+            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Name), stringLocalizer["Name"]),
+            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Position), stringLocalizer["Position"]),
+            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Office), stringLocalizer["Office"]),
+            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Age), stringLocalizer["Age"]),
+            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.StartDate), stringLocalizer["Start Date"]),
+            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Salary) + "||^||$", stringLocalizer["Salary"]),
+            (GetActionsColumn(nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Actions), fromJson: true), stringLocalizer["Actions"]));
 
     // Once you log in as admin you can access it on the /Admin/DataTable/SampleJsonResultDataTableDataProvider or the
     // /Lombiq.DataTables.Samples/Sample/ProviderWithShape relative URLs.

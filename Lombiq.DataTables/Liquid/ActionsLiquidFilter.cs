@@ -32,37 +32,20 @@ namespace Lombiq.DataTables.Liquid;
 /// { jsonData | actions: returnUrl: 'some/return/url', title: 'Of the Button Shape' }
 /// </code>
 /// </remarks>
-public class ActionsLiquidFilter : ILiquidFilter
+public class ActionsLiquidFilter(
+    IHttpContextAccessor hca,
+    LinkGenerator linkGenerator,
+    IShapeFactory shapeFactory,
+    IDisplayHelper displayHelper,
+    IStringLocalizer<ActionsLiquidFilter> stringLocalizer,
+    IStringLocalizer<ActionsDescriptor> actionsDescriptorStringLocalizer) : ILiquidFilter
 {
-    private readonly IHttpContextAccessor _hca;
-    private readonly LinkGenerator _linkGenerator;
-    private readonly IShapeFactory _shapeFactory;
-    private readonly IDisplayHelper _displayHelper;
-    private readonly IStringLocalizer<ActionsLiquidFilter> T;
-    private readonly IStringLocalizer<ActionsDescriptor> _actionsDescriptorStringLocalizer;
-
-    public ActionsLiquidFilter(
-        IHttpContextAccessor hca,
-        LinkGenerator linkGenerator,
-        IShapeFactory shapeFactory,
-        IDisplayHelper displayHelper,
-        IStringLocalizer<ActionsLiquidFilter> stringLocalizer,
-        IStringLocalizer<ActionsDescriptor> actionsDescriptorStringLocalizer)
-    {
-        _hca = hca;
-        _linkGenerator = linkGenerator;
-        _shapeFactory = shapeFactory;
-        _displayHelper = displayHelper;
-        T = stringLocalizer;
-        _actionsDescriptorStringLocalizer = actionsDescriptorStringLocalizer;
-    }
-
     public ValueTask<FluidValue> ProcessAsync(FluidValue input, FilterArguments arguments, LiquidTemplateContext context)
     {
         // These variables are declared separately because otherwise nameof wouldn't work claiming that the variable
         // doesn't exist in the scope. Once the variable is declared nameof can use it even if it's not defined yet.
         string title, returnUrl;
-        title = arguments.HasNamed(nameof(title)) ? arguments[nameof(title)].ToStringValue() : T["Actions"];
+        title = arguments.HasNamed(nameof(title)) ? arguments[nameof(title)].ToStringValue() : stringLocalizer["Actions"];
         returnUrl = arguments.HasNamed(nameof(returnUrl)) ? arguments[nameof(returnUrl)].ToStringValue() : null;
 
         return input?.Type switch
@@ -81,10 +64,10 @@ public class ActionsLiquidFilter : ILiquidFilter
 
     private async ValueTask<FluidValue> FromObjectAsync(ActionsDescriptor descriptor, string title, string returnUrl)
     {
-        IShape shape = await _shapeFactory.New.Lombiq_Datatables_Actions(
+        IShape shape = await shapeFactory.New.Lombiq_Datatables_Actions(
             ButtonTitle: title,
-            ExportLinks: descriptor.GetAllMenuItems(_hca.HttpContext, _linkGenerator, _actionsDescriptorStringLocalizer, returnUrl));
-        var content = await _displayHelper.ShapeExecuteAsync(shape);
+            ExportLinks: descriptor.GetAllMenuItems(hca.HttpContext, linkGenerator, actionsDescriptorStringLocalizer, returnUrl));
+        var content = await displayHelper.ShapeExecuteAsync(shape);
 
         await using var stringWriter = new StringWriter();
         content.WriteTo(stringWriter, HtmlEncoder.Default);

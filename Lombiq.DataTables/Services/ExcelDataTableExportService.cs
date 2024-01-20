@@ -10,14 +10,11 @@ using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services;
 
-public class ExcelDataTableExportService : IDataTableExportService
+public class ExcelDataTableExportService(IStringLocalizer<ExcelDataTableExportService> stringLocalizer) : IDataTableExportService
 {
-    public IStringLocalizer<ExcelDataTableExportService> T { get; }
+    public IStringLocalizer<ExcelDataTableExportService> T { get; } = stringLocalizer;
     public string Name => nameof(ExcelDataTableExportService);
     public string DefaultFileName => "export.xlsx";
-
-    public ExcelDataTableExportService(IStringLocalizer<ExcelDataTableExportService> stringLocalizer) =>
-        T = stringLocalizer;
 
     public async Task<Stream> ExportAsync(
         IDataTableDataProvider dataProvider,

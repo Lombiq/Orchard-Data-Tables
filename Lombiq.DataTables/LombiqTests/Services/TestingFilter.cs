@@ -7,17 +7,8 @@ using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.LombiqTests.Services;
 
-public class TestingFilter : IAsyncResultFilter
+public class TestingFilter(ILayoutAccessor layoutAccessor, IShapeFactory shapeFactory) : IAsyncResultFilter
 {
-    private readonly ILayoutAccessor _layoutAccessor;
-    private readonly IShapeFactory _shapeFactory;
-
-    public TestingFilter(ILayoutAccessor layoutAccessor, IShapeFactory shapeFactory)
-    {
-        _layoutAccessor = layoutAccessor;
-        _shapeFactory = shapeFactory;
-    }
-
     public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
     {
         if (context?.HttpContext == null || context.Controller is not TableController || context.IsNotFullViewRendering())
@@ -26,8 +17,8 @@ public class TestingFilter : IAsyncResultFilter
             return;
         }
 
-        IShape testingHeader = await _shapeFactory.New.Lombiq_Datatable_Testing_Header();
-        await _layoutAccessor.AddShapeToZoneAsync("Header", testingHeader);
+        IShape testingHeader = await shapeFactory.New.Lombiq_Datatable_Testing_Header();
+        await layoutAccessor.AddShapeToZoneAsync("Header", testingHeader);
 
         await next();
     }
