@@ -134,9 +134,9 @@ public abstract class IndexBasedDataTableDataProvider<TIndex> : DataTableDataPro
                 },
                 order => columns.Contains(order.Column)
             );
-        var ordersList = orders?.ToList() ?? new List<DataTableOrder>();
+        var ordersList = orders?.ToList() ?? [];
 
-        if (!ordersList.Any())
+        if (ordersList.Count == 0)
         {
             var defaultOrderableColumnName = columnsDefinition
                 .Columns

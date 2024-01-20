@@ -19,6 +19,8 @@ namespace Lombiq.DataTables.Services;
 
 public static class DataTableDataProviderExtensions
 {
+    private const string Separator = "||";
+
     public static DataTableColumnsDefinition DefineColumns(
         this IDataTableDataProvider dataProvider,
         string sortingColumn,
@@ -31,8 +33,8 @@ public static class DataTableDataProviderExtensions
             Columns = columns.Select(column =>
                 {
                     var (name, text) = column;
-                    var nameParts = name.Contains("||", StringComparison.Ordinal)
-                        ? name.Split("||")
+                    var nameParts = name.Contains(Separator, StringComparison.Ordinal)
+                        ? name.Split(Separator)
                         : new[] { name };
                     var key = nameParts[nameParts.Length == 3 ? 2 : 0];
 
@@ -80,7 +82,7 @@ public static class DataTableDataProviderExtensions
         params (string Name, string Text)[] columns) =>
         DefineColumns(
             dataProvider,
-            columns[0].Name.Split(new[] { "||" }, StringSplitOptions.None)[0],
+            columns[0].Name.Split(Separator)[0],
             Ascending,
             columns);
 

@@ -140,7 +140,7 @@ public class ExcelDataTableExportService(IStringLocalizer<ExcelDataTableExportSe
         }
     }
 
-    private static Stream Save(IXLWorkbook workbook)
+    private static MemoryStream Save(XLWorkbook workbook)
     {
         var stream = new MemoryStream();
 

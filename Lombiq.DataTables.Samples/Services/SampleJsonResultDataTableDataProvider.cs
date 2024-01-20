@@ -24,7 +24,8 @@ public class SampleJsonResultDataTableDataProvider(
     ISession session,
     IDataTableDataProviderServices services,
     IStringLocalizer<ActionsDescriptor> actionsStringLocalizer,
-    IStringLocalizer<SampleJsonResultDataTableDataProvider> implementationStringLocalizer) : JsonResultDataTableDataProvider(services, implementationStringLocalizer)
+    IStringLocalizer<SampleJsonResultDataTableDataProvider> implementationStringLocalizer)
+    : JsonResultDataTableDataProvider(services, implementationStringLocalizer)
 {
     private readonly IStringLocalizer T = implementationStringLocalizer;
 
