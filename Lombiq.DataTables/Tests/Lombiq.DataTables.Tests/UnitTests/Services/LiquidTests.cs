@@ -26,6 +26,8 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services;
 
 public class LiquidTests
 {
+    private static readonly string[] Separator = ["||"];
+
     [Theory]
     [MemberData(nameof(Data))]
     public async Task LiquidEvaluationMatchExpectation(
@@ -83,7 +85,7 @@ public class LiquidTests
         {
             var row = rows[rowIndex];
             columns
-                .Select(column => row[column.Name.Split(new[] { "||" }, StringSplitOptions.None)[0]])
+                .Select(column => row[column.Name.Split(Separator, StringSplitOptions.None)[0]])
                 .ToArray()
                 .ShouldBe(
                     pattern[rowIndex],

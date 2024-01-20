@@ -9,6 +9,8 @@ namespace Lombiq.DataTables.Tests.Helpers;
 
 public static class MockDataProviderHelper
 {
+    private static readonly string[] Separator = ["||"];
+
     public static (IDataTableDataProvider Provider, DataTableDataRequest Request) GetProviderAndRequest(
         object[][] dataSet,
         (string Name, string Text, bool Exportable)[] columns,
@@ -32,7 +34,7 @@ public static class MockDataProviderHelper
                 return columnDefinition;
             });
 
-        var order = columns[orderColumnIndex].Name.Split(new[] { "||" }, StringSplitOptions.None)[0];
+        var order = columns[orderColumnIndex].Name.Split(Separator, StringSplitOptions.None)[0];
         var request = new DataTableDataRequest
         {
             DataProvider = nameof(MockDataProvider),
