@@ -40,6 +40,7 @@ public class ActionsLiquidFilter(
     IStringLocalizer<ActionsLiquidFilter> stringLocalizer,
     IStringLocalizer<ActionsDescriptor> actionsDescriptorStringLocalizer) : ILiquidFilter
 {
+    private readonly IStringLocalizer T = stringLocalizer;
     public ValueTask<FluidValue> ProcessAsync(FluidValue input, FilterArguments arguments, LiquidTemplateContext context)
     {
         // These variables are declared separately because otherwise nameof wouldn't work claiming that the variable
