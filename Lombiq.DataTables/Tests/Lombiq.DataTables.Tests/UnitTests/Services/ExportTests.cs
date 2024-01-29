@@ -73,7 +73,7 @@ public class ExportTests
 
         Stream stream = null;
 
-        stream = OperatingSystem.IsOSPlatform(nameof(OSPlatform.Windows))
+        stream = OperatingSystem.IsWindows()
             // On non-Windows platforms, we need to specify a fallback font manually for ClosedXML to work.
             ? await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat)
             : await TryExportWithFallbackFontsAsync(service, provider, request, customNumberFormat);
