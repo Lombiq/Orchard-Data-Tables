@@ -46,7 +46,7 @@ public class ActionsLiquidFilter(
         // These variables are declared separately because otherwise nameof wouldn't work claiming that the variable
         // doesn't exist in the scope. Once the variable is declared nameof can use it even if it's not defined yet.
         string title, returnUrl;
-        title = arguments.HasNamed(nameof(title)) ? arguments[nameof(title)].ToStringValue() : stringLocalizer["Actions"];
+        title = arguments.HasNamed(nameof(title)) ? arguments[nameof(title)].ToStringValue() : T["Actions"];
         returnUrl = arguments.HasNamed(nameof(returnUrl)) ? arguments[nameof(returnUrl)].ToStringValue() : null;
 
         return input?.Type switch
