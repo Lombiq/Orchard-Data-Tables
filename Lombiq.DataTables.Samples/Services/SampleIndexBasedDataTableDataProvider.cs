@@ -16,7 +16,8 @@ public class SampleIndexBasedDataTableDataProvider(
     IDataTableDataProviderServices services,
     IStringLocalizer<SampleIndexBasedDataTableDataProvider> stringLocalizer) : IndexBasedDataTableDataProvider<EmployeeDataTableIndex>(services)
 {
-    public override LocalizedString Description => stringLocalizer["Index-based Sample Data Provider"];
+    private readonly IStringLocalizer T = stringLocalizer;
+    public override LocalizedString Description => T["Index-based Sample Data Provider"];
 
     // You can provide required permissions, the viewer will need at least one to display results on the page. If it's
     // empty then no permission check is required.
@@ -82,13 +83,13 @@ public class SampleIndexBasedDataTableDataProvider(
         this.DefineColumns(
             nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Name),
             SortingDirection.Ascending,
-            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Name), stringLocalizer["Name"]),
-            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Position), stringLocalizer["Position"]),
-            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Office), stringLocalizer["Office"]),
-            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Age), stringLocalizer["Age"]),
-            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.StartDate), stringLocalizer["Start Date"]),
-            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Salary) + "||^||$", stringLocalizer["Salary"]),
-            (GetActionsColumn(nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Actions), fromJson: true), stringLocalizer["Actions"]));
+            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Name), T["Name"]),
+            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Position), T["Position"]),
+            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Office), T["Office"]),
+            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Age), T["Age"]),
+            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.StartDate), T["Start Date"]),
+            (nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Salary) + "||^||$", T["Salary"]),
+            (GetActionsColumn(nameof(SampleJsonResultDataTableDataProvider.EmployeeJsonResult.Actions), fromJson: true), T["Actions"]));
 
     // Once you log in as admin you can access it on the /Admin/DataTable/SampleJsonResultDataTableDataProvider or the
     // /Lombiq.DataTables.Samples/Sample/ProviderWithShape relative URLs.
