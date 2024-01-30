@@ -10,12 +10,17 @@ using System.Threading.Tasks;
 namespace Lombiq.DataTables.Controllers;
 
 [Admin]
-public class TableController(IEnumerable<IDataTableDataProvider> dataTableDataProviders) : Controller
+public class TableController : Controller
 {
+    private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviders;
+
+    public TableController(IEnumerable<IDataTableDataProvider> dataTableDataProviders) =>
+        _dataTableDataProviders = dataTableDataProviders;
+
     [Route("/Admin/DataTable/{providerName}/{queryId?}")]
     public async Task<IActionResult> Get(string providerName, string queryId = null, bool paging = true, bool viewAction = false)
     {
-        var provider = dataTableDataProviders.Single(provider => provider.Name == providerName);
+        var provider = _dataTableDataProviders.Single(provider => provider.Name == providerName);
         if (string.IsNullOrEmpty(queryId)) queryId = providerName;
         var definition = new DataTableDefinitionViewModel(JObject.FromObject(new { paging, viewAction }))
         {

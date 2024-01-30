@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Migrations;
 
-public class ColumnsDefinitionMigrations(IContentDefinitionManager contentDefinitionManager) : DataMigration
+public class ColumnsDefinitionMigrations : DataMigration
 {
+    private readonly IContentDefinitionManager _contentDefinitionManager;
+
+    public ColumnsDefinitionMigrations(IContentDefinitionManager contentDefinitionManager) =>
+        _contentDefinitionManager = contentDefinitionManager;
+
     public async Task<int> CreateAsync()
     {
-        await contentDefinitionManager.AlterTypeDefinitionAsync("ColumnsDefinition", type => type
+        await _contentDefinitionManager.AlterTypeDefinitionAsync("ColumnsDefinition", type => type
             .Creatable()
             .Securable()
             .WithPart(nameof(DataTableColumnsDefinitionPart))

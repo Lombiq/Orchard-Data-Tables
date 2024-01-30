@@ -14,16 +14,29 @@ using ISession = YesSql.ISession;
 
 namespace Lombiq.DataTables.Handlers;
 
-public class DataTableIndexGeneratorContentHandler<TIndexGenerator, TIndex>(
-    Lazy<IHttpContextAccessor> hcaLazy,
-    Lazy<IManualConnectingIndexService<TIndex>> indexServiceLazy,
-    Lazy<ISession> sessionLazy,
-    Lazy<TIndexGenerator> indexGeneratorLazy)
+public class DataTableIndexGeneratorContentHandler<TIndexGenerator, TIndex>
     : ContentHandlerBase, IManualDataTableIndexGenerator
     where TIndexGenerator : IDataTableIndexGenerator
     where TIndex : MapIndex
 {
+    private readonly Lazy<IHttpContextAccessor> _hcaLazy;
+    private readonly Lazy<IManualConnectingIndexService<TIndex>> _indexServiceLazy;
+    private readonly Lazy<ISession> _sessionLazy;
+    private readonly Lazy<TIndexGenerator> _indexGeneratorLazy;
+
     public bool IsInMiddlewarePipeline { get; set; }
+
+    public DataTableIndexGeneratorContentHandler(
+        Lazy<IHttpContextAccessor> hcaLazy,
+        Lazy<IManualConnectingIndexService<TIndex>> indexServiceLazy,
+        Lazy<ISession> sessionLazy,
+        Lazy<TIndexGenerator> indexGeneratorLazy)
+    {
+        _hcaLazy = hcaLazy;
+        _indexServiceLazy = indexServiceLazy;
+        _sessionLazy = sessionLazy;
+        _indexGeneratorLazy = indexGeneratorLazy;
+    }
 
     public override Task CreatedAsync(CreateContentContext context) => ReserveIndexGenerationAsync(context);
 
@@ -39,7 +52,7 @@ public class DataTableIndexGeneratorContentHandler<TIndexGenerator, TIndex>(
 
     public async Task GenerateOrderedIndicesAsync()
     {
-        var indexGenerator = indexGeneratorLazy.Value;
+        var indexGenerator = _indexGeneratorLazy.Value;
 
         if (!indexGenerator.IndexGenerationIsRemovalByType.Any()) return;
         await indexGenerator.GenerateIndexAsync();
@@ -49,18 +62,18 @@ public class DataTableIndexGeneratorContentHandler<TIndexGenerator, TIndex>(
     }
 
     public Task ScheduleDeferredIndexGenerationAsync(ContentItem contentItem, bool managedTypeOnly) =>
-        indexGeneratorLazy.Value.ManagedContentTypes.Contains(contentItem.ContentType)
+        _indexGeneratorLazy.Value.ManagedContentTypes.Contains(contentItem.ContentType)
             ? ReserveIndexGenerationAsync(new UpdateContentContext(contentItem))
             : Task.CompletedTask;
 
     private async Task ReserveIndexGenerationAsync(ContentContextBase context)
     {
-        var generator = indexGeneratorLazy.Value;
+        var generator = _indexGeneratorLazy.Value;
         var contentItem = context.ContentItem;
         var isRemove = generator.ManagedContentTypes.Contains(contentItem.ContentType) && context.IsRemove();
 
         if (!await generator.NeedsUpdatingAsync(context)) return;
-        if (!IsInMiddlewarePipeline) await sessionLazy.Value.FlushAsync();
+        if (!IsInMiddlewarePipeline) await _sessionLazy.Value.FlushAsync();
         await generator.ScheduleDeferredIndexGenerationAsync(contentItem, isRemove);
 
         // The middlewares don't execute during setup so we have to update here.
@@ -73,7 +86,7 @@ public class DataTableIndexGeneratorContentHandler<TIndexGenerator, TIndex>(
     private async Task RemoveInvalidAsync()
     {
         // Using very raw query because it's too complex for the parser.
-        var session = sessionLazy.Value;
+        var session = _sessionLazy.Value;
         var transaction = await session.BeginTransactionAsync();
         var dialect = session.Store.Configuration.SqlDialect;
         var prefix = session.Store.Configuration.TablePrefix;
@@ -106,12 +119,12 @@ public class DataTableIndexGeneratorContentHandler<TIndexGenerator, TIndex>(
 
         // OrchardCore.AuditTrail compatibility check. As it just uses the regular Orchard Core facilities there is no
         // need to make it a dependency.
-        var restored = hcaLazy.Value.HttpContext?.Items.GetMaybe("OrchardCore.AuditTrail.Restored");
+        var restored = _hcaLazy.Value.HttpContext?.Items.GetMaybe("OrchardCore.AuditTrail.Restored");
         if (restored is ContentItem { ContentItemId: { } } restoredContentItem)
         {
             invalidIds = invalidIds.Where(id => id != restoredContentItem.Id);
         }
 
-        foreach (var invalidId in invalidIds) await indexServiceLazy.Value.RemoveByIndexAsync(invalidId, session);
+        foreach (var invalidId in invalidIds) await _indexServiceLazy.Value.RemoveByIndexAsync(invalidId, session);
     }
 }

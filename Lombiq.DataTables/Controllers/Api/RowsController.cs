@@ -10,14 +10,24 @@ using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Controllers.Api;
 
-public class RowsController(
-    IEnumerable<IDataTableDataProvider> dataTableDataProviderAccessor,
-    IEnumerable<IDataTableExportService> exportServices,
-    IAuthorizationService authorizationService,
-    IStringLocalizer<RowsController> stringLocalizer) : Controller
+public class RowsController : Controller
 {
-    private readonly Dictionary<string, IDataTableExportService> _exportServices = exportServices.ToDictionary(x => x.Name);
-    private readonly IStringLocalizer T = stringLocalizer;
+    private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviderAccessor;
+    private readonly Dictionary<string, IDataTableExportService> _exportServices;
+    private readonly IAuthorizationService _authorizationService;
+    private readonly IStringLocalizer T;
+
+    public RowsController(
+        IEnumerable<IDataTableDataProvider> dataTableDataProviderAccessor,
+        IEnumerable<IDataTableExportService> exportServices,
+        IAuthorizationService authorizationService,
+        IStringLocalizer<RowsController> stringLocalizer)
+    {
+        _dataTableDataProviderAccessor = dataTableDataProviderAccessor;
+        _exportServices = exportServices.ToDictionary(x => x.Name);
+        _authorizationService = authorizationService;
+        T = stringLocalizer;
+    }
 
     /// <summary>
     /// Gets the current table view's rows.
@@ -48,7 +58,7 @@ public class RowsController(
         if (string.IsNullOrEmpty(requestJson)) return BadRequest();
 
         var request = JsonConvert.DeserializeObject<DataTableDataRequest>(requestJson);
-        var dataProvider = dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
+        var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
         if (dataProvider == null)
         {
             var errorText = T["The given data provider name is invalid."].Value;
@@ -60,7 +70,7 @@ public class RowsController(
             return BadRequest(DataTableDataResponse.ErrorResult(T["Length can't be 0."].Value));
         }
 
-        if (!await dataProvider.AuthorizeAsync(authorizationService, User))
+        if (!await dataProvider.AuthorizeAsync(_authorizationService, User))
         {
             return DataTableDataResponse.ErrorResult(T["Unauthorized!"]);
         }
@@ -89,7 +99,7 @@ public class RowsController(
 
         if (string.IsNullOrWhiteSpace(name)) name = _exportServices.Keys.First();
 
-        var dataProvider = dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
+        var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
         var stream = await _exportServices[name].ExportAsync(dataProvider, request);
 
         return new FileStreamResult(stream, _exportServices[name].ContentType)

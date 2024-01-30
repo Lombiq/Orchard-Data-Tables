@@ -11,11 +11,15 @@ using static Lombiq.DataTables.Samples.Constants.ContentTypes;
 namespace Lombiq.DataTables.Samples.Migrations;
 
 // Just the bare minimum to set up the content type for storing the sample data.
-public class EmployeeMigrations(IContentDefinitionManager contentDefinitionManager) : DataMigration
+public class EmployeeMigrations : DataMigration
 {
+    private readonly IContentDefinitionManager _contentDefinitionManager;
+
+    public EmployeeMigrations(IContentDefinitionManager contentDefinitionManager) => _contentDefinitionManager = contentDefinitionManager;
+
     public async Task<int> CreateAsync()
     {
-        await contentDefinitionManager.AlterPartDefinitionAsync(nameof(EmployeePart), part => part
+        await _contentDefinitionManager.AlterPartDefinitionAsync(nameof(EmployeePart), part => part
             .WithField(nameof(EmployeePart.Name), ConfigureField<TextField>(name: "Name"))
             .WithField(nameof(EmployeePart.Position), ConfigureField<TextField>(name: "Position"))
             .WithField(nameof(EmployeePart.Office), ConfigureField<TextField>(name: "Office Location"))
@@ -23,7 +27,7 @@ public class EmployeeMigrations(IContentDefinitionManager contentDefinitionManag
             .WithField(nameof(EmployeePart.StartDate), ConfigureField<DateField>(name: "Start Date"))
             .WithField(nameof(EmployeePart.Salary), ConfigureField<NumericField>(name: "Salary")));
 
-        await contentDefinitionManager.AlterTypeDefinitionAsync(Employee, type => type
+        await _contentDefinitionManager.AlterTypeDefinitionAsync(Employee, type => type
             .Listable()
             .WithPart(nameof(EmployeePart)));
 

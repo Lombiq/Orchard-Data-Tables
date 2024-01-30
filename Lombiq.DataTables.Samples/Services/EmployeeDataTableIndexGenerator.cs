@@ -14,10 +14,7 @@ namespace Lombiq.DataTables.Samples.Services;
 // This is the service that crunches all the data for the index. It is automatically used in a content handler, but you
 // may call ScheduleDeferredIndexGenerationAsync manually from any controller, filter, etc that's on the forward side of
 // the middleware pipeline.
-public class EmployeeDataTableIndexGenerator(
-    IContentManager contentManager,
-    IManualConnectingIndexService<EmployeeDataTableIndex> indexService,
-    ISession session) : DataTableIndexGeneratorBase<EmployeeDataTableIndex>(contentManager, indexService, session)
+public class EmployeeDataTableIndexGenerator : DataTableIndexGeneratorBase<EmployeeDataTableIndex>
 {
     // This column is used automatically to delete old rows.
     protected override string IdColumnName => nameof(EmployeeDataTableIndex.ContentItemId);
@@ -25,6 +22,14 @@ public class EmployeeDataTableIndexGenerator(
     // If your table represents a content type, provide it here. This means the "main" content type, if you need to join
     // other content types to it for related information (e.g. with ContentPickerField), those don't go here.
     public override IEnumerable<string> ManagedContentTypes { get; } = new[] { Employee };
+
+    public EmployeeDataTableIndexGenerator(
+        IContentManager contentManager,
+        IManualConnectingIndexService<EmployeeDataTableIndex> indexService,
+        ISession session)
+        : base(contentManager, indexService, session)
+    {
+    }
 
     // This is called by the DataTableIndexGeneratorContentHandler<TIndexGenerator, TIndex> to check if this generator
     // wants to update anything on any content item event (updated, published, deleted, etc). Unlike the

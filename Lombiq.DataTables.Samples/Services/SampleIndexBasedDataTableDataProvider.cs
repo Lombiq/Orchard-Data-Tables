@@ -11,17 +11,26 @@ using static Lombiq.DataTables.Samples.Constants.ContentTypes;
 
 namespace Lombiq.DataTables.Samples.Services;
 
-public class SampleIndexBasedDataTableDataProvider(
-    IStringLocalizer<ActionsDescriptor> actionsStringLocalizer,
-    IDataTableDataProviderServices services,
-    IStringLocalizer<SampleIndexBasedDataTableDataProvider> stringLocalizer) : IndexBasedDataTableDataProvider<EmployeeDataTableIndex>(services)
+public class SampleIndexBasedDataTableDataProvider : IndexBasedDataTableDataProvider<EmployeeDataTableIndex>
 {
-    private readonly IStringLocalizer T = stringLocalizer;
+    private readonly IStringLocalizer<ActionsDescriptor> _actionsStringLocalizer;
+    private readonly IStringLocalizer<SampleIndexBasedDataTableDataProvider> T;
+
     public override LocalizedString Description => T["Index-based Sample Data Provider"];
 
     // You can provide required permissions, the viewer will need at least one to display results on the page. If it's
     // empty then no permission check is required.
     public override IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
+
+    public SampleIndexBasedDataTableDataProvider(
+        IStringLocalizer<ActionsDescriptor> actionsStringLocalizer,
+        IDataTableDataProviderServices services,
+        IStringLocalizer<SampleIndexBasedDataTableDataProvider> stringLocalizer)
+        : base(services)
+    {
+        _actionsStringLocalizer = actionsStringLocalizer;
+        T = stringLocalizer;
+    }
 
     // This is the method where you map your index row into a display type. Actually this result becomes JSON too, so
     // you don't have to worry about type safety as long as the names match.
@@ -39,7 +48,7 @@ public class SampleIndexBasedDataTableDataProvider(
                 canDelete,
                 _hca,
                 _linkGenerator,
-                actionsStringLocalizer);
+                _actionsStringLocalizer);
 
             // Here we demonstrate export links. This is the way to return a cell with link text that still correctly
             // sorts and works in the Excel export too.

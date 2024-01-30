@@ -32,15 +32,31 @@ namespace Lombiq.DataTables.Liquid;
 /// { jsonData | actions: returnUrl: 'some/return/url', title: 'Of the Button Shape' }
 /// </code>
 /// </remarks>
-public class ActionsLiquidFilter(
-    IHttpContextAccessor hca,
-    LinkGenerator linkGenerator,
-    IShapeFactory shapeFactory,
-    IDisplayHelper displayHelper,
-    IStringLocalizer<ActionsLiquidFilter> stringLocalizer,
-    IStringLocalizer<ActionsDescriptor> actionsDescriptorStringLocalizer) : ILiquidFilter
+public class ActionsLiquidFilter : ILiquidFilter
 {
-    private readonly IStringLocalizer T = stringLocalizer;
+    private readonly IHttpContextAccessor _hca;
+    private readonly LinkGenerator _linkGenerator;
+    private readonly IShapeFactory _shapeFactory;
+    private readonly IDisplayHelper _displayHelper;
+    private readonly IStringLocalizer<ActionsLiquidFilter> T;
+    private readonly IStringLocalizer<ActionsDescriptor> _actionsDescriptorStringLocalizer;
+
+    public ActionsLiquidFilter(
+        IHttpContextAccessor hca,
+        LinkGenerator linkGenerator,
+        IShapeFactory shapeFactory,
+        IDisplayHelper displayHelper,
+        IStringLocalizer<ActionsLiquidFilter> stringLocalizer,
+        IStringLocalizer<ActionsDescriptor> actionsDescriptorStringLocalizer)
+    {
+        _hca = hca;
+        _linkGenerator = linkGenerator;
+        _shapeFactory = shapeFactory;
+        _displayHelper = displayHelper;
+        T = stringLocalizer;
+        _actionsDescriptorStringLocalizer = actionsDescriptorStringLocalizer;
+    }
+
     public ValueTask<FluidValue> ProcessAsync(FluidValue input, FilterArguments arguments, LiquidTemplateContext context)
     {
         // These variables are declared separately because otherwise nameof wouldn't work claiming that the variable
@@ -65,10 +81,10 @@ public class ActionsLiquidFilter(
 
     private async ValueTask<FluidValue> FromObjectAsync(ActionsDescriptor descriptor, string title, string returnUrl)
     {
-        IShape shape = await shapeFactory.New.Lombiq_Datatables_Actions(
+        IShape shape = await _shapeFactory.New.Lombiq_Datatables_Actions(
             ButtonTitle: title,
-            ExportLinks: descriptor.GetAllMenuItems(hca.HttpContext, linkGenerator, actionsDescriptorStringLocalizer, returnUrl));
-        var content = await displayHelper.ShapeExecuteAsync(shape);
+            ExportLinks: descriptor.GetAllMenuItems(_hca.HttpContext, _linkGenerator, _actionsDescriptorStringLocalizer, returnUrl));
+        var content = await _displayHelper.ShapeExecuteAsync(shape);
 
         await using var stringWriter = new StringWriter();
         content.WriteTo(stringWriter, HtmlEncoder.Default);
