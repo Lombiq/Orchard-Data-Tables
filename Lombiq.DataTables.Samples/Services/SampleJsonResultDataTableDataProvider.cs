@@ -21,7 +21,6 @@ namespace Lombiq.DataTables.Samples.Services;
 /// cref="DeletedContentItemDataTableDataProvider"/> for a practical example that uses a LinqToDB query.
 /// </summary>
 public class SampleJsonResultDataTableDataProvider : JsonResultDataTableDataProvider
-    : JsonResultDataTableDataProvider(services, implementationStringLocalizer)
 {
     private readonly ISession _session;
     private readonly IStringLocalizer<ActionsDescriptor> _actionsStringLocalizer;

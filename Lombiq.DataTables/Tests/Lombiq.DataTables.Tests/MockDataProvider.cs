@@ -6,7 +6,6 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using OrchardCore.DisplayManagement.Liquid;
-using OrchardCore.Liquid;
 using OrchardCore.Liquid.Services;
 using OrchardCore.Localization;
 using OrchardCore.Security.Permissions;
@@ -59,7 +58,7 @@ public class MockDataProvider : JsonResultDataTableDataProvider
 
     protected override DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) => Definition;
 
-    private static ILiquidTemplateManager CreateLiquidTemplateManager(IMemoryCache memoryCache, IServiceProvider serviceProvider)
+    private static LiquidTemplateManager CreateLiquidTemplateManager(IMemoryCache memoryCache, IServiceProvider serviceProvider)
     {
         var optionsFactory = new OptionsFactory<TemplateOptions>(
                 Array.Empty<IConfigureOptions<TemplateOptions>>(),
