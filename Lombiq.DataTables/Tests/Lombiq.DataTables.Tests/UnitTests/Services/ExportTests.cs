@@ -213,9 +213,10 @@ public class ExportTests
         var date2 = new DateTime(2020, 11, 26, 13, 42, 01, DateTimeKind.Utc);
         var date3 = new DateTime(2020, 11, 26, 1, 42, 01, DateTimeKind.Utc);
 
-        // The date value should be the same, only the formatting changes.
+        // Simplified collection initialization for the first two would leave the third one as it is. Keeping for
+        // consistency.
 #pragma warning disable IDE0300 // Simplify collection initialization
-        // This use case would prevent the 3rd object to be converted into a simplified collection.
+        // The date value should be the same, only the formatting changes.
         yield return new object[]
         {
             "Verify custom number formatting.",

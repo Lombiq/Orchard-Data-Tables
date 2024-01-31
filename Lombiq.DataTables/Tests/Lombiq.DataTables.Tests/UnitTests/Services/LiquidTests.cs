@@ -95,8 +95,9 @@ public class LiquidTests
 
     public static IEnumerable<object[]> Data()
     {
+        // Simplified collection initialization for the first two would leave the third one as it is. Keeping for
+        // consistency.
 #pragma warning disable IDE0300 // Simplify collection initialization
-        // This use case would prevent the 3rd object to be converted into a simplified collection.
         var dataset = new[]
         {
             new object[] { "now", "Foo Bar Baz" },
