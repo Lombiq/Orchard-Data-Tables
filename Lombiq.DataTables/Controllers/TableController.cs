@@ -1,5 +1,6 @@
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.ViewModels;
+using Lombiq.HelpfulLibraries.OrchardCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using OrchardCore.Admin;
@@ -17,7 +18,7 @@ public class TableController : Controller
     public TableController(IEnumerable<IDataTableDataProvider> dataTableDataProviders) =>
         _dataTableDataProviders = dataTableDataProviders;
 
-    [Route("/Admin/DataTable/{providerName}/{queryId?}")]
+    [AdminRoute("DataTable/{providerName}/{queryId?}")]
     public async Task<IActionResult> Get(string providerName, string queryId = null, bool paging = true, bool viewAction = false)
     {
         var provider = _dataTableDataProviders.Single(provider => provider.Name == providerName);

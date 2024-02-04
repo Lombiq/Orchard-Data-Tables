@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 using OrchardCore.Navigation;
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Lombiq.DataTables.Samples.Navigation;
 
@@ -29,16 +28,8 @@ public class DataTablesNavigationProvider : MainMenuNavigationProviderBase
                 .Add(T["JSON-based Provider (Admin)"], AdminTable(nameof(SampleJsonResultDataTableDataProvider)))
                 .Add(T["Index-based Provider (Admin)"], AdminTable(nameof(SampleIndexBasedDataTableDataProvider))));
 
-    [SuppressMessage(
-        "Style",
-        "MA0003:Add argument name to improve readability",
-        Justification = "You can't use named arguments in Expressions.")]
-    [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "Not unnecessary.")]
     private Action<NavigationItemBuilder> AdminTable(string name) =>
-        itemBuilder => itemBuilder
-            .ActionTask<TableController>(_hca.HttpContext, controller => controller.Get(
-                name,
-                null,
-                true,
-                false));
+        itemBuilder => itemBuilder.ActionTask<TableController>(
+            _hca.HttpContext,
+            controller => controller.Get(name, null, true, false));
 }

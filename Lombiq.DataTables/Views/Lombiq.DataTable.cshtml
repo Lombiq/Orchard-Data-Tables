@@ -31,9 +31,9 @@
     var defaultSortingDirection = columnsDefinition?.DefaultSortingDirection ?? SortingDirection.Ascending;
     var defaultSortingDirectionValue = defaultSortingDirection == SortingDirection.Ascending ? "asc" : "desc";
 
-    var rowApiUrl = Url.Action(nameof(RowsController.Get), typeof(RowsController).ControllerName(), new { Area = FeatureIds.DataTables });
-    var childRowApiUrl = Url.Action(nameof(ChildRowsController.Get), typeof(ChildRowsController).ControllerName(), new { Area = FeatureIds.DataTables });
-    var exportApiUrl = Url.Action(nameof(RowsController.Export), typeof(RowsController).ControllerName(), new { Area = FeatureIds.DataTables });
+    var rowApiUrl = Url.Action(nameof(RowsController.Get), typeof(RowsController).ControllerName(), new { Area = FeatureIds.Area });
+    var childRowApiUrl = Url.Action(nameof(ChildRowsController.Get), typeof(ChildRowsController).ControllerName(), new { Area = FeatureIds.Area });
+    var exportApiUrl = Url.Action(nameof(RowsController.Export), typeof(RowsController).ControllerName(), new { Area = FeatureIds.Area });
 
     const string rowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
     const string childRowElementName = ElementNames.DataTableElementName + "__childRow";
