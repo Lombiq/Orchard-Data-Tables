@@ -1,5 +1,3 @@
-using Lombiq.DataTables.Constants;
-using Lombiq.DataTables.Controllers;
 using Lombiq.DataTables.Liquid;
 using Lombiq.DataTables.Migrations;
 using Lombiq.DataTables.Services;
@@ -15,7 +13,6 @@ using OrchardCore.Admin;
 using OrchardCore.Data.Migration;
 using OrchardCore.Liquid;
 using OrchardCore.Modules;
-using OrchardCore.Mvc.Core.Utilities;
 using OrchardCore.ResourceManagement;
 using System;
 
