@@ -48,17 +48,6 @@ public class Startup : StartupBase
         AdminRouteAttributeRouteMapper.AddToServices(services);
     }
 
-    public override void Configure(
-        IApplicationBuilder app,
-        IEndpointRouteBuilder routes,
-        IServiceProvider serviceProvider)
-    {
+    public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes, IServiceProvider serviceProvider) =>
         app.UseDeferredTasks();
-
-        routes.MapAreaControllerRoute(
-            name: "DataTableGet",
-            areaName: FeatureIds.Area,
-            pattern: _adminOptions.AdminUrlPrefix + "/DataTable/{providerName}/{queryId?}",
-            defaults: new { controller = typeof(TableController).ControllerName(), action = nameof(TableController.Get) });
-    }
 }
