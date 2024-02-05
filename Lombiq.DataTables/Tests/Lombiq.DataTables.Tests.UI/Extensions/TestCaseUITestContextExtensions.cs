@@ -33,6 +33,13 @@ public static class TestCaseUITestContextExtensions
         new DateTime(2008, 11, 28, 12, 0, 0, DateTimeKind.Utc),
         "$162,700",
     ];
+    private static readonly string[] ExpectedSampleMainMenuElements =
+        [
+            "/Lombiq.DataTables.Samples/Sample/DataTableTagHelper",
+            "/Lombiq.DataTables.Samples/Sample/ProviderWithShape",
+            "/Admin/DataTable/SampleJsonResultDataTableDataProvider?paging=true&viewAction=false",
+            "/Admin/DataTable/SampleIndexBasedDataTableDataProvider?paging=true&viewAction=false",
+        ];
 
     public static async Task TestDataTableRecipeDataAsync(this UITestContext context)
     {
@@ -90,13 +97,7 @@ public static class TestCaseUITestContextExtensions
             .GetAll(bySubMenu)
             .Select(element => new Uri(element.GetAttribute("href")).PathAndQuery)
             .ToArray()
-            .ShouldBe(new[]
-        {
-            "/Lombiq.DataTables.Samples/Sample/DataTableTagHelper",
-            "/Lombiq.DataTables.Samples/Sample/ProviderWithShape",
-            "/Admin/DataTable/SampleJsonResultDataTableDataProvider?paging=true&viewAction=false",
-            "/Admin/DataTable/SampleIndexBasedDataTableDataProvider?paging=true&viewAction=false",
-        });
+            .ShouldBe(ExpectedSampleMainMenuElements);
     }
 
     private static void VerifyText(UITestContext context, IEnumerable<object> texts) =>
