@@ -1,7 +1,9 @@
+using Atata;
 using Lombiq.DataTables.Samples.Services;
 using Lombiq.Tests.UI.Extensions;
 using Lombiq.Tests.UI.Services;
 using OpenQA.Selenium;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -36,6 +38,9 @@ public static class TestCaseUITestContextExtensions
     {
         await context.SignInDirectlyAsync();
         await context.ExecuteDataTablesSampleRecipeDirectlyAsync();
+
+        await context.GoToHomePageAsync();
+        context.TestDataTableSampleMainMenu();
 
         await context.TestDataTableTagHelperAsync();
         await context.TestDataTableProviderWithShapeAsync();
@@ -73,6 +78,25 @@ public static class TestCaseUITestContextExtensions
         await context.ClickAndWaitForTableChangeAsync(ageColumnHeader);
 
         VerifyText(context, AdjustForProvider(_oldest));
+    }
+
+    public static void TestDataTableSampleMainMenu(this UITestContext context)
+    {
+        var byTopMenu = By.XPath("//li[contains(@class, 'dropdown') and contains(., 'Data Tables')]");
+        var bySubMenu = byTopMenu.Then(By.CssSelector("a.menuWidget__dropdownItem[href]").OfAnyVisibility()).OfAnyVisibility();
+
+        context.Exists(byTopMenu);
+        context
+            .GetAll(bySubMenu)
+            .Select(element => new Uri(element.GetAttribute("href")).PathAndQuery)
+            .ToArray()
+            .ShouldBe(new[]
+        {
+            "/Lombiq.DataTables.Samples/Sample/DataTableTagHelper",
+            "/Lombiq.DataTables.Samples/Sample/ProviderWithShape",
+            "/Admin/DataTable/SampleJsonResultDataTableDataProvider?paging=true&viewAction=false",
+            "/Admin/DataTable/SampleIndexBasedDataTableDataProvider?paging=true&viewAction=false",
+        });
     }
 
     private static void VerifyText(UITestContext context, IEnumerable<object> texts) =>

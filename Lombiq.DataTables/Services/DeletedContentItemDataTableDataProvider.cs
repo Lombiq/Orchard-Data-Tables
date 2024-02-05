@@ -67,7 +67,7 @@ public class DeletedContentItemDataTableDataProvider : JsonResultDataTableDataPr
                 typeof(TableController).ControllerName(),
                 new
                 {
-                    area = FeatureIds.DataTables,
+                    area = FeatureIds.Area,
                     providerName = nameof(DeletedContentItemDataTableDataProvider),
                     queryId,
                 })
