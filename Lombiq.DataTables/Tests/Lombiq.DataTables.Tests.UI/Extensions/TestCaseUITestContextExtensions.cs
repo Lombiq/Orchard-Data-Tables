@@ -42,13 +42,18 @@ public static class TestCaseUITestContextExtensions
         "/Admin/DataTable/SampleIndexBasedDataTableDataProvider?paging=true&viewAction=false",
     ];
 
-    public static async Task TestDataTableRecipeDataAsync(this UITestContext context)
+    /// <param name="isNugetTest">Set this parameter if you are
+    /// using Lombiq.DataTables.Tests.UI as a NuGet package.</param>
+    public static async Task TestDataTableRecipeDataAsync(this UITestContext context, bool isNugetTest = false)
     {
         await context.SignInDirectlyAsync();
         await context.ExecuteDataTablesSampleRecipeDirectlyAsync();
 
-        await context.GoToHomePageAsync();
-        context.TestDataTableSampleMainMenu();
+        if (!isNugetTest)
+        {
+            await context.GoToHomePageAsync();
+            context.TestDataTableSampleMainMenu();
+        }
 
         await context.TestDataTableTagHelperAsync();
         await context.TestDataTableProviderWithShapeAsync();
