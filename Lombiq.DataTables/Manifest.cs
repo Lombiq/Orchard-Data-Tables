@@ -14,10 +14,10 @@ using static Lombiq.DataTables.Constants.FeatureIds;
     Name = "Lombiq Data Tables",
     Category = "Content",
     Description = "Displays data using jQuery Data Tables.",
-    Dependencies = new[]
-    {
+    Dependencies =
+    [
         "OrchardCore.Contents",
         "OrchardCore.ResourceManagement",
         "OrchardCore.Queries",
-    }
+    ]
 )]

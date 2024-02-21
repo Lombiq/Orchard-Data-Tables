@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -73,7 +72,7 @@ public class ExportTests
 
         Stream stream = null;
 
-        stream = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+        stream = OperatingSystem.IsWindows()
             // On non-Windows platforms, we need to specify a fallback font manually for ClosedXML to work.
             ? await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat)
             : await TryExportWithFallbackFontsAsync(service, provider, request, customNumberFormat);
@@ -109,18 +108,16 @@ public class ExportTests
     {
         var dataset = new[]
         {
-            new object[]
-            {
+            [
                 1,
                 "z",
                 "foo",
-            },
-            new object[]
-            {
+            ],
+            [
                 new ExportLink("http://example.com/", 2),
                 "y",
                 "bar",
-            },
+            ],
             new object[]
             {
                 10,
@@ -201,8 +198,8 @@ public class ExportTests
             "Verify boolean formatting.",
             new[]
             {
-                new object[] { 1, true },
-                new object[] { 2, true },
+                [1, true],
+                [2, true],
                 new object[] { 3, false },
             },
             new[] { ("Num", "Numbers", true), ("Bool", "Booleans", true) },
@@ -216,6 +213,9 @@ public class ExportTests
         var date2 = new DateTime(2020, 11, 26, 13, 42, 01, DateTimeKind.Utc);
         var date3 = new DateTime(2020, 11, 26, 1, 42, 01, DateTimeKind.Utc);
 
+        // Simplified collection initialization for the first two would leave the third one as it is. Keeping for
+        // consistency.
+#pragma warning disable IDE0300 // Simplify collection initialization
         // The date value should be the same, only the formatting changes.
         yield return new object[]
         {
@@ -240,6 +240,7 @@ public class ExportTests
             10,
             0,
         };
+#pragma warning restore IDE0300 // Simplify collection initialization
     }
 
     // Sometimes a font is available, however, it's corrupted or missing a table (for example, this can happen on

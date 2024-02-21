@@ -7,5 +7,5 @@ using OrchardCore.Modules.Manifest;
     Version = "0.0.1",
     Description = "Samples for Lombiq Data Tables.",
     Category = "Development",
-    Dependencies = new[] { Lombiq.DataTables.Constants.FeatureIds.DataTables }
+    Dependencies = [Lombiq.DataTables.Constants.FeatureIds.DataTables]
 )]

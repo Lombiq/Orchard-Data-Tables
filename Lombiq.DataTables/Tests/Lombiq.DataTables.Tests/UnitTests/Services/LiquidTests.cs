@@ -26,6 +26,8 @@ namespace Lombiq.DataTables.Tests.UnitTests.Services;
 
 public class LiquidTests
 {
+    private static readonly string[] Separator = ["||"];
+
     [Theory]
     [MemberData(nameof(Data))]
     public async Task LiquidEvaluationMatchExpectation(
@@ -83,7 +85,7 @@ public class LiquidTests
         {
             var row = rows[rowIndex];
             columns
-                .Select(column => row[column.Name.Split(new[] { "||" }, StringSplitOptions.None)[0]])
+                .Select(column => row[column.Name.Split(Separator, StringSplitOptions.None)[0]])
                 .ToArray()
                 .ShouldBe(
                     pattern[rowIndex],
@@ -93,12 +95,16 @@ public class LiquidTests
 
     public static IEnumerable<object[]> Data()
     {
+        // Simplified collection initialization for the first two would leave the third one as it is. Keeping for
+        // consistency.
+#pragma warning disable IDE0300 // Simplify collection initialization
         var dataset = new[]
         {
             new object[] { "now", "Foo Bar Baz" },
             new object[] { "2020-12-31", "The quick brown fox" },
             new object[] { "1970-01-01", "Lorem Ipsum Dolor Sit Amet" }, // #spell-check-ignore-line
         };
+#pragma warning restore IDE0300 // Simplify collection initialization
         var today = DateTime.Today.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
 
         yield return new object[]

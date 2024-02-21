@@ -15,32 +15,47 @@ namespace Lombiq.DataTables.Tests.UI.Extensions;
 public static class TestCaseUITestContextExtensions
 {
     private static readonly object[] _oldest =
-    {
+    [
         "Ashton Cox",
         "Junior Technical Author",
         "San Francisco",
         "66",
         new DateTime(2009, 1, 12, 12, 0, 0, DateTimeKind.Utc),
         "$86,000",
-    };
+    ];
 
     private static readonly object[] _alphabeticallyFirst =
-    {
+    [
         "Airlee Saturn",
         "Accountant",
         "Tokyo",
         "33",
         new DateTime(2008, 11, 28, 12, 0, 0, DateTimeKind.Utc),
         "$162,700",
-    };
+    ];
 
-    public static async Task TestDataTableRecipeDataAsync(this UITestContext context)
+    private static readonly string[] ExpectedSampleMainMenuElements =
+    [
+        "/Lombiq.DataTables.Samples/Sample/DataTableTagHelper",
+        "/Lombiq.DataTables.Samples/Sample/ProviderWithShape",
+        "/Admin/DataTable/SampleJsonResultDataTableDataProvider?paging=true&viewAction=false",
+        "/Admin/DataTable/SampleIndexBasedDataTableDataProvider?paging=true&viewAction=false",
+    ];
+
+    /// <param name="checkMainMenu">
+    /// Set to <see langword="false"/> if you don't want to check that the sample's main menu item is properly displayed
+    /// (needs Lombiq Base Theme for Orchard Core as the site theme).
+    /// </param>
+    public static async Task TestDataTableRecipeDataAsync(this UITestContext context, bool checkMainMenu = true)
     {
         await context.SignInDirectlyAsync();
         await context.ExecuteDataTablesSampleRecipeDirectlyAsync();
 
-        await context.GoToHomePageAsync();
-        context.TestDataTableSampleMainMenu();
+        if (checkMainMenu)
+        {
+            await context.GoToHomePageAsync();
+            context.TestDataTableSampleMainMenu();
+        }
 
         await context.TestDataTableTagHelperAsync();
         await context.TestDataTableProviderWithShapeAsync();
@@ -90,13 +105,7 @@ public static class TestCaseUITestContextExtensions
             .GetAll(bySubMenu)
             .Select(element => new Uri(element.GetAttribute("href")).PathAndQuery)
             .ToArray()
-            .ShouldBe(new[]
-        {
-            "/Lombiq.DataTables.Samples/Sample/DataTableTagHelper",
-            "/Lombiq.DataTables.Samples/Sample/ProviderWithShape",
-            "/Admin/DataTable/SampleJsonResultDataTableDataProvider?paging=true&viewAction=false",
-            "/Admin/DataTable/SampleIndexBasedDataTableDataProvider?paging=true&viewAction=false",
-        });
+            .ShouldBe(ExpectedSampleMainMenuElements);
     }
 
     private static void VerifyText(UITestContext context, IEnumerable<object> texts) =>
