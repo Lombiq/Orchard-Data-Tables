@@ -1,10 +1,9 @@
 using Lombiq.DataTables.Constants;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Lombiq.DataTables.Models;
 
-[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
 public class DataTableOrder
 {
     public string Column { get; set; }

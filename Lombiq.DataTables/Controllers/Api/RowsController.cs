@@ -3,9 +3,9 @@ using Lombiq.DataTables.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Controllers.Api;
@@ -57,7 +57,7 @@ public class RowsController : Controller
     {
         if (string.IsNullOrEmpty(requestJson)) return BadRequest();
 
-        var request = JsonConvert.DeserializeObject<DataTableDataRequest>(requestJson);
+        var request = JsonSerializer.Deserialize<DataTableDataRequest>(requestJson);
         var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
         if (dataProvider == null)
         {
@@ -90,7 +90,7 @@ public class RowsController : Controller
         string name = null,
         bool exportAll = true)
     {
-        var request = JsonConvert.DeserializeObject<DataTableDataRequest>(requestJson);
+        var request = JsonSerializer.Deserialize<DataTableDataRequest>(requestJson);
         if (exportAll)
         {
             request.Start = 0;

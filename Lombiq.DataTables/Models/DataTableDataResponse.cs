@@ -1,11 +1,10 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Lombiq.DataTables.Models;
 
-[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
 public class DataTableDataResponse
 {
     /// <summary>
@@ -15,7 +14,7 @@ public class DataTableDataResponse
     /// <remarks>
     /// <para>For internal use only. It's overwritten during normal use.</para>
     /// </remarks>
-    [JsonProperty]
+    [JsonInclude]
     internal int Draw { get; set; }
 
     /// <summary>

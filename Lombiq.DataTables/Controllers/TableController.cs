@@ -2,10 +2,10 @@ using Lombiq.DataTables.Services;
 using Lombiq.DataTables.ViewModels;
 using Lombiq.HelpfulLibraries.OrchardCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using OrchardCore.Admin;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Controllers;
@@ -23,7 +23,9 @@ public class TableController : Controller
     {
         var provider = _dataTableDataProviders.Single(provider => provider.Name == providerName);
         if (string.IsNullOrEmpty(queryId)) queryId = providerName;
-        var definition = new DataTableDefinitionViewModel(JObject.FromObject(new { paging, viewAction }))
+
+        var additionalDatatableOptions = JsonSerializer.SerializeToNode(new { paging, viewAction })!.AsObject();
+        var definition = new DataTableDefinitionViewModel(additionalDatatableOptions)
         {
             DataProvider = providerName,
             QueryId = queryId,

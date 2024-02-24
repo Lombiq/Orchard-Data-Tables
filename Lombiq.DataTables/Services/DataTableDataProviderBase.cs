@@ -5,7 +5,6 @@ using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
-using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
 using OrchardCore.DisplayManagement;
 using OrchardCore.Liquid;
@@ -14,6 +13,7 @@ using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using YesSql;
@@ -86,17 +86,12 @@ public abstract class DataTableDataProviderBase : IDataTableDataProvider
             $"You must override {nameof(GetColumnsDefinitionAsync)} or {nameof(GetColumnsDefinitionInner)}.");
 
     protected static IEnumerable<DataTableRow> SubstituteByColumn(
-        IEnumerable<JObject> json,
+        IEnumerable<JsonObject> json,
         IList<DataTableColumnDefinition> columns) =>
         json.Select((result, index) =>
             new DataTableRow(index, columns
-                .Select(column => (column.Name, column.Regex, Token: result.SelectToken(column.Name, errorWhenNoMatch: false)))
-                .ToDictionary(
-                    cell => cell.Name,
-                    cell => cell.Regex is { } regex
-                        ? new JValue(cell.Token?.ToString().RegexReplace(regex.From, regex.To, RegexOptions.Singleline) // #spell-check-ignore-line
-                            ?? string.Empty)
-                        : cell.Token)));
+                .Select(column => new DataTableCell(column.Name, column.Regex, Token: result.SelectNode(column.Name)))
+                .ToDictionary(cell => cell.Name, cell => cell.ApplyRegexToToken())));
 
     protected async Task RenderLiquidAsync(IEnumerable<DataTableRow> rowList, IList<string> liquidColumns)
     {
@@ -120,4 +115,12 @@ public abstract class DataTableDataProviderBase : IDataTableDataProvider
     protected static Task<IEnumerable<T>> PaginateAsync<T>(IQuery<T> query, DataTableDataRequest request)
         where T : class =>
         query.PaginateAsync(request.Start / request.Length, request.Length);
+
+    private sealed record DataTableCell(string Name, (string From, string To)? Regex, JsonNode Token)
+    {
+        public JsonNode ApplyRegexToToken() =>
+            Regex is var (from, to) && Token?.ToString() is { } value
+                ? JsonValue.Create(value.RegexReplace(from, to, RegexOptions.Singleline))
+                : Token;
+    }
 }

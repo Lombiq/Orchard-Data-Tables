@@ -1,11 +1,12 @@
 using ClosedXML.Excel;
 using Lombiq.DataTables.Models;
 using Microsoft.Extensions.Localization;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services;
@@ -61,7 +62,7 @@ public class ExcelDataTableExportService : IDataTableExportService
     public static Stream CollectionToStream(
         string worksheetName,
         string[] columns,
-        JToken[][] results,
+        JsonNode[][] results,
         IStringLocalizer<ExcelDataTableExportService> localizer,
         string error = null,
         IDictionary<int, string> customNumberFormat = null)
@@ -110,34 +111,32 @@ public class ExcelDataTableExportService : IDataTableExportService
         return Save(workbook);
     }
 
-    private static void CreateTableCell(IXLCell cell, JToken value, string dateFormat, IStringLocalizer localizer)
+    private static void CreateTableCell(IXLCell cell, JsonNode node, string dateFormat, IStringLocalizer localizer)
     {
-        if (value is JObject linkJObject && ExportLink.IsInstance(linkJObject))
+        if (node is JsonObject linkObject && ExportLink.IsInstance(linkObject))
         {
-            var link = linkJObject.ToObject<ExportLink>();
+            var link = linkObject.ToObject<ExportLink>();
             if (link != null) cell.FormulaA1 = $"HYPERLINK(\"{link.Url}\",\"{link.Text}\")";
         }
-        else if (value is JObject dateJObject && ExportDate.IsInstance(dateJObject))
+        else if (node is JsonObject dateObject && ExportDate.IsInstance(dateObject))
         {
-            var date = dateJObject.ToObject<ExportDate>();
+            var date = dateObject.ToObject<ExportDate>();
             cell.Value = (DateTime)date!;
             cell.Style.DateFormat.Format = date?.ExcelFormat ?? dateFormat;
         }
-        else
+        else if (node is JsonArray array)
         {
-            if (value.Type == JTokenType.Date) cell.Style.DateFormat.Format = dateFormat;
-
-            cell.Value = value.Type switch
+            cell.Value = string.Join(", ", array.Select(item => item.ToString()));
+        }
+        else if (node is JsonValue value)
+        {
+            cell.Value = value.GetValueKind() switch
             {
-                JTokenType.Boolean => value.ToObject<bool>()
-                    ? localizer["Yes"].Value
-                    : localizer["No"].Value,
-                JTokenType.Date => value.ToObject<DateTime>(),
-                JTokenType.Float => value.ToObject<double>(),
-                JTokenType.Integer => value.ToObject<int>(),
-                JTokenType.Null => Blank.Value,
-                JTokenType.TimeSpan => value.ToObject<TimeSpan>(),
-                JTokenType.Array => string.Join(", ", ((JArray)value).Select(item => item.ToString())),
+                JsonValueKind.True => localizer["Yes"].Value,
+                JsonValueKind.False => localizer["No"].Value,
+                JsonValueKind.Undefined => string.Empty,
+                JsonValueKind.Null => string.Empty,
+                JsonValueKind.Number => value.ToString().Contains('.') ? value.Value<decimal>() : value.Value<int>(),
                 _ => value.ToString(),
             };
         }

@@ -1,16 +1,15 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace Lombiq.DataTables.Models;
 
-[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
 public class DataTableRow
 {
     [JsonExtensionData]
-    internal IDictionary<string, JToken> ValuesDictionary { get; set; }
+    internal IDictionary<string, JsonNode> ValuesDictionary { get; set; }
 
     public int Id { get; set; }
 
@@ -20,9 +19,9 @@ public class DataTableRow
         set => ValuesDictionary[name] = value;
     }
 
-    public DataTableRow() => ValuesDictionary = new Dictionary<string, JToken>();
+    public DataTableRow() => ValuesDictionary = new Dictionary<string, JsonNode>();
 
-    public DataTableRow(int id, IDictionary<string, JToken> valuesDictionary)
+    public DataTableRow(int id, IDictionary<string, JsonNode> valuesDictionary)
     {
         Id = id;
         ValuesDictionary = valuesDictionary;

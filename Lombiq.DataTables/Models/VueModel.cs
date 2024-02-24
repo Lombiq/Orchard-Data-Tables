@@ -1,14 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Models;
@@ -20,44 +21,51 @@ public class VueModel
     /// <c>component</c> property client-side. Even then, you need to provide either this or <see cref="Sort"/> if the
     /// column is meant to be <see cref="DataTableColumnDefinition.Orderable"/>.
     /// </summary>
-    [JsonProperty("text", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonPropertyName("text")]
     public string Text { get; set; }
 
     /// <summary>
     /// Gets or sets the HTML content to be rendered inside the cell. When used <see cref="Text"/> and <see
     /// cref="Badge"/> are ignored.
     /// </summary>
-    [JsonProperty("html", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonPropertyName("html")]
     public string Html { get; set; }
 
     /// <summary>
     /// Gets or sets the value used for sorting. If <see langword="null"/> or empty, the value of <see cref="Text"/> is
     /// used for sorting.
     /// </summary>
-    [JsonProperty("sort", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonPropertyName("sort")]
     public object Sort { get; set; }
 
     /// <summary>
     /// Gets or sets the URL to be used in the <c>href</c> attributes. When this is used <see cref="Html"/> is ignored.
     /// </summary>
-    [JsonProperty("href", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonPropertyName("href")]
     public string Href { get; set; }
 
-    [JsonProperty("multipleLinks", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonPropertyName("multipleLinks")]
     public IEnumerable<MultipleHrefValue> MultipleLinks { get; set; }
 
     /// <summary>
     /// Gets or sets the Bootstrap badge class of the cell. To be used along with <see cref="Text"/> and optionally <see
     /// cref="Href"/>.
     /// </summary>
-    [JsonProperty("badge", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonPropertyName("badge")]
     public object Badge { get; set; }
 
     /// <summary>
     /// Gets or sets the data used as extra information to be consumed by <c>special</c> event so the contents can be
     /// updated with JavaScript on client side before each render.
     /// </summary>
-    [JsonProperty("special", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonPropertyName("special")]
     public object Special { get; set; }
 
     /// <summary>
@@ -75,8 +83,9 @@ public class VueModel
     [JsonIgnore]
     public IEnumerable<HiddenInputValue> HiddenInputs { get; set; }
 
-    [JsonProperty("hiddenInput", NullValueHandling = NullValueHandling.Ignore)]
-    [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "It's used by JSON.NET.")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonPropertyName("hiddenInput")]
+    [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "It's used by STJ.")]
     private object HiddenInputSerialize
     {
         get => (object)HiddenInput ?? HiddenInputs;
@@ -84,10 +93,10 @@ public class VueModel
         {
             switch (value)
             {
-                case JArray hiddenInputs:
+                case JsonArray hiddenInputs:
                     HiddenInputs = hiddenInputs.ToObject<IEnumerable<HiddenInputValue>>();
                     break;
-                case JObject hiddenInput:
+                case JsonObject hiddenInput:
                     HiddenInput = hiddenInput.ToObject<HiddenInputValue>();
                     break;
                 case null:
@@ -126,14 +135,14 @@ public class VueModel
         return this;
     }
 
-    public static async Task<JArray> TableToJsonAsync<T>(
+    public static async Task<JsonArray> TableToJsonAsync<T>(
         IEnumerable<T> collection,
         Func<T, int, Task<Dictionary<string, VueModel>>> select)
     {
         var rows = (await collection.AwaitEachAsync(select))
             .Select((row, rowIndex) =>
             {
-                var castRow = row.ToDictionary(pair => pair.Key, pair => JToken.FromObject(pair.Value));
+                var castRow = row.ToDictionary(pair => pair.Key, pair => JsonSerializer.SerializeToNode(pair.Value));
                 castRow["$rowIndex"] = rowIndex;
                 return castRow;
             });
@@ -153,19 +162,19 @@ public class VueModel
 
     public class HiddenInputValue
     {
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("value")]
+        [JsonPropertyName("value")]
         public string Value { get; set; }
     }
 
     public class MultipleHrefValue
     {
-        [JsonProperty("url")]
+        [JsonPropertyName("url")]
         public string Url { get; set; }
 
-        [JsonProperty("text")]
+        [JsonPropertyName("text")]
         public string Text { get; set; }
     }
 

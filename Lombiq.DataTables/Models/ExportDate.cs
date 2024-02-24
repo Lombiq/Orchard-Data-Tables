@@ -1,7 +1,7 @@
-using Newtonsoft.Json.Linq;
 using NodaTime;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Nodes;
 
 namespace Lombiq.DataTables.Models;
 
@@ -21,10 +21,11 @@ public class ExportDate
     public int Day { get; set; }
     public string ExcelFormat { get; set; }
 
-    public static bool IsInstance(JObject jObject) =>
-        jObject[nameof(Type)]?.ToString() == nameof(ExportDate);
+    public static bool IsInstance(JsonObject jsonObject) =>
+        jsonObject[nameof(Type)]?.ToString() == nameof(ExportDate);
 
-    public static string GetText(JObject jObject) => ((LocalDate)jObject.ToObject<ExportDate>()).ToShortDateString();
+    public static string GetText(JsonObject jsonObject) =>
+        ((LocalDate)jsonObject.ToObject<ExportDate>()).ToShortDateString();
 
     public static implicit operator ExportDate(LocalDate localDate) =>
         new()
