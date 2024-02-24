@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Models;
 
+[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
 public class VueModel
 {
     /// <summary>
@@ -22,7 +23,6 @@ public class VueModel
     /// column is meant to be <see cref="DataTableColumnDefinition.Orderable"/>.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("text")]
     public string Text { get; set; }
 
     /// <summary>
@@ -30,7 +30,6 @@ public class VueModel
     /// cref="Badge"/> are ignored.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("html")]
     public string Html { get; set; }
 
     /// <summary>
@@ -38,14 +37,12 @@ public class VueModel
     /// used for sorting.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("sort")]
     public object Sort { get; set; }
 
     /// <summary>
     /// Gets or sets the URL to be used in the <c>href</c> attributes. When this is used <see cref="Html"/> is ignored.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("href")]
     public string Href { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -57,7 +54,6 @@ public class VueModel
     /// cref="Href"/>.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("badge")]
     public object Badge { get; set; }
 
     /// <summary>
@@ -65,7 +61,6 @@ public class VueModel
     /// updated with JavaScript on client side before each render.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("special")]
     public object Special { get; set; }
 
     /// <summary>
@@ -160,21 +155,19 @@ public class VueModel
             ["all"] = localizer["All"].Value,
         };
 
+    [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
     public class HiddenInputValue
     {
-        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("value")]
         public string Value { get; set; }
     }
 
+    [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
     public class MultipleHrefValue
     {
-        [JsonPropertyName("url")]
         public string Url { get; set; }
 
-        [JsonPropertyName("text")]
         public string Text { get; set; }
     }
 
