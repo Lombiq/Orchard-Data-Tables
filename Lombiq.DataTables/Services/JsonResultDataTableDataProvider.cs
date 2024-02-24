@@ -1,9 +1,10 @@
 using Lombiq.DataTables.Models;
 using Microsoft.Extensions.Localization;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services;
@@ -41,7 +42,9 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
 
         if (metaData.CountFiltered >= 0) recordsFiltered = metaData.CountFiltered;
 
-        var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
+        var json = results[0] is JsonObject
+            ? results.Cast<JsonObject>()
+            : results.Select(result => JsonSerializer.SerializeToNode(result)?.AsObject());
         if (!string.IsNullOrEmpty(order.Column)) json = OrderByColumn(json, order);
 
         if (request.Search?.IsRegex == true)
@@ -101,12 +104,12 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
             string searchValue,
             IReadOnlyCollection<DataTableColumn> columnFilters)
     {
-        static string PrepareToken(JToken token) =>
-            token switch
+        static string PrepareToken(JsonNode node) =>
+            node switch
             {
-                JObject link when ExportLink.IsInstance(link) => ExportLink.GetText(link),
-                JObject date when ExportDate.IsInstance(date) => ExportDate.GetText(date),
-                { } => token.ToString(),
+                JsonObject link when ExportLink.IsInstance(link) => ExportLink.GetText(link),
+                JsonObject date when ExportDate.IsInstance(date) => ExportDate.GetText(date),
+                { } => node.ToString(),
                 null => null,
             };
 
@@ -139,38 +142,38 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
     }
 
     /// <summary>
-    /// When overridden in a derived class it gets the content which is then turned into <see cref="JToken"/> if
+    /// When overridden in a derived class it gets the content which is then turned into <see cref="JsonNode"/> if
     /// necessary and then queried down using the column names into a dictionary.
     /// </summary>
     /// <param name="request">The input of <see cref="GetRowsAsync"/>.</param>
     /// <returns>A list of results or <see cref="JObject"/>s.</returns>
     protected abstract Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request);
 
-    private IEnumerable<JObject> OrderByColumn(IEnumerable<JObject> json, DataTableOrder order)
+    private IEnumerable<JsonObject> OrderByColumn(IEnumerable<JsonObject> json, DataTableOrder order)
     {
         var orderColumnName = order.Column.Replace('_', '.');
 
-        JToken Selector(JObject x)
+        JsonNode Selector(JsonObject item)
         {
-            var jToken = x.SelectToken(orderColumnName);
+            var node = item.SelectNode(orderColumnName);
 
-            if (jToken is JObject jObject)
+            if (node is JsonObject jObject)
             {
-                if (jObject.ContainsKey(nameof(ExportLink.Text)))
+                if (jObject.TryGetPropertyValue(nameof(ExportLink.Text), out var textValue))
                 {
-                    jToken = jObject[nameof(ExportLink.Text)];
+                    node = textValue;
                 }
                 else if (ExportDate.IsInstance(jObject))
                 {
-                    jToken = (DateTime)jToken.ToObject<ExportDate>();
+                    node = (DateTime)node.ToObject<ExportDate>();
                 }
             }
 
-            return jToken switch
+            return node switch
             {
                 null => null,
-                JValue jValue when jValue.Type != JTokenType.String => jValue,
-                _ => jToken.ToString().ToUpperInvariant(),
+                JsonValue value when value.GetValueKind() == JsonValueKind.String => value,
+                _ => node.ToString().ToUpperInvariant(),
             };
         }
 

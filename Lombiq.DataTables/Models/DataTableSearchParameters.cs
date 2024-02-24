@@ -7,6 +7,6 @@ public class DataTableSearchParameters
 {
     public string Value { get; set; }
 
-    [JsonProperty(PropertyName = "regex")]
+    [JsonPropertyName("regex")]
     public bool IsRegex { get; set; }
 }

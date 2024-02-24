@@ -120,7 +120,7 @@ public abstract class DataTableDataProviderBase : IDataTableDataProvider
     {
         public JsonNode ApplyRegexToToken() =>
             Regex is var (from, to) && Token?.ToString() is { } value
-                ? JsonValue.Create(value.RegexReplace(from, to, RegexOptions.Singleline))
+                ? value.RegexReplace(from, to, RegexOptions.Singleline)
                 : Token;
     }
 }
