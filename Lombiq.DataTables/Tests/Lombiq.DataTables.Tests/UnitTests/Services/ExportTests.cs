@@ -3,7 +3,6 @@ using ClosedXML.Graphics;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.Tests.Helpers;
-using Lombiq.HelpfulLibraries.Common.Utilities;
 using Lombiq.Tests.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
