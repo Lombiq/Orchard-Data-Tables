@@ -164,7 +164,7 @@ public class ExportTests
             "Test pagination.",
             dataset,
             columns,
-            GetPattern("10;x;baz"),
+            GetPattern("10,x,baz"),
             2,
             10,
             0,
