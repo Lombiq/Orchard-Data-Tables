@@ -226,15 +226,12 @@ public class ExportTests
                 new object[] { 3, date3 },
             },
             new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
-            string.Format(
+            GetPattern(string.Format(
                     _worksheetCulture,
                     "1,{0:h:mm:ss tt};2,{1:h:mm:ss tt};3,{2:h:mm:ss tt}",
                     date1,
                     date2,
-                    date3)
-                .Split(';')
-                .Select(row => row.Split(','))
-                .ToArray(),
+                    date3)),
             0,
             10,
             0,
