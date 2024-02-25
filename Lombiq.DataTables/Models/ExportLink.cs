@@ -32,8 +32,8 @@ public class ExportLink
 
     public override string ToString() => Text.ToString();
 
-    public static bool IsInstance(JsonObject jObject) =>
-        jObject[nameof(Type)]?.ToString() == nameof(ExportLink);
+    public static bool IsInstance(JsonObject jsonObject) =>
+        jsonObject.HasTypeProperty<ExportLink>();
 
     public static string? GetText(JsonObject jObject) => jObject[nameof(Text)]?.ToString();
 }
