@@ -153,7 +153,7 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
     {
         var orderColumnName = order.Column.Replace('_', '.');
 
-        JsonNode Selector(JsonObject item)
+        string Selector(JsonObject item)
         {
             var node = item.SelectNode(orderColumnName);
 
