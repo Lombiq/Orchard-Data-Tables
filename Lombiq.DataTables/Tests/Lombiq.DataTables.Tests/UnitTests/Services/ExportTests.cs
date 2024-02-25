@@ -70,9 +70,7 @@ public class ExportTests
         }
         while (columnIndex < columns.Length && columns[columnIndex - 1].Name != "Time");
 
-        Stream stream = null;
-
-        stream = OperatingSystem.IsWindows()
+        var stream = OperatingSystem.IsWindows()
             // On non-Windows platforms, we need to specify a fallback font manually for ClosedXML to work.
             ? await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat)
             : await TryExportWithFallbackFontsAsync(service, provider, request, customNumberFormat);
@@ -133,19 +131,19 @@ public class ExportTests
             ("MagicWords", "Magic Words", true),
         };
 
-        yield return new object[]
-        {
+        yield return
+        [
             "Show full data set.",
             dataset,
             columns,
-            "1,z,foo;2,y,bar;10,x,baz".Split(';').Select(row => row.Split(',')).ToArray(),
+            GetPattern("1,z,foo;2,y,bar;10,x,baz"),
             0,
             10,
             0,
-        };
+        ];
 
-        yield return new object[]
-        {
+        yield return
+        [
             "Make last column not exportable.",
             dataset,
             new[]
@@ -154,47 +152,47 @@ public class ExportTests
                 ("Letters", "Letters", true),
                 ("MagicWords", "Magic Words", false),
             },
-            "1,z;2,y;10,x".Split(';').Select(row => row.Split(',')).ToArray(),
+            GetPattern("1,z;2,y;10,x"),
             0,
             10,
             0,
-        };
+        ];
 
-        yield return new object[]
-        {
+        yield return
+        [
             "Test pagination.",
             dataset,
             columns,
-            new[] { "10,x,baz".Split(',') },
+            GetPattern("10;x;baz"),
             2,
             10,
             0,
-        };
+        ];
 
-        yield return new object[]
-        {
+        yield return
+        [
             "Test sorting on 2nd column.",
             dataset,
             columns,
-            "10,x,baz;2,y,bar;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
+            GetPattern("10,x,baz;2,y,bar;1,z,foo"),
             0,
             10,
             1,
-        };
+        ];
 
-        yield return new object[]
-        {
+        yield return
+        [
             "Test sorting on 3nd column.",
             dataset,
             columns,
-            "2,y,bar;10,x,baz;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
+            GetPattern("2,y,bar;10,x,baz;1,z,foo"),
             0,
             10,
             2,
-        };
+        ];
 
-        yield return new object[]
-        {
+        yield return
+        [
             "Verify boolean formatting.",
             new[]
             {
@@ -203,11 +201,11 @@ public class ExportTests
                 new object[] { 3, false },
             },
             new[] { ("Num", "Numbers", true), ("Bool", "Booleans", true) },
-            "1,Yes;2,Yes;3,No".Split(';').Select(row => row.Split(',')).ToArray(),
+            GetPattern("1,Yes;2,Yes;3,No"),
             0,
             10,
             0,
-        };
+        ];
 
         var date1 = new DateTime(2020, 11, 26, 23, 42, 01, DateTimeKind.Utc);
         var date2 = new DateTime(2020, 11, 26, 13, 42, 01, DateTimeKind.Utc);
@@ -217,13 +215,13 @@ public class ExportTests
         // consistency.
 #pragma warning disable IDE0300 // Simplify collection initialization
         // The date value should be the same, only the formatting changes.
-        yield return new object[]
-        {
+        yield return
+        [
             "Verify custom number formatting.",
             new[]
             {
-                new object[] { 1, date1 },
-                new object[] { 2, date2 },
+                [1, date1],
+                [2, date2],
                 new object[] { 3, date3 },
             },
             new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
@@ -239,7 +237,7 @@ public class ExportTests
             0,
             10,
             0,
-        };
+        ];
 #pragma warning restore IDE0300 // Simplify collection initialization
     }
 
@@ -285,4 +283,7 @@ public class ExportTests
 
         return null;
     }
+
+    private static string[][] GetPattern(string patternString) =>
+        patternString.Split(';').Select(row => row.Split(',')).ToArray();
 }
