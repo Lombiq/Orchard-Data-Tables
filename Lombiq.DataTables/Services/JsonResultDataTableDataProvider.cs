@@ -153,30 +153,63 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
     {
         var orderColumnName = order.Column.Replace('_', '.');
 
-        IComparable Selector(JsonObject item)
-        {
-            var node = item.SelectNode(orderColumnName);
+        var intermediate = json.Select(item => OrderByColumnItem.Create(item, orderColumnName));
 
-            if (node is JsonObject jObject)
+        return (order.IsAscending ? intermediate.Order() : intermediate.OrderDescending()).Select(item => item.Original);
+    }
+
+    private record OrderByColumnItem(JsonObject Original, IComparable OrderBy) : IComparable
+    {
+        public static OrderByColumnItem Create(JsonObject item, string jsonPathQuery)
+        {
+            if (item.SelectNode(jsonPathQuery) is not { } node) return new(item, OrderBy: null);
+
+            if (node.HasTypeProperty<ExportLink>())
             {
-                if (jObject.TryGetPropertyValue(nameof(ExportLink.Text), out var textValue))
-                {
-                    node = textValue;
-                }
-                else if (ExportDate.IsInstance(jObject))
-                {
-                    node = (DateTime)node.ToObject<ExportDate>();
-                }
+                node = ExportLink.GetText(node.AsObject());
+            }
+            else if (node.HasTypeProperty<ExportDate>())
+            {
+                node = (DateTime)node.ToObject<ExportDate>();
+            }
+            else if (node.HasTypeProperty<DateTimeJsonConverter.DateTimeTicks>())
+            {
+                node = node.ToObject<DateTimeJsonConverter.DateTimeTicks>().ToDateTime();
             }
 
-            return node switch
+            var orderBy = node switch
             {
                 null => null,
                 JsonValue value => value.ToComparable(),
                 _ => node.ToString().ToUpperInvariant(),
             };
+
+            return new(item, orderBy);
         }
 
-        return order.IsAscending ? json.OrderBy(Selector) : json.OrderByDescending(Selector);
+        public int CompareTo(object obj)
+        {
+            var thisOrderBy = OrderBy ?? string.Empty;
+            var thatOrderBy = (obj as OrderByColumnItem)?.OrderBy ?? string.Empty;
+
+            if (thisOrderBy.GetType() != thatOrderBy.GetType())
+            {
+                if (thisOrderBy is decimal && decimal.TryParse(thatOrderBy.ToString(), out var thatDecimal))
+                {
+                    thatOrderBy = thatDecimal;
+                }
+                else if (thatOrderBy is decimal && decimal.TryParse(thisOrderBy.ToString(), out var thisDecimal))
+                {
+                    thisOrderBy = thisDecimal;
+                }
+                else
+                {
+                    thisOrderBy = thisOrderBy.ToString() ?? string.Empty;
+                    thatOrderBy = thatOrderBy.ToString() ?? string.Empty;
+                }
+            }
+
+            return thisOrderBy.CompareTo(thatOrderBy);
+        }
     }
 }

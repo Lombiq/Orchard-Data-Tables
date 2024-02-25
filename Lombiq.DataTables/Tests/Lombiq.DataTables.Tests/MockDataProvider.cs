@@ -18,6 +18,14 @@ namespace Lombiq.DataTables.Tests;
 
 public class MockDataProvider : JsonResultDataTableDataProvider
 {
+    private static readonly JsonSerializerOptions _options = new()
+    {
+        Converters =
+        {
+            new DateTimeJsonConverter(),
+        },
+    };
+
     public DataTableColumnsDefinition Definition { get; set; }
     private readonly object[][] _dataSet;
 
@@ -52,8 +60,10 @@ public class MockDataProvider : JsonResultDataTableDataProvider
             .Columns
             .Select((item, index) => new { item.Name, Index = index });
 
-        return new(_dataSet.Select(row =>
-            JsonSerializer.SerializeToNode(columns.ToDictionary(column => column.Name, column => row[column.Index]))));
+        return new(_dataSet.Select(row => JsonSerializer.SerializeToNode(
+            columns.ToDictionary(column => column.Name, column => row[column.Index]),
+            _options
+            )));
     }
 
     protected override DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) => Definition;

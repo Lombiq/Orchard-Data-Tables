@@ -7,5 +7,5 @@ public static class JsonNodeExtensions
     /// matches <typeparamref name="T"/>.
     /// </summary>
     public static bool HasTypeProperty<T>(this JsonNode node) =>
-        node?.AsObject()?["Type"]?.ToString() == typeof(T).Name;
+        node is JsonObject jsonObject && jsonObject["Type"]?.ToString() == typeof(T).Name;
 }
