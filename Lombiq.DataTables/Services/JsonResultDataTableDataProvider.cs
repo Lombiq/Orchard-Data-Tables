@@ -172,7 +172,7 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
             return node switch
             {
                 null => null,
-                JsonValue value when value.GetValueKind() == JsonValueKind.String => value,
+                JsonValue value when value.GetValueKind() == JsonValueKind.String => value.Value<string>(),
                 _ => node.ToString().ToUpperInvariant(),
             };
         }
