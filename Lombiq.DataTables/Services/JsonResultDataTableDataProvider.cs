@@ -153,7 +153,7 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
     {
         var orderColumnName = order.Column.Replace('_', '.');
 
-        string Selector(JsonObject item)
+        IComparable Selector(JsonObject item)
         {
             var node = item.SelectNode(orderColumnName);
 
@@ -172,7 +172,7 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
             return node switch
             {
                 null => null,
-                JsonValue value when value.GetValueKind() == JsonValueKind.String => value.Value<string>(),
+                JsonValue value => value.ToComparable(),
                 _ => node.ToString().ToUpperInvariant(),
             };
         }
