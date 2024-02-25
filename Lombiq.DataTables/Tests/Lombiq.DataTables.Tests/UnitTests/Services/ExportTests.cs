@@ -91,15 +91,16 @@ public class ExportTests
             }
         }
 
+        var results = new List<string[]>();
         for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
         {
-            Enumerable.Range(1, pattern[0].Length)
-                .Select(index => worksheet.Cell(2 + rowIndex, index).GetFormattedString())
-                .ToArray()
-                .ShouldBe(
-                    pattern[rowIndex],
-                    StringHelper.CreateInvariant($"Row {rowIndex + 1} didn't match expectation."));
+            results.Add(
+                Enumerable.Range(1, pattern[0].Length)
+                    .Select(index => worksheet.Cell(2 + rowIndex, index).GetFormattedString())
+                    .ToArray());
         }
+
+        results.ToArray().ShouldBe(pattern);
     }
 
     public static IEnumerable<object[]> Data()
