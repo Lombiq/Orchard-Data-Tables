@@ -149,7 +149,7 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
     /// <returns>A list of results or <see cref="JObject"/>s.</returns>
     protected abstract Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request);
 
-    private IEnumerable<JsonObject> OrderByColumn(IEnumerable<JsonObject> json, DataTableOrder order)
+    private static IEnumerable<JsonObject> OrderByColumn(IEnumerable<JsonObject> json, DataTableOrder order)
     {
         var orderColumnName = order.Column.Replace('_', '.');
 
@@ -158,7 +158,7 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
         return (order.IsAscending ? intermediate.Order() : intermediate.OrderDescending()).Select(item => item.Original);
     }
 
-    private record OrderByColumnItem(JsonObject Original, IComparable OrderBy) : IComparable
+    private sealed record OrderByColumnItem(JsonObject Original, IComparable OrderBy) : IComparable
     {
         public static OrderByColumnItem Create(JsonObject item, string jsonPathQuery)
         {
