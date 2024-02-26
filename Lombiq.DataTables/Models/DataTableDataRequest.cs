@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 
 namespace Lombiq.DataTables.Models;
 
-[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
 public class DataTableDataRequest
 {
     public string QueryId { get; set; }
@@ -23,3 +21,4 @@ public class DataTableDataRequest
             .Where(filter => !string.IsNullOrWhiteSpace(filter.Search?.Value))
             .ToList() ?? [];
 }
+

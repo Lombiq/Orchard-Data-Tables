@@ -1,11 +1,11 @@
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
+using Lombiq.HelpfulLibraries.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Controllers.Api;
@@ -53,11 +53,10 @@ public class RowsController : Controller
     /// </remarks>
     [IgnoreAntiforgeryToken]
     [HttpGet]
-    public async Task<ActionResult<DataTableDataResponse>> Get(string requestJson)
+    public async Task<ActionResult<DataTableDataResponse>> Get([FromJsonQueryString(Name = "requestJson")] DataTableDataRequest request)
     {
-        if (string.IsNullOrEmpty(requestJson)) return BadRequest();
+        if (request == null) return BadRequest();
 
-        var request = JsonSerializer.Deserialize<DataTableDataRequest>(requestJson);
         var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
         if (dataProvider == null)
         {
@@ -86,11 +85,10 @@ public class RowsController : Controller
     }
 
     public async Task<ActionResult<DataTableDataResponse>> Export(
-        string requestJson,
+        [FromJsonQueryString(Name = "requestJson")] DataTableDataRequest request,
         string name = null,
         bool exportAll = true)
     {
-        var request = JsonSerializer.Deserialize<DataTableDataRequest>(requestJson);
         if (exportAll)
         {
             request.Start = 0;
