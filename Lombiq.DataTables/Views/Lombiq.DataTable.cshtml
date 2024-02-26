@@ -1,29 +1,27 @@
 @using OrchardCore.ResourceManagement
-@using System.Globalization
 @using Lombiq.DataTables.Services
-@using System.Text.Json.Nodes
 
 @inject IEnumerable<IDataTableDataProvider> Providers
 
 @inject IResourceManager ResourceManager
 
 @{
-    var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
+    var viewModel = Model.ViewModel as DataTableDefinitionViewModel ?? new DataTableDefinitionViewModel();
 
-    var pageSize = viewModel?.PageSize ?? Site.PageSize;
-    var skip = viewModel?.Skip ?? 0;
+    var pageSize = viewModel.PageSize ?? Site.PageSize;
+    var skip = viewModel.Skip ?? 0;
 
-    string queryId = viewModel?.QueryId ?? Model.QueryId?.ToString() ?? "";
-    string dataProvider = viewModel?.DataProvider ?? Model.Provider?.ToString() ?? "";
-    var columnsDefinition = viewModel?.ColumnsDefinition ?? await Providers
+    string queryId = viewModel.QueryId ?? Model.QueryId?.ToString() ?? "";
+    string dataProvider = viewModel.DataProvider ?? Model.Provider?.ToString() ?? "";
+    var columnsDefinition = viewModel.ColumnsDefinition ?? await Providers
         .Single(provider => provider.GetType().Name == dataProvider)
         .GetColumnsDefinitionAsync(queryId);
     var columns = columnsDefinition?.Columns.ToList() ?? new List<DataTableColumnDefinition>();
-    var childRowsEnabled = viewModel?.ChildRowsEnabled ?? false;
-    var progressiveLoadingEnabled = viewModel?.ProgressiveLoadingEnabled ?? false;
-    var queryStringParametersLocalStorageKey = viewModel?.QueryStringParametersLocalStorageKey ?? "";
-    var dataTableId = string.IsNullOrEmpty(viewModel?.DataTableId) ? ElementNames.DataTableElementName : viewModel.DataTableId;
-    var dataTableCssClasses = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? "" : viewModel.DataTableCssClasses;
+    var childRowsEnabled = viewModel.ChildRowsEnabled;
+    var progressiveLoadingEnabled = viewModel.ProgressiveLoadingEnabled;
+    var queryStringParametersLocalStorageKey = viewModel.QueryStringParametersLocalStorageKey ?? "";
+    var dataTableId = string.IsNullOrEmpty(viewModel.DataTableId) ? ElementNames.DataTableElementName : viewModel.DataTableId;
+    var dataTableCssClasses = string.IsNullOrEmpty(viewModel.DataTableCssClasses) ? "" : viewModel.DataTableCssClasses;
 
     var defaultSortingColumnIndex = Math.Max(
         0, Math.Max(columns.FindIndex(column => column.Orderable), columns.FindIndex(column => column.Name == columnsDefinition?.DefaultSortingColumnName)));
@@ -31,9 +29,9 @@
     var defaultSortingDirection = columnsDefinition?.DefaultSortingDirection ?? SortingDirection.Ascending;
     var defaultSortingDirectionValue = defaultSortingDirection == SortingDirection.Ascending ? "asc" : "desc";
 
-    var rowsApiUrl = Url.Action(nameof(RowsController.Get), typeof(RowsController).ControllerName(), new { Area = FeatureIds.Area });
-    var childRowApiUrl = Url.Action(nameof(ChildRowsController.Get), typeof(ChildRowsController).ControllerName(), new { Area = FeatureIds.Area });
-    var exportApiUrl = Url.Action(nameof(RowsController.Export), typeof(RowsController).ControllerName(), new { Area = FeatureIds.Area });
+    var rowsApiUrl = Url.Action(nameof(RowsController.Get), typeof(RowsController).ControllerName(), new { FeatureIds.Area });
+    var childRowApiUrl = Url.Action(nameof(ChildRowsController.Get), typeof(ChildRowsController).ControllerName(), new { FeatureIds.Area });
+    var exportApiUrl = Url.Action(nameof(RowsController.Export), typeof(RowsController).ControllerName(), new { FeatureIds.Area });
 
     const string rowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
     const string childRowElementName = ElementNames.DataTableElementName + "__childRow";
@@ -48,13 +46,13 @@
     ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4);
     ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4Buttons);
 
-    dynamic additionalOptions = viewModel?.AdditionalDatatableOptions;
+    dynamic additionalOptions = viewModel.AdditionalDatatableOptions;
     var hasViewAction = (bool)(additionalOptions?.viewAction == true);
 
     var defaultOrder = new[] { new[] { defaultSortingColumnIndex.ToString(), defaultSortingDirectionValue } };
     var dataTablesOptions = new Dictionary<string, object> { ["order"] = defaultOrder };
     if (pageSize > 0) { dataTablesOptions["pageLength"] = pageSize; }
-    if (additionalOptions is JsonObject options)
+    if (viewModel.AdditionalDatatableOptions is { } options)
     {
         foreach (var (key, value) in options)
         {
