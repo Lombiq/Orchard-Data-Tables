@@ -11,6 +11,8 @@ public class DataTableOrder
     public SortingDirection Direction { get; set; }
 
     [JsonPropertyName("direction")]
+    [JsonInclude]
+    [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "It's used for JSON conversion.")]
     private string DirectionString
     {
         get => IsAscending ? "ascending" : "descending";

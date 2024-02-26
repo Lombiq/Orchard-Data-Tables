@@ -21,4 +21,3 @@ public class DataTableDataRequest
             .Where(filter => !string.IsNullOrWhiteSpace(filter.Search?.Value))
             .ToList() ?? [];
 }
-
