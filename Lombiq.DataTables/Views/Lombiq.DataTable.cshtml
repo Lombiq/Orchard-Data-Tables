@@ -1,5 +1,7 @@
 @using OrchardCore.ResourceManagement
 @using Lombiq.DataTables.Services
+@using System.Text.Json
+@using System.Text.Json.Nodes
 
 @inject IEnumerable<IDataTableDataProvider> Providers
 
@@ -46,8 +48,7 @@
     ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4);
     ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4Buttons);
 
-    dynamic additionalOptions = viewModel.AdditionalDatatableOptions;
-    var hasViewAction = (bool)(additionalOptions?.viewAction == true);
+    var hasViewAction = viewModel.AdditionalDatatableOptions?["viewAction"].GetValueKind() == JsonValueKind.True;
 
     var defaultOrder = new[] { new[] { defaultSortingColumnIndex.ToString(), defaultSortingDirectionValue } };
     var dataTablesOptions = new Dictionary<string, object> { ["order"] = defaultOrder };
