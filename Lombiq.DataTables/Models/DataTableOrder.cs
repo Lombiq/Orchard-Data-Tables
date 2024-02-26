@@ -1,4 +1,5 @@
 using Lombiq.DataTables.Constants;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace Lombiq.DataTables.Models;
