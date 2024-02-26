@@ -120,7 +120,7 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
             filteredRows = filteredRows.Where(row =>
                 columnFilters.All(filter =>
                     row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
-                    token?.ToString().Contains(filter.Search.Value, StringComparison.InvariantCulture) == true));
+                    token?.ToString()?.Contains(filter.Search.Value, StringComparison.InvariantCulture) == true));
         }
 
         if (hasSearch)
@@ -133,8 +133,8 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
                 words.TrueForAll(word =>
                     columns.Any(filter =>
                         filter.Searchable &&
-                        row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
-                        PrepareToken(token)?.Contains(word, StringComparison.InvariantCultureIgnoreCase) == true)));
+                        row.GetValueAsJsonNode(filter.Name) is { } jsonNode &&
+                        PrepareToken(jsonNode)?.Contains(word, StringComparison.InvariantCultureIgnoreCase) == true)));
         }
 
         var list = filteredRows.ToList();

@@ -30,7 +30,7 @@ public class ExcelDataTableExportService : IDataTableExportService
         var columns = columnsDefinition.Columns.Where(column => column.Exportable).ToList();
         var response = await dataProvider.GetRowsAsync(request);
         var results = response.Data
-            .Select(item => columns.Select(column => item.ValuesDictionary[column.Name]).ToArray())
+            .Select(item => columns.Select(column => item.GetValueAsJsonNode(column.Name)).ToArray())
             .ToArray();
 
         return CollectionToStream(

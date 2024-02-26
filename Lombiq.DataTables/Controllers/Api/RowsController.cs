@@ -32,7 +32,7 @@ public class RowsController : Controller
     /// <summary>
     /// Gets the current table view's rows.
     /// </summary>
-    /// <param name="requestJson">The request to fulfill serialized as JSON.</param>
+    /// <param name="request">The request to fulfill serialized as JSON.</param>
     /// <returns>The response for this API call.</returns>
     /// <remarks>
     ///   <list type="bullet">
