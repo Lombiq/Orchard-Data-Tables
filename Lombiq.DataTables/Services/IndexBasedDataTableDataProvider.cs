@@ -2,11 +2,11 @@ using Dapper;
 using Lombiq.DataTables.Constants;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Authorization;
-using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using YesSql;
 using YesSql.Indexes;
@@ -60,9 +60,9 @@ public abstract class IndexBasedDataTableDataProvider<TIndex> : DataTableDataPro
         var queryResults = await transaction.Connection.QueryAsync<TIndex>(sql, query.Parameters, transaction);
 
         var rowList = SubstituteByColumn(
-                (await TransformAsync(queryResults)).Select(JObject.FromObject),
+                (await TransformAsync(queryResults)).Select(item => JsonSerializer.SerializeToNode(item)?.AsObject()),
                 columnsDefinition.Columns.ToList())
-            .Select((item, index) => new DataTableRow(index, JObject.FromObject(item)))
+            .Select((item, index) => new DataTableRow(index, JsonSerializer.SerializeToNode(item)?.AsObject()))
             .ToList();
 
         var liquidColumns = columnsDefinition

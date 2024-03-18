@@ -1,11 +1,8 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Lombiq.DataTables.Models;
 
-[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
 public class DataTableDataRequest
 {
     public string QueryId { get; set; }

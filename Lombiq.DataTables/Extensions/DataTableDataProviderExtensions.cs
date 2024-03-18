@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
-using Newtonsoft.Json;
 using OrchardCore.Mvc.Core.Utilities;
 using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 using static Lombiq.DataTables.Constants.SortingDirection;
 
@@ -167,7 +167,7 @@ public static class DataTableDataProviderExtensions
         IHttpContextAccessor hca,
         LinkGenerator linkGenerator,
         IStringLocalizer<ActionsDescriptor> actionsStringLocalizer) =>
-        JsonConvert.SerializeObject(GetCustomActions(
+        JsonSerializer.Serialize(GetCustomActions(
             dataProvider,
             contentItemId,
             canDelete,

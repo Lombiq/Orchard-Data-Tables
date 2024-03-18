@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
-using Newtonsoft.Json.Linq;
 using OrchardCore.ContentManagement;
 using OrchardCore.DisplayManagement;
 using OrchardCore.Liquid;
 using System;
 using System.IO;
 using System.Text.Encodings.Web;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Liquid;
@@ -71,7 +71,7 @@ public class ActionsLiquidFilter : ILiquidFilter
             FluidValues.Object => input!.ToObjectValue() switch
             {
                 ActionsDescriptor model => FromObjectAsync(model, title, returnUrl),
-                JToken jToken => FromObjectAsync(jToken.ToObject<ActionsDescriptor>(), title, returnUrl),
+                JsonNode jsonNode => FromObjectAsync(jsonNode.ToObject<ActionsDescriptor>(), title, returnUrl),
                 { } unknown => throw GetException(unknown),
                 _ => throw new ArgumentNullException(nameof(input)),
             },

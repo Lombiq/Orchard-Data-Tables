@@ -1,13 +1,12 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Lombiq.DataTables.Models;
 
-[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
 public class DataTableSearchParameters
 {
     public string Value { get; set; }
 
-    [JsonProperty(PropertyName = "regex")]
+    [JsonPropertyName("regex")]
     public bool IsRegex { get; set; }
 }
