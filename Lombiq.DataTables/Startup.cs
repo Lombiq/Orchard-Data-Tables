@@ -4,7 +4,6 @@ using Lombiq.DataTables.Services;
 using Lombiq.DataTables.TagHelpers;
 using Lombiq.HelpfulLibraries.AspNetCore.Middlewares;
 using Lombiq.HelpfulLibraries.OrchardCore.DependencyInjection;
-using Lombiq.HelpfulLibraries.OrchardCore.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,8 +40,6 @@ public class Startup : StartupBase
         services.AddScoped<IDeferredTask, IndexGeneratorDeferredTask>();
 
         services.AddDataTableDataProvider<DeletedContentItemDataTableDataProvider>();
-
-        AdminRouteAttributeRouteMapper.AddToServices(services);
     }
 
     public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes, IServiceProvider serviceProvider) =>
