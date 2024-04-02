@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
@@ -46,7 +45,7 @@ public class DataTableRow
         ValuesDictionary.GetMaybe(name) switch
         {
             JsonNode node => node,
-            { } otherValue => JsonSerializer.SerializeToNode(otherValue),
+            { } otherValue => JObject.FromObject(otherValue),
             null => null,
         };
 }

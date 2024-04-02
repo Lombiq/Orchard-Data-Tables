@@ -6,7 +6,7 @@ using OrchardCore.ContentManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using YesSql;
 using YesSql.Indexes;
@@ -60,9 +60,9 @@ public abstract class IndexBasedDataTableDataProvider<TIndex> : DataTableDataPro
         var queryResults = await transaction.Connection.QueryAsync<TIndex>(sql, query.Parameters, transaction);
 
         var rowList = SubstituteByColumn(
-                (await TransformAsync(queryResults)).Select(item => JsonSerializer.SerializeToNode(item)?.AsObject()),
+                (await TransformAsync(queryResults)).Select(item => JObject.FromObject(item)),
                 columnsDefinition.Columns.ToList())
-            .Select((item, index) => new DataTableRow(index, JsonSerializer.SerializeToNode(item)?.AsObject()))
+            .Select((item, index) => new DataTableRow(index, JObject.FromObject(item)))
             .ToList();
 
         var liquidColumns = columnsDefinition

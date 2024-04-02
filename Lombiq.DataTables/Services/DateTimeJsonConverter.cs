@@ -32,8 +32,8 @@ public class DateTimeJsonConverter : JsonConverter<DateTime>
     }
 
     public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options) =>
-        JsonSerializer
-            .SerializeToNode(new DateTimeTicks(value.Ticks, value.Kind))!
+        JObject
+            .FromObject(new DateTimeTicks(value.Ticks, value.Kind))!
             .WriteTo(writer, options);
 
     public sealed record DateTimeTicks(long Ticks, DateTimeKind Kind)

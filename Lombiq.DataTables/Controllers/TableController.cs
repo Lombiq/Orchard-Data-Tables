@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OrchardCore.Admin;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Controllers;
@@ -23,7 +23,7 @@ public class TableController : Controller
         var provider = _dataTableDataProviders.Single(provider => provider.Name == providerName);
         if (string.IsNullOrEmpty(queryId)) queryId = providerName;
 
-        var additionalDatatableOptions = JsonSerializer.SerializeToNode(new { paging, viewAction })!.AsObject();
+        var additionalDatatableOptions = JObject.FromObject(new { paging, viewAction })!.AsObject();
         var definition = new DataTableDefinitionViewModel(additionalDatatableOptions)
         {
             DataProvider = providerName,

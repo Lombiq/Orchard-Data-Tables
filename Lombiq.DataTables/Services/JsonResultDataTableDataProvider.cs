@@ -44,7 +44,7 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
 
         var json = results[0] is JsonObject
             ? results.Cast<JsonObject>()
-            : results.Select(result => JsonSerializer.SerializeToNode(result)?.AsObject());
+            : results.Select(result => JObject.FromObject(result));
         if (!string.IsNullOrEmpty(order.Column)) json = OrderByColumn(json, order);
 
         if (request.Search?.IsRegex == true)
