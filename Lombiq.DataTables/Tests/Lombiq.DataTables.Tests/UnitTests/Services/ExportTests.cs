@@ -12,7 +12,6 @@ using Shouldly;
 using SixLabors.Fonts;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -27,15 +26,15 @@ public class ExportTests
     // ClosedXML looks at the CurrentCulture to initialize the workbook's culture.
     private static readonly CultureInfo _worksheetCulture = new("en-US", useUserOverride: false);
 
-    public static readonly TheoryData<ExportTableShouldMatchExpectationInput> ExportTableShouldMatchExpectationInputs =
+    public static readonly TheoryData<DataTableShouldMatchExpectationInput> ExportTableShouldMatchExpectationInputs =
         new(GenerateExportTableShouldMatchExpectationInputs());
 
     [Theory]
-    // ExportTableShouldMatchExpectationInput would need to implement IXunitSerializable but it works like this anyway.
+    // DataTableShouldMatchExpectationInput would need to implement IXunitSerializable but it works like this anyway.
 #pragma warning disable xUnit1045 // Avoid using TheoryData type arguments that might not be serializable
     [MemberData(nameof(ExportTableShouldMatchExpectationInputs))]
 #pragma warning restore xUnit1045 // Avoid using TheoryData type arguments that might not be serializable
-    public async Task ExportTableShouldMatchExpectation(ExportTableShouldMatchExpectationInput input)
+    public async Task ExportTableShouldMatchExpectation(DataTableShouldMatchExpectationInput input)
     {
         // ClosedXML looks at the CurrentCulture to initialize the workbook's culture. They also to set it like this in
         // their own unit tests. See:
@@ -107,7 +106,7 @@ public class ExportTests
         }
     }
 
-    public static IEnumerable<ExportTableShouldMatchExpectationInput> GenerateExportTableShouldMatchExpectationInputs()
+    public static IEnumerable<DataTableShouldMatchExpectationInput> GenerateExportTableShouldMatchExpectationInputs()
     {
         var dataset = new[]
         {
@@ -136,7 +135,7 @@ public class ExportTests
             ("MagicWords", "Magic Words", true),
         };
 
-        yield return new ExportTableShouldMatchExpectationInput(
+        yield return new DataTableShouldMatchExpectationInput(
             "Show full data set.",
             dataset,
             columns,
@@ -145,7 +144,7 @@ public class ExportTests
             10,
             0);
 
-        yield return new ExportTableShouldMatchExpectationInput(
+        yield return new DataTableShouldMatchExpectationInput(
             "Make last column not exportable.",
             dataset,
             new[]
@@ -159,7 +158,7 @@ public class ExportTests
             10,
             0);
 
-        yield return new ExportTableShouldMatchExpectationInput(
+        yield return new DataTableShouldMatchExpectationInput(
             "Test pagination.",
             dataset,
             columns,
@@ -168,7 +167,7 @@ public class ExportTests
             10,
             0);
 
-        yield return new ExportTableShouldMatchExpectationInput(
+        yield return new DataTableShouldMatchExpectationInput(
             "Test sorting on 2nd column.",
             dataset,
             columns,
@@ -177,7 +176,7 @@ public class ExportTests
             10,
             1);
 
-        yield return new ExportTableShouldMatchExpectationInput(
+        yield return new DataTableShouldMatchExpectationInput(
             "Test sorting on 3nd column.",
             dataset,
             columns,
@@ -186,7 +185,7 @@ public class ExportTests
             10,
             2);
 
-        yield return new ExportTableShouldMatchExpectationInput(
+        yield return new DataTableShouldMatchExpectationInput(
             "Verify boolean formatting.",
             [
                 [1, true],
@@ -207,7 +206,7 @@ public class ExportTests
         // consistency.
 #pragma warning disable IDE0300 // Simplify collection initialization
         // The date value should be the same, only the formatting changes.
-        yield return new ExportTableShouldMatchExpectationInput(
+        yield return new DataTableShouldMatchExpectationInput(
             "Verify custom number formatting.",
             new[]
             {
@@ -272,24 +271,5 @@ public class ExportTests
         }
 
         return null;
-    }
-
-    [SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "This is just an input class for a unit test.")]
-    public class ExportTableShouldMatchExpectationInput(
-        string note,
-        object[][] dataSet,
-        (string Name, string Text, bool Exportable)[] columns,
-        string[][] pattern,
-        int start,
-        int length,
-        int orderColumnIndex)
-    {
-        public string Note { get; set; } = note;
-        public object[][] DataSet { get; set; } = dataSet;
-        public (string Name, string Text, bool Exportable)[] Columns { get; set; } = columns;
-        public string[][] Pattern { get; set; } = pattern;
-        public int Start { get; set; } = start;
-        public int Length { get; set; } = length;
-        public int OrderColumnIndex { get; set; } = orderColumnIndex;
     }
 }

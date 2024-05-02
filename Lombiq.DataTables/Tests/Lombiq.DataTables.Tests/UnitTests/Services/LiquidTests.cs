@@ -28,18 +28,20 @@ public class LiquidTests
 {
     private static readonly string[] Separator = ["||"];
 
+    public static readonly TheoryData<DataTableShouldMatchExpectationInput> LiquidEvaluationMatchExpectationInputs =
+        new(GenerateLiquidEvaluationMatchExpectationInputs());
+
     [Theory]
-    [MemberData(nameof(Data))]
-    public async Task LiquidEvaluationMatchExpectation(
-        string note,
-        object[][] dataSet,
-        (string Name, string Text, bool Exportable)[] columns,
-        string[][] pattern,
-        int start,
-        int length,
-        int orderColumnIndex)
+    // DataTableShouldMatchExpectationInput would need to implement IXunitSerializable but it works like this anyway.
+#pragma warning disable xUnit1045 // Avoid using TheoryData type arguments that might not be serializable
+    [MemberData(nameof(LiquidEvaluationMatchExpectationInputs))]
+#pragma warning restore xUnit1045 // Avoid using TheoryData type arguments that might not be serializable
+    public async Task LiquidEvaluationMatchExpectation(DataTableShouldMatchExpectationInput input)
     {
-        note.ShouldNotBeEmpty("Please state the purpose of this input set!");
+        input.Note.ShouldNotBeEmpty("Please state the purpose of this input set!");
+
+        var columns = input.Columns;
+        var pattern = input.Pattern;
 
         // Everything in this section of code is required for the Liquid renderer to work. Otherwise it will throw NRE
         // or render empty string results. On the final line shellScope.StartAsyncFlow() initializes the static variable
@@ -72,11 +74,11 @@ public class LiquidTests
 
         using var memoryCache = new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()));
         var (provider, request) = MockDataProviderHelper.GetProviderAndRequest(
-            dataSet,
+            input.DataSet,
             columns,
-            start,
-            length,
-            orderColumnIndex,
+            input.Start,
+            input.Length,
+            input.OrderColumnIndex,
             memoryCache,
             shellContext.ServiceProvider);
         var rows = (await provider.GetRowsAsync(request)).Data.ToList();
@@ -93,7 +95,7 @@ public class LiquidTests
         }
     }
 
-    public static IEnumerable<object[]> Data()
+    public static IEnumerable<DataTableShouldMatchExpectationInput> GenerateLiquidEvaluationMatchExpectationInputs()
     {
         // Simplified collection initialization for the first two would leave the third one as it is. Keeping for
         // consistency.
@@ -107,9 +109,8 @@ public class LiquidTests
 #pragma warning restore IDE0300 // Simplify collection initialization
         var today = DateTime.Today.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
 
-        yield return new object[]
-        {
-            // By "built-in" we mean only those implemented in Fluid, not the ones added by OrchardCore.
+        // By "built-in" we mean only those implemented in Fluid, not the ones added by OrchardCore.
+        yield return new DataTableShouldMatchExpectationInput(
             "Demonstrate some built-in filters.",
             dataset,
             new[]
@@ -123,7 +124,6 @@ public class LiquidTests
                 .ToArray(),
             0,
             10,
-            1,
-        };
+            1);
     }
 }
