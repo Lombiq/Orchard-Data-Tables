@@ -12,6 +12,7 @@ using Shouldly;
 using SixLabors.Fonts;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -26,16 +27,15 @@ public class ExportTests
     // ClosedXML looks at the CurrentCulture to initialize the workbook's culture.
     private static readonly CultureInfo _worksheetCulture = new("en-US", useUserOverride: false);
 
+    public static readonly TheoryData<ExportTableShouldMatchExpectationInput> ExportTableShouldMatchExpectationInputs =
+        new(GenerateExportTableShouldMatchExpectationInputs());
+
     [Theory]
-    [MemberData(nameof(Data))]
-    public async Task ExportTableShouldMatchExpectation(
-        string note,
-        object[][] dataSet,
-        (string Name, string Text, bool Exportable)[] columns,
-        string[][] pattern,
-        int start,
-        int length,
-        int orderColumnIndex)
+    // ExportTableShouldMatchExpectationInput would need to implement IXunitSerializable but it works like this anyway.
+#pragma warning disable xUnit1045 // Avoid using TheoryData type arguments that might not be serializable
+    [MemberData(nameof(ExportTableShouldMatchExpectationInputs))]
+#pragma warning restore xUnit1045 // Avoid using TheoryData type arguments that might not be serializable
+    public async Task ExportTableShouldMatchExpectation(ExportTableShouldMatchExpectationInput input)
     {
         // ClosedXML looks at the CurrentCulture to initialize the workbook's culture. They also to set it like this in
         // their own unit tests. See:
@@ -43,15 +43,18 @@ public class ExportTests
         // Since this is an async method, it runs in its own thread; so this has no effect on other tests.
         Thread.CurrentThread.CurrentCulture = _worksheetCulture;
 
-        note.ShouldNotBeEmpty("Please state the purpose of this input set!");
+        input.Note.ShouldNotBeEmpty("Please state the purpose of this input set!");
+
+        var columns = input.Columns;
+        var pattern = input.Pattern;
 
         using var memoryCache = new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()));
         var (provider, request) = MockDataProviderHelper.GetProviderAndRequest(
-            dataSet,
+            input.DataSet,
             columns,
-            start,
-            length,
-            orderColumnIndex,
+            input.Start,
+            input.Length,
+            input.OrderColumnIndex,
             memoryCache);
 
         var service = MockHelper.CreateAutoMockerInstance<ExcelDataTableExportService>(
@@ -104,7 +107,7 @@ public class ExportTests
         }
     }
 
-    public static IEnumerable<object[]> Data()
+    public static IEnumerable<ExportTableShouldMatchExpectationInput> GenerateExportTableShouldMatchExpectationInputs()
     {
         var dataset = new[]
         {
@@ -133,19 +136,16 @@ public class ExportTests
             ("MagicWords", "Magic Words", true),
         };
 
-        yield return new object[]
-        {
+        yield return new ExportTableShouldMatchExpectationInput(
             "Show full data set.",
             dataset,
             columns,
             "1,z,foo;2,y,bar;10,x,baz".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
             10,
-            0,
-        };
+            0);
 
-        yield return new object[]
-        {
+        yield return new ExportTableShouldMatchExpectationInput(
             "Make last column not exportable.",
             dataset,
             new[]
@@ -157,57 +157,47 @@ public class ExportTests
             "1,z;2,y;10,x".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
             10,
-            0,
-        };
+            0);
 
-        yield return new object[]
-        {
+        yield return new ExportTableShouldMatchExpectationInput(
             "Test pagination.",
             dataset,
             columns,
             new[] { "10,x,baz".Split(',') },
             2,
             10,
-            0,
-        };
+            0);
 
-        yield return new object[]
-        {
+        yield return new ExportTableShouldMatchExpectationInput(
             "Test sorting on 2nd column.",
             dataset,
             columns,
             "10,x,baz;2,y,bar;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
             10,
-            1,
-        };
+            1);
 
-        yield return new object[]
-        {
+        yield return new ExportTableShouldMatchExpectationInput(
             "Test sorting on 3nd column.",
             dataset,
             columns,
             "2,y,bar;10,x,baz;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
             10,
-            2,
-        };
+            2);
 
-        yield return new object[]
-        {
+        yield return new ExportTableShouldMatchExpectationInput(
             "Verify boolean formatting.",
-            new[]
-            {
+            [
                 [1, true],
                 [2, true],
-                new object[] { 3, false },
-            },
+                [3, false],
+            ],
             new[] { ("Num", "Numbers", true), ("Bool", "Booleans", true) },
             "1,Yes;2,Yes;3,No".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
             10,
-            0,
-        };
+            0);
 
         var date1 = new DateTime(2020, 11, 26, 23, 42, 01, DateTimeKind.Utc);
         var date2 = new DateTime(2020, 11, 26, 13, 42, 01, DateTimeKind.Utc);
@@ -217,8 +207,7 @@ public class ExportTests
         // consistency.
 #pragma warning disable IDE0300 // Simplify collection initialization
         // The date value should be the same, only the formatting changes.
-        yield return new object[]
-        {
+        yield return new ExportTableShouldMatchExpectationInput(
             "Verify custom number formatting.",
             new[]
             {
@@ -238,8 +227,7 @@ public class ExportTests
                 .ToArray(),
             0,
             10,
-            0,
-        };
+            0);
 #pragma warning restore IDE0300 // Simplify collection initialization
     }
 
@@ -284,5 +272,24 @@ public class ExportTests
         }
 
         return null;
+    }
+
+    [SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "This is just an input class for a unit test.")]
+    public class ExportTableShouldMatchExpectationInput(
+        string note,
+        object[][] dataSet,
+        (string Name, string Text, bool Exportable)[] columns,
+        string[][] pattern,
+        int start,
+        int length,
+        int orderColumnIndex)
+    {
+        public string Note { get; set; } = note;
+        public object[][] DataSet { get; set; } = dataSet;
+        public (string Name, string Text, bool Exportable)[] Columns { get; set; } = columns;
+        public string[][] Pattern { get; set; } = pattern;
+        public int Start { get; set; } = start;
+        public int Length { get; set; } = length;
+        public int OrderColumnIndex { get; set; } = orderColumnIndex;
     }
 }
