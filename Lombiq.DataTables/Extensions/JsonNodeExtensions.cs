@@ -6,6 +6,6 @@ public static class JsonNodeExtensions
     /// Checks if the provided <paramref name="node"/> is object and has a <c>Type</c> property, and if its value
     /// matches <typeparamref name="T"/>.
     /// </summary>
-    public static bool HasTypeProperty<T>(this JsonNode node) =>
+    public static bool HasMatchingTypeProperty<T>(this JsonNode node) =>
         node is JsonObject jsonObject && jsonObject["Type"]?.ToString() == typeof(T).Name;
 }
