@@ -62,8 +62,7 @@ public class MockDataProvider : JsonResultDataTableDataProvider
 
         return new(_dataSet.Select(row => JsonSerializer.SerializeToNode(
             columns.ToDictionary(column => column.Name, column => row[column.Index]),
-            _options
-            )));
+            _options)));
     }
 
     protected override DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) => Definition;
