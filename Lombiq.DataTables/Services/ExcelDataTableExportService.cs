@@ -113,18 +113,18 @@ public class ExcelDataTableExportService : IDataTableExportService
 
     private static void CreateTableCell(IXLCell cell, JsonNode node, string dateFormat, IStringLocalizer localizer)
     {
-        if (node.HasTypeProperty<ExportLink>())
+        if (node.HasMatchingTypeProperty<ExportLink>())
         {
             var link = node.ToObject<ExportLink>();
             if (link != null) cell.FormulaA1 = $"HYPERLINK(\"{link.Url}\",\"{link.Text}\")";
         }
-        else if (node.HasTypeProperty<ExportDate>())
+        else if (node.HasMatchingTypeProperty<ExportDate>())
         {
             var date = node.ToObject<ExportDate>();
             cell.Value = (DateTime)date!;
             cell.Style.DateFormat.Format = date?.ExcelFormat ?? dateFormat;
         }
-        else if (node.HasTypeProperty<DateTimeJsonConverter.DateTimeTicks>())
+        else if (node.HasMatchingTypeProperty<DateTimeJsonConverter.DateTimeTicks>())
         {
             cell.Value = node.ToObject<DateTimeJsonConverter.DateTimeTicks>().ToDateTime();
             cell.Style.DateFormat.Format = dateFormat;

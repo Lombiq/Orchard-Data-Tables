@@ -33,7 +33,7 @@ public class ExportLink
     public override string ToString() => Text.ToString();
 
     public static bool IsInstance(JsonObject jsonObject) =>
-        jsonObject.HasTypeProperty<ExportLink>();
+        jsonObject.HasMatchingTypeProperty<ExportLink>();
 
     public static string? GetText(JsonObject jObject) => jObject[nameof(Text)]?.ToString();
 }

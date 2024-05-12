@@ -164,15 +164,15 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
         {
             if (item.SelectNode(jsonPathQuery) is not { } node) return new(item, OrderBy: null);
 
-            if (node.HasTypeProperty<ExportLink>())
+            if (node.HasMatchingTypeProperty<ExportLink>())
             {
                 node = ExportLink.GetText(node.AsObject());
             }
-            else if (node.HasTypeProperty<ExportDate>())
+            else if (node.HasMatchingTypeProperty<ExportDate>())
             {
                 node = (DateTime)node.ToObject<ExportDate>();
             }
-            else if (node.HasTypeProperty<DateTimeJsonConverter.DateTimeTicks>())
+            else if (node.HasMatchingTypeProperty<DateTimeJsonConverter.DateTimeTicks>())
             {
                 node = node.ToObject<DateTimeJsonConverter.DateTimeTicks>().ToDateTime();
             }

@@ -22,7 +22,7 @@ public class ExportDate
     public string ExcelFormat { get; set; }
 
     public static bool IsInstance(JsonObject jsonObject) =>
-        jsonObject.HasTypeProperty<ExportDate>();
+        jsonObject.HasMatchingTypeProperty<ExportDate>();
 
     public static string GetText(JsonObject jsonObject) =>
         ((LocalDate)jsonObject.ToObject<ExportDate>()).ToShortDateString();

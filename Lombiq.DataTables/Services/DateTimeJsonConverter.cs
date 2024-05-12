@@ -18,12 +18,12 @@ public class DateTimeJsonConverter : JsonConverter<DateTime>
             return DateTime.Parse(node.GetValue<string>(), CultureInfo.InvariantCulture);
         }
 
-        if (node.HasTypeProperty<DateTimeTicks>())
+        if (node.HasMatchingTypeProperty<DateTimeTicks>())
         {
             return node.ToObject<DateTimeTicks>().ToDateTime();
         }
 
-        if (node.HasTypeProperty<ExportDate>())
+        if (node.HasMatchingTypeProperty<ExportDate>())
         {
             return (DateTime)node.ToObject<ExportDate>();
         }
