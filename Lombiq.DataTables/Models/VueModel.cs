@@ -80,6 +80,7 @@ public class VueModel
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("hiddenInput")]
+    [JsonInclude]
     [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "It's used for JSON conversion.")]
     private object HiddenInputSerialize
     {
