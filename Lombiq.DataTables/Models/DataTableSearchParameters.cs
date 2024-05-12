@@ -2,9 +2,9 @@ using System.Text.Json.Serialization;
 
 namespace Lombiq.DataTables.Models;
 
-[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
 public class DataTableSearchParameters
 {
+    [JsonPropertyName("value")]
     public string Value { get; set; }
 
     [JsonPropertyName("regex")]

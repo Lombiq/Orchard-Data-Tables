@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Models;
 
-[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
 public class VueModel
 {
     /// <summary>
@@ -22,6 +21,7 @@ public class VueModel
     /// <c>component</c> property client-side. Even then, you need to provide either this or <see cref="Sort"/> if the
     /// column is meant to be <see cref="DataTableColumnDefinition.Orderable"/>.
     /// </summary>
+    [JsonPropertyName("text")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string Text { get; set; }
 
@@ -29,6 +29,7 @@ public class VueModel
     /// Gets or sets the HTML content to be rendered inside the cell. When used <see cref="Text"/> and <see
     /// cref="Badge"/> are ignored.
     /// </summary>
+    [JsonPropertyName("html")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string Html { get; set; }
 
@@ -36,12 +37,14 @@ public class VueModel
     /// Gets or sets the value used for sorting. If <see langword="null"/> or empty, the value of <see cref="Text"/> is
     /// used for sorting.
     /// </summary>
+    [JsonPropertyName("sort")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public object Sort { get; set; }
 
     /// <summary>
     /// Gets or sets the URL to be used in the <c>href</c> attributes. When this is used <see cref="Html"/> is ignored.
     /// </summary>
+    [JsonPropertyName("href")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string Href { get; set; }
 
@@ -53,6 +56,7 @@ public class VueModel
     /// Gets or sets the Bootstrap badge class of the cell. To be used along with <see cref="Text"/> and optionally <see
     /// cref="Href"/>.
     /// </summary>
+    [JsonPropertyName("badge")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public object Badge { get; set; }
 
@@ -60,6 +64,7 @@ public class VueModel
     /// Gets or sets the data used as extra information to be consumed by <c>special</c> event so the contents can be
     /// updated with JavaScript on client side before each render.
     /// </summary>
+    [JsonPropertyName("special")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public object Special { get; set; }
 
@@ -156,19 +161,21 @@ public class VueModel
             ["all"] = localizer["All"].Value,
         };
 
-    [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
     public class HiddenInputValue
     {
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [JsonPropertyName("value")]
         public string Value { get; set; }
     }
 
-    [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
     public class MultipleHrefValue
     {
+        [JsonPropertyName("url")]
         public string Url { get; set; }
 
+        [JsonPropertyName("text")]
         public string Text { get; set; }
     }
 

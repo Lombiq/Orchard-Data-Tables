@@ -5,13 +5,14 @@ using System.Text.Json.Serialization;
 
 namespace Lombiq.DataTables.Models;
 
-[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
 public class DataTableRow
 {
     [JsonExtensionData]
     [JsonInclude]
+    [JsonPropertyName("valuesDictionary")]
     internal IDictionary<string, object> ValuesDictionary { get; set; } = new Dictionary<string, object>();
 
+    [JsonPropertyName("id")]
     public int Id { get; set; }
 
     public string this[string name]
