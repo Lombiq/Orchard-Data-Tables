@@ -1,5 +1,5 @@
-using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace Lombiq.DataTables.Models;
 
@@ -13,18 +13,18 @@ public class VueModelCheckbox
         "CA1822:Mark members as static",
         Justification = "It's necessary to be instance-level for JSON serialization.")]
 #pragma warning restore IDE0079 // Remove unnecessary suppression
-    [JsonProperty("type")]
+    [JsonPropertyName("type")]
     public string Type => "checkbox";
 
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
 
-    [JsonProperty("text")]
+    [JsonPropertyName("text")]
     public string Text { get; set; }
 
-    [JsonProperty("value")]
+    [JsonPropertyName("value")]
     public bool? Value { get; set; }
 
-    [JsonProperty("classes")]
+    [JsonPropertyName("classes")]
     public string Classes { get; set; } = string.Empty;
 }

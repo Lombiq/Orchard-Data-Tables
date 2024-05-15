@@ -4,7 +4,6 @@ using Lombiq.DataTables.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 using OrchardCore.DisplayManagement.Liquid;
 using OrchardCore.Liquid.Services;
 using OrchardCore.Localization;
@@ -12,12 +11,21 @@ using OrchardCore.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Tests;
 
 public class MockDataProvider : JsonResultDataTableDataProvider
 {
+    private static readonly JsonSerializerOptions _options = new()
+    {
+        Converters =
+        {
+            new DateTimeJsonConverter(),
+        },
+    };
+
     public DataTableColumnsDefinition Definition { get; set; }
     private readonly object[][] _dataSet;
 
@@ -52,8 +60,9 @@ public class MockDataProvider : JsonResultDataTableDataProvider
             .Columns
             .Select((item, index) => new { item.Name, Index = index });
 
-        return new(_dataSet.Select(row =>
-            JObject.FromObject(columns.ToDictionary(column => column.Name, column => row[column.Index]))));
+        return new(_dataSet.Select(row => JsonSerializer.SerializeToNode(
+            columns.ToDictionary(column => column.Name, column => row[column.Index]),
+            _options)));
     }
 
     protected override DataTableColumnsDefinition GetColumnsDefinitionInner(string queryId) => Definition;

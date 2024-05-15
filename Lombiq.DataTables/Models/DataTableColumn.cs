@@ -1,14 +1,21 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Lombiq.DataTables.Models;
 
-[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
 public class DataTableColumn
 {
+    [JsonPropertyName("data")]
     public string Data { get; set; }
+
+    [JsonPropertyName("name")]
     public string Name { get; set; }
+
+    [JsonPropertyName("searchable")]
     public bool Searchable { get; set; }
+
+    [JsonPropertyName("orderable")]
     public bool Orderable { get; set; }
+
+    [JsonPropertyName("search")]
     public DataTableSearchParameters Search { get; set; }
 }

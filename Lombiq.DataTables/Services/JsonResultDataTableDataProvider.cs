@@ -1,9 +1,10 @@
 using Lombiq.DataTables.Models;
 using Microsoft.Extensions.Localization;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Services;
@@ -41,7 +42,9 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
 
         if (metaData.CountFiltered >= 0) recordsFiltered = metaData.CountFiltered;
 
-        var json = results[0] is JObject ? results.Cast<JObject>() : results.Select(JObject.FromObject);
+        var json = results[0] is JsonObject
+            ? results.Cast<JsonObject>()
+            : results.Select(result => JObject.FromObject(result));
         if (!string.IsNullOrEmpty(order.Column)) json = OrderByColumn(json, order);
 
         if (request.Search?.IsRegex == true)
@@ -101,12 +104,12 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
             string searchValue,
             IReadOnlyCollection<DataTableColumn> columnFilters)
     {
-        static string PrepareToken(JToken token) =>
-            token switch
+        static string PrepareToken(JsonNode node) =>
+            node switch
             {
-                JObject link when ExportLink.IsInstance(link) => ExportLink.GetText(link),
-                JObject date when ExportDate.IsInstance(date) => ExportDate.GetText(date),
-                { } => token.ToString(),
+                JsonObject link when ExportLink.IsInstance(link) => ExportLink.GetText(link),
+                JsonObject date when ExportDate.IsInstance(date) => ExportDate.GetText(date),
+                { } => node.ToString(),
                 null => null,
             };
 
@@ -117,7 +120,7 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
             filteredRows = filteredRows.Where(row =>
                 columnFilters.All(filter =>
                     row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
-                    token?.ToString().Contains(filter.Search.Value, StringComparison.InvariantCulture) == true));
+                    token?.ToString()?.Contains(filter.Search.Value, StringComparison.InvariantCulture) == true));
         }
 
         if (hasSearch)
@@ -130,8 +133,8 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
                 words.TrueForAll(word =>
                     columns.Any(filter =>
                         filter.Searchable &&
-                        row.ValuesDictionary.TryGetValue(filter.Name, out var token) &&
-                        PrepareToken(token)?.Contains(word, StringComparison.InvariantCultureIgnoreCase) == true)));
+                        row.GetValueAsJsonNode(filter.Name) is { } jsonNode &&
+                        PrepareToken(jsonNode)?.Contains(word, StringComparison.InvariantCultureIgnoreCase) == true)));
         }
 
         var list = filteredRows.ToList();
@@ -139,41 +142,74 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
     }
 
     /// <summary>
-    /// When overridden in a derived class it gets the content which is then turned into <see cref="JToken"/> if
+    /// When overridden in a derived class it gets the content which is then turned into <see cref="JsonNode"/> if
     /// necessary and then queried down using the column names into a dictionary.
     /// </summary>
     /// <param name="request">The input of <see cref="GetRowsAsync"/>.</param>
     /// <returns>A list of results or <see cref="JObject"/>s.</returns>
     protected abstract Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request);
 
-    private IEnumerable<JObject> OrderByColumn(IEnumerable<JObject> json, DataTableOrder order)
+    private static IEnumerable<JsonObject> OrderByColumn(IEnumerable<JsonObject> json, DataTableOrder order)
     {
         var orderColumnName = order.Column.Replace('_', '.');
 
-        JToken Selector(JObject x)
-        {
-            var jToken = x.SelectToken(orderColumnName);
+        var intermediate = json.Select(item => OrderByColumnItem.Create(item, orderColumnName));
 
-            if (jToken is JObject jObject)
+        return (order.IsAscending ? intermediate.Order() : intermediate.OrderDescending()).Select(item => item.Original);
+    }
+
+    private sealed record OrderByColumnItem(JsonObject Original, IComparable OrderBy) : IComparable
+    {
+        public static OrderByColumnItem Create(JsonObject item, string jsonPathQuery)
+        {
+            if (item.SelectNode(jsonPathQuery) is not { } node) return new(item, OrderBy: null);
+
+            if (node.HasMatchingTypeProperty<ExportLink>())
             {
-                if (jObject.ContainsKey(nameof(ExportLink.Text)))
+                node = ExportLink.GetText(node.AsObject());
+            }
+            else if (node.HasMatchingTypeProperty<ExportDate>())
+            {
+                node = (DateTime)node.ToObject<ExportDate>();
+            }
+            else if (node.HasMatchingTypeProperty<DateTimeJsonConverter.DateTimeTicks>())
+            {
+                node = node.ToObject<DateTimeJsonConverter.DateTimeTicks>().ToDateTime();
+            }
+
+            var orderBy = node switch
+            {
+                null => null,
+                JsonValue value => value.ToComparable(),
+                _ => node.ToString().ToUpperInvariant(),
+            };
+
+            return new(item, orderBy);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var thisOrderBy = OrderBy ?? string.Empty;
+            var thatOrderBy = (obj as OrderByColumnItem)?.OrderBy ?? string.Empty;
+
+            if (thisOrderBy.GetType() != thatOrderBy.GetType())
+            {
+                if (thisOrderBy is decimal && decimal.TryParse(thatOrderBy.ToString(), out var thatDecimal))
                 {
-                    jToken = jObject[nameof(ExportLink.Text)];
+                    thatOrderBy = thatDecimal;
                 }
-                else if (ExportDate.IsInstance(jObject))
+                else if (thatOrderBy is decimal && decimal.TryParse(thisOrderBy.ToString(), out var thisDecimal))
                 {
-                    jToken = (DateTime)jToken.ToObject<ExportDate>();
+                    thisOrderBy = thisDecimal;
+                }
+                else
+                {
+                    thisOrderBy = thisOrderBy.ToString() ?? string.Empty;
+                    thatOrderBy = thatOrderBy.ToString() ?? string.Empty;
                 }
             }
 
-            return jToken switch
-            {
-                null => null,
-                JValue jValue when jValue.Type != JTokenType.String => jValue,
-                _ => jToken.ToString().ToUpperInvariant(),
-            };
+            return thisOrderBy.CompareTo(thatOrderBy);
         }
-
-        return order.IsAscending ? json.OrderBy(Selector) : json.OrderByDescending(Selector);
     }
 }
