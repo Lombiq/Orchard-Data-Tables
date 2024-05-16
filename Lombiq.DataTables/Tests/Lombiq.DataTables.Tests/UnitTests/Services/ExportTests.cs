@@ -3,6 +3,7 @@ using ClosedXML.Graphics;
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
 using Lombiq.DataTables.Tests.Helpers;
+using Lombiq.HelpfulLibraries.Common.Utilities;
 using Lombiq.Tests.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -25,16 +26,15 @@ public class ExportTests
     // ClosedXML looks at the CurrentCulture to initialize the workbook's culture.
     private static readonly CultureInfo _worksheetCulture = new("en-US", useUserOverride: false);
 
+    public static readonly TheoryData<DataTableShouldMatchExpectationInput> ExportTableShouldMatchExpectationInputs =
+        new(GenerateExportTableShouldMatchExpectationInputs());
+
     [Theory]
-    [MemberData(nameof(Data))]
-    public async Task ExportTableShouldMatchExpectation(
-        string note,
-        object[][] dataSet,
-        (string Name, string Text, bool Exportable)[] columns,
-        string[][] pattern,
-        int start,
-        int length,
-        int orderColumnIndex)
+    // DataTableShouldMatchExpectationInput would need to implement IXunitSerializable but it works like this anyway.
+#pragma warning disable xUnit1045 // Avoid using TheoryData type arguments that might not be serializable
+    [MemberData(nameof(ExportTableShouldMatchExpectationInputs))]
+#pragma warning restore xUnit1045 // Avoid using TheoryData type arguments that might not be serializable
+    public async Task ExportTableShouldMatchExpectation(DataTableShouldMatchExpectationInput input)
     {
         // ClosedXML looks at the CurrentCulture to initialize the workbook's culture. They also to set it like this in
         // their own unit tests. See:
@@ -42,15 +42,18 @@ public class ExportTests
         // Since this is an async method, it runs in its own thread; so this has no effect on other tests.
         Thread.CurrentThread.CurrentCulture = _worksheetCulture;
 
-        note.ShouldNotBeEmpty("Please state the purpose of this input set!");
+        input.Note.ShouldNotBeEmpty("Please state the purpose of this input set!");
+
+        var columns = input.Columns;
+        var pattern = input.Pattern;
 
         using var memoryCache = new MemoryCache(new OptionsWrapper<MemoryCacheOptions>(new MemoryCacheOptions()));
         var (provider, request) = MockDataProviderHelper.GetProviderAndRequest(
-            dataSet,
+            input.DataSet,
             columns,
-            start,
-            length,
-            orderColumnIndex,
+            input.Start,
+            input.Length,
+            input.OrderColumnIndex,
             memoryCache);
 
         var service = MockHelper.CreateAutoMockerInstance<ExcelDataTableExportService>(
@@ -69,7 +72,9 @@ public class ExportTests
         }
         while (columnIndex < columns.Length && columns[columnIndex - 1].Name != "Time");
 
-        var stream = OperatingSystem.IsWindows()
+        Stream stream = null;
+
+        stream = OperatingSystem.IsWindows()
             // On non-Windows platforms, we need to specify a fallback font manually for ClosedXML to work.
             ? await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat)
             : await TryExportWithFallbackFontsAsync(service, provider, request, customNumberFormat);
@@ -90,19 +95,18 @@ public class ExportTests
             }
         }
 
-        var results = new List<string[]>();
         for (var rowIndex = 0; rowIndex < pattern.Length; rowIndex++)
         {
-            results.Add(
-                Enumerable.Range(1, pattern[0].Length)
-                    .Select(index => worksheet.Cell(2 + rowIndex, index).GetFormattedString())
-                    .ToArray());
+            Enumerable.Range(1, pattern[0].Length)
+                .Select(index => worksheet.Cell(2 + rowIndex, index).GetFormattedString())
+                .ToArray()
+                .ShouldBe(
+                    pattern[rowIndex],
+                    StringHelper.CreateInvariant($"Row {rowIndex + 1} didn't match expectation."));
         }
-
-        results.ToArray().ShouldBe(pattern);
     }
 
-    public static IEnumerable<object[]> Data()
+    public static IEnumerable<DataTableShouldMatchExpectationInput> GenerateExportTableShouldMatchExpectationInputs()
     {
         var dataset = new[]
         {
@@ -131,19 +135,16 @@ public class ExportTests
             ("MagicWords", "Magic Words", true),
         };
 
-        yield return
-        [
+        yield return new DataTableShouldMatchExpectationInput(
             "Show full data set.",
             dataset,
             columns,
-            GetPattern("1,z,foo;2,y,bar;10,x,baz"),
+            "1,z,foo;2,y,bar;10,x,baz".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
             10,
-            0,
-        ];
+            0);
 
-        yield return
-        [
+        yield return new DataTableShouldMatchExpectationInput(
             "Make last column not exportable.",
             dataset,
             new[]
@@ -152,60 +153,50 @@ public class ExportTests
                 ("Letters", "Letters", true),
                 ("MagicWords", "Magic Words", false),
             },
-            GetPattern("1,z;2,y;10,x"),
+            "1,z;2,y;10,x".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
             10,
-            0,
-        ];
+            0);
 
-        yield return
-        [
+        yield return new DataTableShouldMatchExpectationInput(
             "Test pagination.",
             dataset,
             columns,
-            GetPattern("10,x,baz"),
+            new[] { "10,x,baz".Split(',') },
             2,
             10,
-            0,
-        ];
+            0);
 
-        yield return
-        [
+        yield return new DataTableShouldMatchExpectationInput(
             "Test sorting on 2nd column.",
             dataset,
             columns,
-            GetPattern("10,x,baz;2,y,bar;1,z,foo"),
+            "10,x,baz;2,y,bar;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
             10,
-            1,
-        ];
+            1);
 
-        yield return
-        [
+        yield return new DataTableShouldMatchExpectationInput(
             "Test sorting on 3nd column.",
             dataset,
             columns,
-            GetPattern("2,y,bar;10,x,baz;1,z,foo"),
+            "2,y,bar;10,x,baz;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
             10,
-            2,
-        ];
+            2);
 
-        yield return
-        [
+        yield return new DataTableShouldMatchExpectationInput(
             "Verify boolean formatting.",
-            new[]
-            {
+            [
                 [1, true],
                 [2, true],
-                new object[] { 3, false },
-            },
+                [3, false],
+            ],
             new[] { ("Num", "Numbers", true), ("Bool", "Booleans", true) },
-            GetPattern("1,Yes;2,Yes;3,No"),
+            "1,Yes;2,Yes;3,No".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
             10,
-            0,
-        ];
+            0);
 
         var date1 = new DateTime(2020, 11, 26, 23, 42, 01, DateTimeKind.Utc);
         var date2 = new DateTime(2020, 11, 26, 13, 42, 01, DateTimeKind.Utc);
@@ -215,26 +206,27 @@ public class ExportTests
         // consistency.
 #pragma warning disable IDE0300 // Simplify collection initialization
         // The date value should be the same, only the formatting changes.
-        yield return
-        [
+        yield return new DataTableShouldMatchExpectationInput(
             "Verify custom number formatting.",
             new[]
             {
-                [1, date1],
-                [2, date2],
+                new object[] { 1, date1 },
+                new object[] { 2, date2 },
                 new object[] { 3, date3 },
             },
             new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
-            GetPattern(string.Format(
+            string.Format(
                     _worksheetCulture,
                     "1,{0:h:mm:ss tt};2,{1:h:mm:ss tt};3,{2:h:mm:ss tt}",
                     date1,
                     date2,
-                    date3)),
+                    date3)
+                .Split(';')
+                .Select(row => row.Split(','))
+                .ToArray(),
             0,
             10,
-            0,
-        ];
+            0);
 #pragma warning restore IDE0300 // Simplify collection initialization
     }
 
@@ -280,7 +272,4 @@ public class ExportTests
 
         return null;
     }
-
-    private static string[][] GetPattern(string patternString) =>
-        patternString.Split(';').Select(row => row.Split(',')).ToArray();
 }
