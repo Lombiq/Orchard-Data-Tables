@@ -7,7 +7,6 @@ using Lombiq.HelpfulLibraries.OrchardCore.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Records;
-using OrchardCore.Contents;
 using OrchardCore.Mvc.Core.Utilities;
 using OrchardCore.Navigation;
 using OrchardCore.Security.Permissions;
@@ -15,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YesSql;
+using static OrchardCore.Contents.CommonPermissions;
 
 namespace Lombiq.DataTables.Services;
 
@@ -38,7 +38,7 @@ public class DeletedContentItemDataTableDataProvider : JsonResultDataTableDataPr
     public override LocalizedString Description => T["Deleted Content Items"];
 
     public override IEnumerable<Permission> AllowedPermissions =>
-        new[] { Permissions.DeleteContent };
+        new[] { DeleteContent };
 
     protected override async Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request) =>
         new(await GetDeletedContentItemIndicesAsync(_session, request.QueryId));
@@ -71,7 +71,7 @@ public class DeletedContentItemDataTableDataProvider : JsonResultDataTableDataPr
                     providerName = nameof(DeletedContentItemDataTableDataProvider),
                     queryId,
                 })
-            .Permission(Permissions.DeleteContent)
+            .Permission(DeleteContent)
             .LocalNav();
 
     /// <summary>
