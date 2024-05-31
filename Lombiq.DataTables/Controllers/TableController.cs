@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Controllers;
 
-[Admin]
 public class TableController : Controller
 {
     private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviders;
