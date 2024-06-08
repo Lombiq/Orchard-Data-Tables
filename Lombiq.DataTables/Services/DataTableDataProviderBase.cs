@@ -1,5 +1,4 @@
 using Fluid;
-using Fluid.Values;
 using Lombiq.DataTables.Controllers;
 using Lombiq.DataTables.Models;
 using Microsoft.AspNetCore.Http;
@@ -39,10 +38,10 @@ public abstract class DataTableDataProviderBase : IDataTableDataProvider
     }
 
     public virtual Task<IEnumerable<IShape>> GetShapesBeforeTableAsync() =>
-        Task.FromResult<IEnumerable<IShape>>(Array.Empty<IShape>());
+        Task.FromResult<IEnumerable<IShape>>([]);
 
     public virtual Task<IEnumerable<IShape>> GetShapesAfterTableAsync() =>
-        Task.FromResult<IEnumerable<IShape>>(Array.Empty<IShape>());
+        Task.FromResult<IEnumerable<IShape>>([]);
 
     public abstract Task<DataTableDataResponse> GetRowsAsync(DataTableDataRequest request);
 
@@ -111,7 +110,7 @@ public abstract class DataTableDataProviderBase : IDataTableDataProvider
                         template,
                         NullEncoder.Default,
                         row,
-                        Array.Empty<KeyValuePair<string, FluidValue>>());
+                        []);
                 }
             }
         }

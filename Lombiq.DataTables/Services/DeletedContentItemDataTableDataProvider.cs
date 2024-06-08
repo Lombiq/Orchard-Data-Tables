@@ -38,7 +38,7 @@ public class DeletedContentItemDataTableDataProvider : JsonResultDataTableDataPr
     public override LocalizedString Description => T["Deleted Content Items"];
 
     public override IEnumerable<Permission> AllowedPermissions =>
-        new[] { Permissions.DeleteContent };
+        [Permissions.DeleteContent];
 
     protected override async Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request) =>
         new(await GetDeletedContentItemIndicesAsync(_session, request.QueryId));
