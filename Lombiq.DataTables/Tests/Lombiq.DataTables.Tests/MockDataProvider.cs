@@ -61,8 +61,8 @@ public class MockDataProvider : JsonResultDataTableDataProvider
     private static LiquidTemplateManager CreateLiquidTemplateManager(IMemoryCache memoryCache, IServiceProvider serviceProvider)
     {
         var optionsFactory = new OptionsFactory<TemplateOptions>(
-                Array.Empty<IConfigureOptions<TemplateOptions>>(),
-                Array.Empty<IPostConfigureOptions<TemplateOptions>>());
+                [],
+                []);
 
         return new LiquidTemplateManager(
             memoryCache,

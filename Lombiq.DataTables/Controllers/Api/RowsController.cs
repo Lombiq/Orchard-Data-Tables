@@ -55,7 +55,8 @@ public class RowsController : Controller
     [HttpGet]
     public async Task<ActionResult<DataTableDataResponse>> Get(string requestJson)
     {
-        if (string.IsNullOrEmpty(requestJson)) return BadRequest();
+        if (string.IsNullOrEmpty(requestJson)) ModelState.AddModelError(nameof(requestJson), "Controller parameter is missing.");
+        if (!ModelState.IsValid) return BadRequest(ModelState);
 
         var request = JsonConvert.DeserializeObject<DataTableDataRequest>(requestJson);
         var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
@@ -90,6 +91,8 @@ public class RowsController : Controller
         string name = null,
         bool exportAll = true)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
         var request = JsonConvert.DeserializeObject<DataTableDataRequest>(requestJson);
         if (exportAll)
         {

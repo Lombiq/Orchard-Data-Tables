@@ -162,7 +162,7 @@ public class ExportTests
             "Test pagination.",
             dataset,
             columns,
-            new[] { "10,x,baz".Split(',') },
+            ["10,x,baz".Split(',')],
             2,
             10,
             0);

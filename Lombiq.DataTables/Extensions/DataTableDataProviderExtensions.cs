@@ -35,7 +35,7 @@ public static class DataTableDataProviderExtensions
                     var (name, text) = column;
                     var nameParts = name.Contains(Separator, StringComparison.Ordinal)
                         ? name.Split(Separator)
-                        : new[] { name };
+                        : [name];
                     var key = nameParts[nameParts.Length == 3 ? 2 : 0];
 
                     var searchable = true;
