@@ -21,7 +21,7 @@ public class EmployeeDataTableIndexGenerator : DataTableIndexGeneratorBase<Emplo
 
     // If your table represents a content type, provide it here. This means the "main" content type, if you need to join
     // other content types to it for related information (e.g. with ContentPickerField), those don't go here.
-    public override IEnumerable<string> ManagedContentTypes { get; } = new[] { Employee };
+    public override IEnumerable<string> ManagedContentTypes { get; } = [Employee];
 
     public EmployeeDataTableIndexGenerator(
         IContentManager contentManager,

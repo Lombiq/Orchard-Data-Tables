@@ -56,6 +56,7 @@ public class RowsController : Controller
     public async Task<ActionResult<DataTableDataResponse>> Get([FromJsonQueryString(Name = "requestJson")] DataTableDataRequest request)
     {
         if (request == null) return BadRequest();
+        if (!ModelState.IsValid) return BadRequest(ModelState);
 
         var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
         if (dataProvider == null)
@@ -89,6 +90,8 @@ public class RowsController : Controller
         string name = null,
         bool exportAll = true)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
         if (exportAll)
         {
             request.Start = 0;

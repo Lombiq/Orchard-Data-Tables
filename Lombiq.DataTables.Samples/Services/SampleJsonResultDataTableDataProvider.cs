@@ -31,7 +31,7 @@ public class SampleJsonResultDataTableDataProvider : JsonResultDataTableDataProv
 
     // You can provide required permissions, the viewer will need at least one to display results on the page. If it's
     // empty then no permission check is required.
-    public override IEnumerable<Permission> AllowedPermissions => Enumerable.Empty<Permission>();
+    public override IEnumerable<Permission> AllowedPermissions => [];
 
     public SampleJsonResultDataTableDataProvider(
         ISession session,
@@ -47,10 +47,10 @@ public class SampleJsonResultDataTableDataProvider : JsonResultDataTableDataProv
 
     // You can inject shapes before or after the table using this and GetShapesAfterTableAsync(). It's used by the
     // /Admin/DataTable/{providerName} page.
-    public override async Task<IEnumerable<IShape>> GetShapesBeforeTableAsync() => new[]
-    {
+    public override async Task<IEnumerable<IShape>> GetShapesBeforeTableAsync() =>
+    [
         await _shapeFactory.CreateAsync("ShapeBeforeExample"),
-    };
+    ];
 
     // You must override this method and return a page of data based on the request.
     protected override async Task<JsonResultDataTableDataProviderResult> GetResultsAsync(DataTableDataRequest request)

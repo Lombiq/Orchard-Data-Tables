@@ -26,6 +26,8 @@ public class ChildRowsController : Controller
 
     public async Task<ActionResult<DataTableChildRowResponse>> Get(int contentItemId, string dataProvider)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
         var provider = _dataTableDataProviderAccessor.GetDataProvider(dataProvider);
         if (provider == null)
         {
