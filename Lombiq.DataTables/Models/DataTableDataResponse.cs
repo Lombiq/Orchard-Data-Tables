@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -50,7 +49,7 @@ public class DataTableDataResponse
         new()
         {
             Error = errorText,
-            Data = Array.Empty<DataTableRow>(),
+            Data = [],
             RecordsFiltered = 0,
             RecordsTotal = 0,
         };

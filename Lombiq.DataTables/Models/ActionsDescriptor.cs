@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Lombiq.DataTables.Models;
 
@@ -21,7 +20,7 @@ public class ActionsDescriptor
         string returnUrl)
     {
         if (string.IsNullOrEmpty(Id)) WithDefaults = false;
-        if (!WithDefaults) return MenuItems ?? Enumerable.Empty<ExportLink>();
+        if (!WithDefaults) return MenuItems ?? [];
 
         var links = new List<ExportLink>
         {

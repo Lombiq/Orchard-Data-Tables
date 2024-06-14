@@ -19,6 +19,8 @@ public class TableController : Controller
     [Admin("DataTable/{providerName}/{queryId?}")]
     public async Task<IActionResult> Get(string providerName, string queryId = null, bool paging = true, bool viewAction = false)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
         var provider = _dataTableDataProviders.Single(provider => provider.Name == providerName);
         if (string.IsNullOrEmpty(queryId)) queryId = providerName;
 

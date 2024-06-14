@@ -59,9 +59,9 @@ public class LiquidTests
                 .AddScoped(_ => new Mock<IViewLocalizer>().Object)
                 .AddScoped<ILocalClock>(_ =>
                     new LocalClock(
-                        Array.Empty<ITimeZoneSelector>(),
+                        [],
                         new Clock(),
-                        new DefaultCalendarManager(Array.Empty<ICalendarSelector>())))
+                        new DefaultCalendarManager([])))
                 .BuildServiceProvider(),
         };
 

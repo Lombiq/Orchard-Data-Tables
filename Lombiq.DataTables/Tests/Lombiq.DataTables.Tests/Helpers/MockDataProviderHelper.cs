@@ -40,7 +40,7 @@ public static class MockDataProviderHelper
             DataProvider = nameof(MockDataProvider),
             Length = length,
             Start = start,
-            Order = new[] { new DataTableOrder { Column = order } },
+            Order = [new DataTableOrder { Column = order }],
         };
 
         return (provider, request);

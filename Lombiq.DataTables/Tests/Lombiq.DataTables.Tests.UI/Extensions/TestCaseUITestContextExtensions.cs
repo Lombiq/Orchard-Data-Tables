@@ -119,9 +119,9 @@ public static class TestCaseUITestContextExtensions
 
     private static IEnumerable<object> AdjustForProvider(object[] source) =>
         source[..^1]
-            .Concat(new object[]
-            {
+            .Concat(
+            [
                 ((string)source[^1]).Replace(",", string.Empty),
                 null,
-            });
+            ]);
 }
