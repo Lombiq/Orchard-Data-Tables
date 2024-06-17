@@ -8,5 +8,5 @@ public class DataTableSearchParameters
     public string Value { get; set; }
 
     [JsonPropertyName("regex")]
-    public bool IsRegex { get; set; }
+    public bool? IsRegex { get; set; }
 }
