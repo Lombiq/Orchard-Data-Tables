@@ -253,11 +253,11 @@ public class ExportTests
             {
                 return await service.ExportAsync(provider, request, customNumberFormat: customNumberFormat);
             }
-            catch (MissingFontTableException missingFontTableException)
+            catch (Exception exception) when (exception is MissingFontTableException or NotSupportedException)
             {
                 DebugHelper.WriteLineTimestamped(
                     $"Attempt {(i + 1).ToTechnicalString()} of exporting the data table with the font " +
-                    $"{fallbackFont} failed with the MissingFontTableException: {missingFontTableException.Message}.");
+                    $"{fallbackFont} failed with the {exception.GetType().Name}: {exception.Message}.");
 
                 if (i + 1 < maxAttempts)
                 {
