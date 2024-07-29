@@ -39,9 +39,9 @@
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.102.1" />
     <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.2" />
-    <PackageReference Include="OrchardCore.Contents" Version="2.0.0-preview-18282" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="2.0.0-preview-18282" />
-    <PackageReference Include="OrchardCore.Search.Lucene" Version="2.0.0-preview-18282" />
+    <PackageReference Include="OrchardCore.Contents" Version="2.0.0-preview-18287" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="2.0.0-preview-18287" />
+    <PackageReference Include="OrchardCore.Search.Lucene" Version="2.0.0-preview-18287" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
