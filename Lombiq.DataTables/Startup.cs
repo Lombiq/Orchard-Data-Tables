@@ -16,7 +16,7 @@ using System;
 
 namespace Lombiq.DataTables;
 
-public class Startup : StartupBase
+public sealed class Startup : StartupBase
 {
     public override void ConfigureServices(IServiceCollection services)
     {

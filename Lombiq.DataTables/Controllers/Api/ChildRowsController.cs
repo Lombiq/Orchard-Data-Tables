@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Controllers.Api;
 
-public class ChildRowsController : Controller
+public sealed class ChildRowsController : Controller
 {
     private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviderAccessor;
     private readonly IAuthorizationService _authorizationService;

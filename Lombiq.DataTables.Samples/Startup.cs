@@ -10,7 +10,7 @@ using OrchardCore.Navigation;
 
 namespace Lombiq.DataTables.Samples;
 
-public class Startup : StartupBase
+public sealed class Startup : StartupBase
 {
     public override void ConfigureServices(IServiceCollection services)
     {

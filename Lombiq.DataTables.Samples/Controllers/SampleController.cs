@@ -9,7 +9,7 @@ using static Lombiq.DataTables.Samples.Constants.ContentTypes;
 
 namespace Lombiq.DataTables.Samples.Controllers;
 
-public class SampleController : Controller
+public sealed class SampleController : Controller
 {
     private readonly ISession _session;
 

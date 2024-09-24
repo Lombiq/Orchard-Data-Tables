@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Controllers.Api;
 
-public class RowsController : Controller
+public sealed class RowsController : Controller
 {
     private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviderAccessor;
     private readonly Dictionary<string, IDataTableExportService> _exportServices;
