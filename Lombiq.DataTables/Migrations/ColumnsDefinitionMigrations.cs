@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Migrations;
 
-public class ColumnsDefinitionMigrations : DataMigration
+public sealed class ColumnsDefinitionMigrations : DataMigration
 {
     private readonly IContentDefinitionManager _contentDefinitionManager;
 
