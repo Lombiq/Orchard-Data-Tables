@@ -7,7 +7,7 @@ namespace Lombiq.DataTables.Samples.Migrations;
 
 // The migration for the data table index must inherit from IndexDataMigration<TIndex> so they can all be registered
 // together in Startup in a tightly coupled fashion that reduces the chance of mistakes.
-public class EmployeeDataTableMigrations : IndexDataMigration<EmployeeDataTableIndex>
+public sealed class EmployeeDataTableMigrations : IndexDataMigration<EmployeeDataTableIndex>
 {
     protected override void CreateIndex(ICreateTableCommand table) =>
         table

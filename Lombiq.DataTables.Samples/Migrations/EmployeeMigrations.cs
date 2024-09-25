@@ -11,7 +11,7 @@ using static Lombiq.DataTables.Samples.Constants.ContentTypes;
 namespace Lombiq.DataTables.Samples.Migrations;
 
 // Just the bare minimum to set up the content type for storing the sample data.
-public class EmployeeMigrations : DataMigration
+public sealed class EmployeeMigrations : DataMigration
 {
     private readonly IContentDefinitionManager _contentDefinitionManager;
 

@@ -1,9 +1,9 @@
 #nullable enable
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace Lombiq.DataTables.Models;
 
@@ -18,12 +18,12 @@ public class ExportLink
 #pragma warning restore IDE0079 // Remove unnecessary suppression
     public string Type => nameof(ExportLink);
     public string Url { get; set; }
-    public JToken Text { get; set; }
+    public JsonNode Text { get; set; }
 
-    [JsonProperty]
+    [JsonInclude]
     public IDictionary<string, string> Attributes { get; internal set; } = new Dictionary<string, string>();
 
-    public ExportLink(string url, JToken text, IDictionary<string, string>? attributes = null)
+    public ExportLink(string url, JsonNode text, IDictionary<string, string>? attributes = null)
     {
         Url = url;
         Text = text;
@@ -32,8 +32,8 @@ public class ExportLink
 
     public override string ToString() => Text.ToString();
 
-    public static bool IsInstance(JObject jObject) =>
-        jObject[nameof(Type)]?.ToString() == nameof(ExportLink);
+    public static bool IsInstance(JsonObject jsonObject) =>
+        jsonObject.HasMatchingTypeProperty<ExportLink>();
 
-    public static string? GetText(JObject jObject) => jObject[nameof(Text)]?.ToString();
+    public static string? GetText(JsonObject jObject) => jObject[nameof(Text)]?.ToString();
 }

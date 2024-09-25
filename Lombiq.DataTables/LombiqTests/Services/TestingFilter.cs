@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.LombiqTests.Services;
 
-public class TestingFilter : IAsyncResultFilter
+public sealed class TestingFilter : IAsyncResultFilter
 {
     private readonly ILayoutAccessor _layoutAccessor;
     private readonly IShapeFactory _shapeFactory;

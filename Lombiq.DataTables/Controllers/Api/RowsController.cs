@@ -1,16 +1,16 @@
 using Lombiq.DataTables.Models;
 using Lombiq.DataTables.Services;
+using Lombiq.HelpfulLibraries.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Controllers.Api;
 
-public class RowsController : Controller
+public sealed class RowsController : Controller
 {
     private readonly IEnumerable<IDataTableDataProvider> _dataTableDataProviderAccessor;
     private readonly Dictionary<string, IDataTableExportService> _exportServices;
@@ -32,7 +32,7 @@ public class RowsController : Controller
     /// <summary>
     /// Gets the current table view's rows.
     /// </summary>
-    /// <param name="requestJson">The request to fulfill serialized as JSON.</param>
+    /// <param name="request">The request to fulfill serialized as JSON.</param>
     /// <returns>The response for this API call.</returns>
     /// <remarks>
     ///   <list type="bullet">
@@ -53,12 +53,11 @@ public class RowsController : Controller
     /// </remarks>
     [IgnoreAntiforgeryToken]
     [HttpGet]
-    public async Task<ActionResult<DataTableDataResponse>> Get(string requestJson)
+    public async Task<ActionResult<DataTableDataResponse>> Get([FromJsonQueryString(Name = "requestJson")] DataTableDataRequest request)
     {
-        if (string.IsNullOrEmpty(requestJson)) ModelState.AddModelError(nameof(requestJson), "Controller parameter is missing.");
+        if (request == null) return BadRequest();
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var request = JsonConvert.DeserializeObject<DataTableDataRequest>(requestJson);
         var dataProvider = _dataTableDataProviderAccessor.GetDataProvider(request.DataProvider);
         if (dataProvider == null)
         {
@@ -87,13 +86,12 @@ public class RowsController : Controller
     }
 
     public async Task<ActionResult<DataTableDataResponse>> Export(
-        string requestJson,
+        [FromJsonQueryString(Name = "requestJson")] DataTableDataRequest request,
         string name = null,
         bool exportAll = true)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var request = JsonConvert.DeserializeObject<DataTableDataRequest>(requestJson);
         if (exportAll)
         {
             request.Start = 0;

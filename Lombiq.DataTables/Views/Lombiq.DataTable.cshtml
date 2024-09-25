@@ -1,29 +1,28 @@
 @using OrchardCore.ResourceManagement
-@using System.Globalization
-@using Newtonsoft.Json.Linq
 @using Lombiq.DataTables.Services
+@using System.Text.Json
 
 @inject IEnumerable<IDataTableDataProvider> Providers
 
 @inject IResourceManager ResourceManager
 
 @{
-    var viewModel = Model.ViewModel as DataTableDefinitionViewModel;
+    var viewModel = Model.ViewModel as DataTableDefinitionViewModel ?? new DataTableDefinitionViewModel();
 
-    var pageSize = viewModel?.PageSize ?? Site.PageSize;
-    var skip = viewModel?.Skip ?? 0;
+    var pageSize = viewModel.PageSize ?? Site.PageSize;
+    var skip = viewModel.Skip ?? 0;
 
-    string queryId = viewModel?.QueryId ?? Model.QueryId?.ToString() ?? "";
-    string dataProvider = viewModel?.DataProvider ?? Model.Provider?.ToString() ?? "";
-    var columnsDefinition = viewModel?.ColumnsDefinition ?? await Providers
+    string queryId = viewModel.QueryId ?? Model.QueryId?.ToString() ?? "";
+    string dataProvider = viewModel.DataProvider ?? Model.Provider?.ToString() ?? "";
+    var columnsDefinition = viewModel.ColumnsDefinition ?? await Providers
         .Single(provider => provider.GetType().Name == dataProvider)
         .GetColumnsDefinitionAsync(queryId);
     var columns = columnsDefinition?.Columns.ToList() ?? new List<DataTableColumnDefinition>();
-    var childRowsEnabled = viewModel?.ChildRowsEnabled ?? false;
-    var progressiveLoadingEnabled = viewModel?.ProgressiveLoadingEnabled ?? false;
-    var queryStringParametersLocalStorageKey = viewModel?.QueryStringParametersLocalStorageKey ?? "";
-    var dataTableId = string.IsNullOrEmpty(viewModel?.DataTableId) ? ElementNames.DataTableElementName : viewModel.DataTableId;
-    var dataTableCssClasses = string.IsNullOrEmpty(viewModel?.DataTableCssClasses) ? "" : viewModel.DataTableCssClasses;
+    var childRowsEnabled = viewModel.ChildRowsEnabled;
+    var progressiveLoadingEnabled = viewModel.ProgressiveLoadingEnabled;
+    var queryStringParametersLocalStorageKey = viewModel.QueryStringParametersLocalStorageKey ?? "";
+    var dataTableId = string.IsNullOrEmpty(viewModel.DataTableId) ? ElementNames.DataTableElementName : viewModel.DataTableId;
+    var dataTableCssClasses = string.IsNullOrEmpty(viewModel.DataTableCssClasses) ? "" : viewModel.DataTableCssClasses;
 
     var defaultSortingColumnIndex = Math.Max(
         0, Math.Max(columns.FindIndex(column => column.Orderable), columns.FindIndex(column => column.Name == columnsDefinition?.DefaultSortingColumnName)));
@@ -31,9 +30,9 @@
     var defaultSortingDirection = columnsDefinition?.DefaultSortingDirection ?? SortingDirection.Ascending;
     var defaultSortingDirectionValue = defaultSortingDirection == SortingDirection.Ascending ? "asc" : "desc";
 
-    var rowApiUrl = Url.Action(nameof(RowsController.Get), typeof(RowsController).ControllerName(), new { Area = FeatureIds.Area });
-    var childRowApiUrl = Url.Action(nameof(ChildRowsController.Get), typeof(ChildRowsController).ControllerName(), new { Area = FeatureIds.Area });
-    var exportApiUrl = Url.Action(nameof(RowsController.Export), typeof(RowsController).ControllerName(), new { Area = FeatureIds.Area });
+    var rowsApiUrl = Url.Action(nameof(RowsController.Get), typeof(RowsController).ControllerName(), new { FeatureIds.Area });
+    var childRowApiUrl = Url.Action(nameof(ChildRowsController.Get), typeof(ChildRowsController).ControllerName(), new { FeatureIds.Area });
+    var exportApiUrl = Url.Action(nameof(RowsController.Export), typeof(RowsController).ControllerName(), new { FeatureIds.Area });
 
     const string rowElementWithChildRowVisibleModifier = ElementNames.DataTableRowElementName + "_childRowVisible";
     const string childRowElementName = ElementNames.DataTableElementName + "__childRow";
@@ -48,8 +47,56 @@
     ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4);
     ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4Buttons);
 
-    dynamic additionalOptions = viewModel?.AdditionalDatatableOptions;
-    var hasViewAction = (bool)(additionalOptions?.viewAction == true);
+    var hasViewAction = viewModel.AdditionalDatatableOptions?["viewAction"].GetValueKind() == JsonValueKind.True;
+
+    var defaultOrder = new[] { new[] { defaultSortingColumnIndex.ToString(), defaultSortingDirectionValue } };
+    var dataTablesOptions = new Dictionary<string, object> { ["order"] = defaultOrder };
+    if (pageSize > 0) { dataTablesOptions["pageLength"] = pageSize; }
+    if (viewModel.AdditionalDatatableOptions is { } options)
+    {
+        foreach (var (key, value) in options)
+        {
+            dataTablesOptions[key] = value;
+        }
+    }
+
+    var pluginOptions = new Dictionary<string, object>
+    {
+        ["rowClassName"] = ElementNames.DataTableRowElementName,
+        ["dataProvider"] = dataProvider,
+        ["rowsApiUrl"] = rowsApiUrl,
+        ["export"] = new
+        {
+            textAll = T["Export All"].Value,
+            textVisible = T["Export Visible"].Value,
+            api = exportApiUrl,
+        },
+        ["texts"] = new
+        {
+            yes = T["Yes"].Value,
+            no = T["No"].Value,
+        },
+        ["errorsSelector"] = '.' + errorsElementName,
+        ["serverSidePagingEnabled"] = !progressiveLoadingEnabled,
+        ["queryStringParametersLocalStorageKey"] = queryStringParametersLocalStorageKey,
+        ["progressiveLoadingOptions"] = new
+        {
+            progressiveLoadingEnabled,
+            skip,
+            batchSize = pageSize,
+        },
+        ["childRowOptions"] = new
+        {
+            childRowsEnabled,
+            asyncLoading = true,
+            apiUrl = childRowApiUrl,
+            childRowClassName = childRowElementName,
+            toggleChildRowButtonClassName = toggleChildRowButtonElementName,
+            childRowVisibleClassName = rowElementWithChildRowVisibleModifier,
+        },
+        ["culture"] = Orchard.CultureName(),
+    };
+    if (!string.IsNullOrWhiteSpace(queryId)) { pluginOptions["queryId"] = queryId; }
 }
 
 @await DisplayAsync(await New.Lombiq_DataTable_Resources(ViewModel: viewModel))
@@ -97,88 +144,25 @@
 </div>
 
 <script depends-on="@ResourceNames.LombiqDataTables" at="Foot">
-    ; (function ($) {
-        $(function () {
-            var templates = {};
-            $(".@templatesElementName > div[data-id]").each(function(index, element) {
-                templates[element.getAttribute('data-id')] = element.innerHTML.replace(/%7B%7Bdata%7D%7D/g, '@templatePlaceholder'); // #spell-check-ignore-line
-                element.parentElement.removeChild(element);
-            });
-
-            var dataTablesOptions = $.extend({},
-                window.dataTableResources.options,
-                {
-                    @if (pageSize > 0)
-                    {
-                        <text>
-                            pageLength: @pageSize,
-                        </text>
-                    }
-                    order: [["@defaultSortingColumnIndex", "@defaultSortingDirectionValue"]],
-                    templates: templates
-                });
-            @if (additionalOptions is JObject options)
-            {
-                <text>
-                dataTablesOptions = $.extend({}, dataTablesOptions, @Html.Raw(options.ToString()));
-                </text>
-            }
-
-            var plugin = $("#@dataTableId").lombiq_DataTables({
-                rowClassName: "@ElementNames.DataTableRowElementName",
-                @if (!string.IsNullOrWhiteSpace(queryId))
-                {
-                    <text>
-                        queryId: @queryId.JsonHtmlContent(),
-                    </text>
-                }
-                dataProvider: "@dataProvider",
-                rowsApiUrl: "@rowApiUrl",
-                export: @Json.Serialize(new
-                    {
-                        textAll = T["Export All"].Value,
-                        textVisible = T["Export Visible"].Value,
-                        api = exportApiUrl,
-                    }),
-                texts: @Json.Serialize(new
-                    {
-                        yes = T["Yes"].Value,
-                        no = T["No"].Value,
-                    }),
-                errorsSelector: ".@errorsElementName",
-                dataTablesOptions: dataTablesOptions,
-                serverSidePagingEnabled: @(progressiveLoadingEnabled ? "false" : "true"),
-                queryStringParametersLocalStorageKey: "@queryStringParametersLocalStorageKey",
-                progressiveLoadingOptions: {
-                    progressiveLoadingEnabled: @(progressiveLoadingEnabled ? "true" : "false"),
-                    @if (progressiveLoadingEnabled)
-                    {
-                        <text>
-                            skip: @skip,
-                            batchSize: @pageSize
-                        </text>
-                    }
-                },
-                childRowOptions: {
-                    childRowsEnabled: @(childRowsEnabled ? "true" : "false"),
-                    @if (childRowsEnabled)
-                    {
-                        <text>
-                            asyncLoading: true,
-                            apiUrl: "@childRowApiUrl",
-                            childRowClassName: "@childRowElementName",
-                            toggleChildRowButtonClassName: "@toggleChildRowButtonElementName",
-                            childRowVisibleClassName: "@rowElementWithChildRowVisibleModifier",
-                        </text>
-                    }
-                },
-                culture: @CultureInfo.CurrentCulture.Name.JsonHtmlContent(),
-            });
-
-            window.dataTableResources.created(
-                    $("#@dataTableId").parents(".@ElementNames.DataTableWrapperDefaultElementName"),
-                    plugin,
-                    dataTablesOptions);
+    jQuery(function ($) {
+        const templates = {};
+        $(".@templatesElementName > div[data-id]").each(function(index, element) {
+            templates[element.getAttribute('data-id')] = element.innerHTML.replace(/%7B%7Bdata%7D%7D/g, '@templatePlaceholder'); // #spell-check-ignore-line
+            element.parentElement.removeChild(element);
         });
-    })(jQuery);
+
+        const pluginOptions = @Json.Serialize(pluginOptions);
+        pluginOptions.dataTablesOptions = $.extend(
+            { },
+            window.dataTableResources.options,
+            { templates },
+            @Json.Serialize(dataTablesOptions));
+
+        const plugin = $("#@dataTableId").lombiq_DataTables(pluginOptions);
+
+        window.dataTableResources.created(
+                $("#@dataTableId").parents(".@ElementNames.DataTableWrapperDefaultElementName"),
+                plugin,
+                pluginOptions.dataTablesOptions);
+    });
 </script>
