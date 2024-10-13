@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,5 +32,46 @@ namespace Lombiq.DataTables.Models
         /// </summary>
         public IEnumerable<object> GetValuesOrderedByColumnsWithNotDisplayedColumns(IEnumerable<DataTableColumnDefinition> columnDefinitions) =>
             columnDefinitions.Select(columnDefinition => this[columnDefinition.Name] ?? string.Empty);
+    }
+
+    [JsonConverter(typeof(FormattedDataTableRowValueConverter))]
+    public class FormattedDataTableRowValue
+    {
+        public object Value { get; set; }
+        public Func<object, string> Formatter { get; set; }
+
+        public FormattedDataTableRowValue(object value, Func<object, string> formatter)
+        {
+            Value = value;
+            Formatter = formatter;
+        }
+    }
+
+    public class FormattedDataTableRowValueConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(FormattedDataTableRowValue);
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            var cell = value as FormattedDataTableRowValue;
+
+            if (cell != null && cell.Formatter != null)
+            {
+                string formattedValue = cell.Formatter(cell.Value);
+                writer.WriteValue(formattedValue);
+            }
+            else
+            {
+                writer.WriteValue(cell?.Value?.ToString() ?? string.Empty);
+            }
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
