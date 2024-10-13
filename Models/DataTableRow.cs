@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,29 +7,29 @@ namespace Lombiq.DataTables.Models
     public class DataTableRow
     {
         [JsonExtensionData]
-        internal Dictionary<string, JToken> ValuesDictionary { get; set; }
+        internal Dictionary<string, object> ValuesDictionary { get; set; }
 
         [JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
 
-        public string this[string name]
+        public object this[string name]
         {
-            get { return ValuesDictionary.ContainsKey(name) ? ValuesDictionary[name].Value<string>() : null; }
+            get { return ValuesDictionary.ContainsKey(name) ? ValuesDictionary[name] : null; }
             set { ValuesDictionary[name] = value; }
         }
 
-        public DataTableRow() => ValuesDictionary = new Dictionary<string, JToken>();
+        public DataTableRow() => ValuesDictionary = new Dictionary<string, object>();
 
-        public IEnumerable<string> GetValues() =>
-            ValuesDictionary.Values.Select(value => value.Value<string>());
+        public IEnumerable<object> GetValues() =>
+            ValuesDictionary.Values.Select(value => value);
 
-        public IEnumerable<string> GetValuesOrderedByColumns(IEnumerable<DataTableColumnDefinition> columnDefinitions) =>
-            columnDefinitions.Where(column => column.DisplayCondition()).Select(columnDefinition => this[columnDefinition.Name] ?? string.Empty);
+        public IEnumerable<object> GetValuesOrderedByColumns(IEnumerable<DataTableColumnDefinition> columnDefinitions) =>
+            columnDefinitions.Where(column => column.DisplayCondition()).Select(columnDefinition => this[columnDefinition.Name]);
 
         /// <summary>
         /// Can be useful if certain columns only needed in the export table.
         /// </summary>
-        public IEnumerable<string> GetValuesOrderedByColumnsWithNotDisplayedColumns(IEnumerable<DataTableColumnDefinition> columnDefinitions) =>
+        public IEnumerable<object> GetValuesOrderedByColumnsWithNotDisplayedColumns(IEnumerable<DataTableColumnDefinition> columnDefinitions) =>
             columnDefinitions.Select(columnDefinition => this[columnDefinition.Name] ?? string.Empty);
     }
 }
