@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Lombiq.DataTables.Models
@@ -35,7 +36,7 @@ namespace Lombiq.DataTables.Models
     }
 
     [JsonConverter(typeof(FormattedDataTableRowValueConverter))]
-    public class FormattedDataTableRowValue
+    public class FormattedDataTableRowValue : IFormattedDataTableRowValue
     {
         public object Value { get; set; }
         public Func<object, string> Formatter { get; set; }
@@ -47,16 +48,28 @@ namespace Lombiq.DataTables.Models
         }
     }
 
+    public interface IFormattedDataTableRowValue
+    {
+        object Value { get; }
+        Func<object, string> Formatter { get; }
+    }
+
+    public class UsaDateFormatDataTableRowValue : FormattedDataTableRowValue
+    {
+        public UsaDateFormatDataTableRowValue(object value) : 
+            base(value, o => ((DateTime?)o)?.ToString("d", CultureInfo.CreateSpecificCulture("en-US")) ?? string.Empty) { }
+    }
+
     public class FormattedDataTableRowValueConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(FormattedDataTableRowValue);
+            return typeof(IFormattedDataTableRowValue).IsAssignableFrom(objectType);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var cell = value as FormattedDataTableRowValue;
+            var cell = value as IFormattedDataTableRowValue;
 
             if (cell != null && cell.Formatter != null)
             {
