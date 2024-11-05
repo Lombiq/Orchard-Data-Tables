@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lombiq.DataTables", "Lombiq.DataTables\Lombiq.DataTables.csproj", "{A7B763BA-4123-4824-BBC5-75ACBF3848D7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lombiq.DataTables.Tests.UI", "Lombiq.DataTables\Tests\Lombiq.DataTables.Tests.UI\Lombiq.DataTables.Tests.UI.csproj", "{EF866834-8DEE-4516-A350-E9281AAF6B26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lombiq.DataTables.Tests.UI", "Lombiq.DataTables.Tests.UI\Lombiq.DataTables.Tests.UI.csproj", "{EF866834-8DEE-4516-A350-E9281AAF6B26}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lombiq.DataTables.Samples", "Lombiq.DataTables.Samples\Lombiq.DataTables.Samples.csproj", "{80C1BD89-4AC3-4FAE-9118-45ED1807F35E}"
 EndProject
