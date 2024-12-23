@@ -3,8 +3,14 @@
     'extends': ['github>Lombiq/renovate-config:default-orchard-core-submodule.json5'],
     "packageRules": [
         {
+            groupName: 'DataTables packages',
+            matchPackageNames: [
+                'datatables.net*',
+            ],
+        },
+        {
             "groupName": "All packages",
             "matchUpdateTypes": ["*"],
         },
-    ]
+    ],
 }
