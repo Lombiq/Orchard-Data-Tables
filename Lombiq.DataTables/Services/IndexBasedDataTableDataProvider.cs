@@ -21,7 +21,7 @@ public abstract class IndexBasedDataTableDataProvider<TIndex> : DataTableDataPro
     private readonly IContentManager _contentManager;
     protected readonly IAuthorizationService _authorizationService;
     protected readonly ISession _session;
-    private readonly IDictionary<string, string> _columnMapping = new Dictionary<string, string>();
+    private readonly Dictionary<string, string> _columnMapping = [];
 
     protected IndexBasedDataTableDataProvider(IDataTableDataProviderServices services)
         : base(services)
