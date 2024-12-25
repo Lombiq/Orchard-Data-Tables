@@ -147,12 +147,11 @@ public class ExportTests
         yield return new DataTableShouldMatchExpectationInput(
             "Make last column not exportable.",
             dataset,
-            new[]
-            {
+            [
                 ("Num", "Numbers", true),
                 ("Letters", "Letters", true),
                 ("MagicWords", "Magic Words", false),
-            },
+            ],
             "1,z;2,y;10,x".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
             10,
@@ -192,7 +191,7 @@ public class ExportTests
                 [2, true],
                 [3, false],
             ],
-            new[] { ("Num", "Numbers", true), ("Bool", "Booleans", true) },
+            [("Num", "Numbers", true), ("Bool", "Booleans", true)],
             "1,Yes;2,Yes;3,No".Split(';').Select(row => row.Split(',')).ToArray(),
             0,
             10,
