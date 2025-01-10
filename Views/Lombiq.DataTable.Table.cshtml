@@ -6,7 +6,7 @@
 
     var columns = Model.Columns as IEnumerable<DataTableColumnDefinition>;
     var childRowsEnabled = (bool?)Model.ChildRowsEnabled ?? false;
-    var rows = Model.Rows as IEnumerable<IEnumerable<string>>;
+    var rows = Model.Rows as IEnumerable<IEnumerable<object>>;
     var dataTableId = Model.DataTableId as string;
 
     const string HeaderElementName = ElementNames.DataTableElementName + "__header";
