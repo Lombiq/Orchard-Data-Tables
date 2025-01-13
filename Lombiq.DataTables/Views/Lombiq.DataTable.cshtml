@@ -43,9 +43,9 @@
     const string templatePlaceholder = "{{data}}";
 
     ResourceManager.RegisterResource("script", ResourceNames.LombiqDataTables).AtFoot();
-    ResourceManager.RegisterResource("script", ResourceNames.DataTables.Bootstrap4Buttons).AtFoot();
-    ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4);
-    ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4Buttons);
+    ResourceManager.RegisterResource("script", ResourceNames.DataTables.Bootstrap5Buttons).AtFoot();
+    ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap5);
+    ResourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap5Buttons);
 
     var hasViewAction = viewModel.AdditionalDatatableOptions?["viewAction"].GetValueKind() == JsonValueKind.True;
 
