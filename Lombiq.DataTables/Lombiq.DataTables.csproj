@@ -24,6 +24,7 @@
   <ItemGroup>
     <None Include="..\Readme.md" />
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
+    <None Include="..\renovate.json5" />
   </ItemGroup>
 
   <ItemGroup>
