@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace Lombiq.DataTables.Tests.UI.Models;
 
-[Obsolete("This class no longer works after updating DataTables, and will be removed in the future.")]
+[Obsolete("This class no longer works after the latest DataTables update, and will be removed in the future.")]
 public class TableDrawState : IWebContentState
 {
     private readonly UITestContext _context;
