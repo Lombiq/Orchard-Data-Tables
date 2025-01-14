@@ -16,7 +16,7 @@ public class TableDrawState : IWebContentState
     public TableDrawState(UITestContext context, By wrapper = null)
     {
         _context = context;
-        _by = wrapper ?? By.ClassName("dataTables_wrapper");
+        _by = wrapper ?? By.ClassName("dataTable_wrapper");
         _draw = GetCurrentDraw();
     }
 
