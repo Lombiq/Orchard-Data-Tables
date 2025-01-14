@@ -31,22 +31,15 @@ public static class UITestContextExtensions
 
     public static void VerifyDataTablePager(this UITestContext context, int pageCount, int currentPage = 1)
     {
-        const string pagerItemXPath = "//li[contains(@class, 'paginate_button') and not(contains(@class, 'page-item next'))]";
+        const string pagerItemXPath = "//li[contains(@class, 'page-item') and ./button[@data-dt-idx = number(@data-dt-idx)]]";
 
-        context.Exists(By.XPath(StringHelper.CreateInvariant($"({pagerItemXPath})[last()]/a[@data-dt-idx='{pageCount}']")));
+        context.Exists(By.XPath(StringHelper.CreateInvariant(
+            $"({pagerItemXPath})[last()]/button[normalize-space(.) = '{pageCount}']")));
 
         static void VerifyNavigation(UITestContext context, string className, bool exists)
         {
-            var classes = context.Get(By.CssSelector($".page-item.{className}")).GetAttribute("class");
-
-            if (exists)
-            {
-                classes.ShouldNotContain("disabled");
-            }
-            else
-            {
-                classes.ShouldContain("disabled");
-            }
+            var existsSelector = exists ? ":not(.disabled)" : ".disabled";
+            context.Exists(By.CssSelector($".page-item{existsSelector} .{className}"));
         }
 
         VerifyNavigation(context, "previous", currentPage > 1);
