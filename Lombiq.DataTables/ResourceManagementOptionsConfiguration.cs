@@ -24,8 +24,8 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
             .DefineScript(ResourceNames.DataTables.Library)
             .SetDependencies(ResourceNames.JQuery)
             .SetUrl(
-                Vendors + "datatables.net/jquery.dataTables.min.js",
-                Vendors + "datatables.net/jquery.dataTables.js")
+                Vendors + "datatables.net/dataTables.min.js",
+                Vendors + "datatables.net/dataTables.js")
             .SetCdn(
                 "https://cdn.datatables.net/2.2.1/js/dataTables.min.js",
                 "https://cdn.datatables.net/2.2.1/js/dataTables.js")
