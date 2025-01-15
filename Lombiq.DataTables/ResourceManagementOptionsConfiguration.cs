@@ -1,10 +1,16 @@
 using Lombiq.DataTables.Constants;
+using Lombiq.HelpfulLibraries.Attributes;
 using Microsoft.Extensions.Options;
 using OrchardCore.ResourceManagement;
 
 namespace Lombiq.DataTables;
 
-public class ResourceManagementOptionsConfiguration : IConfigureOptions<ResourceManagementOptions>
+[ConstantFromJson("UriJsVersion", "package.json", "urijs")]
+[ConstantFromJson("DataTablesVersion", "package.json", "datatables.net")]
+[ConstantFromJson("DataTablesBootstrap5Version", "package.json", "datatables.net-bs5")]
+[ConstantFromJson("DataTablesButtonsVersion", "package.json", "datatables.net-buttons")]
+[ConstantFromJson("DataTablesButtonsBootstrap5Version", "package.json", "datatables.net-buttons-bs5")]
+public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<ResourceManagementOptions>
 {
     private const string WwwRoot = "~/Lombiq.DataTables/";
     private const string Vendors = WwwRoot + "vendors/";
@@ -18,7 +24,7 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
             .DefineScript(ResourceNames.UriJs)
             .SetUrl(Vendors + "urijs/URI.min.js", Vendors + "urijs/URI.js") // #spell-check-ignore-line
             .SetDependencies(ResourceNames.JQuery)
-            .SetVersion("1.19.2");
+            .SetVersion(UriJsVersion);
 
         _manifest
             .DefineScript(ResourceNames.DataTables.Library)
@@ -32,7 +38,7 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
             .SetCdnIntegrity(
                 "sha384-L74JDRkaoB7PWnReNepwX6+kSckc13TJXrka4EerY9jxQxSDl0dTguSLcA7dEfq8",
                 "sha384-FeGVmTD/nb8R8suJjHKxL3iAigW2uFc536mNbyfM60EY3KH6wit0Jmgx0/QO2reU")
-            .SetVersion("1.10.20");
+            .SetVersion(DataTablesVersion);
 
         _manifest
             .DefineScript(ResourceNames.DataTables.Buttons)
@@ -40,7 +46,7 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
             .SetUrl(
                 Vendors + "datatables.net-buttons/dataTables.buttons.min.js",
                 Vendors + "datatables.net-buttons/dataTables.buttons.js")
-            .SetVersion("1.6.3");
+            .SetVersion(DataTablesButtonsVersion);
 
         _manifest
             .DefineScript(ResourceNames.DataTables.Bootstrap5)
@@ -54,7 +60,7 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
             .SetCdnIntegrity(
                 "sha384-dsXH1jw5mvdtskz6tkzogTCdKWJv4k12j2BOHq3okVzlZiIsQhQXSh0I86ggUPPf",
                 "sha384-zBJRQUocgzK6hCN4Er9zN2l2fljUYdgHRSFXhzsgHwU2/HxnMPRr50a9Uevh/DBF")
-            .SetVersion("1.10.20");
+            .SetVersion(DataTablesBootstrap5Version);
 
         _manifest
             .DefineStyle(ResourceNames.DataTables.Bootstrap5)
@@ -68,7 +74,7 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
             .SetCdnIntegrity(
                 "sha384-EkHEUZ6lErauT712zSr0DZ2uuCmi3DoQj6ecNdHQXpMpFNGAQ48WjfXCE5n20W+R",
                 "sha384-0gIBab94tmRrgNHxYeuwE1hLc+W4Mv5SHxZeETbpK8TdKQlYOUwL0xcEgyw/Yc9U")
-            .SetVersion("1.10.20");
+            .SetVersion(DataTablesBootstrap5Version);
 
         _manifest
             .DefineScript(ResourceNames.DataTables.Bootstrap5Buttons)
@@ -76,7 +82,7 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
             .SetUrl(
                 Vendors + "datatables.net-bs5-js/buttons.bootstrap5.min.js",
                 Vendors + "datatables.net-bs5-js/buttons.bootstrap5.js")
-            .SetVersion("1.6.3");
+            .SetVersion(DataTablesButtonsBootstrap5Version);
 
         _manifest
             .DefineStyle(ResourceNames.DataTables.Bootstrap5Buttons)
@@ -84,7 +90,7 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
             .SetUrl(
                 Vendors + "datatables.net-bs5-css/buttons.bootstrap5.min.css",
                 Vendors + "datatables.net-bs5-css/buttons.bootstrap5.css")
-            .SetVersion("1.6.3");
+            .SetVersion(DataTablesButtonsBootstrap5Version);
 
         // Custom resources.
         _manifest
