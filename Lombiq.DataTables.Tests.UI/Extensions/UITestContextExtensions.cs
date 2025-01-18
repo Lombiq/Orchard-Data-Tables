@@ -1,12 +1,12 @@
 using Lombiq.DataTables.Samples.Controllers;
 using Lombiq.DataTables.Services;
-using Lombiq.DataTables.Tests.UI.Models;
 using Lombiq.HelpfulLibraries.Common.Utilities;
 using Lombiq.HelpfulLibraries.OrchardCore.Mvc;
 using Lombiq.Tests.UI.Extensions;
 using Lombiq.Tests.UI.Services;
 using OpenQA.Selenium;
-using Shouldly;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Tests.UI.Extensions;
@@ -31,22 +31,15 @@ public static class UITestContextExtensions
 
     public static void VerifyDataTablePager(this UITestContext context, int pageCount, int currentPage = 1)
     {
-        const string pagerItemXPath = "//li[contains(@class, 'paginate_button') and not(contains(@class, 'page-item next'))]";
+        const string pagerItemXPath = "//li[contains(@class, 'page-item') and ./button[@data-dt-idx = number(@data-dt-idx)]]";
 
-        context.Exists(By.XPath(StringHelper.CreateInvariant($"({pagerItemXPath})[last()]/a[@data-dt-idx='{pageCount}']")));
+        context.Exists(By.XPath(StringHelper.CreateInvariant(
+            $"({pagerItemXPath})[last()]/button[normalize-space(.) = '{pageCount}']")));
 
         static void VerifyNavigation(UITestContext context, string className, bool exists)
         {
-            var classes = context.Get(By.CssSelector($".page-item.{className}")).GetAttribute("class");
-
-            if (exists)
-            {
-                classes.ShouldNotContain("disabled");
-            }
-            else
-            {
-                classes.ShouldContain("disabled");
-            }
+            var existsSelector = exists ? ":not(.disabled)" : ".disabled";
+            context.Exists(By.CssSelector($".page-item{existsSelector} .{className}"));
         }
 
         VerifyNavigation(context, "previous", currentPage > 1);
@@ -55,8 +48,14 @@ public static class UITestContextExtensions
 
     public static async Task ClickAndWaitForTableChangeAsync(this UITestContext context, By selector)
     {
-        var state = new TableDrawState(context);
+        var state = GetTableState(context);
         await context.ClickReliablyOnAsync(selector);
-        state.Wait();
+        context.DoWithRetriesOrFail(() => GetTableState(context) != state);
     }
+
+    private static string GetTableState(UITestContext context) =>
+        context
+            .GetAll(By.CssSelector(".dataTableWrapper td"))
+            .Select(element => element.Text.Trim())
+            .Join();
 }

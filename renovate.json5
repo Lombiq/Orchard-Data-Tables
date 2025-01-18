@@ -8,9 +8,5 @@
                 'datatables.net*',
             ],
         },
-        {
-            "groupName": "All packages",
-            "matchUpdateTypes": ["*"],
-        },
     ],
 }
