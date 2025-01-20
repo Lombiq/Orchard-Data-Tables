@@ -90,6 +90,9 @@ public static class TestCaseUITestContextExtensions
         }
     }
 
+    /// <summary>
+    /// Signs in, executes the test-specific recipe, then performs all the tests.
+    /// </summary>
     /// <param name="checkMainMenu">
     /// Set to <see langword="false"/> if you don't want to check that the sample's main menu item is properly displayed
     /// (needs Lombiq Base Theme for Orchard Core as the site theme).
