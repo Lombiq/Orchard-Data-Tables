@@ -75,6 +75,12 @@ public static class TestCaseUITestContextExtensions
             await context.TestDataTableProviderWithShapeAsync();
         }
 
+        if (sections.HasFlag(TestDataTableRecipeDataSections.JsonBasedProvider))
+        {
+            await context.GoToAdminDataTableAsync<SampleJsonResultDataTableDataProvider>();
+            await context.TestDataTableProviderAsync();
+        }
+
         if (sections.HasFlag(TestDataTableRecipeDataSections.IndexBasedProvider))
         {
             await context.TestDataTableIndexBasedProviderAsync();

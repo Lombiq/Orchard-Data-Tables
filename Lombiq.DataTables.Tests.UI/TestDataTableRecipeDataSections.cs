@@ -9,6 +9,7 @@ public enum TestDataTableRecipeDataSections
     MainMenu = 1,
     TagHelper = 1 << 2,
     ProviderWithShape = 1 << 3,
-    IndexBasedProvider = 1 << 4,
-    All = MainMenu | TagHelper | ProviderWithShape | IndexBasedProvider,
+    JsonBasedProvider = 1 << 4,
+    IndexBasedProvider = 1 << 5,
+    All = MainMenu | TagHelper | ProviderWithShape | JsonBasedProvider | IndexBasedProvider,
 }
