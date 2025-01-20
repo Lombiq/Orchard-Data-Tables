@@ -70,9 +70,10 @@ public class ExcelDataTableExportService : IDataTableExportService
         // The worksheet name must be a non-empty string no longer than 31 characters. If you give it a longer name in
         // Microsoft Excel or LibreOffice Calc and then save it in the XLSX (Excel 2007-365) format, the result will
         // also be truncated when reopened so this is an authentic behavior.
-        worksheetName = string.IsNullOrWhiteSpace(worksheetName)
+        worksheetName = worksheetName?.Trim();
+        worksheetName = string.IsNullOrEmpty(worksheetName)
             ? localizer["Untitled Worksheet"]
-            : worksheetName.Trim()[..31];
+            : worksheetName[..Math.Min(31, worksheetName.Length)];
 
         using var workbook = new XLWorkbook();
         var worksheet = workbook.Worksheets.Add(worksheetName);
