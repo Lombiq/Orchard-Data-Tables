@@ -72,7 +72,7 @@ public class ExcelDataTableExportService : IDataTableExportService
         // also be truncated when reopened so this is an authentic behavior.
         worksheetName = worksheetName?.Trim();
         worksheetName = string.IsNullOrEmpty(worksheetName)
-            ? localizer["Untitled Worksheet"]
+            ? localizer["Sheet1"]
             : worksheetName[..Math.Min(31, worksheetName.Length)];
 
         using var workbook = new XLWorkbook();
