@@ -1,4 +1,5 @@
 using Atata;
+using ClosedXML.Excel;
 using Lombiq.DataTables.Samples.Services;
 using Lombiq.Tests.UI.Extensions;
 using Lombiq.Tests.UI.Services;
@@ -7,6 +8,7 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -117,7 +119,7 @@ public static class TestCaseUITestContextExtensions
         await context.TestDataTableProviderAsync();
     }
 
-    public static async Task TestDataTableProviderAsync(this UITestContext context)
+    public static async Task TestDataTableProviderAsync(this UITestContext context, bool testExport = true)
     {
         context.VerifyDataTablePager(pageCount: 6);
         VerifyText(context, AdjustForProvider(_alphabeticallyFirst));
@@ -127,6 +129,12 @@ public static class TestCaseUITestContextExtensions
         await context.ClickAndWaitForTableChangeAsync(ageColumnHeader);
 
         VerifyText(context, AdjustForProvider(_oldest));
+
+        if (testExport)
+        {
+            await DownloadSpreadsheetAsync(context, By.ClassName("dataTables_button-exportAll"), expectedLength: 1);
+            await DownloadSpreadsheetAsync(context, By.ClassName("dataTables_button-exportVisible"), expectedLength: 1);
+        }
     }
 
     public static void TestDataTableSampleMainMenu(this UITestContext context)
@@ -158,4 +166,24 @@ public static class TestCaseUITestContextExtensions
                 ((string)source[^1]).Replace(",", string.Empty),
                 null,
             ]);
+
+    private static async Task DownloadSpreadsheetAsync(
+        this UITestContext context,
+        By downloadButtonBy,
+        int expectedLength)
+    {
+        var path = context.GetTempSubDirectoryPath("Downloads", "export.xlsx");
+        File.Exists(path).ShouldBeFalse();
+
+        await context.ClickReliablyOnAsync(downloadButtonBy);
+        File.Exists(path).ShouldBeTrue();
+
+        using (var workbook = new XLWorkbook(path))
+        {
+            var sheet = workbook.Worksheet(1);
+            sheet.Rows().Count().ShouldBe(expectedLength);
+        }
+
+        File.Delete(path);
+    }
 }
