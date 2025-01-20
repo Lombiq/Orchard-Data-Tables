@@ -16,7 +16,7 @@ public class DataTableTagHelper : TagHelper
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         _resourceManager.RegisterResource("script", ResourceNames.DataTables.AutoInit).AtFoot();
-        _resourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap4).AtHead();
+        _resourceManager.RegisterResource("stylesheet", ResourceNames.DataTables.Bootstrap5).AtHead();
 
         output.TagName = "table";
         output.AddClass("data-table", HtmlEncoder.Default);

@@ -1,8 +1,10 @@
 {
   "private": true,
   "dependencies": {
-    "datatables.net-buttons": "1.7.1",
-    "datatables.net-buttons-bs4": "1.7.1",
+    "datatables.net": "2.2.1",
+    "datatables.net-bs5": "2.2.1",
+    "datatables.net-buttons": "3.2.0",
+    "datatables.net-buttons-bs5": "3.2.0",
     "urijs": "1.19.11"
   },
   "scripts": {
@@ -13,7 +15,7 @@
   "nodejsExtensions": {
     "assetsToCopy": [
       {
-        "sources": [ "Assets/UnmanagedNodeModules/datatables.net/js" ],
+        "sources": [ "node_modules/datatables.net/js" ],
         "pattern": "*",
         "target": "wwwroot/vendors/datatables.net"
       },
@@ -23,14 +25,14 @@
         "target": "wwwroot/vendors/datatables.net-buttons"
       },
       {
-        "sources": [ "Assets/UnmanagedNodeModules/datatables.net-bs4/js", "node_modules/datatables.net-buttons-bs4/js" ],
+        "sources": [ "node_modules/datatables.net-bs5/js", "node_modules/datatables.net-buttons-bs5/js" ],
         "pattern": "*",
-        "target": "wwwroot/vendors/datatables.net-bs4-js"
+        "target": "wwwroot/vendors/datatables.net-bs5-js"
       },
       {
-        "sources": [ "Assets/UnmanagedNodeModules/datatables.net-bs4/css", "node_modules/datatables.net-buttons-bs4/css" ],
+        "sources": [ "node_modules/datatables.net-bs5/css", "node_modules/datatables.net-buttons-bs5/css" ],
         "pattern": "*",
-        "target": "wwwroot/vendors/datatables.net-bs4-css"
+        "target": "wwwroot/vendors/datatables.net-bs5-css"
       },
       {
         "sources": [ "node_modules/urijs/src" ],

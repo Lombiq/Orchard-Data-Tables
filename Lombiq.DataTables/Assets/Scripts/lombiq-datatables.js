@@ -269,7 +269,7 @@
                     const requestData = $.extend({}, history.state.data);
                     if (!isNewRequest) requestData.draw = (latestDraw ?? 0) + 3;
 
-                    const $wrapper = $element.closest('.dataTables_wrapper');
+                    const $wrapper = $element.closest('.dataTable_wrapper');
                     const instance = $element.DataTable();
                     $wrapper
                         .find('.dataTables_filter input[type="search"][aria-controls="dataTable"]')

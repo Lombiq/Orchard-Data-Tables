@@ -176,7 +176,7 @@ public class ExportTests
             1);
 
         yield return new DataTableShouldMatchExpectationInput(
-            "Test sorting on 3nd column.",
+            "Test sorting on 3rd column.",
             dataset,
             columns,
             "2,y,bar;10,x,baz;1,z,foo".Split(';').Select(row => row.Split(',')).ToArray(),
