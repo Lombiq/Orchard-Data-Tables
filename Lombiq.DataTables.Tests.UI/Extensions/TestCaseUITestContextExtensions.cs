@@ -42,25 +42,53 @@ public static class TestCaseUITestContextExtensions
         "/Admin/DataTable/SampleIndexBasedDataTableDataProvider?paging=true&viewAction=false",
     ];
 
-    /// <param name="checkMainMenu">
-    /// Set to <see langword="false"/> if you don't want to check that the sample's main menu item is properly displayed
-    /// (needs Lombiq Base Theme for Orchard Core as the site theme).
+    /// <summary>
+    /// Signs in, executes the test-specific recipe, then performs the provided test <paramref name="sections"/>.
+    /// </summary>
+    /// <param name="sections">
+    /// Flags to indicate which parts of the overall test should be executed. Defaults to every section.
     /// </param>
-    public static async Task TestDataTableRecipeDataAsync(this UITestContext context, bool checkMainMenu = true)
+    /// <remarks><para>
+    /// We suggest testing different sections in individual tests, or in one <c>[Theory]</c> that sets <paramref
+    /// name="sections"/> parametricly, so it's more clear at a glance which section fails.
+    /// </para></remarks>
+    public static async Task TestDataTableRecipeDataAsync(
+        this UITestContext context,
+        TestDataTableRecipeDataSections sections = TestDataTableRecipeDataSections.All)
     {
         await context.SignInDirectlyAsync();
         await context.ExecuteDataTablesSampleRecipeDirectlyAsync();
 
-        if (checkMainMenu)
+        if (sections.HasFlag(TestDataTableRecipeDataSections.MainMenu))
         {
             await context.GoToHomePageAsync();
             context.TestDataTableSampleMainMenu();
         }
 
-        await context.TestDataTableTagHelperAsync();
-        await context.TestDataTableProviderWithShapeAsync();
-        await context.TestDataTableIndexBasedProviderAsync();
+        if (sections.HasFlag(TestDataTableRecipeDataSections.TagHelper))
+        {
+            await context.TestDataTableTagHelperAsync();
+        }
+
+        if (sections.HasFlag(TestDataTableRecipeDataSections.ProviderWithShape))
+        {
+            await context.TestDataTableProviderWithShapeAsync();
+        }
+
+        if (sections.HasFlag(TestDataTableRecipeDataSections.IndexBasedProvider))
+        {
+            await context.TestDataTableIndexBasedProviderAsync();
+        }
     }
+
+    /// <param name="checkMainMenu">
+    /// Set to <see langword="false"/> if you don't want to check that the sample's main menu item is properly displayed
+    /// (needs Lombiq Base Theme for Orchard Core as the site theme).
+    /// </param>
+    public static Task TestDataTableRecipeDataAsync(this UITestContext context, bool checkMainMenu) =>
+        context.TestDataTableRecipeDataAsync(checkMainMenu
+            ? TestDataTableRecipeDataSections.All
+            : TestDataTableRecipeDataSections.All & TestDataTableRecipeDataSections.MainMenu);
 
     public static async Task TestDataTableTagHelperAsync(this UITestContext context)
     {
