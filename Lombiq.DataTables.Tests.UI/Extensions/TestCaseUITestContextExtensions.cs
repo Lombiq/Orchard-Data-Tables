@@ -179,7 +179,7 @@ public static class TestCaseUITestContextExtensions
         By downloadButtonBy,
         int expectedLength)
     {
-        var path = context.GetTempSubDirectoryPath(DirectoryPaths.Downloads, "export.xlsx");
+        var path = context.GetTempSubDirectoryPath("Downloads", "export.xlsx");
         if (File.Exists(path)) File.Delete(path);
 
         await context.ClickReliablyOnAsync(downloadButtonBy);
