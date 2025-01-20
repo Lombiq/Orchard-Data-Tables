@@ -135,8 +135,8 @@ public static class TestCaseUITestContextExtensions
 
         if (testExport)
         {
-            await DownloadSpreadsheetAsync(context, By.ClassName("dataTables_button-exportAll"), expectedLength: 1);
-            await DownloadSpreadsheetAsync(context, By.ClassName("dataTables_button-exportVisible"), expectedLength: 1);
+            await DownloadSpreadsheetAsync(context, By.ClassName("dataTables_button-exportAll"), expectedLength: 58);
+            await DownloadSpreadsheetAsync(context, By.ClassName("dataTables_button-exportVisible"), expectedLength: 11);
         }
     }
 
