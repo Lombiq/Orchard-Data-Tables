@@ -1,7 +1,6 @@
 using Atata;
 using ClosedXML.Excel;
 using Lombiq.DataTables.Samples.Services;
-using Lombiq.Tests.UI.Constants;
 using Lombiq.Tests.UI.Extensions;
 using Lombiq.Tests.UI.Services;
 using OpenQA.Selenium;
@@ -176,7 +175,7 @@ public static class TestCaseUITestContextExtensions
         By downloadButtonBy,
         int expectedLength)
     {
-        var path = context.GetTempSubDirectoryPath("Downloads", "export.xlsx");
+        var path = context.GetDownloadFilePath("export.xlsx");
         if (File.Exists(path)) File.Delete(path);
 
         await context.ClickReliablyOnAsync(downloadButtonBy);
