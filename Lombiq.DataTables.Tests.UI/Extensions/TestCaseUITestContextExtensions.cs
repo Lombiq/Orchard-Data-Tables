@@ -52,7 +52,7 @@ public static class TestCaseUITestContextExtensions
     /// </param>
     /// <remarks><para>
     /// We suggest testing different sections in individual tests, or in one <c>[Theory]</c> that sets <paramref
-    /// name="sections"/> parametricly, so it's more clear at a glance which section fails.
+    /// name="sections"/> via parameter, so it's more clear at a glance which section fails.
     /// </para></remarks>
     public static async Task TestDataTableRecipeDataAsync(
         this UITestContext context,
