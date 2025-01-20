@@ -8,4 +8,11 @@
     <Right>lib/net8.0/Lombiq.DataTables.Tests.UI.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>
   </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Lombiq.DataTables.Tests.UI.Extensions.TestCaseUITestContextExtensions.TestDataTableProviderAsync(Lombiq.Tests.UI.Services.UITestContext)</Target>
+    <Left>lib/net8.0/Lombiq.DataTables.Tests.UI.dll</Left>
+    <Right>lib/net8.0/Lombiq.DataTables.Tests.UI.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
 </Suppressions>
