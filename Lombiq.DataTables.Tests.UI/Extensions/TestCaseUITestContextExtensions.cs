@@ -123,10 +123,7 @@ public static class TestCaseUITestContextExtensions
         await context.TestDataTableProviderAsync();
     }
 
-    public static Task TestDataTableProviderAsync(this UITestContext context) =>
-        context.TestDataTableProviderAsync(testExport: true);
-
-    public static async Task TestDataTableProviderAsync(this UITestContext context, bool testExport)
+    public static async Task TestDataTableProviderAsync(this UITestContext context, bool testExport = true)
     {
         context.VerifyDataTablePager(pageCount: 6);
         VerifyText(context, AdjustForProvider(_alphabeticallyFirst));
