@@ -318,10 +318,12 @@
                     {
                         text: plugin.settings.export.textAll,
                         action: exportAction(true),
+                        className: 'dataTables_button dataTables_button-exportAll',
                     },
                     {
                         text: plugin.settings.export.textVisible,
                         action: exportAction(false),
+                        className: 'dataTables_button dataTables_button-exportVisible',
                     },
                 ];
             }

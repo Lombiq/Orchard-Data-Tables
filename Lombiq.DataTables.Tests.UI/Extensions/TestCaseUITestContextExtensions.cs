@@ -1,4 +1,5 @@
 using Atata;
+using ClosedXML.Excel;
 using Lombiq.DataTables.Samples.Services;
 using Lombiq.Tests.UI.Extensions;
 using Lombiq.Tests.UI.Services;
@@ -7,6 +8,7 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,25 +44,62 @@ public static class TestCaseUITestContextExtensions
         "/Admin/DataTable/SampleIndexBasedDataTableDataProvider?paging=true&viewAction=false",
     ];
 
-    /// <param name="checkMainMenu">
-    /// Set to <see langword="false"/> if you don't want to check that the sample's main menu item is properly displayed
-    /// (needs Lombiq Base Theme for Orchard Core as the site theme).
+    /// <summary>
+    /// Signs in, executes the test-specific recipe, then performs the provided test <paramref name="sections"/>.
+    /// </summary>
+    /// <param name="sections">
+    /// Flags to indicate which parts of the overall test should be executed. Defaults to every section.
     /// </param>
-    public static async Task TestDataTableRecipeDataAsync(this UITestContext context, bool checkMainMenu = true)
+    /// <remarks><para>
+    /// We suggest testing different sections in individual tests, or in one <c>[Theory]</c> that sets <paramref
+    /// name="sections"/> via parameter, so it's more clear at a glance which section fails.
+    /// </para></remarks>
+    public static async Task TestDataTableRecipeDataAsync(
+        this UITestContext context,
+        TestDataTableRecipeDataSections sections = TestDataTableRecipeDataSections.All)
     {
         await context.SignInDirectlyAsync();
         await context.ExecuteDataTablesSampleRecipeDirectlyAsync();
 
-        if (checkMainMenu)
+        if (sections.HasFlag(TestDataTableRecipeDataSections.MainMenu))
         {
             await context.GoToHomePageAsync();
             context.TestDataTableSampleMainMenu();
         }
 
-        await context.TestDataTableTagHelperAsync();
-        await context.TestDataTableProviderWithShapeAsync();
-        await context.TestDataTableIndexBasedProviderAsync();
+        if (sections.HasFlag(TestDataTableRecipeDataSections.TagHelper))
+        {
+            await context.TestDataTableTagHelperAsync();
+        }
+
+        if (sections.HasFlag(TestDataTableRecipeDataSections.ProviderWithShape))
+        {
+            await context.TestDataTableProviderWithShapeAsync();
+        }
+
+        if (sections.HasFlag(TestDataTableRecipeDataSections.JsonBasedProvider))
+        {
+            await context.GoToAdminDataTableAsync<SampleJsonResultDataTableDataProvider>();
+            await context.TestDataTableProviderAsync();
+        }
+
+        if (sections.HasFlag(TestDataTableRecipeDataSections.IndexBasedProvider))
+        {
+            await context.TestDataTableIndexBasedProviderAsync();
+        }
     }
+
+    /// <summary>
+    /// Signs in, executes the test-specific recipe, then performs all the tests.
+    /// </summary>
+    /// <param name="checkMainMenu">
+    /// Set to <see langword="false"/> if you don't want to check that the sample's main menu item is properly displayed
+    /// (needs Lombiq Base Theme for Orchard Core as the site theme).
+    /// </param>
+    public static Task TestDataTableRecipeDataAsync(this UITestContext context, bool checkMainMenu) =>
+        context.TestDataTableRecipeDataAsync(checkMainMenu
+            ? TestDataTableRecipeDataSections.All
+            : TestDataTableRecipeDataSections.All & TestDataTableRecipeDataSections.MainMenu);
 
     public static async Task TestDataTableTagHelperAsync(this UITestContext context)
     {
@@ -83,7 +122,7 @@ public static class TestCaseUITestContextExtensions
         await context.TestDataTableProviderAsync();
     }
 
-    public static async Task TestDataTableProviderAsync(this UITestContext context)
+    public static async Task TestDataTableProviderAsync(this UITestContext context, bool testExport = true)
     {
         context.VerifyDataTablePager(pageCount: 6);
         VerifyText(context, AdjustForProvider(_alphabeticallyFirst));
@@ -93,6 +132,12 @@ public static class TestCaseUITestContextExtensions
         await context.ClickAndWaitForTableChangeAsync(ageColumnHeader);
 
         VerifyText(context, AdjustForProvider(_oldest));
+
+        if (testExport)
+        {
+            await DownloadSpreadsheetAsync(context, By.ClassName("dataTables_button-exportAll"), expectedLength: 58);
+            await DownloadSpreadsheetAsync(context, By.ClassName("dataTables_button-exportVisible"), expectedLength: 11);
+        }
     }
 
     public static void TestDataTableSampleMainMenu(this UITestContext context)
@@ -124,4 +169,24 @@ public static class TestCaseUITestContextExtensions
                 ((string)source[^1]).Replace(",", string.Empty),
                 null,
             ]);
+
+    private static async Task DownloadSpreadsheetAsync(
+        this UITestContext context,
+        By downloadButtonBy,
+        int expectedLength)
+    {
+        var path = context.GetDownloadFilePath("export.xlsx");
+        if (File.Exists(path)) File.Delete(path);
+
+        await context.ClickReliablyOnAsync(downloadButtonBy);
+        context.DoWithRetriesOrFail(() => File.Exists(path), TimeSpan.FromMinutes(2));
+
+        using (var workbook = new XLWorkbook(path))
+        {
+            var sheet = workbook.Worksheet(1);
+            sheet.Rows().Count().ShouldBe(expectedLength);
+        }
+
+        File.Delete(path);
+    }
 }
