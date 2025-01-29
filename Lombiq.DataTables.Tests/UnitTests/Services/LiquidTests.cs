@@ -113,11 +113,10 @@ public class LiquidTests
         yield return new DataTableShouldMatchExpectationInput(
             "Demonstrate some built-in filters.",
             dataset,
-            new[]
-            {
+            [
                 ("Num||^.*$||{{ '$0' | date: '%m/%d/%Y' }}", "Dates", true),
                 ("Cls||^.*$||{{ '$0' | downcase }}", "Magic Words", true), // #spell-check-ignore-line
-            },
+            ],
             $"{today},foo bar baz;01/01/1970,lorem ipsum dolor sit amet;12/31/2020,the quick brown fox" // #spell-check-ignore-line
                 .Split(';')
                 .Select(row => row.Split(','))
