@@ -5,7 +5,7 @@ using OrchardCore.ResourceManagement;
 
 namespace Lombiq.DataTables;
 
-[ConstantFromJson("UriJsVersion", "package.json", "urijs")] // #spell-check-ignore-line
+[ConstantFromJson("UriJsVersion", "package.json", "urijs")]
 [ConstantFromJson("DataTablesVersion", "package.json", "datatables.net")]
 [ConstantFromJson("DataTablesBootstrap5Version", "package.json", "datatables.net-bs5")]
 [ConstantFromJson("DataTablesButtonsVersion", "package.json", "datatables.net-buttons")]
@@ -22,7 +22,7 @@ public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<
         // jQuery.DataTables-related resources.
         _manifest
             .DefineScript(ResourceNames.UriJs)
-            .SetUrl(Vendors + "urijs/URI.min.js", Vendors + "urijs/URI.js") // #spell-check-ignore-line
+            .SetUrl(Vendors + "urijs/URI.min.js", Vendors + "urijs/URI.js")
             .SetDependencies(ResourceNames.JQuery)
             .SetVersion(UriJsVersion);
 

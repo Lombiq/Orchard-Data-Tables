@@ -69,7 +69,7 @@ public abstract class DataTableDataProviderBase : IDataTableDataProvider
         if (fromJson)
         {
             beforePipe = "{% capture jsonData %} $0 {% endcapture %} ";
-            source = "jsonData | jsonparse"; // #spell-check-ignore-line
+            source = "jsonData | jsonparse";
         }
 
         return columnName + "||^.*$||" + beforePipe + "{{ " + source + " | " + call + " }}";
