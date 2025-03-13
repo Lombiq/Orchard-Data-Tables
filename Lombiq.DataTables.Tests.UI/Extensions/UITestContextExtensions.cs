@@ -33,7 +33,7 @@ public static class UITestContextExtensions
     {
         const string pagerItemXPath = "//li[contains(@class, 'page-item') and ./button[@data-dt-idx = number(@data-dt-idx)]]";
 
-        context.Exists(By.XPath(StringHelper.CreateInvariant(
+        context.ExistsWithStaleRetries(By.XPath(StringHelper.CreateInvariant(
             $"({pagerItemXPath})[last()]/button[normalize-space(.) = '{pageCount}']")));
 
         static void VerifyNavigation(UITestContext context, string className, bool exists)
@@ -55,7 +55,7 @@ public static class UITestContextExtensions
 
     private static string GetTableState(UITestContext context) =>
         context
-            .GetAll(By.CssSelector(".dataTableWrapper td"))
+            .GetAllWithStaleRetries(By.CssSelector(".dataTableWrapper td"))
             .Select(element => element.Text.Trim())
             .Join();
 }
