@@ -99,7 +99,7 @@ public static class TestCaseUITestContextExtensions
     public static Task TestDataTableRecipeDataAsync(this UITestContext context, bool checkMainMenu) =>
         context.TestDataTableRecipeDataAsync(checkMainMenu
             ? TestDataTableRecipeDataSections.All
-            : TestDataTableRecipeDataSections.All & TestDataTableRecipeDataSections.MainMenu);
+            : TestDataTableRecipeDataSections.All & ~TestDataTableRecipeDataSections.MainMenu);
 
     public static async Task TestDataTableTagHelperAsync(this UITestContext context)
     {
