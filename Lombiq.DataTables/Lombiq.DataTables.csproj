@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.props" />
+  <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -25,10 +25,26 @@
     <None Include="..\Readme.md" />
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
     <None Include="..\renovate.json5" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="node_modules\**" />
+    <Vendor Include="node_modules/datatables.net">
+      <Subdirectory>js</Subdirectory>
+    </Vendor>
+    <Vendor Include="node_modules/datatables.net-buttons">
+      <Subdirectory>js</Subdirectory>
+    </Vendor>
+    <Vendor Include="node_modules/datatables.net-bs5">
+      <CopyTo>datatables.net-bs5-js</CopyTo>
+      <Subdirectory>js</Subdirectory>
+      <Subdirectory>../datatables.net-buttons-bs5/js</Subdirectory>
+    </Vendor>
+    <Vendor Include="node_modules/datatables.net-buttons-bs5">
+      <CopyTo>datatables.net-bs5-css</CopyTo>
+      <Subdirectory>../datatables.net-bs5/css</Subdirectory>
+      <Subdirectory>css</Subdirectory>
+    </Vendor>
+    <Vendor Include="node_modules/urijs">
+      <Subdirectory>src</Subdirectory>
+    </Vendor>
   </ItemGroup>
 
   <PropertyGroup Condition="'$(NuGetBuild)' != 'true'">
@@ -59,7 +75,6 @@
     <ProjectReference Include="..\..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.LinqToDb\Lombiq.HelpfulLibraries.LinqToDb.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.OrchardCore\Lombiq.HelpfulLibraries.OrchardCore.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.SourceGenerators\Lombiq.HelpfulLibraries.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    <ProjectReference Include="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
@@ -67,13 +82,13 @@
     <PackageReference Include="Lombiq.HelpfulLibraries.LinqToDb" Version="12.2.0" />
     <PackageReference Include="Lombiq.HelpfulLibraries.OrchardCore" Version="12.2.0" />
     <PackageReference Include="Lombiq.HelpfulLibraries.SourceGenerators" Version="12.2.0" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    <PackageReference Include="Lombiq.NodeJs.Extensions" Version="2.1.3" />
+    <PackageReference Include="Lombiq.Npm.Targets" Version="1.4.1-alpha.1.osoe-1107" />
   </ItemGroup>
 
   <ItemGroup>
     <AdditionalFiles Include="package.json" />
   </ItemGroup>
 
-  <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions\Lombiq.NodeJs.Extensions.targets" />
+  <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
 
 </Project>
