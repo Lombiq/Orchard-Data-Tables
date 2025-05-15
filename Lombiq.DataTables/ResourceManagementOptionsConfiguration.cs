@@ -14,7 +14,7 @@ public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<
 {
     private const string WwwRoot = "~/Lombiq.DataTables/";
     private const string Vendors = WwwRoot + "vendors/";
-    private const string Lombiq = WwwRoot + "lombiq/";
+    private const string Js = WwwRoot + "js/";
     private static readonly ResourceManifest _manifest = new();
 
     static ResourceManagementOptionsConfiguration()
@@ -96,7 +96,7 @@ public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<
         _manifest
             .DefineScript(ResourceNames.DataTables.AutoInit)
             .SetDependencies(ResourceNames.DataTables.Bootstrap5, ResourceNames.DataTables.Bootstrap5Buttons)
-            .SetUrl(Lombiq + "jquery-datatables-autoinit.js")
+            .SetUrl(Js + "jquery-datatables-autoinit.js")
             .SetVersion("1.0");
 
         _manifest
@@ -108,12 +108,12 @@ public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<
                 ResourceNames.DataTables.Bootstrap5,
                 ResourceNames.DataTables.Buttons,
                 ResourceNames.DataTables.Bootstrap5Buttons)
-            .SetUrl(Lombiq + "lombiq-datatables.js")
+            .SetUrl(Js + "lombiq-datatables.js")
             .SetVersion("1.0");
 
         _manifest
             .DefineScript(ResourceNames.ICantBelieveItsNotDataTable)
-            .SetUrl(Lombiq + "icbin-datatable.js")
+            .SetUrl(Js + "icbin-datatable.js")
             .SetDependencies("vuejs")
             .SetVersion("1.0.2");
     }

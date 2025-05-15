@@ -6,42 +6,5 @@
     "datatables.net-buttons": "3.2.3",
     "datatables.net-buttons-bs5": "3.2.3",
     "urijs": "1.19.11"
-  },
-  "scripts": {
-    "build": "npm explore nodejs-extensions -- pnpm build",
-    "clean": "npm explore nodejs-extensions -- pnpm clean",
-    "watch": "npm explore nodejs-extensions -- pnpm watch"
-  },
-  "nodejsExtensions": {
-    "assetsToCopy": [
-      {
-        "sources": [ "node_modules/datatables.net/js" ],
-        "pattern": "*",
-        "target": "wwwroot/vendors/datatables.net"
-      },
-      {
-        "sources": [ "node_modules/datatables.net-buttons/js" ],
-        "pattern": "*",
-        "target": "wwwroot/vendors/datatables.net-buttons"
-      },
-      {
-        "sources": [ "node_modules/datatables.net-bs5/js", "node_modules/datatables.net-buttons-bs5/js" ],
-        "pattern": "*",
-        "target": "wwwroot/vendors/datatables.net-bs5-js"
-      },
-      {
-        "sources": [ "node_modules/datatables.net-bs5/css", "node_modules/datatables.net-buttons-bs5/css" ],
-        "pattern": "*",
-        "target": "wwwroot/vendors/datatables.net-bs5-css"
-      },
-      {
-        "sources": [ "node_modules/urijs/src" ],
-        "target": "wwwroot/vendors/urijs"
-      }
-    ],
-    "scripts": {
-      "source": "Assets/Scripts",
-      "target": "wwwroot/lombiq"
-    }
   }
 }
