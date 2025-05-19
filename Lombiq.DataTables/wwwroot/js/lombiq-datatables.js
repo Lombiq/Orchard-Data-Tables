@@ -9,8 +9,8 @@
 /* global URI */
 
 (function lombiqDatatables($, window, document, history) {
-    const pluginName = 'lombiq_DataTables';
-    const useDefaultButtons = 'useDefaultButtons';
+    const pluginName = 'lombiq_DataTables'
+    const useDefaultButtons = 'useDefaultButtons'
 
     const defaults = {
         dataTablesOptions: {
