@@ -37,7 +37,6 @@ If you want a display a table of deleted content items, we already happen to hav
 For configuring the setup logic or global customization you can override the `Lombiq.DataTable.Resources` shape, for example in your theme. This is displayed before the `Lombiq.DataTable` shape, but after the basic configurations have been initialized (note: not applicable to the `<datatable>` tag helper).
 
 Here you can edit the `window.dataTableResources` object. It contains the following properties:
-
 - `options`: a regular DataTables [options](https://datatables.net/manual/options) object. For example use `window.dataTableResources.options.dom` to set the table layout for your theme.
 - `created`: a callback (`function (wrapperElementJQuery, plugin)`) that's executed after the plugin has been initialized. This is the ideal place for adding custom controls.
 
