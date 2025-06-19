@@ -1,6 +1,7 @@
 using Lombiq.DataTables.Services;
 using OrchardCore.ContentManagement;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lombiq.DataTables.Handlers;
@@ -46,12 +47,9 @@ public static class ManualDataTableIndexGeneratorExtensions
     {
         foreach (var indexGenerator in indexGenerators)
         {
-            foreach (var contentItem in contentItems)
+            foreach (var contentItem in contentItems.Where(contentItem => contentItem != null))
             {
-                if (contentItem != null)
-                {
-                    await indexGenerator.ScheduleDeferredIndexGenerationAsync(contentItem, managedTypeOnly);
-                }
+                await indexGenerator.ScheduleDeferredIndexGenerationAsync(contentItem, managedTypeOnly);
             }
         }
     }
