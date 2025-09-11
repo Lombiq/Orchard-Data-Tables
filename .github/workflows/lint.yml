@@ -10,6 +10,6 @@ on:
 jobs:
   lint:
     name: Lint Assets
-    uses: Lombiq/NodeJs-Extensions/.github/workflows/lint.yml@issue/OSOE-1159
+    uses: Lombiq/NodeJs-Extensions/.github/workflows/lint.yml@dev
     with:
       scripts: Lombiq.DataTables
