@@ -191,11 +191,11 @@
                         try {
                             localStorage.setItem(key, jsonParameters);
                         }
-                        catch (exception) {
+                        catch {
                             try {
                                 localStorage[key] = jsonParameters;
                             }
-                            catch (innerException) {
+                            catch {
                                 // If localStorage won't work there is nothing to do.
                             }
                         }
