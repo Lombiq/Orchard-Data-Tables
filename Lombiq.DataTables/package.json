@@ -7,5 +7,5 @@
     "datatables.net-buttons-bs5": "3.2.5",
     "urijs": "1.19.11"
   },
-  "packageManager": "pnpm@8.15.9"
+  "packageManager": "pnpm@10.18.3"
 }
