@@ -1,11 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.props" />
-
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <DefaultItemExcludes>$(DefaultItemExcludes);.git*;node_modules\**</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);.git*</DefaultItemExcludes>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
@@ -25,26 +23,6 @@
     <None Include="..\Readme.md" />
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
     <None Include="..\renovate.json5" />
-    <None Remove="node_modules\**" />
-    <Vendor Include="node_modules/datatables.net">
-      <Subdirectory>js</Subdirectory>
-    </Vendor>
-    <Vendor Include="node_modules/datatables.net-buttons">
-      <Subdirectory>js</Subdirectory>
-    </Vendor>
-    <Vendor Include="node_modules/datatables.net-bs5">
-      <CopyTo>datatables.net-bs5-js</CopyTo>
-      <Subdirectory>js</Subdirectory>
-      <Subdirectory>../datatables.net-buttons-bs5/js</Subdirectory>
-    </Vendor>
-    <Vendor Include="node_modules/datatables.net-buttons-bs5">
-      <CopyTo>datatables.net-bs5-css</CopyTo>
-      <Subdirectory>../datatables.net-bs5/css</Subdirectory>
-      <Subdirectory>css</Subdirectory>
-    </Vendor>
-    <Vendor Include="node_modules/urijs">
-      <Subdirectory>src</Subdirectory>
-    </Vendor>
   </ItemGroup>
 
   <PropertyGroup Condition="'$(NuGetBuild)' != 'true'">
@@ -68,6 +46,7 @@
     <PackageReference Include="OrchardCore.Contents" Version="2.1.0" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="2.1.0" />
     <PackageReference Include="OrchardCore.Search.Lucene" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="3.0.71" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
@@ -75,7 +54,6 @@
     <ProjectReference Include="..\..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.LinqToDb\Lombiq.HelpfulLibraries.LinqToDb.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.OrchardCore\Lombiq.HelpfulLibraries.OrchardCore.csproj" />
     <ProjectReference Include="..\..\..\Libraries\Lombiq.HelpfulLibraries\Lombiq.HelpfulLibraries.SourceGenerators\Lombiq.HelpfulLibraries.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    <ProjectReference Include="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' == 'true'">
@@ -83,13 +61,6 @@
     <PackageReference Include="Lombiq.HelpfulLibraries.LinqToDb" Version="12.3.0" />
     <PackageReference Include="Lombiq.HelpfulLibraries.OrchardCore" Version="12.3.0" />
     <PackageReference Include="Lombiq.HelpfulLibraries.SourceGenerators" Version="12.3.0" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    <PackageReference Include="Lombiq.Npm.Targets" Version="1.5.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="package.json" />
-  </ItemGroup>
-
-  <Import Condition="'$(NuGetBuild)' != 'true'" Project="..\..\..\Utilities\Lombiq.Npm.Targets\Lombiq.Npm.Targets.targets" />
 
 </Project>
