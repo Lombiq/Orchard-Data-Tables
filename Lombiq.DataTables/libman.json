@@ -25,7 +25,7 @@
     {
       "library": "urijs@1.19.11",
       "destination": "wwwroot/vendors/urijs",
-      "files": [ "**/*.js" ]
+      "files": [ "src/URI.min.js", "src/URI.js" ]
     }
   ]
 }
