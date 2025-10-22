@@ -1,17 +1,17 @@
 using Lombiq.DataTables.Constants;
-using Lombiq.HelpfulLibraries.Attributes;
 using Microsoft.Extensions.Options;
 using OrchardCore.ResourceManagement;
 
 namespace Lombiq.DataTables;
 
-[ConstantFromJson("UriJsVersion", "package.json", "urijs")]
-[ConstantFromJson("DataTablesVersion", "package.json", "datatables.net")]
-[ConstantFromJson("DataTablesBootstrap5Version", "package.json", "datatables.net-bs5")]
-[ConstantFromJson("DataTablesButtonsVersion", "package.json", "datatables.net-buttons")]
-[ConstantFromJson("DataTablesButtonsBootstrap5Version", "package.json", "datatables.net-buttons-bs5")]
-public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<ResourceManagementOptions>
+public class ResourceManagementOptionsConfiguration : IConfigureOptions<ResourceManagementOptions>
 {
+    public const string UriJsVersion = "1.19.11";
+    public const string DataTablesVersion = "2.3.4";
+    public const string DataTablesBootstrap5Version = "2.3.4";
+    public const string DataTablesButtonsVersion = "3.2.5";
+    public const string DataTablesButtonsBootstrap5Version = "3.2.5";
+
     private const string WwwRoot = "~/Lombiq.DataTables/";
     private const string Vendors = WwwRoot + "vendors/";
     private const string Js = WwwRoot + "js/";
