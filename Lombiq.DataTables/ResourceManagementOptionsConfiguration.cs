@@ -71,16 +71,16 @@ public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<
             .DefineScript(ResourceNames.DataTables.Bootstrap5Buttons)
             .SetDependencies(ResourceNames.JQuery, ResourceNames.DataTables.Library, ResourceNames.DataTables.Buttons)
             .SetUrl(
-                Vendors + "datatables.net-bs5/js/buttons.bootstrap5.min.js",
-                Vendors + "datatables.net-bs5/js/buttons.bootstrap5.js")
+                Vendors + "datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js",
+                Vendors + "datatables.net-buttons-bs5/js/buttons.bootstrap5.js")
             .SetVersion(DataTablesButtonsBootstrap5Version);
 
         _manifest
             .DefineStyle(ResourceNames.DataTables.Bootstrap5Buttons)
             .SetDependencies(ResourceNames.Bootstrap, ResourceNames.DataTables.Bootstrap5, ResourceNames.DataTables.Buttons)
             .SetUrl(
-                Vendors + "datatables.net-bs5/css/buttons.bootstrap5.min.css",
-                Vendors + "datatables.net-bs5/css/buttons.bootstrap5.css")
+                Vendors + "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css",
+                Vendors + "datatables.net-buttons-bs5/css/buttons.bootstrap5.css")
             .SetVersion(DataTablesButtonsBootstrap5Version);
 
         // Custom resources.
