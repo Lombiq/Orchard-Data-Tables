@@ -18,7 +18,7 @@ public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<
         // jQuery.DataTables-related resources.
         _manifest
             .DefineScript(ResourceNames.UriJs)
-            .SetUrl(Vendors + "urijs/URI.min.js", Vendors + "urijs/URI.js")
+            .SetUrl(Vendors + "urijs/src/URI.min.js", Vendors + "urijs/src/URI.js")
             .SetDependencies(ResourceNames.JQuery)
             .SetVersion(LibManVersions.Urijs);
 
@@ -26,8 +26,8 @@ public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<
             .DefineScript(ResourceNames.DataTables.Library)
             .SetDependencies(ResourceNames.JQuery)
             .SetUrl(
-                Vendors + "datatables.net/dataTables.min.js",
-                Vendors + "datatables.net/dataTables.js")
+                Vendors + "datatables.net/js/dataTables.min.js",
+                Vendors + "datatables.net/js/dataTables.js")
             .SetCdn(
                 $"https://cdn.datatables.net/{LibManVersions.DatatablesNet}/dataTables.min.js",
                 $"https://cdn.datatables.net/{LibManVersions.DatatablesNet}/dataTables.js")
@@ -37,16 +37,16 @@ public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<
             .DefineScript(ResourceNames.DataTables.Buttons)
             .SetDependencies(ResourceNames.JQuery, ResourceNames.DataTables.Library)
             .SetUrl(
-                Vendors + "datatables.net-buttons/dataTables.buttons.min.js",
-                Vendors + "datatables.net-buttons/dataTables.buttons.js")
+                Vendors + "datatables.net-buttons/js/dataTables.buttons.min.js",
+                Vendors + "datatables.net-buttons/js/dataTables.buttons.js")
             .SetVersion(LibManVersions.DatatablesNetButtons);
 
         _manifest
             .DefineScript(ResourceNames.DataTables.Bootstrap5)
             .SetDependencies(ResourceNames.JQuery, ResourceNames.DataTables.Library)
             .SetUrl(
-                Vendors + "datatables.net-bs5-js/dataTables.bootstrap5.min.js",
-                Vendors + "datatables.net-bs5-js/dataTables.bootstrap5.js")
+                Vendors + "datatables.net-bs5/js/dataTables.bootstrap5.min.js",
+                Vendors + "datatables.net-bs5/js/dataTables.bootstrap5.js")
             .SetCdn(
                 $"https://cdn.datatables.net/{LibManVersions.DatatablesNetBs5}/js/dataTables.bootstrap5.min.js",
                 $"https://cdn.datatables.net/{LibManVersions.DatatablesNetBs5}/js/dataTables.bootstrap5.js")
@@ -56,8 +56,8 @@ public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<
             .DefineStyle(ResourceNames.DataTables.Bootstrap5)
             .SetDependencies(ResourceNames.Bootstrap)
             .SetUrl(
-                Vendors + "datatables.net-bs5-css/dataTables.bootstrap5.min.css",
-                Vendors + "datatables.net-bs5-css/dataTables.bootstrap5.css")
+                Vendors + "datatables.net-bs5/css/dataTables.bootstrap5.min.css",
+                Vendors + "datatables.net-bs5/css/dataTables.bootstrap5.css")
             .SetCdn(
                 $"https://cdn.datatables.net/{LibManVersions.DatatablesNetBs5}/css/dataTables.bootstrap5.min.css",
                 $"https://cdn.datatables.net/{LibManVersions.DatatablesNetBs5}/css/dataTables.bootstrap5.css")
@@ -67,16 +67,16 @@ public partial class ResourceManagementOptionsConfiguration : IConfigureOptions<
             .DefineScript(ResourceNames.DataTables.Bootstrap5Buttons)
             .SetDependencies(ResourceNames.JQuery, ResourceNames.DataTables.Library, ResourceNames.DataTables.Buttons)
             .SetUrl(
-                Vendors + "datatables.net-bs5-js/buttons.bootstrap5.min.js",
-                Vendors + "datatables.net-bs5-js/buttons.bootstrap5.js")
+                Vendors + "datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js",
+                Vendors + "datatables.net-buttons-bs5/js/buttons.bootstrap5.js")
             .SetVersion(LibManVersions.DatatablesNetButtonsBs5);
 
         _manifest
             .DefineStyle(ResourceNames.DataTables.Bootstrap5Buttons)
             .SetDependencies(ResourceNames.Bootstrap, ResourceNames.DataTables.Bootstrap5, ResourceNames.DataTables.Buttons)
             .SetUrl(
-                Vendors + "datatables.net-bs5-css/buttons.bootstrap5.min.css",
-                Vendors + "datatables.net-bs5-css/buttons.bootstrap5.css")
+                Vendors + "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css",
+                Vendors + "datatables.net-buttons-bs5/css/buttons.bootstrap5.css")
             .SetVersion(LibManVersions.DatatablesNetButtonsBs5);
 
         // Custom resources.
