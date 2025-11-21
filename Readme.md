@@ -73,13 +73,6 @@ For additional properties and notes on the events take a look at the comments [i
 
 _Note: Use `@Json.Serialize()` to automatically camelCase the data for JS._
 
-## Dependencies
-
-This module has the following dependencies:
-
-- [Lombiq Helpful Libraries for Orchard Core](https://github.com/Lombiq/Helpful-Libraries)
-- [Lombiq Node.js Extensions](https://gihub.com/Lombiq/NodeJs-Extensions)
-
 ## Troubleshooting
 
 ### Visual Studio 2022

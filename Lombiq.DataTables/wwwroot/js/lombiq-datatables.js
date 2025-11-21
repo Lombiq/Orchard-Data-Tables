@@ -81,7 +81,7 @@
             const plugin = this;
             let stateJson = '{}';
 
-            plugin.customizeAjaxParameters = function customizeParameters(parameters) { return parameters; };
+            plugin.customizeAjaxParameters = (parameters) => parameters;
             plugin.originalQueryStringParameters = new URI().search(true);
 
             const dataTablesOptions = $.extend({}, plugin.settings.dataTablesOptions);
