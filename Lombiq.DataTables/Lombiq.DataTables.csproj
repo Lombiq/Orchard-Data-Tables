@@ -43,7 +43,6 @@
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.105.0" />
-    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="3.0.71" />
     <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.2" />
     <PackageReference Include="OrchardCore.Contents" Version="2.1.0" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="2.1.0" />
@@ -64,13 +63,7 @@
     <PackageReference Include="Lombiq.HelpfulLibraries.SourceGenerators" Version="12.5.0" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
-  <!--  Needed for deployment.  -->
-  <Target Name="AddVendors" AfterTargets="LibraryManagerRestore">
-    <ItemGroup>
-      <Content Include="wwwroot\vendors\**">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-    </ItemGroup>
-  </Target>
+  <Import Project="../../../../tools/Lombiq.MSBuild.Targets/Lombiq.MSBuild.LibMan.Targets/Lombiq.MSBuild.LibMan.Targets.targets"
+          Condition="'$(NuGetBuild)' != 'true' "/>
 
 </Project>
