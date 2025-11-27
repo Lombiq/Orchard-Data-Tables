@@ -4,11 +4,11 @@
   "defaultDestination": "wwwroot/vendors/[Name]",
   "libraries": [
     {
-      "library": "datatables.net@2.3.4",
+      "library": "datatables.net@2.3.5",
       "files": [ "js/dataTables*.js" ]
     },
     {
-      "library": "datatables.net-bs5@2.3.4",
+      "library": "datatables.net-bs5@2.3.5",
       "files": [ "css/*.css", "js/*.js" ]
     },
     {
