@@ -23,7 +23,6 @@
     <None Include="..\Readme.md" />
     <None Include="NuGetIcon.png" Pack="true" PackagePath="" />
     <None Include="..\renovate.json5" />
-    <AdditionalFiles Include="libman.json" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(NuGetBuild)' != 'true'">
