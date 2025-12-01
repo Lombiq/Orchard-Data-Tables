@@ -3,7 +3,7 @@
   <Import Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.Tests.UI.Targets/Lombiq.MSBuild.Tests.UI.Targets.props" />
 
   <ItemGroup>
-    <PackageReference Include="OrchardCore.Liquid" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Liquid" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>

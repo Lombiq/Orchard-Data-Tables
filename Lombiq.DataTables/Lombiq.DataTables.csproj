@@ -24,8 +24,8 @@
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.105.0" />
     <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.2" />
-    <PackageReference Include="OrchardCore.Contents" Version="$(OrchardCoreVersion)" />
-    <PackageReference Include="OrchardCore.Search.Lucene" Version="$(OrchardCoreVersion)" />
+    <PackageReference Include="OrchardCore.Contents" Version="2.1.0" />
+    <PackageReference Include="OrchardCore.Search.Lucene" Version="2.1.0" />
   </ItemGroup>
 
   <Import Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.LibMan.Targets/Lombiq.MSBuild.LibMan.Targets.targets"
