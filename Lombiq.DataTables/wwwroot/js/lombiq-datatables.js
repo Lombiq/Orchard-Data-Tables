@@ -9,7 +9,7 @@
 /* global URI */
 
 (function lombiqDatatables($, window, document, history) {
-    const pluginName = 'lombiq_DataTables';
+    var pluginName = 'lombiq_DataTables';
     const useDefaultButtons = 'useDefaultButtons';
 
     const defaults = {
