@@ -22,7 +22,7 @@ window.icbinDataTable = {};
 // - component(userData): A child component may raise this to be bubbled up to the parent component.
 
 window.icbinDataTable.table = {
-    name: "icbin-datatable",
+    name: 'icbin-datatable',
     model: {
         prop: 'data',
         event: 'update',
