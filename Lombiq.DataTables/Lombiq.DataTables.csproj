@@ -4,7 +4,7 @@
           Condition="'$(NuGetBuild)' != 'true'"/>
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <DefaultItemExcludes>$(DefaultItemExcludes);.git*</DefaultItemExcludes>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -36,9 +36,9 @@
     <PackageReference Include="ClosedXML" Version="0.105.0" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="3.0.71" />
     <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.2" />
-    <PackageReference Include="OrchardCore.Contents" Version="2.1.0" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="2.1.0" GeneratePathProperty="true" />
-    <PackageReference Include="OrchardCore.Search.Lucene" Version="2.1.0" />
+    <PackageReference Include="OrchardCore.Contents" Version="3.0.0-preview-18875" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="3.0.0-preview-18875" GeneratePathProperty="true" />
+    <PackageReference Include="OrchardCore.Search.Lucene" Version="3.0.0-preview-18875" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
