@@ -57,7 +57,7 @@ public class SampleJsonResultDataTableDataProvider : JsonResultDataTableDataProv
     {
         var query = _session.QueryContentItem(PublicationStatus.Published)
             .Where(index => index.ContentType == Employee);
-        var totalCount = await query.CountAsync();
+        var totalCount = await query.CountAsync(_hca.HttpContext?.RequestAborted ?? default);
 
         // For the sake of simplicity, we only make this one column searchable. With a content part index you can search
         // all the relevant fields on the database side. Otherwise you'd need to do the filtering offline after
@@ -67,7 +67,7 @@ public class SampleJsonResultDataTableDataProvider : JsonResultDataTableDataProv
         // backing data changes.
         var isFiltered = request.HasSearch;
         if (isFiltered) query = query.Where(index => index.DisplayText.Contains(request.Search.Value));
-        var filteredCount = isFiltered ? await query.CountAsync() : -1;
+        var filteredCount = isFiltered ? await query.CountAsync(_hca.HttpContext?.RequestAborted ?? default) : -1;
 
         // For the same reason we can only paginate on the SQL side if it's sorted by name. This is why, unless you have
         // use for content part indexes anyway it's best to use IndexBasedDataTableDataProvider for large data. The
@@ -82,7 +82,9 @@ public class SampleJsonResultDataTableDataProvider : JsonResultDataTableDataProv
         }
 
         // We have this helper method to avoid confusion because DataTables and YesSql describes slices differently.
-        var results = (isPaginated ? await PaginateAsync(query, request) : await query.ListAsync())
+        var results = (isPaginated
+                ? await PaginateAsync(query, request)
+                : await query.ListAsync(_hca.HttpContext?.RequestAborted ?? default))
             // The result will be converted into JSON so it's a good practice to strip anything unneeded to save
             // bandwidth. Also you may have cyclic references in your results which this eliminates.
             .Select(contentItem => contentItem.As<EmployeePart>())
