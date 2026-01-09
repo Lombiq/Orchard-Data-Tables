@@ -75,7 +75,7 @@ public class MockDataProvider : JsonResultDataTableDataProvider
 
         return new LiquidTemplateManager(
             memoryCache,
-            new LiquidViewParser(Options.Create(new LiquidViewOptions())),
+            new LiquidViewParser(Options.Create(new LiquidViewOptions()), Options.Create(new FluidParserOptions())),
             new OptionsManager<TemplateOptions>(optionsFactory),
             serviceProvider);
     }
