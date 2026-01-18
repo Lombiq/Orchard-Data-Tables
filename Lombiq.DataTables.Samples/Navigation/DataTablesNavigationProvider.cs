@@ -31,5 +31,5 @@ public class DataTablesNavigationProvider : MainMenuNavigationProviderBase
     private Action<NavigationItemBuilder> AdminTable(string name) =>
         itemBuilder => itemBuilder.ActionTask<TableController>(
             _hca.HttpContext,
-            controller => controller.Get(name, null, true, false));
+            controller => controller.Get(name, queryId: null, paging: true, viewAction: false));
 }
