@@ -7,7 +7,6 @@
   <Import Condition="'$(NuGetBuild)' == 'true'" Project="Sdk.props" Sdk="Lombiq.MSBuild.OrchardCore.Tests.UI.Sdk" Version="1.0.1-alpha.6.osoe-1208" />
 
   <PropertyGroup>
-    <IsLombiqProject>true</IsLombiqProject>
     <Title>Lombiq Data Tables for Orchard Core - UI Test Extensions</Title>
     <CopyrightYear>2020</CopyrightYear>
     <DescriptionBody>Extension methods that test various features in Lombiq Data Tables for Orchard Core. See the project website for detailed documentation.</DescriptionBody>
