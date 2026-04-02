@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Lombiq.DataTables.Samples/Lombiq.DataTables.Samples.csproj" />
+  <Project Path="Lombiq.DataTables.Tests.UI/Lombiq.DataTables.Tests.UI.csproj" />
+  <Project Path="Lombiq.DataTables/Lombiq.DataTables.csproj" />
+</Solution>
