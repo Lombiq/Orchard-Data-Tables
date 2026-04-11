@@ -58,7 +58,7 @@ public class EmployeeDataTableIndexGenerator : DataTableIndexGeneratorBase<Emplo
     // multiple, then override GenerateIndexAsync() instead.
     protected override Task<EmployeeDataTableIndex> GenerateIndexAsync(ContentItem contentItem)
     {
-        var part = contentItem.As<EmployeePart>();
+        var part = contentItem.GetOrCreate<EmployeePart>();
         if (part == null) return Task.FromResult<EmployeeDataTableIndex>(null);
 
         var index = new EmployeeDataTableIndex

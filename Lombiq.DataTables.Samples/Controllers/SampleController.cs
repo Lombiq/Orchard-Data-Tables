@@ -24,7 +24,7 @@ public sealed class SampleController : Controller
                 .QueryContentItem(PublicationStatus.Published)
                 .Where(index => index.ContentType == Employee)
                 .ListAsync(Response.HttpContext.RequestAborted))
-            .Select(contentItem => contentItem.As<EmployeePart>()));
+            .Select(contentItem => contentItem.GetOrCreate<EmployeePart>()));
 
     // Nothing interesting happens here, the shape sends out the asynchronous request on its own via JavaScript. See it
     // under /Lombiq.DataTables.Samples/Sample/ProviderWithShape
