@@ -36,9 +36,9 @@
     <PackageReference Include="ClosedXML" Version="0.105.0" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="3.0.71" />
     <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.1.2" />
-    <PackageReference Include="OrchardCore.Contents" Version="3.0.0-preview-18973" />
-    <PackageReference Include="OrchardCore.Module.Targets" Version="3.0.0-preview-18973" GeneratePathProperty="true" />
-    <PackageReference Include="OrchardCore.Lucene" Version="3.0.0-preview-18973" />
+    <PackageReference Include="OrchardCore.Contents" Version="3.0.0-preview-18975" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="3.0.0-preview-18975" GeneratePathProperty="true" />
+    <PackageReference Include="OrchardCore.Lucene" Version="3.0.0-preview-18975" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(NuGetBuild)' != 'true'">
