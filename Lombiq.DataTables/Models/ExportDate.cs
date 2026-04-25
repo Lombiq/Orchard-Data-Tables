@@ -50,8 +50,8 @@ public class ExportDate
         new LocalDate(exportDate.Year, exportDate.Month, exportDate.Day).ToDateTimeUnspecified();
 
     public static implicit operator ExportDate(LocalDate? localDateNullable) =>
-        localDateNullable is { } localDate ? localDate : (ExportDate)null;
+        localDateNullable is { } localDate ? localDate : null;
 
     public static implicit operator ExportDate(DateTime? dateTimeNullable) =>
-        dateTimeNullable is { } dateTime ? dateTime : (ExportDate)null;
+        dateTimeNullable is { } dateTime ? dateTime : null;
 }
