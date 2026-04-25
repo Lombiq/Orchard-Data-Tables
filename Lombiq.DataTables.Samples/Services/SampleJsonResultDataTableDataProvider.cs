@@ -87,7 +87,7 @@ public class SampleJsonResultDataTableDataProvider : JsonResultDataTableDataProv
                 : await query.ListAsync(_hca.HttpContext?.RequestAborted ?? default))
             // The result will be converted into JSON so it's a good practice to strip anything unneeded to save
             // bandwidth. Also you may have cyclic references in your results which this eliminates.
-            .Select(contentItem => contentItem.As<EmployeePart>())
+            .Select(contentItem => contentItem.GetOrCreate<EmployeePart>())
             .Select(part => new EmployeeJsonResult
             {
                 ContentItemId = part.ContentItem.ContentItemId,
