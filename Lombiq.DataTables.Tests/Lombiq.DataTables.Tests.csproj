@@ -11,7 +11,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="OrchardCore.Liquid" Version="3.0.0-preview-19023" />
+    <PackageReference Include="OrchardCore.Liquid" Version="$(OrchardCoreVersion)" />
   </ItemGroup>
 
   <Import Condition="'$(NuGetBuild)' != 'true'" Project="../../../Utilities/Lombiq.MSBuild.Targets/Lombiq.MSBuild.OrchardCore.Tests.Sdk/Sdk/Import.targets" />
