@@ -82,11 +82,12 @@ public class SampleJsonResultDataTableDataProvider : JsonResultDataTableDataProv
         }
 
         // We have this helper method to avoid confusion because DataTables and YesSql describes slices differently.
+        // The result will be converted into JSON so it's a good practice to only select what's explicitly needed to save
+        // bandwidth. Also, you may have cyclic references in your results if you return more complex objects.
         var results = (isPaginated
                 ? await PaginateAsync(query, request)
                 : await query.ListAsync(_hca.HttpContext?.RequestAborted ?? default))
-            // The result will be converted into JSON so it's a good practice to strip anything unneeded to save
-            // bandwidth. Also you may have cyclic references in your results which this eliminates.
+            .Where(contentItem => contentItem.Has<EmployeePart>())
             .Select(contentItem => contentItem.GetOrCreate<EmployeePart>())
             .Select(part => new EmployeeJsonResult
             {

@@ -41,8 +41,9 @@ public class EmployeeDataTableIndexGenerator : DataTableIndexGeneratorBase<Emplo
     // In this sample there aren't any, but to raise an example: if we wanted to have an Office content type and use
     // instead of the Employee's Office column, then this method would return true if the content in the context is
     // either Employee or Office.
+    //
+    // Note that if all you want to check is the ManagedContentType then you don't need to override this method.
     public override ValueTask<bool> NeedsUpdatingAsync(ContentContextBase context) =>
-        // Actually if all you want to check is the ManagedContentType then you don't need to override this method.
         new(context.ContentItem.ContentType == Employee);
 
     // Once we have decided that a content item causes an update, we have to include it (or the related content items
