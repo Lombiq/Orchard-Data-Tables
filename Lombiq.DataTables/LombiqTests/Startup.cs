@@ -9,5 +9,5 @@ namespace Lombiq.DataTables.LombiqTests;
 public sealed class Startup : StartupBase
 {
     public override void ConfigureServices(IServiceCollection services) =>
-        services.Configure<MvcOptions>(options => options.Filters.Add(typeof(TestingFilter)));
+        services.Configure<MvcOptions>(options => options.Filters.Add<TestingFilter>());
 }

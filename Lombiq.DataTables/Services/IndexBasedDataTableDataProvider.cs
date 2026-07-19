@@ -56,7 +56,7 @@ public abstract class IndexBasedDataTableDataProvider<TIndex> : DataTableDataPro
 
         var sql = query.ToSqlString();
 
-        var transaction = await _session.BeginTransactionAsync();
+        var transaction = await _session.BeginTransactionAsync(_hca.HttpContext?.RequestAborted ?? default);
         var queryResults = await transaction.Connection.QueryAsync<TIndex>(sql, query.Parameters, transaction);
 
         var rowList = SubstituteByColumn(
@@ -72,7 +72,7 @@ public abstract class IndexBasedDataTableDataProvider<TIndex> : DataTableDataPro
             .ToList();
         if (liquidColumns.Count > 0) await RenderLiquidAsync(rowList, liquidColumns);
 
-        var total = await _session.QueryIndex<TIndex>().CountAsync();
+        var total = await _session.QueryIndex<TIndex>().CountAsync(_hca.HttpContext?.RequestAborted ?? default);
         return new DataTableDataResponse
         {
             Data = rowList,
