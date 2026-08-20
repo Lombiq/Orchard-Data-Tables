@@ -4,19 +4,19 @@
   "defaultDestination": "wwwroot/vendors/[Name]",
   "libraries": [
     {
-      "library": "datatables.net@3.0.0",
+      "library": "datatables.net@3.0.1",
       "files": [ "js/dataTables*.js" ]
     },
     {
-      "library": "datatables.net-bs5@3.0.0",
+      "library": "datatables.net-bs5@3.0.1",
       "files": [ "css/*.css", "js/*.js" ]
     },
     {
-      "library": "datatables.net-buttons@4.0.0",
+      "library": "datatables.net-buttons@4.0.1",
       "files": [ "js/*.js" ]
     },
     {
-      "library": "datatables.net-buttons-bs5@4.0.0",
+      "library": "datatables.net-buttons-bs5@4.0.1",
       "files": [ "css/*.css", "js/*.js" ]
     },
     {
