@@ -1,11 +1,11 @@
 using Lombiq.DataTables.Samples.Controllers;
 using Lombiq.DataTables.Services;
-using Lombiq.HelpfulLibraries.Common.Utilities;
 using Lombiq.HelpfulLibraries.OrchardCore.Mvc;
 using Lombiq.Tests.UI.Extensions;
 using Lombiq.Tests.UI.Services;
 using OpenQA.Selenium;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,7 +33,8 @@ public static class UITestContextExtensions
     {
         const string pagerItemXPath = "//li[contains(@class, 'page-item') and ./button[@data-dt-idx = number(@data-dt-idx)]]";
 
-        context.Exists(By.XPath(StringHelper.CreateInvariant(
+        context.Exists(By.XPath(string.Create(
+            CultureInfo.InvariantCulture,
             $"({pagerItemXPath})[last()]/button[normalize-space(.) = '{pageCount}']")));
 
         static void VerifyNavigation(UITestContext context, string className, bool exists)

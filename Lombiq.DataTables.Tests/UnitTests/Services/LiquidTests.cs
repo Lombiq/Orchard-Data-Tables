@@ -1,5 +1,4 @@
 using Lombiq.DataTables.Tests.Helpers;
-using Lombiq.HelpfulLibraries.Common.Utilities;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -91,7 +90,7 @@ public class LiquidTests
                 .ToArray()
                 .ShouldBe(
                     pattern[rowIndex],
-                    StringHelper.CreateInvariant($"Row {rowIndex + 1} didn't match expectation."));
+                    string.Create(CultureInfo.InvariantCulture, $"Row {rowIndex + 1} didn't match expectation."));
         }
     }
 
