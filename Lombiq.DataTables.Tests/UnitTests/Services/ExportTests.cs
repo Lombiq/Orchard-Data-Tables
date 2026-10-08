@@ -200,19 +200,18 @@ public class ExportTests
         var date2 = new DateTime(2020, 11, 26, 13, 42, 01, DateTimeKind.Utc);
         var date3 = new DateTime(2020, 11, 26, 1, 42, 01, DateTimeKind.Utc);
 
-        // Simplified collection initialization for the first two would leave the third one as it is. Keeping for
-        // consistency.
-#pragma warning disable IDE0300 // Simplify collection initialization
         // The date value should be the same, only the formatting changes.
         yield return new DataTableShouldMatchExpectationInput(
             "Verify custom number formatting.",
-            new[]
-            {
-                new object[] { 1, date1 },
-                new object[] { 2, date2 },
-                new object[] { 3, date3 },
-            },
-            new[] { ("Num", "Numbers", true), ("Time", "Time", true) },
+            [
+                [1, date1],
+                [2, date2],
+                [3, date3],
+            ],
+            [
+                ("Num", "Numbers", true),
+                ("Time", "Time", true),
+            ],
             string.Format(
                     _worksheetCulture,
                     "1,{0:h:mm:ss tt};2,{1:h:mm:ss tt};3,{2:h:mm:ss tt}",
@@ -225,7 +224,6 @@ public class ExportTests
             0,
             10,
             0);
-#pragma warning restore IDE0300 // Simplify collection initialization
     }
 
     // Sometimes a font is available, however, it's corrupted or missing a table (for example, this can happen on
