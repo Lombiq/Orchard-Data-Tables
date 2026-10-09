@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using OrchardCore.ContentManagement;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text.Json;
@@ -86,8 +85,7 @@ public class VueModel
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("hiddenInput")]
     [JsonInclude]
-    [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "It's used for JSON conversion.")]
-    private object HiddenInputSerialize
+    internal object HiddenInputSerialize
     {
         get => (object)HiddenInput ?? HiddenInputs;
         set
