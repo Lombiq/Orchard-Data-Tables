@@ -9,13 +9,10 @@ namespace Lombiq.DataTables.Models;
 
 public class ExportLink
 {
-    // While the warning doesn't show up in VS it does with dotnet build.
-#pragma warning disable IDE0079 // Remove unnecessary suppression
     [SuppressMessage(
         "Performance",
         "CA1822:Mark members as static",
         Justification = "It's necessary to be instance-level for JSON serialization.")]
-#pragma warning restore IDE0079 // Remove unnecessary suppression
     public string Type => nameof(ExportLink);
     public string Url { get; set; }
     public JsonNode Text { get; set; }
