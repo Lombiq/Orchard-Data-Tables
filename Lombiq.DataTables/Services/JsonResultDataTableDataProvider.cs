@@ -81,7 +81,7 @@ public abstract class JsonResultDataTableDataProvider : DataTableDataProviderBas
     {
         var searchValue = request.Search?.Value;
         var columnFilters = request.GetColumnSearches();
-        int recordsFilteredResponse = recordsFiltered;
+        var recordsFilteredResponse = recordsFiltered;
 
         if (!meta.IsFiltered && (request.HasSearch || columnFilters?.Count > 0))
         {

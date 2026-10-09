@@ -93,7 +93,7 @@ public class ExcelDataTableExportService : IDataTableExportService
         var dateFormat = localizer == null ? string.Empty : localizer["mm\"/\"dd\"/\"yyyy"].Value;
 
         // Create table body.
-        for (int i = 0; i < results.Length; i++)
+        for (var i = 0; i < results.Length; i++)
         {
             var row = 2 + i;
             for (var c = 0; c < columns.Length; c++)
@@ -106,7 +106,7 @@ public class ExcelDataTableExportService : IDataTableExportService
 
         if (customNumberFormat != null)
         {
-            foreach ((int columnNumber, string numberFormat) in customNumberFormat)
+            foreach (var (columnNumber, numberFormat) in customNumberFormat)
             {
                 worksheet.Column(columnNumber).Style.NumberFormat.Format = numberFormat;
             }

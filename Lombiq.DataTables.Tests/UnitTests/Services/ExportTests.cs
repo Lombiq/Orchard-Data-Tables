@@ -59,7 +59,7 @@ public class ExportTests
             mocker => mocker.MockStringLocalizer<ExcelDataTableExportService>());
 
         Dictionary<int, string> customNumberFormat = null;
-        int columnIndex = 0;
+        var columnIndex = 0;
         do
         {
             if (columns[columnIndex].Name == "Time")
@@ -239,7 +239,7 @@ public class ExportTests
 
         var maxAttempts = Math.Min(3, fontFamilies.Length);
 
-        for (int i = 0; i < maxAttempts; i++)
+        for (var i = 0; i < maxAttempts; i++)
         {
             var fallbackFont = fontFamilies[i].Name;
 
