@@ -1,5 +1,4 @@
 using Lombiq.DataTables.Constants;
-using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace Lombiq.DataTables.Models;
@@ -13,8 +12,7 @@ public class DataTableOrder
 
     [JsonPropertyName("direction")]
     [JsonInclude]
-    [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "It's used for JSON conversion.")]
-    private string DirectionString
+    internal string DirectionString
     {
         get => IsAscending ? "ascending" : "descending";
         set => Direction = value == "descending" ? SortingDirection.Descending : SortingDirection.Ascending;
